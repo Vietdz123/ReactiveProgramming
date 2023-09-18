@@ -17,23 +17,20 @@ enum LayoutType {
 struct CompositionalView<Content, Content2 ,Item, ID> : View where Content : View, Content2 : View, ID : Hashable, Item : RandomAccessCollection, Item.Element : Hashable {
     
     var content : (Item.Element) -> Content
-    var content2: () ->  Content2
+    var content2: (Int) ->  Content2
     var items : Item
     var id : KeyPath<Item.Element, ID>
     var spacing : CGFloat
     let h = ( UIScreen.main.bounds.width - 48 ) * 2 / 3
     
-    @State var current : Int = 0
-    @EnvironmentObject var categoryVM : CategoryViewModel
-    
- 
-    
+
+  
     
     init(items: Item
          ,id: KeyPath<Item.Element, ID>
          ,spacing:CGFloat = 8
          ,@ViewBuilder content : @escaping (Item.Element) -> Content
-         ,@ViewBuilder content2: @escaping () ->   Content2
+         ,@ViewBuilder content2: @escaping (Int) ->   Content2
     ) {
         self.content = content
         self.content2 = content2
@@ -44,15 +41,24 @@ struct CompositionalView<Content, Content2 ,Item, ID> : View where Content : Vie
     
     var body: some View {
         LazyVStack(spacing: spacing){
-            ForEach(generateColumn(), id: \.self){
-                row in
-                RowView(row: row)
+            ForEach(Array(generateColumn().enumerated()), id: \.element){
+              index,  row in
+              
+                RowView( row: row)
+                   
                 if layoutType(row: row) == .type3 {
-                    content2()
+                   
+                   content2(Int(( index + 1 ) / 3))
+                        .onAppear(perform: {
+                            print("DUC DUC DUC ", ( index + 1 ) / 3 )
+                        })
+                   
                 }
             }
         }
     }
+    
+  
     
     func layoutType(row : [Item.Element]) -> LayoutType{
         let index = generateColumn().firstIndex{ item in
@@ -123,6 +129,9 @@ struct CompositionalView<Content, Content2 ,Item, ID> : View where Content : Vie
                         SafeRow(row: row, index: 2)
                             .frame( height: height)
                     }.frame(width: columnWidth)
+                    
+                    
+                    
                 }
                 
             }

@@ -16,26 +16,26 @@ struct HomeView: View {
     @EnvironmentObject var store : MyStore
     @EnvironmentObject var favViewModel : FavoriteViewModel
     @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var categotyVM : CategoryViewModel
+  
     
  
     
-    @StateObject var categoryPageViewModel : CategoryPageViewModel = .init()
+    @StateObject var tagViewModel : TagViewModel = .init()
     
     var body: some View {
         
         ZStack{
-            NavigationLink(isActive: $categotyVM.navigateAtHome, destination: {
-                CategoryPageView()
-                    .environmentObject(categoryPageViewModel)
-                    .environmentObject(reward)
-                    .environmentObject(store)
-                    .environmentObject(favViewModel)
-                    .environmentObject(interAd)
+//            NavigationLink(isActive: $categotyVM.navigateAtHome, destination: {
+//                CategoryPageView()
+//                    .environmentObject(categoryPageViewModel)
+//                    .environmentObject(reward)
+//                    .environmentObject(store)
+//                    .environmentObject(favViewModel)
+//                    .environmentObject(interAd)
                 
-            }, label: {
-                EmptyView()
-            })
+//            }, label: {
+//                EmptyView()
+//            })
             
             
             if !viewModel.wallpapers.isEmpty{
@@ -125,15 +125,20 @@ struct HomeView: View {
                             }
                          
                             
-                        }, content2: {
-                            if categotyVM.current < categotyVM.categorieWithData.count - 1{
-                                if let categoryWithData = categotyVM.categorieWithData[categotyVM.current]  {
-                                    
-                                    
-                                    Categoryyyy(categoryWithData: categoryWithData)
-                                    
-                                }
+                        }, content2: { index in
+                            if !viewModel.tags.isEmpty && index < viewModel.tags.count{
+                                TagViewBuilder(tag: viewModel.tags[index])
                             }
+                           
+                            
+//                            if categotyVM.current < categotyVM.categorieWithData.count - 1{
+//                                if let categoryWithData = categotyVM.categorieWithData[categotyVM.current]  {
+//
+//
+//                                    Categoryyyy(categoryWithData: categoryWithData)
+//
+//                                }
+//                            }
                         }).padding(16)
                         
                         
@@ -338,21 +343,23 @@ struct HomeView: View {
     }
     
     
-    @ViewBuilder
-    func Categoryyyy(categoryWithData : CategoryWithData) -> some View{
+   
+    func TagViewBuilder(tag : Tag) -> some View{
         Button(action: {
             
-            categoryPageViewModel.category = categoryWithData.category
-            categotyVM.navigateAtHome.toggle()
+          
             
         }, label: {
+            
+        
+            
             HStack(spacing : 8){
                 VStack(alignment: .leading, spacing : 0){
-                    Text("\(categoryWithData.category.title)")
+                    Text("\(tag.title)")
                         .mfont(17, .bold)
                         .foregroundColor(.white)
                         .padding(.top, 20)
-                    
+
                     Text("Awesome category for you!")
                         .mfont(11, .regular)
                         .foregroundColor(.white)
@@ -368,7 +375,7 @@ struct HomeView: View {
                         Image("arrow.right")
                             .resizable()
                             .frame(width: 16, height: 16)
-                        
+
                     }.frame(width: 120, height: 36, alignment: .center)
                         .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 0))
                         .background(
@@ -386,48 +393,39 @@ struct HomeView: View {
                                 )
                         )
                         .padding(.bottom , 24)
-                    
-                    
+
+
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 
-                WebImage(url: URL(string: categoryWithData.wallpapers[0].variations.preview_small.url.replacingOccurrences(of: "\"", with: "")))
-                
-                    .onSuccess { image, data, cacheType in
-                        
-                    }
-                    .resizable()
-                    .placeholder {
-                        placeHolderImage()
-                            .frame( width: 80,height: 160)
-                    }
-                    .indicator(.activity) // Activity Indicator
-                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                    .scaledToFill()
-                    .frame( width: 80,height: 160)
-                    .cornerRadius(4)
-                WebImage(url: URL(string: categoryWithData.wallpapers[1].variations.preview_small.url.replacingOccurrences(of: "\"", with: "")))
-                    .onSuccess { image, data, cacheType in
-                        
-                    }
-                    .resizable()
-                    .placeholder {
-                        placeHolderImage()
-                            .frame( width: 80,height: 160)
-                    }
-                    .indicator(.activity) // Activity Indicator
-                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                    .scaledToFill()
-                    .frame( width: 80,height: 160)
-                    .cornerRadius(4)
+                ZStack{
+                    WebImage(url: URL(string: tag.preview_small_url ?? ""))
+                             
+                                 .onSuccess { image, data, cacheType in
+                               
+                                 }
+                                 .resizable()
+                                 .placeholder {
+                                     placeHolderImage()
+                                         .frame( width: 80,height: 160)
+                                 }
+                                 .indicator(.activity) // Activity Indicator
+                                 .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                 .scaledToFill()
+                                 .frame( width: 80,height: 160)
+                                 .cornerRadius(4)
+
+                }.frame(maxWidth: .infinity)
+                   
+            
             }
             .frame(maxWidth: .infinity)
             .frame(height: 176)
             .background(
                 ZStack{
-                    
+
                     VisualEffectView(effect: UIBlurEffect(style: .dark))
-                    
-                    
+
+
                     LinearGradient(
                         stops: [
                             Gradient.Stop(color: .white.opacity(0.15), location: 0.00),
@@ -436,18 +434,12 @@ struct HomeView: View {
                         startPoint: UnitPoint(x: 0, y: 0.5),
                         endPoint: UnitPoint(x: 1, y: 0.5)
                     )
-                    
-                    
+
+
                 }
             )
             .cornerRadius(8)
-            .onAppear(perform: {
-                categotyVM.current  = categotyVM.current + 1
-                if categotyVM.checkIfLoadData(i:  categotyVM.current){
-                    categotyVM.getCategoryWithData()
-                }
-                print("Categoryyyy \(categotyVM.current)")
-            })
+         
         })
     }
     

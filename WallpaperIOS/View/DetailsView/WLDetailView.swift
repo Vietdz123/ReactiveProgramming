@@ -65,7 +65,7 @@ struct WLView: View {
                                     .scaledToFill()
                                     .frame(width: getRect().width, height: getRect().height)
                                     .clipped()
-
+                                
                             } else if phase.error != nil {
                                 AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
                                     phase in
@@ -77,17 +77,17 @@ struct WLView: View {
                                             .clipped()
                                     }
                                 }
-
+                                
                             } else {
                                 ResizableLottieView(filename: "placeholder_anim")
                                     .frame(width: 200, height: 200)
                             }
-
-
+                            
+                            
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
-              
+                        
                         .onAppear(perform: {
                             if i == (viewModel.wallpapers.count - 3){
                                 viewModel.getWallpapers()
@@ -182,7 +182,7 @@ struct WLView: View {
                     }
                 }
             }
-        
+            
         )
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
             TutorialContentView()
@@ -193,7 +193,7 @@ struct WLView: View {
         .onDisappear(perform: {
             store.showBanner = true
         })
-      
+        
     }
     
     @ViewBuilder
@@ -222,7 +222,7 @@ struct WLView: View {
                                 .resizable()
                                 .frame(width: 13, height: 13)
                             Text(" \( (viewModel.wallpapers[index].cost ?? 0) == 0 ? 0 : exclusiveCost  )")
-                         //   Text(" \(exclusiveCost)")
+                            //   Text(" \(exclusiveCost)")
                                 .mfont(13, .regular)
                                 .foregroundColor(.white)
                             
@@ -232,7 +232,7 @@ struct WLView: View {
                                     .fill(Color.black.opacity(0.7))
                             )
                     }
-
+                    
                 }.frame(width: 38, height: 20)
                 
                 
@@ -269,7 +269,7 @@ struct WLView: View {
             HStack{
                 Button(action: {
                     
-                   
+                    
                     
                     let wallpaper = viewModel.wallpapers[index]
                     if !favViewModel.isFavorite(id: wallpaper.id) {
@@ -299,7 +299,7 @@ struct WLView: View {
                                 .frame(width: 48, height: 48)
                         )
                 })
-
+                
                 Button(action: {
                     
                     getPhotoPermission(status: {
@@ -319,11 +319,11 @@ struct WLView: View {
                                     }
                                 }else{
                                     DispatchQueue.main.async {
-                                    withAnimation{
-                                       
+                                        withAnimation{
+                                            
                                             ctrlViewModel.showDialogBuyCoin.toggle()
                                         }
-                                       
+                                        
                                     }
                                 }
                             }
@@ -331,7 +331,7 @@ struct WLView: View {
                         }
                     })
                     
-                   
+                    
                     
                     
                     
@@ -339,7 +339,7 @@ struct WLView: View {
                     
                 }, label: {
                     HStack{
-                      
+                        
                         Text("Save")
                             .mfont(16, .bold)
                             .foregroundColor(.mblack_fg)
@@ -353,13 +353,13 @@ struct WLView: View {
                             )
                     }
                     
-                  
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .contentShape(Capsule())
-                        .background(
-                            Capsule().fill(Color.main)
-                        )
+                    
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
+                    .contentShape(Capsule())
+                    .background(
+                        Capsule().fill(Color.main)
+                    )
                 }).padding(.horizontal, 16)
                 
                 

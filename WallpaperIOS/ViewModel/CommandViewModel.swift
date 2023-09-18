@@ -52,7 +52,13 @@ class CommandViewModel: ObservableObject {
 }
 
 class HomeViewModel : CommandViewModel {
-
+    @Published var tags : [Tag] = []
+   
+    
+    override init() {
+        super.init()
+        self.getAllTags()
+    }
     override func getWallpapers() {
 
         guard let url  = URL(string: "\(domain)api/v1/data?limit=\(AppConfig.limit)&offset=\(randomOffset)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
@@ -83,6 +89,28 @@ class HomeViewModel : CommandViewModel {
             
         }.resume()
     }
+    
+    func getAllTags(){
+        guard let url  = URL(string: "\(domain)api/v1/popular-tags") else {
+            return
+        }
+        
+     
+        
+        URLSession.shared.dataTask(with: url){
+            data, _ ,err  in
+            guard let data = data, err == nil else {
+                return
+            }
+            let tagsCollection = try? JSONDecoder().decode(TagCollection.self, from: data)
+            DispatchQueue.main.async {
+                self.tags.append(contentsOf: tagsCollection?.items ?? [])
+              
+            }
+        }.resume()
+    }
+    
+    
 }
 
 
@@ -160,9 +188,7 @@ class CategoryPageViewModel : CommandViewModel {
             
       
             
-            let sortParam = ( category!.id == 192 ? "" : getSortParamStr() )
-        
-            guard let url  = URL(string: "\(domain)api/v1/data?category_id=\(category?.id ?? 1)&limit=\(AppConfig.limit)&offset=\(currentOffset)\(sortParam)\(AppConfig.forOnlyIOS)") else {
+            guard let url  = URL(string: "\(domain)api/v1/data?category_id=\(category?.id ?? 1)&limit=\(AppConfig.limit)&offset=\(currentOffset)&order_by=uploaded_at+desc\(AppConfig.forOnlyIOS)") else {
                 return
             }
     
@@ -176,7 +202,7 @@ class CategoryPageViewModel : CommandViewModel {
                 DispatchQueue.main.async {
                     self.wallpapers.append(contentsOf: itemsCurrentLoad?.items ?? [])
                     self.currentOffset = self.wallpapers.count
-                    self.maxCount = ( itemsCurrentLoad?.count  ?? 115 ) - 15
+                 //   self.maxCount = ( itemsCurrentLoad?.count  ?? 115 ) - 15
                 }
     
             }.resume()

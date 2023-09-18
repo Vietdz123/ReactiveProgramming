@@ -34,110 +34,9 @@ struct CategoryView: View {
                 }, label: {
                     EmptyView()
                 })
-
-                VStack(spacing : 0){
-                    HStack(spacing : 0){
-                        Text("New Trending")
-                            .mfont(17, .bold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 12)
-                           
-                        Spacer()
-                        
-                        Button(action: {
-                            
-                          
-                                categoryPageViewModel.category = Category(id: 192, title: "New Trending")
-                                viewModel.navigate.toggle()
-                          
-                            
-                          
-                        }, label: {
-                            Text("See more")
-                                .mfont(11, .regular)
-                                .foregroundColor(.white)
-                            Image("arrow.right")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 18, height: 18, alignment: .center)
-                        })
-                        
-                     
-                    
-                        
-                    }.frame(height: 36)
-                     .padding(.horizontal, 16)
-                     .padding(.vertical, 8)
-
-                    
-                    if !viewModel.newTrendingWL.isEmpty {
-                        ScrollView(.horizontal, showsIndicators: false){
-                            HStack(spacing : 8){
-                                Spacer().frame(width: 8)
-                                ForEach(0..<viewModel.newTrendingWL.count, id: \.self){
-                                    index in
-                                    let wallpaper = viewModel.newTrendingWL[index]
-                                    
-                                    let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                                        NavigationLink(destination: {
-                                            
-                                                   WallpaperOnePageDetails(wallpaper: wallpaper)
-                                                   .environmentObject(reward)
-                                                   .environmentObject(store)
-                                                   .environmentObject(favViewModel)
-                                                   .environmentObject(interAd)
-                                        }, label: {
-
-                                            WebImage(url: URL(string: string))
-                                            
-                                               .onSuccess { image, data, cacheType in
-                                                   // Success
-                                                   // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-                                               }
-                                               .resizable()
-                                               .placeholder {
-                                                   placeHolderImage()
-                                                       .frame(width: 108, height: 216)
-                                               }
-                                               .indicator(.activity) // Activity Indicator
-                                               .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                               .scaledToFill()
-                                               .frame(width: 108, height: 216)
-                                            .cornerRadius(8)
-                                            .overlay(
-                                                
-                                                ZStack{
-                                                    if !store.isPro() && wallpaper.content_type == "private" {
-                                                        
-                                                  
-                                                            Image("coin")
-                                                                .resizable()
-                                                                .frame(width: 13.33, height: 13.33, alignment: .center)
-                                                          
-                                                             
-                                                        .frame(width: 16, height: 16, alignment: .center)
-                                                            .background(
-                                                                Capsule()
-                                                                    .fill(Color.black.opacity(0.7))
-                                                            )
-                                                            .padding(8)
-                                                    }
-                                                }
-                                                
-                                                , alignment: .topTrailing
-                                            )
-                                        })
-
-                                }
-                                Spacer().frame(width: 16)
-                            }
-                        }
-                    }
-                 
-                    
-                }
-                .padding(.bottom, 16)
+                
+                Spacer()
+                    .frame(height : 16)
                 
                 
                 LazyVStack(spacing : 0){
@@ -171,76 +70,89 @@ struct CategoryView: View {
                                             .frame(width: 18, height: 18, alignment: .center)
                                     }
                                 })
-                            
+                                
                                 
                             }.frame(height: 36)
-                             .padding(.horizontal, 16)
-                             .padding(.bottom, 8)
+                                .padding(.horizontal, 16)
+                                .padding(.bottom, 8)
                             
                             
                             
-                            
-                            ScrollView(.horizontal, showsIndicators: false){
-                                HStack(spacing : 8){
-                                    Spacer().frame(width: 8)
-                                    ForEach(categoryData.wallpapers, id: \.id){
-                                        wallpaper in
-                                        let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                                            NavigationLink(destination: {
-                                             
-                                                    WallpaperOnePageDetails(wallpaper: wallpaper)
-                                                    .environmentObject(reward)
-                                                    .environmentObject(store)
-                                                    .environmentObject(favViewModel)
-                                                    .environmentObject(interAd)
-                                            }, label: {
-
-                                                WebImage(url: URL(string: string))
-                                                
-                                                   .onSuccess { image, data, cacheType in
-                                                       // Success
-                                                       // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-                                                   }
-                                                   .resizable()
-                                                   .placeholder {
-                                                       placeHolderImage()
-                                                           .frame(width: 108, height: 216)
-                                                   }
-                                                   .indicator(.activity) // Activity Indicator
-                                                   .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                                   .scaledToFill()
-                                                   .frame(width: 108, height: 216)
-                                                .cornerRadius(8)
-                                                .overlay(
-                                                    ZStack{
-                                                        if !store.isPro() && wallpaper.content_type == "private"{
-                                                            
-                                                      
-                                                                Image("coin")
-                                                                    .resizable()
-                                                                    .frame(width: 13.33, height: 13.33, alignment: .center)
-                                                              
-                                                                 
-                                                            .frame(width: 16, height: 16, alignment: .center)
-                                                                .background(
-                                                                    Capsule()
-                                                                        .fill(Color.black.opacity(0.7))
-                                                                )
-                                                                .padding(8)
-                                                        }
-                                                    }
+                            ZStack{
+                                if !categoryData.wallpapers.isEmpty{
+                                    ScrollView(.horizontal, showsIndicators: false){
+                                        HStack(spacing : 8){
+                                            Spacer().frame(width: 8)
+                                            ForEach(categoryData.wallpapers, id: \.id){
+                                                wallpaper in
+                                                let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
+                                                NavigationLink(destination: {
                                                     
-                                                    , alignment: .topTrailing
-                                                )
-                                            })
-                                   
+                                                    WallpaperOnePageDetails(wallpaper: wallpaper)
+                                                        .environmentObject(reward)
+                                                        .environmentObject(store)
+                                                        .environmentObject(favViewModel)
+                                                        .environmentObject(interAd)
+                                                }, label: {
+                                                    
+                                                    WebImage(url: URL(string: string))
+                                                    
+                                                        .onSuccess { image, data, cacheType in
+                                                          
+                                                        }
+                                                        .resizable()
+                                                        .placeholder {
+                                                            placeHolderImage()
+                                                                .frame(width: 108, height: 216)
+                                                        }
+                                                        .indicator(.activity) // Activity Indicator
+                                                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                                        .scaledToFill()
+                                                        .frame(width: 108, height: 216)
+                                                        .cornerRadius(8)
+                                                        .overlay(
+                                                            ZStack{
+                                                                if !store.isPro() && wallpaper.content_type == "private"{
+                                                                    
+                                                                    
+                                                                    Image("coin")
+                                                                        .resizable()
+                                                                        .frame(width: 13.33, height: 13.33, alignment: .center)
+                                                                    
+                                                                    
+                                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                                        .background(
+                                                                            Capsule()
+                                                                                .fill(Color.black.opacity(0.7))
+                                                                        )
+                                                                        .padding(8)
+                                                                }
+                                                            }
+                                                            
+                                                            , alignment: .topTrailing
+                                                        )
+                                                })
+                                                
+                                            }
+                                            Spacer().frame(width: 16)
+                                        }
                                     }
-                                    Spacer().frame(width: 16)
                                 }
-                            }
+                                else{
+                                    ProgressView()
+                                }
+                                
+                             
+                            }.frame(height : 216)
+                                .onAppear(perform : {
+                                    if categoryData.wallpapers.isEmpty {
+                                        viewModel.loadDataWhenAppear(index: index)
+                                    }
+                                })
+                           
                             
                         }
-                        .padding(.bottom, 24)
+                        .padding(.bottom, 16)
                         
                     }
                 }
@@ -255,7 +167,8 @@ struct CategoryView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .refreshable {
                 viewModel.categorieWithData.removeAll()
-                viewModel.getCategoryWithData()
+                viewModel.getAllCategory()
+           //     viewModel.getCategoryWithData()
             }
         }.addBackground()
     }
@@ -264,7 +177,8 @@ struct CategoryView: View {
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {
         CategoryView()
-          
+        
             .environmentObject(CategoryViewModel())
     }
 }
+

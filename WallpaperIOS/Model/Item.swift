@@ -21,7 +21,7 @@ struct Tag: Codable {
 
 struct CategoryWithData : Codable {
     let category : Category
-    let wallpapers : [Wallpaper]
+    var wallpapers : [Wallpaper] = []
 }
 
 struct Category: Codable {
