@@ -1,0 +1,397 @@
+//
+//  OnboardingSubView.swift
+//  WallpaperIOS
+//
+//  Created by Mac on 26/06/2023.
+//
+
+import SwiftUI
+import AVKit
+struct OnboardingSubView: View {
+    @State var page : Int = 0
+    @State var navigateToHome : Bool = false
+    @EnvironmentObject var homeVM : HomeViewModel
+    @EnvironmentObject var store : MyStore
+    @EnvironmentObject var interAd : InterstitialAdLoader
+    @EnvironmentObject var rewardAd : RewardAd
+    
+    var body: some View {
+        ZStack{
+       
+            
+            VStack{
+                TabView(selection: $page, content: {
+                    
+                    ScreenOne().ignoresSafeArea().gesture(DragGesture()).tag(0)
+                    ScreenSecond().ignoresSafeArea().gesture(DragGesture()).tag(1)
+                    ScreenThird().ignoresSafeArea().gesture(DragGesture()).tag(2)
+                    ScreenFour()
+                        .environmentObject(store)
+                        .ignoresSafeArea()
+                        .gesture(DragGesture()).tag(3)
+                    
+                })
+           
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .background(Color.black)
+                .ignoresSafeArea()
+                .overlay(
+                    ZStack{
+                        if page != 3 {
+                            Button(action: {
+                                withAnimation{
+                                    page = 3
+                                }
+                            }, label: {
+                                Text("Skip").mfont(14, .regular)
+                                    .foregroundColor(.white)
+                            })
+                            .padding(.horizontal, 16)
+                        }else{
+                            Button(action: {
+                                withAnimation{
+                                    UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                                    navigateToHome.toggle()
+                                }
+                                
+                            }, label: {
+                                Image("close.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.white)
+                            })
+                            .padding(.horizontal, 16)
+                        }
+                    }, alignment: .topTrailing
+                    
+                )
+                
+            }
+            
+            
+            ZStack{
+                VStack(spacing : 0){
+                    Spacer()
+                    LinearGradient(colors: [Color("black_bg").opacity(0), Color("black_bg")], startPoint: .top, endPoint: .bottom)
+                        .frame(height : 120)
+                    Color("black_bg")
+                        .frame(height : 180)
+                }.ignoresSafeArea()
+                
+                VStack(spacing : 0){
+                    
+                    Spacer()
+                    
+                    if page == 3{
+                        Image("allfeatures")
+                            .resizable()
+                            .frame(width: 138, height: 120)
+                        Text("Unlock All Premium Features")
+                            .mfont(16, .bold)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 12)
+                        if let  weekly = store.weekProductNotSale {
+                            Text("Only \(weekly.displayPrice) per week.")
+                                .mfont(12, .regular)
+                                .foregroundColor(.white)
+                            Text("Auto-renewable. Cancel anytime.")
+                                .mfont(12, .regular)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 32)
+                        }
+                        
+                     
+                        
+                        
+                        
+                    }else{
+                        Text(getTextTitle(page:page))
+                            .foregroundColor(.main)
+                            .mfont(32, .bold)
+                        
+                            .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: page)
+                        Text(getTextSubTitle(page:page))
+                            .foregroundColor(.white)
+                            .mfont(24, .regular)
+                        
+                            .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay(0.1), value: page)
+                            .padding(.horizontal, 27)
+                            .padding(.bottom, 32)
+                    }
+                    
+                    
+                    
+                    Button(action: {
+                        if page < 3 {
+                            withAnimation(.linear){
+                                page += 1
+                            }
+                            
+                        }else{
+                            UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                            if let weekPro = store.weekProductNotSale {
+                                store.isPurchasing = true
+                                Flurry_log("Click_buy_in_onboarding")
+                                Firebase_log("Click_buy_in_onboarding")
+                                store.purchase(product: weekPro, onBuySuccess: { b in
+                                    if b {
+
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                            Flurry_log("Click_buy_in_onboarding_successful")
+                                            Firebase_log("Click_buy_in_onboarding_successful")
+                                            
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                            withAnimation{
+                                                navigateToHome.toggle()
+                                            }
+                                        }
+                                    }else{
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                        }
+                                    }
+                            
+                                    
+                                }
+                            )
+                            }else{
+                                store.isPurchasing = false
+                                showToastWithContent(image: "xmark", color: .red, mess: "Product is not ready!")
+                            }
+                        }
+                    }, label: {
+                        HStack{
+                            
+                          
+                        Text( "CONTINUE")
+                            .mfont(16, .bold)
+                            .foregroundColor(.black)
+                            .overlay(
+                                ZStack{
+                                    if store.isPurchasing{
+                                        EZProgressView()
+                                    }
+                                }.offset(x : -36)
+                                , alignment: .leading
+                            )
+                        
+                        }
+                            .frame(maxWidth: .infinity)
+                            .frame(height : 56)
+                            .contentShape(Rectangle())
+                            .overlay(
+                                ZStack{
+                                    ResizableLottieView(filename: "arrow")
+                                        .frame(width: 32, height: 32 )
+                                        .padding(.trailing , 24)
+                                }
+                                
+                                
+                                , alignment: .trailing
+                            )
+                    })
+                    .background(
+                        Capsule().fill(Color.main)
+                    )
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 76)
+                }
+                .ignoresSafeArea()
+                .overlay(
+                    ZStack{
+                        if page == 3 {
+                            HStack(spacing : 4){
+                                Button(action: {
+                                    if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }, label: {
+                                    Text("Privacy Policy").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                })
+                                
+                                Text("|").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                
+                                Button(action: {
+                                    Task{
+                                        let b = await store.restore()
+                                        if b {
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                                        }else{
+                                            showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                                        }
+                                    }
+                                    
+                                }, label: {
+                                    Text("Restore").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                })
+                                
+                                Text("|").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                
+                                Button(action: {
+                                    if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }, label: {
+                                    Text("Term of use").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                })
+                                
+                              
+                                
+                            }
+                        }
+                    }
+                        
+                       
+                        
+                   
+                    , alignment: .bottom
+                )
+                
+            }
+            
+            NavigationLink(destination:
+                            MainView( fromDefault : false)
+                .environmentObject(homeVM)
+                .environmentObject(store)
+                .environmentObject(interAd)
+                .environmentObject(rewardAd)
+                        , isActive: $navigateToHome, label: {
+                EmptyView()
+            })
+            
+        }
+        
+        
+        
+        
+    }
+    
+    func getTextTitle(page : Int) -> String{
+        if page == 0 {
+            return "100000+"
+        }else if page == 1 {
+            return "Various"
+        }else if page == 2 {
+            return "Unique"
+        }else{
+            return ""
+        }
+    }
+    
+    func getTextSubTitle(page : Int) -> String{
+        if page == 0 {
+            return "4K Wallpapers"
+        }else if page == 1 {
+            return "Wallpapers"
+        }else if page == 2 {
+            return "Video Wallpapers"
+        }else{
+            return ""
+        }
+    }
+    
+    
+}
+
+
+struct ScreenOne : View{
+    @State var avPlayer : AVPlayer?
+    
+    var body: some View{
+        ZStack{
+            if  avPlayer != nil{
+                MyVideoPlayer(player: avPlayer!)
+            }
+        }
+        .onAppear(perform: {
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video1", withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+
+
+struct ScreenSecond : View{
+    @State var avPlayer : AVPlayer?
+    
+    var body: some View{
+        ZStack{
+            if  avPlayer != nil{
+                MyVideoPlayer(player: avPlayer!)
+            }
+        }
+        .onAppear(perform: {
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video2", withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+
+struct ScreenThird : View{
+    @State var avPlayer : AVPlayer?
+    
+    var body: some View{
+        ZStack{
+            if  avPlayer != nil{
+                MyVideoPlayer(player: avPlayer!)
+            }
+        }
+        .onAppear(perform: {
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video3", withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+
+struct ScreenFour : View{
+    @State var avPlayer : AVPlayer?
+    var body: some View{
+        ZStack{
+            if  avPlayer != nil{
+                MyVideoPlayer(player: avPlayer!)
+            }
+          
+            
+        }
+        .onAppear(perform: {
+            UserDefaults.standard.set(true, forKey: "not_first_time_enter_app")
+            
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video4", withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+

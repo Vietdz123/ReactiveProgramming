@@ -1,0 +1,508 @@
+//
+//  WallpaperDetails.swift
+//  WallpaperIOS
+//
+//  Created by Mac on 04/05/2023.
+//
+
+import SwiftUI
+import PhotosUI
+
+struct WallpaperOnePageDetails: View {
+    @StateObject var ctrlViewModel : ControllViewModel = .init()
+    @EnvironmentObject  var reward : RewardAd
+    @EnvironmentObject var inter : InterstitialAdLoader
+    @EnvironmentObject var store : MyStore
+    @EnvironmentObject var favViewModel : FavoriteViewModel
+    @AppStorage("current_coin", store: .standard) var currentCoin : Int = 0
+    @AppStorage("exclusive_cost", store: .standard) var exclusiveCost : Int = 4
+    @Environment(\.dismiss) var dismiss
+    let wallpaper : Wallpaper
+    var body: some View {
+        ZStack(alignment: .top){
+            
+            NavigationLink(destination:
+                            SubcriptionVIew().environmentObject(store)
+                           , isActive: $ctrlViewModel.navigateView, label: {
+                EmptyView()
+            })
+            
+            AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+                phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: getRect().width, height: getRect().height)
+                        .clipped()
+
+                } else if phase.error != nil {
+                    AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+                        phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: getRect().width, height: getRect().height)
+                                .clipped()
+                        }
+                    }
+                    
+                } else {
+                    ResizableLottieView(filename: "placeholder_anim")
+                        .frame(width: 80, height: 80)
+                }
+
+
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+         
+            .onTapGesture {
+                ctrlViewModel.showControll.toggle()
+            }
+            
+            if ctrlViewModel.showControll{
+                ControllView()
+            }
+            
+            if ctrlViewModel.showPreview {
+                Preview()
+            }
+            
+            if ctrlViewModel.showDialogRV{
+                if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                   DialogGetWL(urlStr: urlStr)
+                }
+                
+            }
+            
+            if ctrlViewModel.showDialogBuyCoin{
+                if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                  DialogGetWLByCoin(urlStr: urlStr)
+                }
+               
+            }
+           
+            
+        }
+        .addBackground()
+        .overlay(
+            ZStack(alignment: .bottom){
+                if ctrlViewModel.showInfo {
+               
+                        Color.black.opacity(0.5).ignoresSafeArea()
+                            .onTapGesture {
+                                ctrlViewModel.showInfo = false
+                            }
+                        
+                        VStack(spacing : 8){
+                            Text("Tag: \(getTag(wl:wallpaper))")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("Author: \(wallpaper.author ?? "Unknow")")
+                                .foregroundColor(.white)
+                                .mfont(16, .regular)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("Liscense: \(wallpaper.license ?? "Unknow")")
+                                .foregroundColor(.white)
+                                .mfont(16, .regular)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+                            .overlay(
+                                Button(action: {
+                                    ctrlViewModel.showInfo = false
+                                    
+                                }, label: {
+                                    Image(systemName: "xmark")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width : 14, height: 14)
+                                        .padding(12)
+                                    
+                                }), alignment: .topTrailing
+                            )
+                            .background(
+                                Color.mblack_bg
+                                    .opacity(0.9)
+                            )
+                            .cornerRadius(16)
+                            .padding()
+                    }
+                
+            }
+        
+        )
+        
+        .onAppear(perform: {
+            store.showBanner = false
+            if !store.isPro(){
+                inter.showAd {
+                }
+            }
+           
+        })
+        .onDisappear(perform: {
+            store.showBanner = true
+        })
+         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
+             TutorialContentView()
+         })
+    }
+    @ViewBuilder
+    func ControllView() -> some View{
+        VStack(spacing : 0){
+            HStack{
+                Button(action: {
+                    dismiss.callAsFunction()
+                }, label: {
+                    Image("back")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .foregroundColor(.white)
+                        .frame(width: 24, height: 24)
+                        .frame(width: 64, height: 44)
+                        .contentShape(Rectangle())
+                })
+               
+                
+                Spacer()
+
+                ZStack{
+                    if !store.isPro() {
+                        HStack(spacing : 0){
+                            Image("coin")
+                                .resizable()
+                                .frame(width: 13, height: 13)
+                            Text(" \( wallpaper.cost == 0 ? 0 : exclusiveCost )")
+                                .mfont(13, .regular)
+                                .foregroundColor(.white)
+
+                        }.frame(width: 38, height: 20)
+                            .background(
+                                Capsule()
+                                    .fill(Color.black.opacity(0.7))
+                            )
+                        
+                    }
+                }.frame(width: 38, height: 20)
+                
+                
+                Button(action: {
+                    ctrlViewModel.showInfo.toggle()
+                }, label: {
+                    Image( "info")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .contentShape(Rectangle())
+                }).padding(.horizontal, 16)
+                
+                Button(action: {
+                    ctrlViewModel.showTutorial.toggle()
+                }, label: {
+                    Image( "help")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .contentShape(Rectangle())
+                }).padding(.trailing, 20)
+              
+                
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 44 )
+           
+         
+           
+            
+
+            
+            Spacer()
+            
+            HStack{
+                Button(action: {
+                   
+                    if !favViewModel.isFavorite(id: wallpaper.id) {
+                      
+                        favViewModel.addFavoriteWLToCoreData(id: wallpaper.id ,
+                                                             preview_url: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""),
+                                                             url: wallpaper.variations.adapted.url.replacingOccurrences(of: "\"", with: ""),
+                                                             type:  "image",
+                                                             contentType: wallpaper.content_type,
+                                                             cost: wallpaper.cost ?? 0)
+                        ServerHelper.sendImageDataToServer(type: "favorite", id: wallpaper.id)
+                    }else{
+                        favViewModel.deleteFavWL(id: wallpaper.id)
+                    }
+                    
+                    
+                }, label: {
+                    Image( favViewModel.isFavorite(id: wallpaper.id) ? "heart.fill" : "heart")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .aspectRatio( contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .frame(width: 48, height: 48)
+                        .background(
+                            Circle()
+                                .fill(Color.mblack_bg.opacity(0.7))
+                                .frame(width: 48, height: 48)
+                        )
+                        .containerShape(Circle())
+                }) .frame(width: 48, height: 48)
+                  
+                
+                
+                Button(action: {
+                    getPhotoPermission(status: {
+                        b in
+                        if b{
+                            if store.isPro(){
+                                downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                                ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                                
+                            }else{
+                                Flurry_log("Download_wallpaper_Click_btn_save")
+                                if wallpaper.content_type == "free" {
+                                    DispatchQueue.main.async {
+                                        withAnimation{
+                                            ctrlViewModel.showDialogRV.toggle()
+                                        }
+                                    }
+                                   
+                                }else{
+                                    DispatchQueue.main.async {
+                                        withAnimation{
+                                            ctrlViewModel.showDialogBuyCoin.toggle()
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    })
+                    
+                 
+                 
+                    
+                   
+                
+                    
+                 
+                }, label: {
+                    HStack{
+                   
+                        
+                        Text("Save")
+                            .mfont(16, .bold)
+                            .foregroundColor(.mblack_fg)
+                            .overlay(
+                                ZStack{
+                                    if ctrlViewModel.isDownloading{
+                                        EZProgressView()
+                                    }
+                                }.offset(x : -36)
+                                , alignment: .leading
+                            )
+                    }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
+                    
+                        .contentShape(Capsule())
+                        .background(
+                            Capsule().fill(Color.main)
+                        )
+                }).padding(.horizontal, 16)
+                
+                
+                Button(action: {
+                    withAnimation{
+                        ctrlViewModel.showControll = false
+                        ctrlViewModel.showPreview = true
+                    }
+                }, label: {
+                    Image("preview")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .aspectRatio( contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .frame(width: 48, height: 48)
+                        .background(
+                            Circle()
+                                .fill(Color.mblack_bg.opacity(0.7))
+                                .frame(width: 48, height: 48)
+                        )
+                }) .frame(width: 48, height: 48)
+                    .containerShape(Circle())
+            }
+            .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
+            .frame(maxWidth: .infinity)
+            .frame(height: 56)
+            .padding(.bottom, 40)
+        }
+        .padding(.top, getSafeArea().top)
+        .padding(.bottom, getSafeArea().bottom)
+       
+    }
+    
+    @ViewBuilder
+    func Preview() -> some View{
+        TabView(selection: $ctrlViewModel.isHome){
+
+            Image("preview_lock")
+                .resizable()
+                .scaledToFill()
+               
+                .onTapGesture {
+                    withAnimation{
+                        ctrlViewModel.showPreview = false
+                        
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        withAnimation{
+                            ctrlViewModel.showControll = true
+                        }
+                    })
+                }.tag(true)
+            
+            
+            Image("preview_home")
+                .resizable()
+                .scaledToFill()
+                .onTapGesture {
+                    withAnimation{
+                        ctrlViewModel.showPreview = false
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        withAnimation{
+                            ctrlViewModel.showControll = true
+                        }
+                    })
+                }.tag(false)
+            
+        }
+        .tabViewStyle(.page(indexDisplayMode: .always))
+        .background{
+            Color.clear
+        }
+        .ignoresSafeArea()
+    }
+    
+    @ViewBuilder
+    func DialogGetWL(urlStr : String) -> some View{
+        WatchRVtoGetWLDialog( urlStr: urlStr, show: $ctrlViewModel.showDialogRV, onRewarded: {
+            rewardSuccess in
+            ctrlViewModel.showDialogRV = false
+            if rewardSuccess {
+                DispatchQueue.main.async{
+                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                }
+                
+            }else{
+                showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+            }
+        }, clickBuyPro: {
+            ctrlViewModel.showDialogRV.toggle()
+            ctrlViewModel.navigateView.toggle()
+        }).environmentObject(reward)
+            .environmentObject(store)
+    }
+    
+    @ViewBuilder
+    func DialogGetWLByCoin(urlStr : String) -> some View{
+        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
+            ctrlViewModel.showDialogBuyCoin.toggle()
+            if currentCoin >= exclusiveCost{
+                currentCoin = currentCoin - exclusiveCost
+                DispatchQueue.main.async{
+                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                    Flurry_log("Download_wallpaper_Download_by_coin")
+                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                }
+            }else{
+                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
+            }
+        }, onBuyPro: {
+            ctrlViewModel.showDialogBuyCoin.toggle()
+            ctrlViewModel.navigateView.toggle()
+        }).environmentObject(store)
+            .environmentObject(reward)
+    }
+    
+    
+    func downloadImageToGallery(title : String, urlStr : String){
+        DispatchQueue.main.async {
+            ctrlViewModel.isDownloading = true
+        }
+        
+        let defaultSession = URLSession(configuration: .default)
+        var dataTask: URLSessionDataTask? = nil
+        DispatchQueue.global(qos: .background).async {
+            let imgURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageDownloaded")
+            print("FILE_MANAGE \(imgURL)")
+            if let url = URL(string: urlStr) {
+                let filePath = imgURL.appendingPathComponent("\(title).jpg")
+                if FileManager.default.fileExists(atPath: filePath.path){
+                    DispatchQueue.main.async {
+                        ctrlViewModel.isDownloading = false
+                        showToastWithContent(image: "xmark", color: .red, mess: "File already exists!")
+                    }
+                 
+                    return
+                }
+                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
+                    DispatchQueue.main.async {
+                        do {
+                            try data?.write(to: filePath)
+                            PHPhotoLibrary.shared().performChanges({
+                                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: filePath)
+                            }) { completed, error in
+                                if completed {
+                                    DispatchQueue.main.async {
+                                        ctrlViewModel.isDownloading = false
+                                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                                        
+                                        if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
+                                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
+                                            ctrlViewModel.showTutorial = true
+                                        }
+                                        
+                                        let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
+                                        UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
+                                        if !store.isPro() && downloadCount == 1 {
+                                            ctrlViewModel.navigateView.toggle()
+                                        }
+                                        
+                                        
+                                    }
+                                  
+                                } else if let error = error {
+                                    DispatchQueue.main.async {
+                                        ctrlViewModel.isDownloading = false
+                                        showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
+                                    }
+                                   
+                                }
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                ctrlViewModel.isDownloading = false
+                                showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
+                            }
+                         
+                        }
+                    }
+                    dataTask = nil
+                })
+                dataTask?.resume()
+            }
+        }
+
+    }
+  
+   
+}
+
