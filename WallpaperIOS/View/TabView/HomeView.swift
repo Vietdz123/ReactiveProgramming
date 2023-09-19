@@ -25,17 +25,17 @@ struct HomeView: View {
     var body: some View {
         
         ZStack{
-//            NavigationLink(isActive: $categotyVM.navigateAtHome, destination: {
-//                CategoryPageView()
-//                    .environmentObject(categoryPageViewModel)
-//                    .environmentObject(reward)
-//                    .environmentObject(store)
-//                    .environmentObject(favViewModel)
-//                    .environmentObject(interAd)
+            NavigationLink(isActive: $tagViewModel.navigateAtHome, destination: {
+                TagView()
+                    .environmentObject(tagViewModel)
+                    .environmentObject(reward)
+                    .environmentObject(store)
+                    .environmentObject(favViewModel)
+                    .environmentObject(interAd)
                 
-//            }, label: {
-//                EmptyView()
-//            })
+            }, label: {
+                EmptyView()
+            })
             
             
             if !viewModel.wallpapers.isEmpty{
@@ -346,7 +346,8 @@ struct HomeView: View {
    
     func TagViewBuilder(tag : Tag) -> some View{
         Button(action: {
-            
+            tagViewModel.tag = tag.title
+            tagViewModel.navigateAtHome.toggle()
           
             
         }, label: {

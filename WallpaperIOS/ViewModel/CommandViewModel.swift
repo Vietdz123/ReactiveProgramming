@@ -151,14 +151,26 @@ class ExclusiveViewModel : CommandViewModel {
 }
 
 
+enum TagTab : String, CaseIterable {
+    case NEW  = "Newest"
+    case TOP = "Top"
+}
+
 class TagViewModel : CommandViewModel {
     @Published var tag : String = ""
+    @Published var navigateAtHome : Bool = false
+  
+    override init() {
+        super.init()
+        print("TagViewModel init \(tag)")
+    }
     
     override func getWallpapers() {
+        print("TagViewModel getWallpapers")
         guard let url  = URL(string: "\(domain)api/v1/data?query=\(tag)&offset=\(currentOffset)&limit=\(AppConfig.limit)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
             return
         }
-        
+        print("TagViewModel url \(url.absoluteString)")
         URLSession.shared.dataTask(with: url){
             data, _ ,err  in
             guard let data = data, err == nil else {
@@ -176,6 +188,10 @@ class TagViewModel : CommandViewModel {
             
         }.resume()
     }
+    
+    
+ 
+    
 }
 
 class CategoryPageViewModel : CommandViewModel {

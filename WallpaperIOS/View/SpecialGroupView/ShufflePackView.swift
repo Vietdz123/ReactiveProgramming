@@ -16,6 +16,10 @@ struct ShufflePackView: View {
     @EnvironmentObject var store : MyStore
  
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    
+    @State var adStatus : AdStatus = .loading
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -146,7 +150,19 @@ struct ShufflePackView: View {
             
             
             
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .overlay(
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        
+                }
+            }
+            
+            , alignment: .bottom
+        )
+        .edgesIgnoringSafeArea(.bottom)
             .addBackground()
     }
 }

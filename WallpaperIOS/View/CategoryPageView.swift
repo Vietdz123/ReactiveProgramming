@@ -17,6 +17,8 @@ struct CategoryPageView: View {
     @EnvironmentObject var favViewModel : FavoriteViewModel
     @EnvironmentObject var interAd : InterstitialAdLoader
     
+    @State var adStatus : AdStatus = .loading
+    
     @Namespace var anim
     var body: some View {
         VStack(spacing : 0){
@@ -121,7 +123,22 @@ struct CategoryPageView: View {
                 
             })
             
+           
+            
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .overlay(
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        
+                }
+            }
+            
+            , alignment: .bottom
+        )
+        .edgesIgnoringSafeArea(.bottom)
+      
         .addBackground()
     }
 }

@@ -27,6 +27,8 @@ struct SearchView: View {
     
     let width : CGFloat = ( UIScreen.main.bounds.width - 32 ) / 3
     
+    @State var adStatus : AdStatus =  .loading
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -212,8 +214,19 @@ struct SearchView: View {
                 EmptyView()
             })
             
+            
+            
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .overlay(
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                }
+            }, alignment: .bottom
+        )
+        .edgesIgnoringSafeArea(.bottom)
         .addBackground()
         .onDisappear(perform: {
             dismissKeyboard()
