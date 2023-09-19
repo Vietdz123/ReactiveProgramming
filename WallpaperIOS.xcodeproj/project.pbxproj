@@ -78,8 +78,6 @@
 		049EFA552A89CEE70050369D /* preview_shuffle.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 049EFA542A89CEE70050369D /* preview_shuffle.mp4 */; };
 		04A1D54C2A1DAA0400853047 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1D54B2A1DAA0400853047 /* SplashScreenView.swift */; };
 		04A627472A132E9600F50E5E /* CompositionalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A627462A132E9600F50E5E /* CompositionalView.swift */; };
-		04A90CA82AAEAD01007ED3E2 /* CrashReporter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B152862A2D9BDC000185FB /* CrashReporter.xcframework */; };
-		04A90CAB2AAEAD05007ED3E2 /* Flurry_iOS_SDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B152822A2D9BD5000185FB /* Flurry_iOS_SDK.xcframework */; };
 		04A90CAE2AAEAD58007ED3E2 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A90CAD2AAEAD58007ED3E2 /* SplashView.swift */; };
 		04AE16152A79F66E008FA3A8 /* BannerAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AE16142A79F66E008FA3A8 /* BannerAd.swift */; };
 		04AF70232A85D169002338AC /* bg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 04AF701F2A85D169002338AC /* bg.mp4 */; };
@@ -118,7 +116,7 @@
 		04DFA2292A83426200649B94 /* SpWLDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DFA2282A83426200649B94 /* SpWLDetailView.swift */; };
 		181C68462A376EFE00638CA7 /* placeholder_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 181C68452A376EFE00638CA7 /* placeholder_anim.json */; };
 		181C68482A37730100638CA7 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181C68472A37730100638CA7 /* DateHelper.swift */; };
-		CEDA666E6CCFB5814973BBE1 /* libPods-WallpaperIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C23027C6BB6DE9D42142CE73 /* libPods-WallpaperIOS.a */; };
+		899D6EE42AB9A89C003C3B4A /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899D6EE32AB9A89C003C3B4A /* TagModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -230,9 +228,7 @@
 		04DFA2282A83426200649B94 /* SpWLDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpWLDetailView.swift; sourceTree = "<group>"; };
 		181C68452A376EFE00638CA7 /* placeholder_anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = placeholder_anim.json; sourceTree = "<group>"; };
 		181C68472A37730100638CA7 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
-		36DC29BB2FEA649BD2ABF2CE /* Pods-WallpaperIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WallpaperIOS.debug.xcconfig"; path = "Target Support Files/Pods-WallpaperIOS/Pods-WallpaperIOS.debug.xcconfig"; sourceTree = "<group>"; };
-		C23027C6BB6DE9D42142CE73 /* libPods-WallpaperIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WallpaperIOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ECD8B641E95E056995612F03 /* Pods-WallpaperIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WallpaperIOS.release.xcconfig"; path = "Target Support Files/Pods-WallpaperIOS/Pods-WallpaperIOS.release.xcconfig"; sourceTree = "<group>"; };
+		899D6EE32AB9A89C003C3B4A /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,11 +242,8 @@
 				0491B5572A1F0C260002EB08 /* GoogleMobileAds in Frameworks */,
 				049D99202A14BD3C009DAA07 /* Lottie in Frameworks */,
 				04B152812A2D93B7000185FB /* FirebaseRemoteConfigSwift in Frameworks */,
-				04A90CA82AAEAD01007ED3E2 /* CrashReporter.xcframework in Frameworks */,
 				04924C222A6682960088D51D /* SDWebImageSwiftUI in Frameworks */,
 				0490BF522A283C0C009DF873 /* NavigationTransitions in Frameworks */,
-				04A90CAB2AAEAD05007ED3E2 /* Flurry_iOS_SDK.xcframework in Frameworks */,
-				CEDA666E6CCFB5814973BBE1 /* libPods-WallpaperIOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +377,7 @@
 				0495231C29F7C712004538DD /* Enum.swift */,
 				04B3BFB629FB627D0080952B /* Item.swift */,
 				04BCFA462A81F533000B7547 /* SpecialObject.swift */,
+				899D6EE32AB9A89C003C3B4A /* TagModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -560,7 +554,6 @@
 				04B152862A2D9BDC000185FB /* CrashReporter.xcframework */,
 				04B152822A2D9BD5000185FB /* Flurry_iOS_SDK.xcframework */,
 				04B605942A272534006ED140 /* StoreKit.framework */,
-				C23027C6BB6DE9D42142CE73 /* libPods-WallpaperIOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -568,8 +561,6 @@
 		36CE9F6DEF15ED4F87B0BE06 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				36DC29BB2FEA649BD2ABF2CE /* Pods-WallpaperIOS.debug.xcconfig */,
-				ECD8B641E95E056995612F03 /* Pods-WallpaperIOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -581,7 +572,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0495231829F7C6CD004538DD /* Build configuration list for PBXNativeTarget "WallpaperIOS" */;
 			buildPhases = (
-				FE7B9BB8F5A3E13FBF148895 /* [CP] Check Pods Manifest.lock */,
 				0495230129F7C6CB004538DD /* Sources */,
 				0495230229F7C6CB004538DD /* Frameworks */,
 				0495230329F7C6CB004538DD /* Resources */,
@@ -676,31 +666,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		FE7B9BB8F5A3E13FBF148895 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WallpaperIOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		0495230129F7C6CB004538DD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -728,6 +693,7 @@
 				04A1D54C2A1DAA0400853047 /* SplashScreenView.swift in Sources */,
 				04C436EF2A95F46C00DDA76C /* PermissionHelper.swift in Sources */,
 				049187E429F8D6FC00917B30 /* AnimationEndCallback.swift in Sources */,
+				899D6EE42AB9A89C003C3B4A /* TagModel.swift in Sources */,
 				04DFA2292A83426200649B94 /* SpWLDetailView.swift in Sources */,
 				049BD56F2A37011D00AB2D22 /* WatchRVGetCoindAndBuySubDialog.swift in Sources */,
 				040FC55A2A78BD3000CD1DE1 /* ShufflePackView.swift in Sources */,
@@ -841,7 +807,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -895,7 +861,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -907,7 +873,6 @@
 		};
 		0495231929F7C6CD004538DD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36DC29BB2FEA649BD2ABF2CE /* Pods-WallpaperIOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -948,7 +913,6 @@
 		};
 		0495231A29F7C6CD004538DD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECD8B641E95E056995612F03 /* Pods-WallpaperIOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

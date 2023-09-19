@@ -104,7 +104,7 @@ struct BuyCoinView: View {
                         }
                     })
                     
-                    Flurry_log("Watch_RV_get_coin")
+               
                 }, label: {
                     Text("Watch")
                         .mfont(17, .bold)
@@ -136,7 +136,7 @@ struct BuyCoinView: View {
             if let pack1 = store.coin_product_1 {
                 Button(action: {
                     
-                    Flurry_log("Sub_click_buy_coin_pack_1")
+               
                     Firebase_log("Sub_click_buy_coin_pack_1")
                    
                         store.purchase(product: pack1, onBuySuccess: { b in
@@ -201,7 +201,7 @@ struct BuyCoinView: View {
             if let pack2 = store.coin_product_2 {
                 
                 Button(action: {
-                    Flurry_log("Sub_click_buy_coin_pack_2")
+                 
                     Firebase_log("Sub_click_buy_coin_pack_2")
                    
                         store.purchase(product: pack2, onBuySuccess: { b in
@@ -266,7 +266,7 @@ struct BuyCoinView: View {
             
             if let pack3 = store.coin_product_3 {
                 Button(action: {
-                    Flurry_log("Sub_click_buy_coin_pack_3")
+               
                     Firebase_log("Sub_click_buy_coin_pack_3")
                  
                         store.purchase(product: pack3, onBuySuccess: { b in
@@ -373,7 +373,7 @@ struct BuyCoinView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .addBackground()
             .onAppear(perform: {
-                Flurry_log("Buy_coin_view_show_total")
+             
                 Firebase_log("Buy_coin_view_show_total")
                 
                 

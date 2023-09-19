@@ -25,7 +25,7 @@ struct BuyWithCoinDialog: View {
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    Flurry_log("Download_wallpaper_Click_close")
+             
                     withAnimation{
                         show.toggle()
                     }
@@ -140,7 +140,7 @@ struct BuyWithCoinDialog: View {
                     
                     
                     Button(action: {
-                        Flurry_log("Download_wallpaper_Cick_buy_sub")
+                      
                         onBuyPro()
                     }, label: {
                         HStack{
@@ -187,7 +187,7 @@ struct BuyWithCoinDialog: View {
             )
             .overlay(
                 Button(action: {
-                    Flurry_log("Download_wallpaper_Click_close")
+                
                     withAnimation{
                         show.toggle()
                     }

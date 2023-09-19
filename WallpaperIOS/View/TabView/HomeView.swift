@@ -399,21 +399,42 @@ struct HomeView: View {
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 ZStack{
-                    WebImage(url: URL(string: tag.preview_small_url ?? ""))
-                             
-                                 .onSuccess { image, data, cacheType in
-                               
-                                 }
-                                 .resizable()
-                                 .placeholder {
-                                     placeHolderImage()
-                                         .frame( width: 80,height: 160)
-                                 }
-                                 .indicator(.activity) // Activity Indicator
-                                 .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                 .scaledToFill()
-                                 .frame( width: 80,height: 160)
-                                 .cornerRadius(4)
+                    HStack{
+                        WebImage(url: URL(string: tag.images[0].previewSmallURL ?? ""))
+                                 
+                                     .onSuccess { image, data, cacheType in
+                                   
+                                     }
+                                     .resizable()
+                                     .placeholder {
+                                         placeHolderImage()
+                                             .frame( width: 80,height: 160)
+                                     }
+                                     .indicator(.activity) // Activity Indicator
+                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                     .scaledToFill()
+                                     .frame( width: 80,height: 160)
+                                     .cornerRadius(4)
+                        
+                        WebImage(url: URL(string: tag.images[1].previewSmallURL ?? ""))
+                                 
+                                     .onSuccess { image, data, cacheType in
+                                   
+                                     }
+                                     .resizable()
+                                     .placeholder {
+                                         placeHolderImage()
+                                             .frame( width: 80,height: 160)
+                                     }
+                                     .indicator(.activity) // Activity Indicator
+                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                     .scaledToFill()
+                                     .frame( width: 80,height: 160)
+                                     .cornerRadius(4)
+                        
+                    }
+                    
+                  
 
                 }.frame(maxWidth: .infinity)
                    

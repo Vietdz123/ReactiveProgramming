@@ -71,16 +71,16 @@ struct WallpaperOnePageDetails: View {
             }
             
             if ctrlViewModel.showDialogRV{
-                if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                   DialogGetWL(urlStr: urlStr)
-                }
+              //  if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                   DialogGetWL(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+             //   }
                 
             }
             
             if ctrlViewModel.showDialogBuyCoin{
-                if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                  DialogGetWLByCoin(urlStr: urlStr)
-                }
+                //if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                  DialogGetWLByCoin(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+                //}
                
             }
            
@@ -264,7 +264,7 @@ struct WallpaperOnePageDetails: View {
                                 ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
                                 
                             }else{
-                                Flurry_log("Download_wallpaper_Click_btn_save")
+                           
                                 if wallpaper.content_type == "free" {
                                     DispatchQueue.main.async {
                                         withAnimation{
@@ -419,7 +419,7 @@ struct WallpaperOnePageDetails: View {
                 currentCoin = currentCoin - exclusiveCost
                 DispatchQueue.main.async{
                     downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-                    Flurry_log("Download_wallpaper_Download_by_coin")
+                 
                     ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
                 }
             }else{

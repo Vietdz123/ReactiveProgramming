@@ -35,7 +35,7 @@ class MyStore: ObservableObject {
 
     @Published var showBanner : Bool = true
 
-    @Published var purchasedIds: [String] = []
+    @Published var purchasedIds: [String] = [""]
 
     @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1,
                                                   IDProduct.MONTH_1 , IDProduct.MONTH,
@@ -276,15 +276,6 @@ class MyStore: ObservableObject {
         }
     }
 
-    func Flurry_log(_ event : String) {
-        if isDebug{
-            print("Flurry log event: \(event)")
-        }
-//        else{
-//            Flurry.log(eventName: event)
-//        }
-
-    }
 
     func Firebase_log( _ event : String) {
         if isDebug {
@@ -309,36 +300,30 @@ class MyStore: ObservableObject {
                             switch trans.productID {
                             case IDProduct.WEEK_2:
                                 self.purchasedIds.append(trans.productID)
-                                self.Flurry_log("Sub_buy_successful_1_weekly(2)")
                                 self.Firebase_log("Sub_buy_successful_1_weekly(2)")
                                 onBuySuccess(true)
                             case IDProduct.WEEK_1:
                                 self.purchasedIds.append(trans.productID)
-                                self.Flurry_log("Sub_buy_successful_1_weekly(1)")
                                 self.Firebase_log("Sub_buy_successful_1_weekly(1)")
                                 onBuySuccess(true)
                             case IDProduct.MONTH_1:
                                 self.purchasedIds.append(trans.productID)
-                                self.Flurry_log("Sub_buy_successful_1_monthly(1)")
                                 self.Firebase_log("Sub_buy_successful_1_monthly(1)")
                                 onBuySuccess(true)
                             
                             case IDProduct.COIN_1:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_1_coin"), forKey: "current_coin")
-                                self.Flurry_log("Sub_buy_successful_coin_pack_1")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_1")
                                 onBuySuccess(true)
                             case IDProduct.COIN_2:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_2_coin"), forKey: "current_coin")
-                                self.Flurry_log("Sub_buy_successful_coin_pack_2")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_2")
                                 onBuySuccess(true)
                             case IDProduct.COIN_3:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_3_coin"), forKey: "current_coin")
-                                self.Flurry_log("Sub_buy_successful_coin_pack_3")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_3")
                                 onBuySuccess(true)
 
@@ -352,28 +337,23 @@ class MyStore: ObservableObject {
                         }
 
                     case .unverified(_, _):
-                        self.Flurry_log("Sub_buy_failure_unverified")
                         self.Firebase_log("Sub_buy_failure_unverified")
                         onBuySuccess(false)
                     }
                 case .userCancelled:
-                    self.Flurry_log("Sub_buy_failure_userCancelled")
                     self.Firebase_log("Sub_buy_failure_userCancelled")
                     onBuySuccess(false)
                     break
                 case .pending:
-                    self.Flurry_log("Sub_buy_failure_pending")
                     self.Firebase_log("Sub_buy_failure_pending")
                     onBuySuccess(false)
                     break
                 @unknown default:
-                    self.Flurry_log("Sub_buy_failure_unknow")
                     self.Firebase_log("Sub_buy_failure_unknow")
                     onBuySuccess(false)
                     break
                 }
             } catch {
-                self.Flurry_log("Sub_buy_failure_\(error.localizedDescription)")
                 self.Firebase_log("Sub_buy_failure_\(error.localizedDescription)")
                 onBuySuccess(false)
             }

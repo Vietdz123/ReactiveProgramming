@@ -23,7 +23,7 @@ struct WatchRVtoGetWLDialog: View {
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    Flurry_log("Download_wallpaper_Click_close")
+                   
                     withAnimation{
                        
                         show.toggle()
@@ -50,7 +50,7 @@ struct WatchRVtoGetWLDialog: View {
                     Button(action: {
                         
                         reward.presentRewardedVideo(onCommit: onRewarded)
-                        Flurry_log("Download_wallpaper_Download_by_watch_rv")
+                       
                     }, label: {
                         HStack{
                             VStack(spacing : 0){
@@ -96,7 +96,7 @@ struct WatchRVtoGetWLDialog: View {
                     
                     
                     Button(action: {
-                        Flurry_log("Download_wallpaper_Cick_buy_sub")
+                        
                         clickBuyPro()
                     }, label: {
                         HStack{
@@ -140,7 +140,7 @@ struct WatchRVtoGetWLDialog: View {
             )
             .overlay(
                 Button(action: {
-                    Flurry_log("Download_wallpaper_Click_close")
+                    
                     withAnimation{
                         show.toggle()
                     }

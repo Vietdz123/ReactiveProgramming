@@ -82,8 +82,6 @@ struct SlideMenuView: View {
                                         
                                     }.frame(maxWidth: .infinity, alignment: .leading)
                                         .frame(height: 56)
-                                }).simultaneousGesture(TapGesture().onEnded{
-                                    Flurry_log("Sub_click_in_menu")
                                 })
                                 
                                 NavigationLink(destination: {
@@ -109,8 +107,6 @@ struct SlideMenuView: View {
                                         
                                     }.frame(maxWidth: .infinity, alignment: .leading)
                                         .frame(height: 56)
-                                }).simultaneousGesture(TapGesture().onEnded{
-                                    Flurry_log("Sub_click_in_menu")
                                 })
                                 
                             }

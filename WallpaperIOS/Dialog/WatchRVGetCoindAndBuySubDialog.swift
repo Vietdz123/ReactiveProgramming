@@ -58,7 +58,7 @@ struct WatchRVGetCoindAndBuySubDialog: View {
                                 showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
                             }
                         })
-                        Flurry_log("Watch_RV_get_coin")
+                       
                     }, label: {
                         HStack{
                            ZStack{
@@ -117,7 +117,7 @@ struct WatchRVGetCoindAndBuySubDialog: View {
                     
                     
                     Button(action: {
-                        Flurry_log("Sub_click_in_dialog_get_coin")
+                       
                         clickBuyPro()
                     }, label: {
                         HStack{

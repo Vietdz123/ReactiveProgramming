@@ -17,25 +17,25 @@ class SearchViewModel: ObservableObject {
     @Published var domain : String
     init(){
         domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
-        getAllTags()
+    //    getAllTags()
     }
     
-    func getAllTags(){
-        guard let url  = URL(string: "\(domain)api/v1/popular-tags") else {
-            return
-        }
-        URLSession.shared.dataTask(with: url){
-            data, _ ,err  in
-            guard let data = data, err == nil else {
-                return
-            }
-            let tagsCollection = try? JSONDecoder().decode(TagCollection.self, from: data)
-            DispatchQueue.main.async {
-                self.tags.append(contentsOf: tagsCollection?.items ?? [])
-                self.tagsShow = self.tags
-            }
-        }.resume()
-    }
+//    func getAllTags(){
+//        guard let url  = URL(string: "\(domain)api/v1/popular-tags") else {
+//            return
+//        }
+//        URLSession.shared.dataTask(with: url){
+//            data, _ ,err  in
+//            guard let data = data, err == nil else {
+//                return
+//            }
+//            let tagsCollection = try? JSONDecoder().decode(TagCollection.self, from: data)
+//            DispatchQueue.main.async {
+//                self.tags.append(contentsOf: tagsCollection?.items ?? [])
+//                self.tagsShow = self.tags
+//            }
+//        }.resume()
+//    }
     
     
     func searchTag(text : String) {

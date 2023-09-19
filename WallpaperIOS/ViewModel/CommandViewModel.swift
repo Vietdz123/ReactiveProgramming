@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Flurry_iOS_SDK
+
 
 class CommandViewModel: ObservableObject {
     @Published var maxCount : Int = 0
@@ -91,9 +91,11 @@ class HomeViewModel : CommandViewModel {
     }
     
     func getAllTags(){
-        guard let url  = URL(string: "\(domain)api/v1/popular-tags") else {
-            return
-        }
+        
+
+                guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc") else {
+                    return
+                }
         
      
         
@@ -102,9 +104,9 @@ class HomeViewModel : CommandViewModel {
             guard let data = data, err == nil else {
                 return
             }
-            let tagsCollection = try? JSONDecoder().decode(TagCollection.self, from: data)
+            let tagsCollection = try? JSONDecoder().decode(TagModel.self, from: data)
             DispatchQueue.main.async {
-                self.tags.append(contentsOf: tagsCollection?.items ?? [])
+                self.tags.append(contentsOf: tagsCollection?.items.data ?? [])
               
             }
         }.resume()
@@ -255,7 +257,7 @@ class FindViewModel : CommandViewModel {
                     self.currentOffset = self.wallpapers.count
                     self.maxCount = ( itemsCurrentLoad?.count  ?? 115 ) - 15
                     
-                    Flurry.log(eventName: "Wallpaper Search Track", parameters: ["search_has_result": self.query])
+                 
                     
                 }
     

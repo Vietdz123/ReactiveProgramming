@@ -323,7 +323,7 @@ struct FavWallpaperDetailView: View {
                         ServerHelper.sendImageDataToServer(type: "set", id: Int(wallpaper.wl_id))
                     }else{
                         
-                        Flurry_log("Download_wallpaper_Click_btn_save")
+                  
                         
                         if wallpaper.content_type == "free" {
                             withAnimation{
@@ -456,7 +456,7 @@ struct FavWallpaperDetailView: View {
                 currentCoin = currentCoin - Int(( wallpaper.cost  ))
                 DispatchQueue.main.async{
                     downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: wallpaper.url ?? "")
-                    Flurry_log("Download_wallpaper_Download_by_coin")
+              
                     ServerHelper.sendImageDataToServer(type: "set", id: Int(wallpaper.wl_id))
                 }
             }else{

@@ -120,32 +120,7 @@ struct SearchView: View {
                                     .environmentObject(favViewModel)
                                     .environmentObject(interAd)
                             }, label: {
-//                                AsyncImage(url: URL(string: string)){
-//                                    phase in
-//                                    if let image = phase.image {
-//                                        image
-//                                            .resizable()
-//                                            .scaledToFill()
-//                                            .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-//                                            .clipped()
-//                                    } else if phase.error != nil {
-//                                        AsyncImage(url: URL(string: string)){
-//                                            phase in
-//                                            if let image = phase.image {
-//                                                image
-//                                                    .resizable()
-//                                                    .scaledToFill()
-//                                                    .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-//                                                    .clipped()
-//                                            }
-//                                        }
-//                                    } else {
-//                                        placeHolderImage()
-//                                    }
-//
-//
-//                                }
-//                                .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
+
                                 WebImage(url: URL(string: string))
                                 
                                    .onSuccess { image, data, cacheType in
@@ -239,41 +214,43 @@ struct SearchView: View {
     
     @ViewBuilder
     func CategoryPreview(tag : Tag) -> some View {
+        Text("Tag")
         
-        let urlStr = tag.preview_small_url == nil ? "" : tag.preview_small_url!.replacingOccurrences(of: "\"", with: "")
-        
-
-        WebImage(url: URL(string: urlStr))
-        
-           .onSuccess { image, data, cacheType in
-               // Success
-               // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-           }
-           .resizable()
-           .placeholder {
-               placeHolderImage()
-                   .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-           }
-           .indicator(.activity) // Activity Indicator
-           .transition(.fade(duration: 0.5)) // Fade Transition with duration
-           .scaledToFill()
-        .frame(width:width , height: width * 2)
-        .cornerRadius(2)
-     
-        .overlay(
-            Text(tag.title)
-                .mfont(16, .italic)
-                .foregroundColor(.white)
-                .shadow(color: .black, radius: 1)
-        )
-        .onTapGesture {
-            tagViewModel.tag = tag.title
-            viewmodel.navigateToTag.toggle()
-            
-            
-            
-        }
-        
+//
+//        let urlStr = tag.preview_small_url == nil ? "" : tag.preview_small_url!.replacingOccurrences(of: "\"", with: "")
+//        
+//
+//        WebImage(url: URL(string: urlStr))
+//        
+//           .onSuccess { image, data, cacheType in
+//               // Success
+//               // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
+//           }
+//           .resizable()
+//           .placeholder {
+//               placeHolderImage()
+//                   .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
+//           }
+//           .indicator(.activity) // Activity Indicator
+//           .transition(.fade(duration: 0.5)) // Fade Transition with duration
+//           .scaledToFill()
+//        .frame(width:width , height: width * 2)
+//        .cornerRadius(2)
+//     
+//        .overlay(
+//            Text(tag.title)
+//                .mfont(16, .italic)
+//                .foregroundColor(.white)
+//                .shadow(color: .black, radius: 1)
+//        )
+//        .onTapGesture {
+//            tagViewModel.tag = tag.title
+//            viewmodel.navigateToTag.toggle()
+//            
+//            
+//            
+//        }
+//        
     }
     
 }

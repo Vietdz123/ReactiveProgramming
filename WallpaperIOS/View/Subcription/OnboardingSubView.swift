@@ -131,14 +131,14 @@ struct OnboardingSubView: View {
                             UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                             if let weekPro = store.weekProductNotSale {
                                 store.isPurchasing = true
-                                Flurry_log("Click_buy_in_onboarding")
+                              
                                 Firebase_log("Click_buy_in_onboarding")
                                 store.purchase(product: weekPro, onBuySuccess: { b in
                                     if b {
 
                                         DispatchQueue.main.async{
                                             store.isPurchasing = false
-                                            Flurry_log("Click_buy_in_onboarding_successful")
+                                         
                                             Firebase_log("Click_buy_in_onboarding_successful")
                                             
                                             showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")

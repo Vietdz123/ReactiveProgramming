@@ -7,7 +7,7 @@
 
 import SwiftUI
 import AVKit
-import Flurry_iOS_SDK
+
 import FirebaseAnalytics
 
 enum BuyType {
@@ -222,11 +222,11 @@ struct SubcriptionVIew: View {
                     Button(action: {
                         if store.purchasedIds.isEmpty{
                             store.isPurchasing = true
-                            Flurry_log("Sub_click_buy_sub_total")
+                          
                             Firebase_log("Sub_click_buy_sub_total")
 
                             if buyType == .MONTHLY && store.monthProduct != nil {
-                                Flurry_log("Sub_click_buy_1_month")
+                            
                                 Firebase_log("Sub_click_buy_1_month")
                                 store.purchase(product: store.monthProduct!, onBuySuccess: { b in
                                     if b {
@@ -247,7 +247,7 @@ struct SubcriptionVIew: View {
 
 
                             }else if buyType == .WEEKLY && store.weekProduct != nil{
-                                Flurry_log("Sub_click_buy_weekly")
+                             
                                 Firebase_log("Sub_click_buy_weekly")
                                 store.purchase(product: store.weekProduct!, onBuySuccess: { b in
                                     if b {
@@ -379,7 +379,6 @@ struct SubcriptionVIew: View {
             if  self.player != nil {
                 self.player!.play()
             }
-            Flurry_log("Sub_view_show_total")
             Firebase_log("Sub_view_show_total")
             
            

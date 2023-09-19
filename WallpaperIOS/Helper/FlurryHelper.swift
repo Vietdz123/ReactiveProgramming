@@ -15,13 +15,8 @@ import FirebaseAnalytics
 #endif
 
 extension View{
-    func Flurry_log(_ event : String) {
-        if isDebug {
-            print("Flurry log event: \(event) ")
-        }
-    }
-    
-   
+
+
     
     func Firebase_log( _ event : String) {
         if isDebug {

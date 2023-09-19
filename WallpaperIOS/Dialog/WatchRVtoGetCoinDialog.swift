@@ -48,7 +48,7 @@ struct WatchRVtoGetCoinDialog: View {
                             }
                         })
                         
-                        Flurry_log("Watch_RV_get_coin")
+                    
                         
                     }, label: {
                         VStack{

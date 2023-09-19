@@ -113,12 +113,12 @@ struct VideoListView: View {
                                 Spacer()
                            
                                 if !store.isPro() {
-                                    if let liveWL = viewModel.liveWallpapers[currentIndex] {
+                                //    if let liveWL = viewModel.liveWallpapers[currentIndex] {
                                         HStack(spacing : 0){
                                             Image("coin")
                                                 .resizable()
                                                 .frame(width: 13, height: 13)
-                                            Text(" \(liveWL.cost ?? 0)")
+                                            Text(" \(viewModel.liveWallpapers[currentIndex].cost ?? 0)")
                                                 .coinfont(13, .regular)
                                                 .foregroundColor(.white)
                                             
@@ -132,7 +132,7 @@ struct VideoListView: View {
                                                     .fill(Color.black.opacity(0.7))
                                             )
                                             .padding(.trailing, 16)
-                                    }
+                                  //  }
                                 }
                              
                             }.frame(maxWidth: .infinity)
@@ -181,8 +181,7 @@ struct VideoListView: View {
                                       
                                         
                                     }else{
-                                        Flurry_log("Download_live_wallpaper_Click_btn_save")
-                                       
+                                     
                                             withAnimation{
                                                 ctrlViewModel.showDialogDownload.toggle()
                                             }
@@ -336,18 +335,18 @@ struct VideoListView: View {
             })
             .overlay{
                 if ctrlViewModel.showDialogDownload{
-                    if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                        BuyWithCoinDialog(urlStr: liveWL.image_variations.preview_small.url, coin: liveWL.cost ?? 0,
+                //    if let liveWL = viewModel.liveWallpapers[currentIndex] {
+                        BuyWithCoinDialog(urlStr: viewModel.liveWallpapers[currentIndex].image_variations.preview_small.url, coin: viewModel.liveWallpapers[currentIndex].cost ?? 0,
                                           show: $ctrlViewModel.showDialogDownload,
                                           onBuyWithCoin: {
                             ctrlViewModel.showDialogDownload.toggle()
-                            if currentCoin >= ( liveWL.cost ?? 0  ){
-                                currentCoin = currentCoin - ( liveWL.cost ?? 0  )
+                            if currentCoin >= ( viewModel.liveWallpapers[currentIndex].cost ?? 0  ){
+                                currentCoin = currentCoin - ( viewModel.liveWallpapers[currentIndex].cost ?? 0  )
                               
                                 downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                                         urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                         urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                                Flurry_log("Download_live_wallpaper_Download_by_coin")
+                             
                                 ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
                                 
                             }else{
@@ -358,7 +357,7 @@ struct VideoListView: View {
                             ctrlViewModel.navigateView.toggle()
                         }).environmentObject(store)
                             .environmentObject(reward)
-                    }
+                 //   }
                     
                 }
                 

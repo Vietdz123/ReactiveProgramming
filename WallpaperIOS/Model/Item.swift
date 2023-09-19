@@ -8,15 +8,6 @@
 import SwiftUI
 
 
-struct TagCollection: Codable {
-    let count: Int
-    let items: [Tag]
-}
-
-struct Tag: Codable {
-    let title: String
-    let preview_small_url: String?
-}
 
 
 struct CategoryWithData : Codable {

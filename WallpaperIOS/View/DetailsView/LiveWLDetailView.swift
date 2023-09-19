@@ -99,18 +99,18 @@ struct LiveWLView: View {
                                 Spacer()
                                 
                                 if !store.isPro(){
-                                    if let liveWL = viewModel.liveWallpapers[currentIndex] {
+                                 //   if let liveWL = viewModel.liveWallpapers[currentIndex] {
                                         HStack(spacing : 0){
                                             Image("coin")
                                                 .resizable()
                                                 .frame(width: 13, height: 13)
                                             
                                             if #available(iOS 16, *){
-                                                Text(remoteCf_live_using_coin ? " \(liveWL.cost ?? 0)" :   " 0")
+                                                Text(remoteCf_live_using_coin ? " \(viewModel.liveWallpapers[currentIndex].cost ?? 0)" :   " 0")
                                                     .mfont(13, .regular)
                                                     .foregroundColor(.white)
                                             }else{
-                                                Text(" \(liveWL.cost ?? 0)")
+                                                Text(" \(viewModel.liveWallpapers[currentIndex].cost ?? 0)")
                                                     .mfont(13, .regular)
                                                     .foregroundColor(.white)
                                             }
@@ -127,7 +127,7 @@ struct LiveWLView: View {
                                                     .fill(Color.black.opacity(0.7))
                                             )
                                           
-                                    }
+                                 //   }
                                 }
                                 
                                 
@@ -205,7 +205,7 @@ struct LiveWLView: View {
                                             
                                                 
                                             }else{
-                                                Flurry_log("Download_live_wallpaper_Click_btn_save")
+                                               
                                                 DispatchQueue.main.async {
                                                     withAnimation{
                                                         ctrlViewModel.showDialogDownload.toggle()
@@ -363,21 +363,21 @@ struct LiveWLView: View {
         .overlay(
             ZStack(alignment: .bottom){
                 if ctrlViewModel.showInfo {
-                    if let wallpaper = viewModel.liveWallpapers[currentIndex] {
+                 //   if let wallpaper = viewModel.liveWallpapers[currentIndex] {
                         Color.black.opacity(0.5).ignoresSafeArea()
                             .onTapGesture {
                                 ctrlViewModel.showInfo = false
                             }
                         
                         VStack(spacing : 8){
-                            Text("Tag: \(getTag(wl:wallpaper))")
+                            Text("Tag: \(getTag(wl:viewModel.liveWallpapers[currentIndex]))")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("Author: \(wallpaper.author ?? "Unknow")")
+                            Text("Author: \(viewModel.liveWallpapers[currentIndex].author ?? "Unknow")")
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("Liscense: \(wallpaper.license ?? "Unknow")")
+                            Text("Liscense: \(viewModel.liveWallpapers[currentIndex].license ?? "Unknow")")
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -402,7 +402,7 @@ struct LiveWLView: View {
                             )
                             .cornerRadius(16)
                             .padding()
-                    }
+                  //  }
                 }
             }
         
@@ -419,10 +419,10 @@ struct LiveWLView: View {
             })
             .overlay{
                 if ctrlViewModel.showDialogDownload{
-                    if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                      Dialog(liveWL: liveWL)
+               //     if let liveWL = viewModel.liveWallpapers[currentIndex] {
+                      Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
 
-                    }
+                 //   }
                     
                 }
                 

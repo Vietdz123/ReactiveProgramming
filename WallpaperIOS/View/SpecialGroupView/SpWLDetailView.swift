@@ -362,11 +362,11 @@ struct SpWLDetailView: View {
                             
                             Button(action: {
                                 if store.purchasedIds.isEmpty{
-                                    Flurry_log("Sub_click_buy_sub_total")
+                                
                                     Firebase_log("Sub_click_buy_sub_total")
                                     store.isPurchasing = true
                                     if isBuySubWeek {
-                                        Flurry_log("Sub_click_buy_weekly")
+                                     
                                         Firebase_log("Sub_click_buy_weekly")
                                         store.purchase(product: weekPro, onBuySuccess: { b in
                                             if b {
@@ -389,7 +389,7 @@ struct SpWLDetailView: View {
 
 
                                     }else {
-                                        Flurry_log("Sub_click_buy_monthly")
+                                 
                                         Firebase_log("Sub_click_buy_monthly")
                                         store.purchase(product: monthPro, onBuySuccess: { b in
                                             if b {
@@ -508,7 +508,7 @@ struct SpWLDetailView: View {
         .overlay(
             ZStack(alignment: .bottom){
                 if ctrlViewModel.showInfo {
-                    if let wallpaper = viewModel.wallpapers[index] {
+              //      if let wallpaper = viewModel.wallpapers[index] {
                         Color.black.opacity(0.5).ignoresSafeArea()
                             .onTapGesture {
                                 ctrlViewModel.showInfo = false
@@ -521,7 +521,7 @@ struct SpWLDetailView: View {
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("Liscense: \(wallpaper.license ?? "Unknow")")
+                            Text("Liscense: \(viewModel.wallpapers[index].license ?? "Unknow")")
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -546,7 +546,7 @@ struct SpWLDetailView: View {
                             )
                             .cornerRadius(16)
                             .padding()
-                    }
+                  //  }
                 }
             }
         
@@ -827,7 +827,7 @@ struct SpWLDetailView: View {
             if currentCoin >= exclusiveCost{
                 currentCoin = currentCoin - exclusiveCost
                 DispatchQueue.main.async{
-                    Flurry_log("Download_wallpaper_Download_by_coin")
+                   
                     downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? "").replacingOccurrences(of: "\"", with: ""))
                     ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                 }

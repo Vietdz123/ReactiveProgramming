@@ -121,16 +121,16 @@ struct WLView: View {
                 }
                 
                 if ctrlViewModel.showDialogRV{
-                    if let urlStr = viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                        DialogGetWL(urlStr: urlStr)
-                    }
+                 //   if let urlStr = viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                        DialogGetWL(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+                 //   }
                     
                 }
                 
                 if ctrlViewModel.showDialogBuyCoin{
-                    if let urlStr = viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                        DialogGetWLByCoin(urlStr: urlStr)
-                    }
+                  //  if let urlStr = viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
+                        DialogGetWLByCoin(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+                 //   }
                     
                 }
             }
@@ -140,21 +140,21 @@ struct WLView: View {
         .overlay(
             ZStack(alignment: .bottom){
                 if ctrlViewModel.showInfo {
-                    if let wallpaper = viewModel.wallpapers[index] {
+                 //   if let wallpaper = viewModel.wallpapers[index] {
                         Color.black.opacity(0.5).ignoresSafeArea()
                             .onTapGesture {
                                 ctrlViewModel.showInfo = false
                             }
                         
                         VStack(spacing : 8){
-                            Text("Tag: \(getTag(wl:wallpaper))")
+                            Text("Tag: \(getTag(wl:viewModel.wallpapers[index]))")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("Author: \(wallpaper.author ?? "Unknow")")
+                            Text("Author: \(viewModel.wallpapers[index].author ?? "Unknow")")
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("Liscense: \(wallpaper.license ?? "Unknow")")
+                            Text("Liscense: \(viewModel.wallpapers[index].license ?? "Unknow")")
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -180,7 +180,7 @@ struct WLView: View {
                             .cornerRadius(16)
                             .padding()
                     }
-                }
+               // }
             }
             
         )
@@ -309,7 +309,7 @@ struct WLView: View {
                                 downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                                 ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                             }else{
-                                Flurry_log("Download_wallpaper_Click_btn_save")
+                          
                                 let wallpaper = viewModel.wallpapers[index]
                                 if wallpaper.content_type == "free" {
                                     DispatchQueue.main.async {
@@ -461,7 +461,7 @@ struct WLView: View {
             if currentCoin >= exclusiveCost{
                 currentCoin = currentCoin - exclusiveCost
                 DispatchQueue.main.async{
-                    Flurry_log("Download_wallpaper_Download_by_coin")
+                  
                     downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                     ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                 }

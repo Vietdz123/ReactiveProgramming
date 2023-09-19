@@ -390,7 +390,7 @@ struct MainView: View {
         VStack(spacing : 0){
             if !store.isPro(){
                 Button(action: {
-                    Flurry_log("Sub_click_in_home")
+                 
                     mainViewModel.navigateToSubView = true
                 }, label: {
                     HStack(spacing : 0){

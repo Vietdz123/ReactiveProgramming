@@ -336,11 +336,11 @@ struct ShuffleDetailView: View {
                         
                         Button(action: {
                             if store.purchasedIds.isEmpty{
-                                Flurry_log("Sub_click_buy_sub_total")
+                          
                                 Firebase_log("Sub_click_buy_sub_total")
                                 store.isPurchasing = true
                                 if isBuySubWeek {
-                                    Flurry_log("Sub_click_buy_weekly")
+                                  
                                     Firebase_log("Sub_click_buy_weekly")
                                     store.purchase(product: weekPro, onBuySuccess: { b in
                                         if b {
@@ -363,7 +363,7 @@ struct ShuffleDetailView: View {
 
 
                                 }else {
-                                    Flurry_log("Sub_click_buy_monthly")
+                              
                                     Firebase_log("Sub_click_buy_monthly")
                                     store.purchase(product: monthPro, onBuySuccess: { b in
                                         if b {
