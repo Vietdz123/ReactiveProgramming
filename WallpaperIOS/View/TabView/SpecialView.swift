@@ -40,199 +40,9 @@ struct SpecialView: View {
                 ShufflePack()
                 DepthEffect()
                 DynamicIsland()
+                PromotionView()
                 
-                
-                ZStack(alignment: .bottom){
-                    if avPlayerVideoSub != nil{
-                        MyVideoPlayer(player: avPlayerVideoSub!)
-                           
-                        
-                    }
-                    
-                    GeometryReader{
-                        proxy in
-                        let size = proxy.size
-                        VStack(spacing : 0){
-                                                LinearGradient(colors: [Color("black_bg").opacity(0.0), Color("black_bg").opacity(0.9)], startPoint: .top, endPoint: .bottom)
-                                                Rectangle()
-                                                    .fill(Color("black_bg").opacity(0.9))
-                                                    .frame(height : 64)
-                                            }.frame(width : size.width, height: size.height)
-                    }
-
-                    
-                    
-                    
-                      
-                    
-                    if let product = store.weekProduct {
-                        VStack(spacing : 0){
-                            Text("Give your Phone")
-                                .mfont(17, .bold)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(.white)
-                            Text("A Cool Makeover")
-                                .mfont(17, .bold)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(.white)
-                              .padding(.top, 2)
-                            
-                            Text("Only \(product.displayPrice) per week.")
-                                .mfont(13, .regular)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(.white)
-                              .padding(.top, 8)
-                            
-                            Text("Auto-renewable. Cancel anytime.")
-                                .mfont(13, .regular)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(.white)
-                              .padding(.top, 2)
-                            
-                            
-                            Button(action: {
-                                store.isPurchasing =  true
-                                store.purchase(product: product, onBuySuccess: {
-                                    b in
-                                       if b {
-                                           DispatchQueue.main.async{
-                                               store.isPurchasing = false
-                                               showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                                              
-                                           }
-                                          
-                                       }else{
-                                           DispatchQueue.main.async{
-                                               store.isPurchasing = false
-                                               showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-                                           }
-                                       }
-                                })
-                            }, label: {
-                                Capsule()
-                                    .fill(
-                                        LinearGradient(
-                                            stops: [
-                                                Gradient.Stop(color: Color(red: 0.15, green: 0.34, blue: 1), location: 0.00),
-                                                Gradient.Stop(color: Color(red: 0.93, green: 0.42, blue: 1), location: 1.00),
-                                            ],
-                                            startPoint: UnitPoint(x: 0, y: 1),
-                                            endPoint: UnitPoint(x: 1, y: 0)
-                                        )
-                                    )
-                                  
-                                    .frame( width : 160,height: 44)
-                                
-                                    .overlay(
-                                        HStack{
-                                            
-                                            Text("Let's Start")
-                                                .mfont(17, .bold)
-                                            
-                                                .multilineTextAlignment(.center)
-                                                .foregroundColor(.white)
-                                                .overlay(
-                                                    ZStack{
-                                                        if store.isPurchasing{
-                                                            ResizableLottieView(filename: "progress_white")
-                                                                .frame(width: 24, height: 24)
-                                                           
-                                                        }
-                                                    }.offset(x : -24)
-                                                    , alignment: .leading
-                                                )
-                                        }
-                                        
-                                       
-                                    )
-                                    
-                            }).disabled(store.isPurchasing)
-                            .padding(.top, 16)
-                            
-                       
-                            HStack(spacing : 4){
-                                Spacer()
-                                
-                                Button(action: {
-                                    
-                                    
-                                    if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                    
-                                }, label: {
-                                    Text("Privacy Policy")
-                                        .underline()
-                                        .foregroundColor(.white)
-                                        .mfont(10, .regular)
-                                    
-                                })
-                                
-                                Text("|")
-                                    .mfont(10, .regular)
-                                    .foregroundColor(.white)
-                                
-                                Button(action: {
-                                    
-                                    if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }, label: {
-                                    Text("Terms of Use")
-                                        .underline()
-                                        .foregroundColor(.white)
-                                        .mfont(10, .regular)
-                                    
-                                })
-                             
-                                Text("|")
-                                    .mfont(10, .regular)
-                                    .foregroundColor(.white)
-                                Button(action: {
-                                    Task{
-                                        let b = await store.restore()
-                                        if b {
-                                            showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
-                                        }else{
-                                            showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
-                                        }
-                                    }
-                                    
-                                }, label: {
-                                    Text("Restore")
-                                        .underline()
-                                        .foregroundColor(.white)
-                                        .mfont(10, .regular)
-                                    
-                                })
-                                Spacer()
-                            }
-                            .padding(.top, 12)
-                            .padding(.bottom, 16)
-                            
-                        }
-                    }
-                
-                }
-                .frame(width: getRect().width - 32, height: ( getRect().width - 32) * 343 / 320 )
-                .cornerRadius(8)
-                .padding(.top, 16)
-                .onAppear(perform: {
-                    avPlayerVideoSub = AVPlayer(url:  Bundle.main.url(forResource: "video_sub_speacial", withExtension: "mp4")!)
-                    if avPlayerVideoSub != nil{
-                        avPlayerVideoSub!.play()
-                        avPlayerVideoSub!.isMuted = true
-                    }
-                  
-                })
-                .onDisappear(perform: {
-                    if avPlayerVideoSub != nil{
-                        avPlayerVideoSub!.isMuted = true
-                        avPlayerVideoSub!.pause()
-                        avPlayerVideoSub = nil
-                    }
-                })
-                
+               
                 
                 Spacer().frame(height: 250)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -251,6 +61,216 @@ struct SpecialView: View {
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .addBackground()
+        
+    }
+  
+    
+   
+    
+}
+
+extension SpecialView{
+    @ViewBuilder
+    func PromotionView() -> some View{
+        ZStack(alignment: .bottom){
+            if avPlayerVideoSub != nil{
+                MyVideoPlayer(player: avPlayerVideoSub!)
+                   
+                
+            }
+            
+            GeometryReader{
+                proxy in
+                let size = proxy.size
+                VStack(spacing : 0){
+                                        LinearGradient(colors: [Color("black_bg").opacity(0.0), Color("black_bg").opacity(0.9)], startPoint: .top, endPoint: .bottom)
+                                        Rectangle()
+                                            .fill(Color("black_bg").opacity(0.9))
+                                            .frame(height : 64)
+                                    }.frame(width : size.width, height: size.height)
+            }
+
+            
+            
+            
+              
+            
+            if let product = store.isVer1() ? store.weekProduct : store.yearlyNoFreeTrialProduct {
+                VStack(spacing : 0){
+                    Text("Give your Phone")
+                        .mfont(17, .bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                    Text("A Cool Makeover")
+                        .mfont(17, .bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                      .padding(.top, 2)
+                    
+                    Text("Only \(product.displayPrice) per \(store.isVer1() ? "week" : "year").")
+                        .mfont(13, .regular)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                      .padding(.top, 8)
+                    
+                    if !store.isVer1(){
+                        Text("( Lest than \(decimaPriceToStr(price: product.price , chia: 365))\(removeDigits(string: product.displayPrice ))/day! )")
+                            .mfont(13, .regular)
+                            .padding(.top, 4)
+                    }
+                    
+                    Text("Auto-renewable. Cancel anytime.")
+                        .mfont(13, .regular)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                      .padding(.top, 2)
+                    
+                    
+                    Button(action: {
+                        store.isPurchasing =  true
+                        showProgressSubView()
+                        store.purchase(product: product, onBuySuccess: {
+                            b in
+                               if b {
+                                   DispatchQueue.main.async{
+                                       store.isPurchasing = false
+                                       hideProgressSubView()
+                                       showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                      
+                                   }
+                                  
+                               }else{
+                                   DispatchQueue.main.async{
+                                       store.isPurchasing = false
+                                       hideProgressSubView()
+                                       showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                   }
+                               }
+                        })
+                    }, label: {
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        Gradient.Stop(color: Color(red: 0.15, green: 0.34, blue: 1), location: 0.00),
+                                        Gradient.Stop(color: Color(red: 0.93, green: 0.42, blue: 1), location: 1.00),
+                                    ],
+                                    startPoint: UnitPoint(x: 0, y: 1),
+                                    endPoint: UnitPoint(x: 1, y: 0)
+                                )
+                            )
+                          
+                            .frame( width : 160,height: 44)
+                        
+                            .overlay(
+                                HStack{
+                                    
+                                    Text("Let's Start")
+                                        .mfont(17, .bold)
+                                    
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+                                        .overlay(
+                                            ZStack{
+                                                if store.isPurchasing{
+                                                    ResizableLottieView(filename: "progress_white")
+                                                        .frame(width: 24, height: 24)
+                                                   
+                                                }
+                                            }.offset(x : -24)
+                                            , alignment: .leading
+                                        )
+                                }
+                                
+                               
+                            )
+                            
+                    }).disabled(store.isPurchasing)
+                    .padding(.top, 16)
+                    
+               
+                    HStack(spacing : 4){
+                        Spacer()
+                        
+                        Button(action: {
+                            
+                            
+                            if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                UIApplication.shared.open(url)
+                            }
+                            
+                        }, label: {
+                            Text("Privacy Policy")
+                                .underline()
+                                .foregroundColor(.white)
+                                .mfont(10, .regular)
+                            
+                        })
+                        
+                        Text("|")
+                            .mfont(10, .regular)
+                            .foregroundColor(.white)
+                        
+                        Button(action: {
+                            
+                            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                UIApplication.shared.open(url)
+                            }
+                        }, label: {
+                            Text("Terms of Use")
+                                .underline()
+                                .foregroundColor(.white)
+                                .mfont(10, .regular)
+                            
+                        })
+                     
+                        Text("|")
+                            .mfont(10, .regular)
+                            .foregroundColor(.white)
+                        Button(action: {
+                            Task{
+                                let b = await store.restore()
+                                if b {
+                                    showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                                }else{
+                                    showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                                }
+                            }
+                            
+                        }, label: {
+                            Text("Restore")
+                                .underline()
+                                .foregroundColor(.white)
+                                .mfont(10, .regular)
+                            
+                        })
+                        Spacer()
+                    }
+                    .padding(.top, 12)
+                    .padding(.bottom, 16)
+                    
+                }
+            }
+        
+        }
+        .frame(width: getRect().width - 32, height: ( getRect().width - 32) * 343 / 320 )
+        .cornerRadius(8)
+        .padding(.top, 16)
+        .onAppear(perform: {
+            avPlayerVideoSub = AVPlayer(url:  Bundle.main.url(forResource: "video_sub_speacial", withExtension: "mp4")!)
+            if avPlayerVideoSub != nil{
+                avPlayerVideoSub!.play()
+                avPlayerVideoSub!.isMuted = true
+            }
+          
+        })
+        .onDisappear(perform: {
+            if avPlayerVideoSub != nil{
+                avPlayerVideoSub!.isMuted = true
+                avPlayerVideoSub!.pause()
+                avPlayerVideoSub = nil
+            }
+        })
         
     }
     
@@ -720,6 +740,4 @@ struct SpecialView: View {
        
         
     }
-    
 }
-

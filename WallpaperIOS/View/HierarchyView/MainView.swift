@@ -95,7 +95,7 @@ class MainViewModel : ObservableObject {
 
 struct MainView: View {
     
-    let fromDefault : Bool
+ //   let fromDefault : Bool
     
     @Namespace var anim
     
@@ -274,17 +274,14 @@ struct MainView: View {
             if  mainViewModel.showMenu{
                 mainViewModel.showMenu = false
             }
-            
-            if fromDefault {
+
                 if mainViewModel.allowShowSubView && !store.isPro() {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                         mainViewModel.allowShowSubView = false
                         mainViewModel.showSubView = true
                     })
                 }
-            }
-            
-           
+
         })
         .onChange(of: mainViewModel.showMenu, perform: {
             newValue in
@@ -301,16 +298,7 @@ struct MainView: View {
 
     }
     
-    @ViewBuilder
-    func SubViewRandom() -> some View {
-        if mainViewModel.subType == 0 {
-            Sub_1_View()
-        }else if mainViewModel.subType == 1 {
-            Sub_2_View()
-        }else{
-            Sub_3_View()
-        }
-    }
+
     
     
     @ViewBuilder
@@ -443,13 +431,25 @@ struct MainView: View {
                 }
             }.frame(maxWidth: .infinity)
                 .frame(height: 56)
-                .padding(EdgeInsets(top: 0, leading: 20, bottom: store.allowShowBanner() ? 0 : 14 , trailing: 20))
+                .padding(EdgeInsets(top: 0, leading: 20, bottom:0 , trailing: 20))
             
             if store.allowShowBanner(){
-                BannerAdView(adFormat: .adaptiveBanner, adStatus: $mainViewModel.adStatus)
+                Spacer()
+                    .frame( height: AdFormat.adaptiveBanner.size.height)
+              
+            }else{
+                Spacer()
+                    .frame( height: 14)
             }
             
         }
+        .overlay(
+            ZStack{
+                if store.showBanner{
+                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $mainViewModel.adStatus)
+                }
+            }, alignment: .bottom
+        )
         .ignoresSafeArea()
         .background(
             VisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -476,7 +476,18 @@ struct MainView: View {
     
 }
 
-
+extension MainView{
+    @ViewBuilder
+    func SubViewRandom() -> some View {
+        if mainViewModel.subType == 0 {
+            Sub_1_View()
+        }else if mainViewModel.subType == 1 {
+            Sub_2_View()
+        }else{
+            Sub_3_View()
+        }
+    }
+}
 
 
 

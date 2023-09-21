@@ -114,19 +114,21 @@ struct Sub_3_View: View {
             
             
             Button(action: {
+                
                 store.isPurchasing = true
+                showProgressSubView()
                 store.purchase(product: product, onBuySuccess: {
                     b in
                        if b {
                            DispatchQueue.main.async{
                                store.isPurchasing = false
+                               hideProgressSubView()
                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                              
                            }
-                          
                        }else{
                            DispatchQueue.main.async{
                                store.isPurchasing = false
+                               hideProgressSubView()
                                showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                            }
                        }
@@ -151,7 +153,6 @@ struct Sub_3_View: View {
                           
                             Text("Claim Offer!")
                                 .mfont(20, .bold)
-                            
                               .multilineTextAlignment(.center)
                               .foregroundColor(.white)
                               .overlay(

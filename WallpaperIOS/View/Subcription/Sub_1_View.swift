@@ -92,11 +92,13 @@ struct Sub_1_View: View {
                 
                 Button(action: {
                     store.isPurchasing = true
+                    showProgressSubView()
                     store.purchase(product: product, onBuySuccess: {
                         b in
                            if b {
                                DispatchQueue.main.async{
                                    store.isPurchasing = false
+                                   hideProgressSubView()
                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                   
                                }
@@ -104,6 +106,7 @@ struct Sub_1_View: View {
                            }else{
                                DispatchQueue.main.async{
                                    store.isPurchasing = false
+                                   hideProgressSubView()
                                    showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                                }
                            }

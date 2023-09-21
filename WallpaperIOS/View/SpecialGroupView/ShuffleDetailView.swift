@@ -339,6 +339,7 @@ struct ShuffleDetailView: View {
                           
                                 Firebase_log("Sub_click_buy_sub_total")
                                 store.isPurchasing = true
+                                showProgressSubView()
                                 if isBuySubWeek {
                                   
                                     Firebase_log("Sub_click_buy_weekly")
@@ -346,6 +347,7 @@ struct ShuffleDetailView: View {
                                         if b {
                                             DispatchQueue.main.async{
                                                 store.isPurchasing = false
+                                                hideProgressSubView()
                                                 showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                                 withAnimation(.easeInOut){
                                                     showBuySubAtScreen = false
@@ -355,6 +357,7 @@ struct ShuffleDetailView: View {
                                         }else{
                                             DispatchQueue.main.async{
                                                 store.isPurchasing = false
+                                                hideProgressSubView()
                                                 showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                                             }
                                         }
@@ -369,6 +372,7 @@ struct ShuffleDetailView: View {
                                         if b {
                                             DispatchQueue.main.async{
                                                 store.isPurchasing = false
+                                                hideProgressSubView()
                                                 showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                                 withAnimation(.easeInOut){
                                                     showBuySubAtScreen = false
@@ -378,6 +382,7 @@ struct ShuffleDetailView: View {
                                         }else{
                                             DispatchQueue.main.async{
                                                 store.isPurchasing = false
+                                                hideProgressSubView()
                                                 showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                                             }
                                         }

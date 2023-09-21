@@ -77,7 +77,7 @@ struct SearchView: View {
             
             ScrollView(.vertical, showsIndicators: false){
                 
-                if !viewmodel.tagsShow.isEmpty{
+                if !viewmodel.tags.isEmpty{
                     
                     Text("Popular Collections")
                         .mfont(15, .bold)
@@ -86,9 +86,17 @@ struct SearchView: View {
                         .padding(.horizontal)
                     
                     LazyVGrid(columns: [GridItem.init(spacing : 8), GridItem.init(spacing : 8), GridItem.init()], spacing: 8){
-                        ForEach(viewmodel.tagsShow, id: \.title){
-                            tag in
-                            CategoryPreview(tag: tag)
+                        ForEach(0..<viewmodel.tags.count, id: \.self){
+                            index in
+                            CategoryPreview(tag: viewmodel.tags[index])
+                                .onAppear(perform: {
+                                    if !textFieldViewModel.text.isEmpty{
+                                        return
+                                    }
+                                    if viewmodel.checkLoadNextPage(index: index){
+                                        viewmodel.getTags()
+                                    }
+                                })
                         }
                     }.padding(.horizontal, 8)
                 }
@@ -103,7 +111,7 @@ struct SearchView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                     
-                    LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init(spacing: 0)], spacing: 8 ){
+                    LazyVGrid(columns: [GridItem.init(spacing: 8),GridItem.init(spacing: 8),  GridItem.init(spacing: 0)], spacing: 8 ){
                         
                         ForEach(0..<findViewModel.wallpapers.count, id: \.self){
                             i in
@@ -214,43 +222,41 @@ struct SearchView: View {
     
     @ViewBuilder
     func CategoryPreview(tag : Tag) -> some View {
-        Text("Tag")
+
+        let urlStr = tag.previewSmallURL
         
-//
-//        let urlStr = tag.preview_small_url == nil ? "" : tag.preview_small_url!.replacingOccurrences(of: "\"", with: "")
-//        
-//
-//        WebImage(url: URL(string: urlStr))
-//        
-//           .onSuccess { image, data, cacheType in
-//               // Success
-//               // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-//           }
-//           .resizable()
-//           .placeholder {
-//               placeHolderImage()
-//                   .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-//           }
-//           .indicator(.activity) // Activity Indicator
-//           .transition(.fade(duration: 0.5)) // Fade Transition with duration
-//           .scaledToFill()
-//        .frame(width:width , height: width * 2)
-//        .cornerRadius(2)
-//     
-//        .overlay(
-//            Text(tag.title)
-//                .mfont(16, .italic)
-//                .foregroundColor(.white)
-//                .shadow(color: .black, radius: 1)
-//        )
-//        .onTapGesture {
-//            tagViewModel.tag = tag.title
-//            viewmodel.navigateToTag.toggle()
-//            
-//            
-//            
-//        }
-//        
+
+        WebImage(url: URL(string: urlStr))
+        
+           .onSuccess { image, data, cacheType in
+               // Success
+               // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
+           }
+           .resizable()
+           .placeholder {
+               placeHolderImage()
+                   .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
+           }
+           .indicator(.activity) // Activity Indicator
+           .transition(.fade(duration: 0.5)) // Fade Transition with duration
+           .scaledToFill()
+        .frame(width:width , height: width * 2)
+        .cornerRadius(2)
+     
+        .overlay(
+            Text(tag.title)
+                .mfont(16, .italic)
+                .foregroundColor(.white)
+                .shadow(color: .black, radius: 1)
+        )
+        .onTapGesture {
+            tagViewModel.tag = tag.title
+            viewmodel.navigateToTag.toggle()
+            
+            
+            
+        }
+        
     }
     
 }

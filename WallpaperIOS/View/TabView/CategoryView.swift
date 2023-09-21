@@ -104,12 +104,14 @@ struct CategoryView: View {
                                                         .placeholder {
                                                             placeHolderImage()
                                                                 .frame(width: 108, height: 216)
+                                                               
                                                         }
                                                         .indicator(.activity) // Activity Indicator
                                                         .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                                         .scaledToFill()
                                                         .frame(width: 108, height: 216)
                                                         .cornerRadius(8)
+                                                        .clipped()
                                                         .overlay(
                                                             ZStack{
                                                                 if !store.isPro() && wallpaper.content_type == "private"{

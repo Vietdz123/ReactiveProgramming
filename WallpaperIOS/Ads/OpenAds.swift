@@ -47,6 +47,7 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         if let gOpenAd = self.appOpenAd {
             gOpenAd.present(fromRootViewController: (UIApplication.shared.windows.first?.rootViewController)!)
         } else {
+            onCommit(false)
             self.requestAppOpenAd()
         }
     }

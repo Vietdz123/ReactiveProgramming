@@ -135,13 +135,13 @@ struct ToastView : View{
                 .foregroundColor(color)
             Text(mess)
                 .mfont(16, .regular)
-                .foregroundColor(.white)
+                .foregroundColor(.black)
             
         }
         .padding(EdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24))
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.black.opacity(0.8))
+                .fill(Color.white.opacity(0.8))
               //  .shadow(color : .white, radius: 2)
         )
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

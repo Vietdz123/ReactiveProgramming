@@ -117,6 +117,9 @@
 		181C68462A376EFE00638CA7 /* placeholder_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 181C68452A376EFE00638CA7 /* placeholder_anim.json */; };
 		181C68482A37730100638CA7 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181C68472A37730100638CA7 /* DateHelper.swift */; };
 		899D6EE42AB9A89C003C3B4A /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899D6EE32AB9A89C003C3B4A /* TagModel.swift */; };
+		89E2243E2ABC2FAA0061E1C8 /* ProgressBuySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */; };
+		89E224402ABC308D0061E1C8 /* loadingcat.json in Resources */ = {isa = PBXBuildFile; fileRef = 89E2243F2ABC308D0061E1C8 /* loadingcat.json */; };
+		89E224422ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E224412ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -229,6 +232,9 @@
 		181C68452A376EFE00638CA7 /* placeholder_anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = placeholder_anim.json; sourceTree = "<group>"; };
 		181C68472A37730100638CA7 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		899D6EE32AB9A89C003C3B4A /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
+		89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBuySubView.swift; sourceTree = "<group>"; };
+		89E2243F2ABC308D0061E1C8 /* loadingcat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loadingcat.json; path = ../../../../../Downloads/loadingcat.json; sourceTree = "<group>"; };
+		89E224412ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVerTwoSubView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +319,7 @@
 				04B152892A2DC4A6000185FB /* FlurryHelper.swift */,
 				181C68472A37730100638CA7 /* DateHelper.swift */,
 				04C436EE2A95F46C00DDA76C /* PermissionHelper.swift */,
+				89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -452,11 +459,12 @@
 				049CCA352A11C603003621E9 /* SubcriptionVIew.swift */,
 				049CCA372A11CB0E003621E9 /* MyStore.swift */,
 				0455CD132A40483B008B0930 /* BuyCoinView.swift */,
-				04B2ADE02A4948430083D8A8 /* OnboardingSubView.swift */,
 				0445199C2A9D9F9800125CB1 /* SubInGridHome.swift */,
 				0445199E2A9DA04B00125CB1 /* Sub_1_View.swift */,
 				044519A02A9DA05500125CB1 /* Sub_2_View.swift */,
 				044519A22A9DA05F00125CB1 /* Sub_3_View.swift */,
+				04B2ADE02A4948430083D8A8 /* OnboardingSubView.swift */,
+				89E224412ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift */,
 			);
 			path = Subcription;
 			sourceTree = "<group>";
@@ -518,6 +526,7 @@
 		04A90CAF2AAEBD39007ED3E2 /* Raw */ = {
 			isa = PBXGroup;
 			children = (
+				89E2243F2ABC308D0061E1C8 /* loadingcat.json */,
 				048C77612AAADAAE00E0D0E3 /* progress_white.json */,
 				048C775F2AAAD68400E0D0E3 /* progress.json */,
 				044519A42A9DD96200125CB1 /* premimujson.json */,
@@ -640,6 +649,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04B1F8DB2A1C76F6006F22E8 /* regular.ttf in Resources */,
+				89E224402ABC308D0061E1C8 /* loadingcat.json in Resources */,
 				049EFA552A89CEE70050369D /* preview_shuffle.mp4 in Resources */,
 				04AF70252A85D169002338AC /* video1.mp4 in Resources */,
 				04B1F8D72A1C76E3006F22E8 /* bold.ttf in Resources */,
@@ -676,6 +686,7 @@
 				04A90CAE2AAEAD58007ED3E2 /* SplashView.swift in Sources */,
 				04BF84C12A3039F30091BD31 /* LiveWLDetailView.swift in Sources */,
 				04B2ADE12A4948430083D8A8 /* OnboardingSubView.swift in Sources */,
+				89E224422ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift in Sources */,
 				04BF84C32A303C670091BD31 /* ListLiveWLView.swift in Sources */,
 				049CCA362A11C603003621E9 /* SubcriptionVIew.swift in Sources */,
 				04069BFA2A41916F003B13D5 /* ServerHelper.swift in Sources */,
@@ -749,6 +760,7 @@
 				0495230929F7C6CB004538DD /* WallpaperIOSApp.swift in Sources */,
 				04184B0D2A038F3400ADB328 /* CategoryPageView.swift in Sources */,
 				0496723B29FA2CCC00E915D2 /* FavoritedWallpaperView.swift in Sources */,
+				89E2243E2ABC2FAA0061E1C8 /* ProgressBuySubView.swift in Sources */,
 				0496723729FA0DC400E915D2 /* SlideMenuView.swift in Sources */,
 				0445199F2A9DA04B00125CB1 /* Sub_1_View.swift in Sources */,
 			);
@@ -877,6 +889,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
@@ -902,6 +915,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -917,6 +931,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
@@ -942,6 +957,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

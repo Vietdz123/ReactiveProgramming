@@ -22,6 +22,7 @@ struct ExclusiveView: View {
             Spacer()
                 .frame(height: 44)
             
+           
             
             
             ScrollView(.vertical, showsIndicators: false){
@@ -58,6 +59,7 @@ struct ExclusiveView: View {
                                .scaledToFill()
                                .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                             .cornerRadius(8)
+                            .clipped()
                             .overlay(
                                 ZStack{
                                     if !store.isPro() && wallpaper.content_type == "private"{

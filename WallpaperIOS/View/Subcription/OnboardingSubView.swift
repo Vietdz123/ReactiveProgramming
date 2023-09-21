@@ -131,14 +131,14 @@ struct OnboardingSubView: View {
                             UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                             if let weekPro = store.weekProductNotSale {
                                 store.isPurchasing = true
-                              
+                                showProgressSubView()
                                 Firebase_log("Click_buy_in_onboarding")
                                 store.purchase(product: weekPro, onBuySuccess: { b in
                                     if b {
 
                                         DispatchQueue.main.async{
                                             store.isPurchasing = false
-                                         
+                                            hideProgressSubView()
                                             Firebase_log("Click_buy_in_onboarding_successful")
                                             
                                             showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
@@ -149,6 +149,7 @@ struct OnboardingSubView: View {
                                     }else{
                                         DispatchQueue.main.async{
                                             store.isPurchasing = false
+                                            hideProgressSubView()
                                         }
                                     }
                             
@@ -157,6 +158,7 @@ struct OnboardingSubView: View {
                             )
                             }else{
                                 store.isPurchasing = false
+                                hideProgressSubView()
                                 showToastWithContent(image: "xmark", color: .red, mess: "Product is not ready!")
                             }
                         }
@@ -251,7 +253,7 @@ struct OnboardingSubView: View {
             }
             
             NavigationLink(destination:
-                            MainView( fromDefault : false)
+                            MainView()
                 .environmentObject(homeVM)
                 .environmentObject(store)
                 .environmentObject(interAd)
@@ -261,10 +263,6 @@ struct OnboardingSubView: View {
             })
             
         }
-        
-        
-        
-        
     }
     
     func getTextTitle(page : Int) -> String{

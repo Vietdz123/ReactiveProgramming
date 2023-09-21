@@ -32,6 +32,7 @@ class CategoryViewModel: ObservableObject {
         guard let url  = URL(string: "\(domain)api/v2/categories?order_by=order+asc,daily_rating+desc,set_count+desc\(AppConfig.forOnlyIOS)") else {
             return
         }
+        print("CategoryViewModel \(url)")
         URLSession.shared.dataTask(with: url){
             data, _ ,err  in
             guard let data = data, err == nil else {
@@ -65,7 +66,7 @@ class CategoryViewModel: ObservableObject {
         let category_id = categorieList[index].id
         
       
-            let url = "\(domain)api/v1/data?category_id=\(category_id)&limit=7&offset=0&order_by=uploaded_at+desc\(AppConfig.forOnlyIOS)"
+            let url = "\(domain)api/v1/data?category_id=\(category_id)&limit=7&offset=0&order_by=uploaded_at+desc&not_prioritize_private=1\(AppConfig.forOnlyIOS)"
             guard let url  = URL(string: url) else {
                 return
             }

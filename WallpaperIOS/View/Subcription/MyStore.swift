@@ -29,25 +29,32 @@ struct IDProduct {
     static let COIN_1 = "com.ezt.wl.coinpack1"
     static let COIN_2 = "com.ezt.wl.coinpack2"
     static let COIN_3 = "com.ezt.wl.coinpack3"
+    
+    static let YEARLY_FREE_TRIAL = "com.ezt.wl.year_4"
+    static let YEARLY_NO_FREE_TRIAL = "com.ezt.wl.year_3"
+    
+    static let MONTHLY_V2 = "com.ezt.wl.month_1"
+    
 }
 
 class MyStore: ObservableObject {
 
     @Published var showBanner : Bool = true
 
-    @Published var purchasedIds: [String] = [""]
+    @Published var purchasedIds: [String] = []
 
     @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1,
                                                   IDProduct.MONTH_1 , IDProduct.MONTH,
+                                                  IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_NO_FREE_TRIAL, IDProduct.MONTHLY_V2,
                                                   IDProduct.YEAR_1, IDProduct.YEAR_2 ,
                                                   IDProduct.UNLIMITED ,
-                                                  IDProduct.COIN_1 , IDProduct.COIN_2  ,IDProduct.COIN_3 ]
+                                                  IDProduct.COIN_1 , IDProduct.COIN_2  ,IDProduct.COIN_3,
+                                                 ]
 
     @Published var productIdAllowShows : [String] = []
 
 
     @Published var weekProductNotSale : Product?
-    
     @Published var weekProduct :  Product?
     @Published var monthProduct : Product?
    
@@ -55,6 +62,11 @@ class MyStore: ObservableObject {
     @Published var coin_product_2 : Product?
     @Published var coin_product_3 : Product?
     @Published var allowFetcConfigWhenError : Bool = true
+    
+    
+    @Published var yearlyFreeTrialProduct : Product?
+    @Published var yearlyNoFreeTrialProduct :  Product?
+    @Published var monthProductV2 : Product?
     
     
     @Published var isPurchasing : Bool = false
@@ -81,7 +93,7 @@ class MyStore: ObservableObject {
     }
 
     func allowShowBanner() -> Bool {
-        return self.showBanner &&  !self.isPro() && UserDefaults.standard.bool(forKey: "allow_show_banner")
+        return  !self.isPro() && UserDefaults.standard.bool(forKey: "allow_show_banner")
     }
 
     func isNewVeriosn() -> Bool {
@@ -133,7 +145,6 @@ class MyStore: ObservableObject {
                     let allowShowBanner = self.remoteConfig.configValue(forKey: "allow_show_banner").boolValue
                     let exclusiveCost   = self.remoteConfig.configValue(forKey: "exclusive_cost").numberValue
                     let currentVersion  = self.remoteConfig.configValue(forKey: "current_version").stringValue ?? "1.1.2.1"
-                    
                     let liveWlUsingCoin  = self.remoteConfig.configValue(forKey: "live_wl_using_coin").boolValue
 
 
@@ -145,7 +156,7 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(currentVersion,  forKey: "current_version")
                     UserDefaults.standard.set(liveWlUsingCoin,  forKey: "remoteCf_live_using_coin")
 
-
+                    UserDefaults.standard.set(false,  forKey: "is_v1")
                 }
 
 
@@ -165,6 +176,10 @@ class MyStore: ObservableObject {
 
         }
 
+    }
+    
+    func isVer1() -> Bool {
+        return UserDefaults.standard.bool(forKey:  "is_v1")
     }
 
 
@@ -234,6 +249,13 @@ class MyStore: ObservableObject {
                             self.weekProduct = productttt
                         case IDProduct.MONTH_1 :
                             self.monthProduct = productttt
+                        case IDProduct.YEARLY_FREE_TRIAL:
+                            self.yearlyFreeTrialProduct = productttt
+                        case IDProduct.YEARLY_NO_FREE_TRIAL:
+                            self.yearlyNoFreeTrialProduct = productttt
+                        case IDProduct.MONTHLY_V2:
+                            self.monthProductV2 = productttt
+                        
                         case IDProduct.COIN_1:
                             self.coin_product_1 = productttt
                         case IDProduct.COIN_2:

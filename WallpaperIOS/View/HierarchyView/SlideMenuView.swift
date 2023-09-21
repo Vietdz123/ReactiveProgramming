@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct SlideMenuView: View {
-    
-    //  @Binding var currentTab : NewTab
-    // @Binding var scrollProgress : CGFloat
-    // @Binding var tapState : AnimationState
-    
+
     let appId = "6449699978"
     
     @Binding var showMenu : Bool

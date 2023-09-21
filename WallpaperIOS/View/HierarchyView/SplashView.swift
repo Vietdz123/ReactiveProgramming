@@ -43,7 +43,7 @@ struct SplashView: View {
                 
                 
                 NavigationLink(destination:
-                                MainView( fromDefault : true)
+                                MainView()
                     .environmentObject(homeVM)
                     .environmentObject(myStore)
                     .environmentObject(interAd)

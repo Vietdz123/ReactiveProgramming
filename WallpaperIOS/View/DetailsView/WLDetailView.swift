@@ -158,6 +158,13 @@ struct WLView: View {
                                 .foregroundColor(.white)
                                 .mfont(16, .regular)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("Upload at: \(viewModel.wallpapers[index].uploaded_at ?? "Unknow")")
+                                .foregroundColor(.white)
+                                .mfont(16, .regular)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                           // print("CategoryPageView UPLOAD \(String(describing: wallpaper.uploaded_at))")
+                            
                         }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
                             .overlay(
                                 Button(action: {

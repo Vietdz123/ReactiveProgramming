@@ -11,10 +11,10 @@ import StoreKit
 struct AppConfig {
     static let APP_NAME : String = "Wallive"
     static let limit : Int = 15
-    static let forOnlyIOS = "&mobile_app_id=2"
+    static let forOnlyIOS = "&mobile_app_id=2&app=2"
     
     static let imgWidth : CGFloat = ( UIScreen.main.bounds.width - 48 ) / 3
-   // static let imgHeight : CGFloat = UIScreen.main.bounds.width - 40
+
     static let imgHeight : CGFloat = ( UIScreen.main.bounds.width - 40 ) * 2 / 3
     
     

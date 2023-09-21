@@ -10,32 +10,32 @@ import Foundation
 // MARK: - Welcome
 struct TagModel: Codable {
     let count: Int
-    let items: TagCollection
+    let items: [Tag]
 }
 
-// MARK: - Items
-struct TagCollection: Codable {
-    let currentPage: Int
-    let data: [Tag]
-    let firstPageURL: String
-    let from: Int
-    let nextPageURL, path: String
-    let perPage: Int
-    let prevPageURL: String?
-    let to: Int
-
-    enum CodingKeys: String, CodingKey {
-        case currentPage = "current_page"
-        case data
-        case firstPageURL = "first_page_url"
-        case from
-        case nextPageURL = "next_page_url"
-        case path
-        case perPage = "per_page"
-        case prevPageURL = "prev_page_url"
-        case to
-    }
-}
+//// MARK: - Items
+//struct TagCollection: Codable {
+//    let currentPage: Int
+//    let data: [Tag]
+//    let firstPageURL: String
+//    let from: Int
+//    let nextPageURL, path: String
+//    let perPage: Int
+//    let prevPageURL: String?
+//    let to: Int
+//
+//    enum CodingKeys: String, CodingKey {
+//        case currentPage = "current_page"
+//        case data
+//        case firstPageURL = "first_page_url"
+//        case from
+//        case nextPageURL = "next_page_url"
+//        case path
+//        case perPage = "per_page"
+//        case prevPageURL = "prev_page_url"
+//        case to
+//    }
+//}
 
 // MARK: - Datum
 struct Tag: Codable {

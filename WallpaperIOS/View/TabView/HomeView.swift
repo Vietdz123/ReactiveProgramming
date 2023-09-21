@@ -73,7 +73,7 @@ struct HomeView: View {
                                         .indicator(.activity) // Activity Indicator
                                         .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                         .scaledToFill()
-                                    
+                                        .clipped()
                                         .frame(width: size.width, height: size.height, alignment: .center)
                                         .cornerRadius(8)
                                         .overlay(
@@ -97,17 +97,25 @@ struct HomeView: View {
                                             
                                             , alignment: .topTrailing
                                         )
-                                     
-                                    //
+
                                     
                                 })
                                 .overlay(
                                     ZStack{
                                         if index == 2 && !store.isPro() && UserDefaults.standard.bool(forKey: "user_exit_app") == false {
-                                            if let weekPro = store.weekProduct{
-                                                SubInHome(size: size, product : weekPro)
-                                                    .cornerRadius(8)
+                                            if store.isVer1() {
+                                                if let weekPro = store.weekProduct{
+                                                    SubInHome1(size: size, product: weekPro)
+                                                        .cornerRadius(8)
+                                                }
+                                            }else{
+                                                if let yearFreeTrial = store.yearlyFreeTrialProduct{
+                                                    SubInHome2(size: size, product: yearFreeTrial)
+                                                        .cornerRadius(8)
+                                                }
                                             }
+                                            
+                                           
                                           
                                             
                                         }
@@ -128,17 +136,15 @@ struct HomeView: View {
                         }, content2: { index in
                             if !viewModel.tags.isEmpty && index < viewModel.tags.count{
                                 TagViewBuilder(tag: viewModel.tags[index])
+                                    .onAppear(perform: {
+                                        if viewModel.checkLoadNextPageTag(index: index) == true{
+                                            viewModel.getTags()
+                                           
+                                        }
+                                    })
+                                    
                             }
-                           
-                            
-//                            if categotyVM.current < categotyVM.categorieWithData.count - 1{
-//                                if let categoryWithData = categotyVM.categorieWithData[categotyVM.current]  {
-//
-//
-//                                    Categoryyyy(categoryWithData: categoryWithData)
-//
-//                                }
-//                            }
+                        
                         }).padding(16)
                         
                         
@@ -157,18 +163,28 @@ struct HomeView: View {
         .refreshable {
             viewModel.wallpapers.removeAll()
             viewModel.getWallpapers()
+            viewModel.tags.removeAll()
+            viewModel.getTags()
         }
 
     }
     
+    
+    
+    
+   
+    
+    
+}
+
+extension HomeView {
+    
+   
+    
     @ViewBuilder
-    func SubInHome(size : CGSize, product : Product) -> some View{
+    func SubInHome1(size : CGSize, product : Product) -> some View{
         VStack(spacing : 0){
-            
-          
                 ResizableLottieView(filename: "premimujson")
-           
-            
                 .frame(width: 85.65, height: 24)
                
                 .clipShape(Capsule())
@@ -210,11 +226,13 @@ struct HomeView: View {
             
             Button(action: {
                 store.isPurchasing = true
+                showProgressSubView()
                 store.purchase(product: product, onBuySuccess: {
                     b in
                        if b {
                            DispatchQueue.main.async{
                                store.isPurchasing = false
+                               hideProgressSubView()
                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                               
                            }
@@ -222,6 +240,7 @@ struct HomeView: View {
                        }else{
                            DispatchQueue.main.async{
                                store.isPurchasing = false
+                               hideProgressSubView()
                                showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                            }
                        }
@@ -343,17 +362,181 @@ struct HomeView: View {
     }
     
     
-   
+    @ViewBuilder
+    func SubInHome2(size : CGSize, product : Product) -> some View{
+        VStack(spacing : 0){
+                ResizableLottieView(filename: "premimujson")
+                .frame(width: 85.65, height: 24)
+                .clipShape(Capsule())
+                .padding(.top, 24)
+            
+            Spacer()
+          
+            
+            Text("Then \(product.displayPrice)/year.")
+                .mfont(15, .regular)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .padding(.top, 16)
+            
+
+            
+          
+                Text("Cancel anytime.")
+                    .mfont(13, .regular)
+                    .foregroundColor(.white)
+            
+            
+         
+                .padding(.top, 4)
+            
+            
+            Button(action: {
+            
+                store.isPurchasing = true
+                showProgressSubView()
+                store.purchase(product: product, onBuySuccess: {
+                    b in
+                       if b {
+                           DispatchQueue.main.async{
+                               store.isPurchasing = false
+                               hideProgressSubView()
+                               showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                              
+                           }
+                          
+                       }else{
+                           DispatchQueue.main.async{
+                               store.isPurchasing = false
+                               hideProgressSubView()
+                               showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                           }
+                       }
+                })
+            }, label: {
+                Capsule()
+                    .fill(
+                        LinearGradient(
+                            stops: [
+                                Gradient.Stop(color: Color(red: 0.15, green: 0.34, blue: 1), location: 0.00),
+                                Gradient.Stop(color: Color(red: 0.93, green: 0.42, blue: 1), location: 1.00),
+                            ],
+                            startPoint: UnitPoint(x: 0, y: 1),
+                            endPoint: UnitPoint(x: 1, y: 0)
+                        )
+                    )
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                
+                    .overlay(
+                        HStack{
+                            
+                      
+                        
+                       
+                        
+                        Text("Try Now")
+                            .mfont(17, .bold)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .overlay(
+                                ZStack{
+                                    if store.isPurchasing{
+                                        ResizableLottieView(filename: "progress_white")
+                                            .frame(width: 24, height: 24)
+                                       
+                                    }
+                                }.offset(x : -24)
+                                , alignment: .leading
+                            )
+                        }
+                    )
+                    .padding(.horizontal, 33)
+            }).disabled(store.isPurchasing)
+            .padding(.top, 16)
+            
+       
+            HStack(spacing : 4){
+                Spacer()
+                
+                Button(action: {
+                    
+                    
+                    if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                        UIApplication.shared.open(url)
+                    }
+                    
+                }, label: {
+                    Text("Privacy Policy")
+                        .underline()
+                        .foregroundColor(.white)
+                        .mfont(10, .regular)
+                    
+                })
+                
+                Text("|")
+                    .mfont(10, .regular)
+                    .foregroundColor(.white)
+                
+                Button(action: {
+                    
+                    if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                        UIApplication.shared.open(url)
+                    }
+                }, label: {
+                    Text("Terms of Use")
+                        .underline()
+                        .foregroundColor(.white)
+                        .mfont(10, .regular)
+                    
+                })
+             
+                Text("|")
+                    .mfont(10, .regular)
+                    .foregroundColor(.white)
+                Button(action: {
+                    Task{
+                        let b = await store.restore()
+                        if b {
+                            showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                        }else{
+                            showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                        }
+                    }
+                    
+                }, label: {
+                    Text("Restore")
+                        .underline()
+                        .foregroundColor(.white)
+                        .mfont(10, .regular)
+                    
+                })
+                Spacer()
+            }
+            .padding(.top, 8)
+            .padding(.bottom, 16)
+            
+        }.frame(width : size.width, height: size.height)
+            .background(
+                Image("sub_in_home_2")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size.width, height: size.height)
+                    .clipped()
+            )
+            .onTapGesture {
+                
+            }
+    }
+    
+    
+    
+    
     func TagViewBuilder(tag : Tag) -> some View{
         Button(action: {
             tagViewModel.tag = tag.title
             tagViewModel.navigateAtHome.toggle()
-          
-            
         }, label: {
-            
-        
-            
             HStack(spacing : 8){
                 VStack(alignment: .leading, spacing : 0){
                     Text("\(tag.title)")
@@ -400,7 +583,7 @@ struct HomeView: View {
                 
                 ZStack{
                     HStack{
-                        WebImage(url: URL(string: tag.images[0].previewSmallURL ?? ""))
+                        WebImage(url: URL(string: tag.images[0].previewSmallURL ))
                                  
                                      .onSuccess { image, data, cacheType in
                                    
@@ -416,7 +599,7 @@ struct HomeView: View {
                                      .frame( width: 80,height: 160)
                                      .cornerRadius(4)
                         
-                        WebImage(url: URL(string: tag.images[1].previewSmallURL ?? ""))
+                        WebImage(url: URL(string: tag.images[1].previewSmallURL))
                                  
                                      .onSuccess { image, data, cacheType in
                                    
@@ -464,5 +647,4 @@ struct HomeView: View {
          
         })
     }
-    
 }
