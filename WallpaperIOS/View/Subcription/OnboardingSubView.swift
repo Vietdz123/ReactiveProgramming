@@ -25,10 +25,11 @@ struct OnboardingSubView: View {
                     ScreenOne().ignoresSafeArea().gesture(DragGesture()).tag(0)
                     ScreenSecond().ignoresSafeArea().gesture(DragGesture()).tag(1)
                     ScreenThird().ignoresSafeArea().gesture(DragGesture()).tag(2)
-                    ScreenFour()
+                    ScreenFour().ignoresSafeArea().gesture(DragGesture()).tag(3)
+                    ScreenFive()
                         .environmentObject(store)
                         .ignoresSafeArea()
-                        .gesture(DragGesture()).tag(3)
+                        .gesture(DragGesture()).tag(4)
                     
                 })
            
@@ -37,17 +38,7 @@ struct OnboardingSubView: View {
                 .ignoresSafeArea()
                 .overlay(
                     ZStack{
-                        if page != 3 {
-                            Button(action: {
-                                withAnimation{
-                                    page = 3
-                                }
-                            }, label: {
-                                Text("Skip").mfont(14, .regular)
-                                    .foregroundColor(.white)
-                            })
-                            .padding(.horizontal, 16)
-                        }else{
+                        if page > 3 {
                             Button(action: {
                                 withAnimation{
                                     UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
@@ -82,7 +73,7 @@ struct OnboardingSubView: View {
                     
                     Spacer()
                     
-                    if page == 3{
+                    if page == 4{
                         Image("allfeatures")
                             .resizable()
                             .frame(width: 138, height: 120)
@@ -122,7 +113,7 @@ struct OnboardingSubView: View {
                     
                     
                     Button(action: {
-                        if page < 3 {
+                        if page < 4 {
                             withAnimation(.linear){
                                 page += 1
                             }
@@ -269,9 +260,11 @@ struct OnboardingSubView: View {
         if page == 0 {
             return "100000+"
         }else if page == 1 {
-            return "Various"
+            return "Live Wallpapers"
         }else if page == 2 {
-            return "Unique"
+            return "Depth Effect"
+        }else if page == 3 {
+            return "Shuffle Packs"
         }else{
             return ""
         }
@@ -281,9 +274,11 @@ struct OnboardingSubView: View {
         if page == 0 {
             return "4K Wallpapers"
         }else if page == 1 {
-            return "Wallpapers"
+            return "Vivid every detail"
         }else if page == 2 {
-            return "Video Wallpapers"
+            return "Amazing 3D effects"
+        }else if page == 3 {
+            return "Automatically change exciting wallpapers"
         }else{
             return ""
         }
@@ -328,7 +323,7 @@ struct ScreenSecond : View{
             }
         }
         .onAppear(perform: {
-            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video2", withExtension: "mp4")!)
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "live", withExtension: "mp4")!)
             avPlayer!.play()
         })
         .onDisappear(perform: {
@@ -352,7 +347,7 @@ struct ScreenThird : View{
             }
         }
         .onAppear(perform: {
-            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "video3", withExtension: "mp4")!)
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "depth_effect", withExtension: "mp4")!)
             avPlayer!.play()
         })
         .onDisappear(perform: {
@@ -367,6 +362,30 @@ struct ScreenThird : View{
 }
 
 struct ScreenFour : View{
+    @State var avPlayer : AVPlayer?
+    
+    var body: some View{
+        ZStack{
+            if  avPlayer != nil{
+                MyVideoPlayer(player: avPlayer!)
+            }
+        }
+        .onAppear(perform: {
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: "shuffle_packs", withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+
+struct ScreenFive : View{
     @State var avPlayer : AVPlayer?
     var body: some View{
         ZStack{

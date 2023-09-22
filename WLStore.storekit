@@ -378,6 +378,31 @@
           "referenceName" : "Monthly",
           "subscriptionGroupID" : "5CA6DDB4",
           "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "18.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "82F7C0B9",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ezt.wl.threemonth",
+          "recurringSubscriptionPeriod" : "P3M",
+          "referenceName" : "ThreeMonth",
+          "subscriptionGroupID" : "5CA6DDB4",
+          "type" : "RecurringSubscription"
         }
       ]
     }

@@ -34,6 +34,7 @@ struct CategoryView: View {
                 }, label: {
                     EmptyView()
                 })
+               
                 
                 Spacer()
                     .frame(height : 16)
@@ -57,6 +58,7 @@ struct CategoryView: View {
                                     })
                                 Spacer()
                                 Button(action: {
+                                   
                                     categoryPageViewModel.category = categoryData.category
                                     viewModel.navigate.toggle()
                                 }, label: {

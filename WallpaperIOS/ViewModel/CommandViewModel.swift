@@ -213,6 +213,7 @@ enum CategorySorted : String, CaseIterable {
 }
 
 class CategoryPageViewModel : CommandViewModel {
+   
     @Published var category : Category?
     @Published var categorySort : CategorySorted = .NEW
     

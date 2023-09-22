@@ -16,7 +16,7 @@ struct TagView: View {
     @EnvironmentObject var favViewModel : FavoriteViewModel
     @EnvironmentObject var interAd : InterstitialAdLoader
 
-    
+    @State var currentTagName : String = ""
     @State var adStatus : AdStatus = .loading
     
     
@@ -37,6 +37,9 @@ struct TagView: View {
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
+                    .onAppear(perform: {
+                        currentTagName = viewModel.tag
+                    })
            
             }.frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 44)
@@ -179,9 +182,12 @@ struct TagView: View {
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
             .onAppear(perform: {
-                viewModel.wallpapers = []
-                viewModel.currentOffset = 0
-                viewModel.getWallpapers()
+                if currentTagName != viewModel.tag{
+                    viewModel.wallpapers = []
+                    viewModel.currentOffset = 0
+                    viewModel.getWallpapers()
+                }
+               
 
             })
             

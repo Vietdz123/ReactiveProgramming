@@ -136,16 +136,14 @@ struct WallpaperOnePageDetails: View {
         )
         
         .onAppear(perform: {
-            store.showBanner = false
+    
             if !store.isPro(){
                 inter.showAd {
                 }
             }
            
         })
-        .onDisappear(perform: {
-            store.showBanner = true
-        })
+   
          .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
              TutorialContentView()
          })

@@ -407,12 +407,7 @@ struct LiveWLView: View {
             }
         
         )
-        .onAppear(perform: {
-            store.showBanner = false
-        })
-        .onDisappear(perform: {
-            store.showBanner = true
-        })
+       
             .sheet(isPresented: $ctrlViewModel.showTuto, content: {
                 TutorialContentView()
                 

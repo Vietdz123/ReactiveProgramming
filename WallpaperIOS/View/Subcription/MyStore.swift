@@ -34,18 +34,18 @@ struct IDProduct {
     static let YEARLY_NO_FREE_TRIAL = "com.ezt.wl.year_3"
     
     static let MONTHLY_V2 = "com.ezt.wl.month_1"
-    
+    static let THREE_MONTH = "com.ezt.wl.threemonth"
 }
 
 class MyStore: ObservableObject {
 
-    @Published var showBanner : Bool = true
+  
 
     @Published var purchasedIds: [String] = []
 
     @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1,
                                                   IDProduct.MONTH_1 , IDProduct.MONTH,
-                                                  IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_NO_FREE_TRIAL, IDProduct.MONTHLY_V2,
+                                                  IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_NO_FREE_TRIAL, IDProduct.MONTHLY_V2, IDProduct.THREE_MONTH,
                                                   IDProduct.YEAR_1, IDProduct.YEAR_2 ,
                                                   IDProduct.UNLIMITED ,
                                                   IDProduct.COIN_1 , IDProduct.COIN_2  ,IDProduct.COIN_3,
@@ -67,6 +67,7 @@ class MyStore: ObservableObject {
     @Published var yearlyFreeTrialProduct : Product?
     @Published var yearlyNoFreeTrialProduct :  Product?
     @Published var monthProductV2 : Product?
+    @Published var threeMonthProduct : Product?
     
     
     @Published var isPurchasing : Bool = false
@@ -245,25 +246,36 @@ class MyStore: ObservableObject {
                         switch productId {
                         case IDProduct.WEEK_2 :
                             self.weekProductNotSale = productttt
+                           break
                         case IDProduct.WEEK_1 :
                             self.weekProduct = productttt
+                            break
                         case IDProduct.MONTH_1 :
                             self.monthProduct = productttt
+                            break
                         case IDProduct.YEARLY_FREE_TRIAL:
                             self.yearlyFreeTrialProduct = productttt
+                            break
                         case IDProduct.YEARLY_NO_FREE_TRIAL:
                             self.yearlyNoFreeTrialProduct = productttt
+                            break
                         case IDProduct.MONTHLY_V2:
                             self.monthProductV2 = productttt
-                        
+                            break
+                        case IDProduct.THREE_MONTH:
+                            self.threeMonthProduct = productttt
+                            break
                         case IDProduct.COIN_1:
                             self.coin_product_1 = productttt
+                            break
                         case IDProduct.COIN_2:
                             self.coin_product_2 = productttt
+                            break
                         case IDProduct.COIN_3:
                             self.coin_product_3 = productttt
+                            break
                         default:
-                            print("no_data")
+                            break
                         }
 
 
@@ -332,7 +344,23 @@ class MyStore: ObservableObject {
                                 self.purchasedIds.append(trans.productID)
                                 self.Firebase_log("Sub_buy_successful_1_monthly(1)")
                                 onBuySuccess(true)
+                                
+                            case IDProduct.MONTHLY_V2:
+                                self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
+                                
+                            case IDProduct.YEARLY_FREE_TRIAL:
+                                self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
+                                
+                            case IDProduct.YEARLY_NO_FREE_TRIAL:
+                                self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
                             
+                            case IDProduct.THREE_MONTH:
+                                self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
+                                
                             case IDProduct.COIN_1:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_1_coin"), forKey: "current_coin")

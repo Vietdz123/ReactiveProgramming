@@ -376,20 +376,10 @@ struct BuyCoinView: View {
              
                 Firebase_log("Buy_coin_view_show_total")
                 
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    if store.showBanner {
-                        store.showBanner = false
-                    }
-                    
-                })
+           
                 
             })
-            .onDisappear(perform: {
-                if !store.showBanner {
-                    store.showBanner = true
-                }
-            })
+            
     }
 }
 

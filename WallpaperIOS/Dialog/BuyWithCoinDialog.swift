@@ -39,9 +39,9 @@ struct BuyWithCoinDialog: View {
                         .frame(width: width, height: height)
                         .clipped()
                 } else if phase.error != nil {
-                    Color.red
+                   EZProgressView()
                 } else {
-                    Color.blue
+                    EZProgressView()
                 }
             }
             .frame(width: width, height: height)

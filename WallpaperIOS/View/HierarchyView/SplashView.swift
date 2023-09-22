@@ -18,7 +18,7 @@ struct SplashView: View {
     @StateObject var interAd : InterstitialAdLoader = .init()
     @StateObject var homeVM : HomeViewModel = .init()
     @State private var splash_process = 0.0
-    let timer = Timer.publish(every: 0.04, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.03, on: .main, in: .common).autoconnect()
     
     let openAd : OpenAd = OpenAd()
     @Environment(\.scenePhase)  var scenePhase
@@ -28,18 +28,33 @@ struct SplashView: View {
         NavigationView{
             ZStack{
                 
-                NavigationLink(destination:
-                                OnboardingSubView()
-                               
-                    .navigationBarTitle("", displayMode: .inline)
-                    .navigationBarHidden(true)
-                    .environmentObject(homeVM)
-                    .environmentObject(myStore)
-                    .environmentObject(interAd)
-                    .environmentObject(rewardAd)
-                               , isActive: $appVM.navigateToOnboarding, label: {
-                    EmptyView()
-                })
+            //    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+                    NavigationLink(destination:
+                        OnboardingSubView()
+                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarHidden(true)
+                        .environmentObject(homeVM)
+                        .environmentObject(myStore)
+                        .environmentObject(interAd)
+                        .environmentObject(rewardAd)
+                                   , isActive: $appVM.navigateToOnboarding, label: {
+                        EmptyView()
+                    })
+                    
+                    NavigationLink(destination:
+                        OnboardingVerTwoSubView()
+                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarHidden(true)
+                        .environmentObject(homeVM)
+                        .environmentObject(myStore)
+                        .environmentObject(interAd)
+                        .environmentObject(rewardAd)
+                                   , isActive: $appVM.navigateToOnboarding2, label: {
+                        EmptyView()
+                    })
+             //   }
+                
+                
                 
                 
                 NavigationLink(destination:
@@ -71,22 +86,29 @@ struct SplashView: View {
                 newValue in
                 if splash_process == 100 {
                     
-                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-                        appVM.navigateToOnboarding.toggle()
+                    
+                 
+                  //  if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+//                    if myStore.isVer1(){
+ //                       appVM.navigateToOnboarding.toggle()
+//                    }else{
+                    appVM.navigateToOnboarding2.toggle()
+//                    }
                         
-                    }else{
-                        
-                        if myStore.isPro(){
-                            appVM.navigateToHome.toggle()
-                        }else{
-                            openAd.tryToPresentAd(onCommit: {
-                                _ in
-                                appVM.navigateToHome.toggle()
-                            })
-                        }
-                        
-                        
-                    }
+//
+//                    }else{
+//                        
+//                        if myStore.isPro(){
+                          //  appVM.navigateToHome.toggle()
+//                        }else{
+//                            openAd.tryToPresentAd(onCommit: {
+//                                _ in
+//                                appVM.navigateToHome.toggle()
+//                            })
+//                        }
+//                        
+//                        
+//                    }
                     
                 }
             })
@@ -112,6 +134,7 @@ struct SplashView: View {
                     
                     openAd.tryToPresentAd(onCommit: {
                         _ in
+                        appVM.appGoBackground = false
                     })
                     
                     
@@ -127,6 +150,9 @@ struct SplashView: View {
     }
     
     
+
+    
+    
 }
 
 struct SplashView_Previews: PreviewProvider {
@@ -140,6 +166,7 @@ class AppViewModel: ObservableObject {
     @Published var appGoBackground : Bool = false
     
     @Published var navigateToOnboarding : Bool = false
+    @Published var navigateToOnboarding2 : Bool = false
     @Published var navigateToHome : Bool = false
     
     @Published var hasLoadOpenAds : Bool = false

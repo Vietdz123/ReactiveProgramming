@@ -214,6 +214,8 @@ struct SearchView: View {
         .onDisappear(perform: {
             dismissKeyboard()
         })
+       
+        
     }
     
     func dismissKeyboard() {

@@ -283,14 +283,7 @@ struct MainView: View {
                 }
 
         })
-        .onChange(of: mainViewModel.showMenu, perform: {
-            newValue in
-            if newValue {
-                store.showBanner = false
-            }else{
-                store.showBanner = true
-            }
-        })
+     
         .fullScreenCover(isPresented: $mainViewModel.showSubView, content: {
            SubViewRandom()
                 .environmentObject(store)
@@ -445,7 +438,7 @@ struct MainView: View {
         }
         .overlay(
             ZStack{
-                if store.showBanner{
+                if store.allowShowBanner(){
                     BannerAdView(adFormat: .adaptiveBanner, adStatus: $mainViewModel.adStatus)
                 }
             }, alignment: .bottom

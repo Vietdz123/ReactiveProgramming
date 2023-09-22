@@ -16,10 +16,16 @@ struct CategoryPageView: View {
     @EnvironmentObject var store : MyStore
     @EnvironmentObject var favViewModel : FavoriteViewModel
     @EnvironmentObject var interAd : InterstitialAdLoader
-    
+    @State var currentCategoryName : String = ""
     @State var adStatus : AdStatus = .loading
     
     @Namespace var anim
+    
+    
+    
+    
+    
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -37,6 +43,9 @@ struct CategoryPageView: View {
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
+                    .onAppear(perform: {
+                        currentCategoryName = viewModel.category?.title ?? ""
+                    })
                 
             }.frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 44)
@@ -105,8 +114,7 @@ struct CategoryPageView: View {
                                 WebImage(url: URL(string: string))
                                 
                                    .onSuccess { image, data, cacheType in
-                                       // Success
-                                       // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
+
                                    }
                                    .resizable()
                                    .placeholder {
@@ -165,11 +173,11 @@ struct CategoryPageView: View {
                 viewModel.getWallpapers()
             }
             .onAppear(perform: {
-               // if viewModel.wallpapers.isEmpty{
+                if ( viewModel.category?.title ?? "" ) != currentCategoryName {
                     viewModel.wallpapers = []
                     viewModel.currentOffset = 0
                     viewModel.getWallpapers()
-          //      }
+                }
                 
                 
             })

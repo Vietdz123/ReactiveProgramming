@@ -485,7 +485,7 @@ struct ShuffleDetailView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .addBackground()
             .onAppear(perform: {
-                store.showBanner = false
+             
                 if !store.isPro(){
                     interAd.showAd {
                         
@@ -493,9 +493,7 @@ struct ShuffleDetailView: View {
                 }
                 
             })
-            .onDisappear(perform: {
-                store.showBanner = true
-            })
+           
     }
     
 

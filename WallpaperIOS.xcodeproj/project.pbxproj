@@ -117,6 +117,10 @@
 		181C68462A376EFE00638CA7 /* placeholder_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 181C68452A376EFE00638CA7 /* placeholder_anim.json */; };
 		181C68482A37730100638CA7 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181C68472A37730100638CA7 /* DateHelper.swift */; };
 		899D6EE42AB9A89C003C3B4A /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899D6EE32AB9A89C003C3B4A /* TagModel.swift */; };
+		89C589122ABD7F9B005EE7B1 /* live.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 89C5890F2ABD7F9B005EE7B1 /* live.mp4 */; };
+		89C589132ABD7F9B005EE7B1 /* shuffle_packs.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 89C589102ABD7F9B005EE7B1 /* shuffle_packs.mp4 */; };
+		89C589142ABD7F9B005EE7B1 /* depth_effect.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 89C589112ABD7F9B005EE7B1 /* depth_effect.mp4 */; };
+		89C589162ABD9B08005EE7B1 /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C589152ABD9B08005EE7B1 /* Lifecycle.swift */; };
 		89E2243E2ABC2FAA0061E1C8 /* ProgressBuySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */; };
 		89E224402ABC308D0061E1C8 /* loadingcat.json in Resources */ = {isa = PBXBuildFile; fileRef = 89E2243F2ABC308D0061E1C8 /* loadingcat.json */; };
 		89E224422ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E224412ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift */; };
@@ -232,6 +236,10 @@
 		181C68452A376EFE00638CA7 /* placeholder_anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = placeholder_anim.json; sourceTree = "<group>"; };
 		181C68472A37730100638CA7 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		899D6EE32AB9A89C003C3B4A /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
+		89C5890F2ABD7F9B005EE7B1 /* live.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = live.mp4; path = ../../../../../Downloads/Intro/live.mp4; sourceTree = "<group>"; };
+		89C589102ABD7F9B005EE7B1 /* shuffle_packs.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = shuffle_packs.mp4; path = ../../../../../Downloads/Intro/shuffle_packs.mp4; sourceTree = "<group>"; };
+		89C589112ABD7F9B005EE7B1 /* depth_effect.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = depth_effect.mp4; path = ../../../../../Downloads/Intro/depth_effect.mp4; sourceTree = "<group>"; };
+		89C589152ABD9B08005EE7B1 /* Lifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBuySubView.swift; sourceTree = "<group>"; };
 		89E2243F2ABC308D0061E1C8 /* loadingcat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loadingcat.json; path = ../../../../../Downloads/loadingcat.json; sourceTree = "<group>"; };
 		89E224412ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVerTwoSubView.swift; sourceTree = "<group>"; };
@@ -320,6 +328,7 @@
 				181C68472A37730100638CA7 /* DateHelper.swift */,
 				04C436EE2A95F46C00DDA76C /* PermissionHelper.swift */,
 				89E2243D2ABC2FAA0061E1C8 /* ProgressBuySubView.swift */,
+				89C589152ABD9B08005EE7B1 /* Lifecycle.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -526,6 +535,9 @@
 		04A90CAF2AAEBD39007ED3E2 /* Raw */ = {
 			isa = PBXGroup;
 			children = (
+				89C589112ABD7F9B005EE7B1 /* depth_effect.mp4 */,
+				89C5890F2ABD7F9B005EE7B1 /* live.mp4 */,
+				89C589102ABD7F9B005EE7B1 /* shuffle_packs.mp4 */,
 				89E2243F2ABC308D0061E1C8 /* loadingcat.json */,
 				048C77612AAADAAE00E0D0E3 /* progress_white.json */,
 				048C775F2AAAD68400E0D0E3 /* progress.json */,
@@ -652,9 +664,12 @@
 				89E224402ABC308D0061E1C8 /* loadingcat.json in Resources */,
 				049EFA552A89CEE70050369D /* preview_shuffle.mp4 in Resources */,
 				04AF70252A85D169002338AC /* video1.mp4 in Resources */,
+				89C589142ABD7F9B005EE7B1 /* depth_effect.mp4 in Resources */,
 				04B1F8D72A1C76E3006F22E8 /* bold.ttf in Resources */,
+				89C589132ABD7F9B005EE7B1 /* shuffle_packs.mp4 in Resources */,
 				04B1528E2A2DDE92000185FB /* GoogleService-Info.plist in Resources */,
 				04BD2BA72A9F25F700D213AE /* video4.mp4 in Resources */,
+				89C589122ABD7F9B005EE7B1 /* live.mp4 in Resources */,
 				0495231029F7C6CD004538DD /* Preview Assets.xcassets in Resources */,
 				181C68462A376EFE00638CA7 /* placeholder_anim.json in Resources */,
 				04AF70242A85D169002338AC /* video3.mp4 in Resources */,
@@ -697,6 +712,7 @@
 				04AF80542A25DE6E0024AF64 /* PolicyView.swift in Sources */,
 				0495231529F7C6CD004538DD /* WallpaperIOS.xcdatamodeld in Sources */,
 				0491B55B2A1F43E70002EB08 /* CommandViewModel.swift in Sources */,
+				89C589162ABD9B08005EE7B1 /* Lifecycle.swift in Sources */,
 				049587A22A4D1C5D00BC5376 /* DailyGiftViewModel.swift in Sources */,
 				04B1F8C52A1C514D006F22E8 /* WatchRVtoGetCoinDialog.swift in Sources */,
 				040FC5622A78C06D00CD1DE1 /* TutorialShuffleView.swift in Sources */,

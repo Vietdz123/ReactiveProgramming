@@ -24,7 +24,7 @@ struct SplashScreenView: View {
                     .frame(width: 80, height: 80)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.main, lineWidth: 1)
+                            .stroke(Color.main, lineWidth: 2)
                     )
                 Text(AppConfig.APP_NAME)
                     .mfont(24, .bold)

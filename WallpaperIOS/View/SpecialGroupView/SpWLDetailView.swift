@@ -558,11 +558,6 @@ struct SpWLDetailView: View {
         )
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
             TutorialContentView()
-        }).onAppear(perform: {
-            store.showBanner = false
-        })
-        .onDisappear(perform: {
-            store.showBanner = true
         })
         
       

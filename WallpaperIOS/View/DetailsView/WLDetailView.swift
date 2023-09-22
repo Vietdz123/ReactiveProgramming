@@ -194,13 +194,7 @@ struct WLView: View {
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
             TutorialContentView()
         })
-        .onAppear(perform: {
-            store.showBanner = false
-        })
-        .onDisappear(perform: {
-            store.showBanner = true
-        })
-        
+       
     }
     
     @ViewBuilder
@@ -229,7 +223,6 @@ struct WLView: View {
                                 .resizable()
                                 .frame(width: 13, height: 13)
                             Text(" \( (viewModel.wallpapers[index].cost ?? 0) == 0 ? 0 : exclusiveCost  )")
-                            //   Text(" \(exclusiveCost)")
                                 .mfont(13, .regular)
                                 .foregroundColor(.white)
                             
@@ -554,7 +547,6 @@ struct WLView: View {
     }
     
 }
-
 
 
 
