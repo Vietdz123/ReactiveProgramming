@@ -8,7 +8,6 @@
 import StoreKit
 import Foundation
 import SwiftUI
-//import Flurry_iOS_SDK
 import FirebaseAnalytics
 import FirebaseRemoteConfig
 
@@ -34,7 +33,7 @@ struct IDProduct {
     static let YEARLY_NO_FREE_TRIAL = "com.ezt.wl.year_3"
     
     static let MONTHLY_V2 = "com.ezt.wl.month_1"
-    static let THREE_MONTH = "com.ezt.wl.threemonth"
+    static let THREE_MONTH = "com.ezt.wl.3months"
 }
 
 class MyStore: ObservableObject {
@@ -65,7 +64,7 @@ class MyStore: ObservableObject {
     
     
     @Published var yearlyFreeTrialProduct : Product?
-    @Published var yearlyNoFreeTrialProduct :  Product?
+    @Published var yearlv2SalaProduct :  Product?
     @Published var monthProductV2 : Product?
     @Published var threeMonthProduct : Product?
     
@@ -98,9 +97,10 @@ class MyStore: ObservableObject {
     }
 
     func isNewVeriosn() -> Bool {
-
         return UIApplication.version != UserDefaults.standard.string(forKey: "current_version") ?? ""
     }
+    
+    
 
 
     func fetchMonthProductForFirsttime() {
@@ -147,7 +147,13 @@ class MyStore: ObservableObject {
                     let exclusiveCost   = self.remoteConfig.configValue(forKey: "exclusive_cost").numberValue
                     let currentVersion  = self.remoteConfig.configValue(forKey: "current_version").stringValue ?? "1.1.2.1"
                     let liveWlUsingCoin  = self.remoteConfig.configValue(forKey: "live_wl_using_coin").boolValue
-
+                  
+                    
+                    //MARK NEWVERSION
+                    let is_v1           = self.remoteConfig.configValue(forKey: "is_v1").boolValue
+                    let url_image_bg_event = self.remoteConfig.configValue(forKey: "sub_event_bg_image_url").stringValue ?? "https://cdn-wallpaper.eztechglobal.com/upload/images/full/2023/09/25/1695615834_Dkptf.png"
+                    let url_image_banner_event = self.remoteConfig.configValue(forKey: "sub_event_banner_image_url").stringValue ?? "https://cdn-wallpaper.eztechglobal.com/upload/images/full/2023/09/25/1695635611_5n8d8.png"
+                    
 
                     UserDefaults.standard.set(wl_domain,       forKey: "wl_domain")
                     UserDefaults.standard.set(reward_delay,    forKey: "delay_reward")
@@ -157,7 +163,12 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(currentVersion,  forKey: "current_version")
                     UserDefaults.standard.set(liveWlUsingCoin,  forKey: "remoteCf_live_using_coin")
 
+                    
+                    //MARK NEWVERSION
                     UserDefaults.standard.set(false,  forKey: "is_v1")
+                    UserDefaults.standard.set(url_image_bg_event, forKey: "sub_event_bg_image_url")
+                    UserDefaults.standard.set(url_image_banner_event, forKey: "sub_event_banner_image_url")
+                    UserDefaults.standard.set(true, forKey: "has_event")
                 }
 
 
@@ -183,6 +194,9 @@ class MyStore: ObservableObject {
         return UserDefaults.standard.bool(forKey:  "is_v1")
     }
 
+    func isHasEvent() -> Bool{
+        return UserDefaults.standard.bool(forKey:  "has_event")
+    }
 
     func getProductsIdFromRemote(productJsonStr : String){
 
@@ -257,7 +271,7 @@ class MyStore: ObservableObject {
                             self.yearlyFreeTrialProduct = productttt
                             break
                         case IDProduct.YEARLY_NO_FREE_TRIAL:
-                            self.yearlyNoFreeTrialProduct = productttt
+                            self.yearlv2SalaProduct = productttt
                             break
                         case IDProduct.MONTHLY_V2:
                             self.monthProductV2 = productttt

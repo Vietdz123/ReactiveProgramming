@@ -19,7 +19,7 @@ struct OnboardingVerTwoSubView: View {
     @EnvironmentObject var store : MyStore
     @State var currentProduct : Int = 2
     
-    
+    @State var showXmark : Bool =  true
     @State var navigateToHome : Bool = false
     
     @EnvironmentObject var homeVM : HomeViewModel
@@ -73,12 +73,20 @@ struct OnboardingVerTwoSubView: View {
                 )
                 .overlay(
                     ZStack{
-                        if currentPage >= 5 {
+                        if currentPage >= 5  && showXmark {
                             Button(action: {
-                                if currentPage == 5 {
+                                if currentPage == 5{
                                     withAnimation(.linear){
                                         currentPage = 6
                                     }
+                                    showXmark = false
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                                        withAnimation(.easeInOut){
+                                            showXmark = true
+                                        }
+                                        
+                                    })
+                                    
                                     
                                 }else{
                                     withAnimation{
@@ -342,7 +350,7 @@ extension OnboardingVerTwoSubView{
     }
     
     func Screen_5() -> some View{
-        VideoOnboarding(video_name: "video4")
+        VideoOnboarding(video_name: "video4v2")
     }
     
    

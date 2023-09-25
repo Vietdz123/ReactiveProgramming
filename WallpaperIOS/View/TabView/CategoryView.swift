@@ -40,6 +40,57 @@ struct CategoryView: View {
                     .frame(height : 16)
                 
                 
+                if store.isHasEvent() && !store.isPro(){
+                    
+                    GeometryReader{
+                        proxy in
+                        let size = proxy.size
+                        ZStack{
+                            WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_banner_image_url") ?? ""))
+                            
+                                                    .onSuccess { image, data, cacheType in
+                            
+                                                    }
+                                                    .resizable()
+                                                    .indicator(.activity) // Activity Indicator
+                                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                                    .scaledToFill()
+                                                    .frame(width: size.width, height: size.height)
+                        }
+                        VStack(spacing : 0){
+                            Spacer()
+                            Text("Just 17.99$/year")
+                                .mfont(15, .regular)
+                              .multilineTextAlignment(.center)
+                              .foregroundColor(.white)
+                              .padding(.leading, 35)
+                            
+                            Button(action: {
+                                
+                            }, label: {
+                                Text("Claim!")
+                                    .mfont(17, .bold)
+                                  .multilineTextAlignment(.center)
+                                  .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                  .frame(width: 92, height: 32)
+                                  .background(
+                                    Capsule()
+                                    .fill(Color(red: 1, green: 0.87, blue: 0.19))
+                                  )
+                            })
+                            .padding(.top, 8)
+                            .padding(.bottom, 16)
+                            .padding(.leading, 48)
+                            
+                        }.frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .topLeading)
+                                                
+                        
+                    }.frame(width: getRect().width - 32 , height: ( getRect().width - 32 ) * 504 / 1080 )
+                        .cornerRadius(8)
+                    
+
+                }
+                
                 LazyVStack(spacing : 0){
                     ForEach(0..<viewModel.categorieWithData.count, id: \.self){
                         index in

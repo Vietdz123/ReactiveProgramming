@@ -323,12 +323,12 @@ extension SubcriptionVIew {
                 
                 ZStack{
                     if store.purchasedIds.isEmpty{
-                        if let yearlyNoFreeTrial = store.yearlyNoFreeTrialProduct{
+                        if let yearlyNoFreeTrial = store.yearlv2SalaProduct{
                             
                             VStack(spacing : 0){
                                 Text("Just \(yearlyNoFreeTrial.displayPrice)/year.")
                                     .mfont(17, .bold)
-                                Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 365))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/day! )")
+                                Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 12))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/month! )")
                                     .mfont(15, .regular)
                                     .padding(.top, 6)
                                 

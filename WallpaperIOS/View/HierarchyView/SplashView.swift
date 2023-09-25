@@ -90,7 +90,7 @@ struct SplashView: View {
                  
                   //  if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
 //                    if myStore.isVer1(){
- //                       appVM.navigateToOnboarding.toggle()
+ //                      appVM.navigateToOnboarding.toggle()
 //                    }else{
                     appVM.navigateToOnboarding2.toggle()
 //                    }

@@ -51,15 +51,15 @@ struct Sub_1_View: View {
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
-            if let product = store.weekProduct {
+            if let product = store.isVer1() ?  store.weekProduct : store.yearlv2SalaProduct {
                 
                 
                 
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/week ")
+                    Text("Total \(product.displayPrice)/\(store.isVer1() ? "week" : "year") ")
                         .mfont(15, .regular)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/week)")
+                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "week" : "year"))")
                         .mfont(15, .regular)
                         .foregroundColor(.white)
                         .overlay(

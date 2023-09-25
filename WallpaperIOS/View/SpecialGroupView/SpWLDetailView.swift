@@ -27,6 +27,8 @@ struct SpWLDetailView: View {
     @State var showBuySubAtScreen : Bool = false
     @State var isBuySubWeek : Bool = true
     @State var showMore : Bool = false
+    @State var showContentPremium : Bool = false
+    @State var showSub : Bool = false
     var body: some View {
         
         
@@ -110,401 +112,8 @@ struct SpWLDetailView: View {
                 }
                 
                 if showBuySubAtScreen {
-                    VisualEffectView(effect: UIBlurEffect(style: .dark))
-                        .ignoresSafeArea()
-                    
-                    if let weekPro = store.weekProduct , let monthPro = store.monthProduct {
-                        VStack(spacing : 0){
-                            Spacer()
-                            
-                            
-                            ZStack{
-                                
-                                if showMore {
-                                    VStack(spacing : 0){
-                                        Text("Give Your Phone A Brand-New Look")
-                                            .mfont(20, .bold)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(.white)
-                                        .frame(width: 320)
-                                        
-                                        Text("Choose your subscription plan:")
-                                            .mfont(16, .regular)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(.white)
-                                        .frame(width: 320)
-                                        .padding(.top, 12)
-                                        
-                                        
-                                        HStack(spacing : 0){
-                                            ZStack{
-                                                if isBuySubWeek {
-                                                    Circle()
-                                                        .fill(
-                                                            LinearGradient(
-                                                            stops: [
-                                                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                                            ],
-                                                            startPoint: UnitPoint(x: 0.1, y: 1.17),
-                                                            endPoint: UnitPoint(x: 1, y: -0.22)
-                                                        )
-                                                        )
-                                                    Image("checkmark")
-                                                        .resizable()
-                                                        .aspectRatio( contentMode: .fit)
-                                                        .frame(width: 24, height: 24)
-                                                    
-                                                }else{
-                                                    Circle()
-                                                        .stroke(Color.white, lineWidth: 1)
-                                                }
-                                                
-                                               
-                                                
-                                            }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
-                                            
-                                            VStack(spacing : 2){
-                                                Text("Best Offer")
-                                                    .mfont(16, .bold)
-                                                    .foregroundColor(.white)
-                                                
-                                                Text("\(weekPro.displayPrice)/week")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                
-                                            }.frame(maxWidth: .infinity, alignment: .leading)
-                                            
-                                            Text("\(weekPro.displayPrice)/week")
-                                                .mfont(12, .regular)
-                                              .foregroundColor(.white)
-                                              .padding(.trailing, 16)
-                                                            
-                                              
-                                        }.frame(maxWidth: .infinity)
-                                            .frame(height: 48)
-                                            .contentShape(RoundedRectangle(cornerRadius: 12))
-                                            .onTapGesture{
-                                                withAnimation{
-                                                    isBuySubWeek = true
-                                                }
-                                            }
-                                            .overlay(
-                                                Text("Sale 30%")
-                                                    .mfont(10, .bold)
-                                                  .multilineTextAlignment(.center)
-                                                  .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                                                  .frame(width: 64, height: 16)
-                                                 
-                                                  .background(
-                                                    Capsule().fill(Color.main)
-                                                  )
-                                                  .offset(x : -16, y : -8)
-                                                ,
-                                                alignment: .topTrailing
-                                            
-                                            )
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(
-                                                    
-                                                        LinearGradient(
-                                                        stops: [
-                                                        Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1).opacity(0.2), location: 0.00),
-                                                        Gradient.Stop(color: Color(red: 0.82, green: 0.23, blue: 0.89).opacity(0.2), location: 1.00),
-                                                        ],
-                                                        startPoint: UnitPoint(x: 0, y: 1),
-                                                        endPoint: UnitPoint(x: 1, y: 0)
-                                                        )
-                                                    )
-                                                
-                                            )
-                                        
-                                            .padding(.horizontal, 27)
-                                            .padding(.top, 32)
-                                        
-                                        
-                                        HStack(spacing : 0){
-                                            ZStack{
-                                                if !isBuySubWeek {
-                                                    Circle()
-                                                        .fill(
-                                                            LinearGradient(
-                                                            stops: [
-                                                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                                            ],
-                                                            startPoint: UnitPoint(x: 0.1, y: 1.17),
-                                                            endPoint: UnitPoint(x: 1, y: -0.22)
-                                                        )
-                                                        )
-                                                    Image("checkmark")
-                                                        .resizable()
-                                                        .aspectRatio( contentMode: .fit)
-                                                        .frame(width: 24, height: 24)
-                                                    
-                                                }else{
-                                                    Circle()
-                                                        .stroke(Color.white, lineWidth: 1)
-                                                }
-                                                
-                                               
-                                                
-                                            }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
-                                            
-                                            VStack(spacing : 2){
-                                                Text("Monthly")
-                                                    .mfont(16, .bold)
-                                                    .foregroundColor(.white)
-                                                
-                                                Text("\(monthPro.displayPrice)/month")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                
-                                            }.frame(maxWidth: .infinity, alignment: .leading)
-                                            
-                                            Text("\(decimaPriceToStr(price: monthPro.price , chia: 4))\(removeDigits(string: monthPro.displayPrice ))/week")
-                                                .mfont(12, .regular)
-                                              .foregroundColor(.white)
-                                              .padding(.trailing, 16)
-                                                            
-                                              
-                                        }.frame(maxWidth: .infinity)
-                                            .frame(height: 48)
-                                            .contentShape(RoundedRectangle(cornerRadius: 12))
-                                            .onTapGesture{
-                                                withAnimation{
-                                                    isBuySubWeek = false
-                                                }
-                                            }
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(
-                                                    
-                                                        LinearGradient(
-                                                        stops: [
-                                                        Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1).opacity(0.2), location: 0.00),
-                                                        Gradient.Stop(color: Color(red: 0.82, green: 0.23, blue: 0.89).opacity(0.2), location: 1.00),
-                                                        ],
-                                                        startPoint: UnitPoint(x: 0, y: 1),
-                                                        endPoint: UnitPoint(x: 1, y: 0)
-                                                        )
-                                                    )
-                                                
-                                            )
-                                        
-                                            .padding(.horizontal, 27)
-                                            .padding(.top, 12)
-                                        
-                                      
-                                        
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                  
-                                    
-                                }else{
-                                    VStack(spacing : 0){
-                                        Text("Give Your Phone A Brand-New Look")
-                                            .mfont(16, .bold)
-                                            .multilineTextAlignment(.center)
-                                            .foregroundColor(.white)
-                                            .frame(width: 320, alignment: .top)
-                                        
-                                        Group{
-                                            Text("Only 3.99$ per week.")
-                                            Text("Auto-renewable. Cancel anytime.")
-                                            
-                                        }
-                                        .mfont(12, .regular)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(.white)
-                                        .frame(width: 320, alignment: .top)
-                                    }
-                                }
-                               
-                                
-                            }
-                            
-                          
-                            
-                            
-                            
-                            Button(action: {
-                                withAnimation(.spring()){
-                                    showMore.toggle()
-                                }
-                            }, label: {
-                                HStack(spacing : 8){
-                                    Text("More Options")
-                                        .mfont(12, .regular)
-                                    
-                                      .multilineTextAlignment(.center)
-                                      .foregroundColor(.white)
-                                    
-                                    Image(systemName: showMore ?  "chevron.up" : "chevron.down" )
-                                        .resizable()
-                                        .aspectRatio( contentMode: .fit)
-                                        .foregroundColor(.white)
-                                        .frame(width: 16, height: 16)
-                                    
-                                }.frame(width: 120, height: 24)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color.white.opacity(0.2))
-                                    )
-                                    .padding(16)
-                            })
-                          
-                          
-                            
-                            
-                            Button(action: {
-                                if store.purchasedIds.isEmpty{
-                                
-                                    Firebase_log("Sub_click_buy_sub_total")
-                                    store.isPurchasing = true
-                                    showProgressSubView()
-                                    if isBuySubWeek {
-                                     
-                                        Firebase_log("Sub_click_buy_weekly")
-                                        store.purchase(product: weekPro, onBuySuccess: { b in
-                                            if b {
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                                                    withAnimation(.easeInOut){
-                                                        showBuySubAtScreen = false
-                                                    }
-                                                }
-                                               
-                                            }else{
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-                                                }
-                                            }
-                                           
-                                        })
-
-
-                                    }else {
-                                 
-                                        Firebase_log("Sub_click_buy_monthly")
-                                        store.purchase(product: monthPro, onBuySuccess: { b in
-                                            if b {
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                                                    withAnimation(.easeInOut){
-                                                        showBuySubAtScreen = false
-                                                    }
-                                                }
-                                               
-                                            }else{
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-                                                }
-                                            }
-                                            
-                                        })
-
-                                    }
-                                }
-                               
-                            }, label: {
-                                HStack{
-                                   
-                                    
-                                    Text("Continue")
-                                        .mfont(16, .bold)
-                                        .multilineTextAlignment(.center)
-                                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                                        .overlay(
-                                            ZStack{
-                                                if store.isPurchasing{
-                                                    EZProgressView()
-                                                }
-                                            }.offset(x : -36)
-                                            , alignment: .leading
-                                        )
-                                }
-                                
-                              
-                                    .frame(width: 240, height: 48)
-                                    .background(
-                                        Capsule()
-                                            .foregroundColor(.main)
-                                    )
-                            })
-                            ZStack{
-                                HStack(spacing : 32){
-                                    Button(action: {
-                                        Task{
-                                            let b = await store.restore()
-                                            if b {
-                                                showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
-                                            }else{
-                                                showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
-                                            }
-                                        }
-                                    }, label: {
-                                        Text("RESTORE")
-                                            .mfont(10, .regular)
-                                            .foregroundColor(.white)
-                                    })
-                                    
-                                    Button(action: {
-                                        if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-                                            UIApplication.shared.open(url)
-                                        }
-                                    }, label: {
-                                        Text("EULA")
-                                            .mfont(10, .regular)
-                                            .foregroundColor(.white)
-                                    })
-                                    
-                                    
-                                    Button(action: {
-                                        if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
-                                            UIApplication.shared.open(url)
-                                        }
-                                    }, label: {
-                                        Text("PRIVACY")
-                                            .mfont(10, .regular)
-                                            .foregroundColor(.white)
-                                    })
-                                }
-                                
-                            }.frame(height: 48)
-                            
-                            
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        .overlay(
-                        Button(action: {
-                            withAnimation(.easeInOut){
-                                showBuySubAtScreen.toggle()
-                            }
-                        }, label: {
-                            Image("close.circle.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
-                                .padding(16)
-                        }), alignment: .topTrailing
-                            
-                        )
-                    }
-                    
-                   
-                        
+                    SubInScreen()
+     
                 }
             }
         }
@@ -556,12 +165,517 @@ struct SpWLDetailView: View {
             }
         
         )
+        .overlay(
+            ZStack{
+                if showContentPremium {
+                    let url  = viewModel.wallpapers[index].path.first?.path.small ?? viewModel.wallpapers[index].path.first?.path.preview ?? ""
+                        SpecialContentPremiumDialog(show: $showContentPremium, urlStr: url, onClickBuyPro: {
+                            showContentPremium = false
+                            showSub.toggle()
+                        })
+                }
+            }
+
+        )
+        .fullScreenCover(isPresented: $showSub, content: {
+            SubcriptionVIew()
+                .environmentObject(store)
+        })
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
             TutorialContentView()
         })
         
       
     }
+    
+   
+}
+
+
+extension SpWLDetailView{
+    
+    
+    @ViewBuilder
+    func SubInScreen() -> some View{
+        ZStack{
+            VisualEffectView(effect: UIBlurEffect(style: .dark))
+                .ignoresSafeArea()
+            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlv2SalaProduct , let monthV2 = store.monthProductV2 {
+                VStack(spacing : 0){
+                    Spacer()
+                    
+                    
+                    ZStack{
+                        
+                        if showMore {
+                            VStack(spacing : 0){
+                                Text("Give Your Phone A Brand-New Look")
+                                    .mfont(20, .bold)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .frame(width: 320)
+                                
+                                Text("Choose your subscription plan:")
+                                    .mfont(16, .regular)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .frame(width: 320)
+                                .padding(.top, 12)
+                                
+                                
+                                HStack(spacing : 0){
+                                    ZStack{
+                                        if isBuySubWeek {
+                                            Circle()
+                                                .fill(
+                                                    LinearGradient(
+                                                    stops: [
+                                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                    ],
+                                                    startPoint: UnitPoint(x: 0.1, y: 1.17),
+                                                    endPoint: UnitPoint(x: 1, y: -0.22)
+                                                )
+                                                )
+                                            Image("checkmark")
+                                                .resizable()
+                                                .aspectRatio( contentMode: .fit)
+                                                .frame(width: 24, height: 24)
+                                            
+                                        }else{
+                                            Circle()
+                                                .stroke(Color.white, lineWidth: 1)
+                                        }
+                                        
+                                       
+                                        
+                                    }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
+                                    
+                                    ZStack{
+                                        if store.isVer1(){
+                                            
+                                            HStack{
+                                                VStack(spacing : 2){
+                                                    Text("Best Offer")
+                                                        .mfont(16, .bold)
+                                                        .foregroundColor(.white)
+                                                       
+                                                    Text("\(weekPro.displayPrice)/week")
+                                                        .mfont(12, .regular)
+                                                      .foregroundColor(.white)
+                                                     
+                                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                                
+                                                Spacer()
+                                                
+                                                Text("\(weekPro.displayPrice)/week")
+                                                    .mfont(12, .regular)
+                                                  .foregroundColor(.white)
+                                                  .padding(.trailing, 16)
+                                            }
+                                            
+                                            
+                                        }else {
+                                            HStack{
+                                                VStack(spacing : 2){
+                                                    Text("Best Offer")
+                                                        .mfont(16, .bold)
+                                                        .foregroundColor(.white)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                    Text("\(yearV2.displayPrice)/year")
+                                                        .mfont(12, .regular)
+                                                      .foregroundColor(.white)
+                                                      .frame(maxWidth: .infinity, alignment: .leading)
+                                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                                
+                                                Spacer()
+                                                
+                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:12))\(removeDigits(string:yearV2.displayPrice))/month")
+                                                    .mfont(12, .regular)
+                                                  .foregroundColor(.white)
+                                                  .padding(.trailing, 16)
+                                            }
+                                            
+                                          
+                                        }
+                                    }
+                                    
+                                  
+                                                    
+                                      
+                                }.frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .contentShape(RoundedRectangle(cornerRadius: 12))
+                                    .onTapGesture{
+                                        withAnimation{
+                                            isBuySubWeek = true
+                                        }
+                                    }
+                                    .overlay(
+                                        Text("Sale 30%")
+                                            .mfont(10, .bold)
+                                          .multilineTextAlignment(.center)
+                                          .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                          .frame(width: 64, height: 16)
+                                         
+                                          .background(
+                                            Capsule().fill(Color.main)
+                                          )
+                                          .offset(x : -16, y : -8)
+                                        ,
+                                        alignment: .topTrailing
+                                    
+                                    )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(
+                                            
+                                                LinearGradient(
+                                                stops: [
+                                                Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1).opacity(0.2), location: 0.00),
+                                                Gradient.Stop(color: Color(red: 0.82, green: 0.23, blue: 0.89).opacity(0.2), location: 1.00),
+                                                ],
+                                                startPoint: UnitPoint(x: 0, y: 1),
+                                                endPoint: UnitPoint(x: 1, y: 0)
+                                                )
+                                            )
+                                        
+                                    )
+                                
+                                    .padding(.horizontal, 27)
+                                    .padding(.top, 32)
+                                
+                                
+                                HStack(spacing : 0){
+                                    ZStack{
+                                        if !isBuySubWeek {
+                                            Circle()
+                                                .fill(
+                                                    LinearGradient(
+                                                    stops: [
+                                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                    ],
+                                                    startPoint: UnitPoint(x: 0.1, y: 1.17),
+                                                    endPoint: UnitPoint(x: 1, y: -0.22)
+                                                )
+                                                )
+                                            Image("checkmark")
+                                                .resizable()
+                                                .aspectRatio( contentMode: .fit)
+                                                .frame(width: 24, height: 24)
+                                            
+                                        }else{
+                                            Circle()
+                                                .stroke(Color.white, lineWidth: 1)
+                                        }
+                                        
+                                       
+                                        
+                                    }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
+                                    
+                                    ZStack{
+                                        if store.isVer1(){
+                                            HStack{
+                                                VStack(spacing : 2){
+                                                    Text("Monthly")
+                                                        .mfont(16, .bold)
+                                                        .foregroundColor(.white)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                     
+                                                    Text("\(monthPro.displayPrice)/month")
+                                                        .mfont(12, .regular)
+                                                      .foregroundColor(.white)
+                                                      .frame(maxWidth: .infinity, alignment: .leading)
+                                                      
+                                                }
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                Spacer()
+                                                Text("\(decimaPriceToStr(price: monthPro.price , chia: 4))\(removeDigits(string: monthPro.displayPrice ))/week")
+                                                    .mfont(12, .regular)
+                                                  .foregroundColor(.white)
+                                                  .padding(.trailing, 16)
+                                            }
+                                            
+                                            
+                                        }else {
+                                            HStack{
+                                                VStack(spacing : 2){
+                                                    Text("Monthly")
+                                                        .mfont(16, .bold)
+                                                        .foregroundColor(.white)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                    
+                                                    
+                                                    Text("\(monthV2.displayPrice)/month")
+                                                        .mfont(12, .regular)
+                                                      .foregroundColor(.white)
+                                                      .frame(maxWidth: .infinity, alignment: .leading)
+                                                }
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                
+                                                Spacer()
+                                                Text("\(monthV2.displayPrice)/month")
+                                                    .mfont(12, .regular)
+                                                  .foregroundColor(.white)
+                                                  .padding(.trailing, 16)
+                                            }
+                                            
+                                           
+                                        }
+                                    
+                                   
+                                    }
+                                      
+                                }.frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .contentShape(RoundedRectangle(cornerRadius: 12))
+                                    .onTapGesture{
+                                        withAnimation{
+                                            isBuySubWeek = false
+                                        }
+                                    }
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(
+                                            
+                                                LinearGradient(
+                                                stops: [
+                                                Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1).opacity(0.2), location: 0.00),
+                                                Gradient.Stop(color: Color(red: 0.82, green: 0.23, blue: 0.89).opacity(0.2), location: 1.00),
+                                                ],
+                                                startPoint: UnitPoint(x: 0, y: 1),
+                                                endPoint: UnitPoint(x: 1, y: 0)
+                                                )
+                                            )
+                                        
+                                    )
+                                
+                                    .padding(.horizontal, 27)
+                                    .padding(.top, 12)
+                                
+                              
+                                
+                            }
+                            .frame(maxWidth: .infinity)
+                          
+                            
+                        }else{
+                            VStack(spacing : 0){
+                                Text("Give Your Phone A Brand-New Look")
+                                    .mfont(16, .bold)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                                    .frame(width: 320, alignment: .top)
+                                
+                                Group{
+                                    if store.isVer1(){
+                                        Text("Only \(weekPro.displayPrice) per week.")
+                                    }else{
+                                        Text("Only \(yearV2.displayPrice) per year.")
+                                    }
+                                    
+                                    Text("Auto-renewable. Cancel anytime.")
+                                    
+                                }
+                                .mfont(12, .regular)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .frame(width: 320, alignment: .top)
+                                
+                                
+                                
+                            }
+                        }
+                       
+                        
+                    }
+                    
+                  
+                    
+                    
+                    
+                    Button(action: {
+                        withAnimation(.spring()){
+                            showMore.toggle()
+                        }
+                    }, label: {
+                        HStack(spacing : 8){
+                            Text("More Options")
+                                .mfont(12, .regular)
+                            
+                              .multilineTextAlignment(.center)
+                              .foregroundColor(.white)
+                            
+                            Image(systemName: showMore ?  "chevron.up" : "chevron.down" )
+                                .resizable()
+                                .aspectRatio( contentMode: .fit)
+                                .foregroundColor(.white)
+                                .frame(width: 16, height: 16)
+                            
+                        }.frame(width: 120, height: 24)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.white.opacity(0.2))
+                            )
+                            .padding(16)
+                    })
+                  
+                  
+                    
+                    
+                    Button(action: {
+                        if store.purchasedIds.isEmpty{
+                        
+                            Firebase_log("Sub_click_buy_sub_total")
+                            store.isPurchasing = true
+                            showProgressSubView()
+                            if isBuySubWeek {
+                             
+                                Firebase_log("Sub_click_buy_weekly")
+                                
+                                let product = store.isVer1() ? weekPro : yearV2
+                                
+                                store.purchase(product: product, onBuySuccess: { b in
+                                    if b {
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                            hideProgressSubView()
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                            withAnimation(.easeInOut){
+                                                showBuySubAtScreen = false
+                                            }
+                                        }
+                                       
+                                    }else{
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                            hideProgressSubView()
+                                            showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                        }
+                                    }
+                                   
+                                })
+
+
+                            }else {
+                         
+                                Firebase_log("Sub_click_buy_monthly")
+                                let product = store.isVer1() ? monthPro : monthV2
+                                
+                                store.purchase(product: product, onBuySuccess: { b in
+                                    if b {
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                            hideProgressSubView()
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                            withAnimation(.easeInOut){
+                                                showBuySubAtScreen = false
+                                            }
+                                        }
+                                       
+                                    }else{
+                                        DispatchQueue.main.async{
+                                            store.isPurchasing = false
+                                            hideProgressSubView()
+                                            showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                        }
+                                    }
+                                    
+                                })
+
+                            }
+                        }
+                       
+                    }, label: {
+                        HStack{
+                           
+                            
+                            Text("Continue")
+                                .mfont(16, .bold)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                .overlay(
+                                    ZStack{
+                                        if store.isPurchasing{
+                                            EZProgressView()
+                                        }
+                                    }.offset(x : -36)
+                                    , alignment: .leading
+                                )
+                        }
+                        
+                      
+                            .frame(width: 240, height: 48)
+                            .background(
+                                Capsule()
+                                    .foregroundColor(.main)
+                            )
+                    })
+                    ZStack{
+                        HStack(spacing : 32){
+                            Button(action: {
+                                Task{
+                                    let b = await store.restore()
+                                    if b {
+                                        showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                                    }else{
+                                        showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                                    }
+                                }
+                            }, label: {
+                                Text("RESTORE")
+                                    .mfont(10, .regular)
+                                    .foregroundColor(.white)
+                            })
+                            
+                            Button(action: {
+                                if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }, label: {
+                                Text("EULA")
+                                    .mfont(10, .regular)
+                                    .foregroundColor(.white)
+                            })
+                            
+                            
+                            Button(action: {
+                                if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }, label: {
+                                Text("PRIVACY")
+                                    .mfont(10, .regular)
+                                    .foregroundColor(.white)
+                            })
+                        }
+                        
+                    }.frame(height: 48)
+                    
+                    
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                .overlay(
+                Button(action: {
+                    withAnimation(.easeInOut){
+                        showBuySubAtScreen.toggle()
+                    }
+                }, label: {
+                    Image("close.circle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .padding(16)
+                }), alignment: .topTrailing
+                    
+                )
+            }
+        }
+    }
+    
     
     @ViewBuilder
     func ControllView() -> some View{
@@ -581,9 +695,21 @@ struct SpWLDetailView: View {
                 
                 
                 Spacer()
-                Image("crown")
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .center)
+                
+                
+                if !store.isPro(){
+                    Button(action: {
+                        showContentPremium.toggle()
+                    }, label: {
+                        Image("crown")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                    })
+                    
+                }
+                
+              
+               
                 
                 
                 Button(action: {
@@ -759,8 +885,6 @@ struct SpWLDetailView: View {
     @ViewBuilder
     func Preview() -> some View{
         TabView(selection: $ctrlViewModel.isHome){
-            
-//            Image("preview_lock")
             Image("lock_preview_hour")
                 .resizable()
                 .scaledToFill()
@@ -913,4 +1037,3 @@ struct SpWLDetailView: View {
         
     }
 }
-

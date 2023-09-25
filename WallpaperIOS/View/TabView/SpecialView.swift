@@ -95,7 +95,7 @@ extension SpecialView{
             
               
             
-            if let product = store.isVer1() ? store.weekProduct : store.yearlyNoFreeTrialProduct {
+            if let product = store.isVer1() ? store.weekProduct : store.yearlv2SalaProduct {
                 VStack(spacing : 0){
                     Text("Give your Phone")
                         .mfont(17, .bold)
@@ -114,7 +114,7 @@ extension SpecialView{
                       .padding(.top, 8)
                     
                     if !store.isVer1(){
-                        Text("( Lest than \(decimaPriceToStr(price: product.price , chia: 365))\(removeDigits(string: product.displayPrice ))/day! )")
+                        Text("( Lest than \(decimaPriceToStr(price: product.price , chia: store.isVer1() ? 7 : 12  ))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "day" : "month" )! )")
                             .mfont(13, .regular)
                             .padding(.top, 4)
                     }
@@ -346,6 +346,8 @@ extension SpecialView{
 
                         }).cornerRadius(8)
                     }
+
+                    
 
                     
                     ForEach(0..<9, id: \.self) {

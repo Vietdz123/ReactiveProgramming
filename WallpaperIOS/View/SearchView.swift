@@ -219,7 +219,7 @@ struct SearchView: View {
     }
     
     func dismissKeyboard() {
-        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) // 4
+        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) // 
     }
     
     @ViewBuilder

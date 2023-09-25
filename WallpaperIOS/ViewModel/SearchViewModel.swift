@@ -38,6 +38,7 @@ class SearchViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.tags.append(contentsOf: tagsCollection?.items ?? [])
                 self.tagCurrentOfffset += AppConfig.limit
+                print("ViewModel SearchViewModel tag count \(self.tags.count)")
                 
             }
         }.resume()
@@ -54,7 +55,7 @@ class SearchViewModel: ObservableObject {
     
     func searchTag(text : String) {
         searchText = text
-        if text.isEmpty {
+        if text.isEmpty || text.count == 1 {
             return
         }else{
             tagCurrentOfffset = 0

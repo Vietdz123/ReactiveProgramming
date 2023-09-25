@@ -109,8 +109,8 @@ struct HomeView: View {
                                                         .cornerRadius(8)
                                                 }
                                             }else{
-                                                if let yearFreeTrial = store.yearlyFreeTrialProduct{
-                                                    SubInHome2(size: size, product: yearFreeTrial)
+                                                if let yearSale = store.yearlv2SalaProduct{
+                                                    SubInHome2(size: size, product: yearSale)
                                                         .cornerRadius(8)
                                                 }
                                             }
@@ -218,10 +218,7 @@ extension HomeView {
                             .frame(height: 1)
 
                     )
-            }
-            
-         
-                .padding(.top, 4)
+            }.padding(.top, 4)
             
             
             Button(action: {
@@ -373,22 +370,41 @@ extension HomeView {
             Spacer()
           
             
-            Text("Then \(product.displayPrice)/year.")
-                .mfont(15, .regular)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-                .padding(.top, 16)
+            Image("allfeatures")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 64, height: 64)
+            HStack(spacing : 0){
+                Text("ONLY ")
+                    .mfont(15, .regular)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                Text("\(decimaPriceToStr(price: product.price , chia: 12))\(removeDigits(string: product.displayPrice ))")
+                    .mfont(15, .bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.main)
+                Text("/MONTH.")
+                    .mfont(15, .regular)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+            }.padding(.top, 16)
             
 
             
-          
-                Text("Cancel anytime.")
+            HStack(spacing : 0){
+                Text("Total \(product.displayPrice)/year ")
                     .mfont(13, .regular)
                     .foregroundColor(.white)
-            
-            
-         
-                .padding(.top, 4)
+                Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/year)")
+                    .mfont(13, .regular)
+                    .foregroundColor(.white)
+                    .overlay(
+                        Rectangle()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(height: 1)
+
+                    )
+            }.padding(.top, 4)
             
             
             Button(action: {
@@ -518,7 +534,7 @@ extension HomeView {
             
         }.frame(width : size.width, height: size.height)
             .background(
-                Image("sub_in_home_2")
+                Image("sub_inhome")
                     .resizable()
                     .scaledToFill()
                     .frame(width: size.width, height: size.height)

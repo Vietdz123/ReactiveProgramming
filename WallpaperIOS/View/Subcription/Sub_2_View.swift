@@ -43,20 +43,20 @@ struct Sub_2_View: View {
                 
             Spacer()
        
-            if let product = store.weekProduct{
+            if let product = store.isPro() ? store.weekProduct  : store.yearlv2SalaProduct {
                 
            
             
-                Text("ONLY \(decimaPriceToStr(price: product.price , chia: 7))\(removeDigits(string: product.displayPrice ))/Day.")
+                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  store.isVer1() ? 7 : 12))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "Day" : "Month" ).")
                 .mfont(24, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/week ")
+                    Text("Total \(product.displayPrice)/\(store.isVer1() ? "week" : "year" ) ")
                         .mfont(17, .bold)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/week)")
+                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "week" : "year" ))")
                         .mfont(17, .bold)
                         .foregroundColor(.white)
                         .overlay(

@@ -472,13 +472,16 @@ struct MainView: View {
 extension MainView{
     @ViewBuilder
     func SubViewRandom() -> some View {
-        if mainViewModel.subType == 0 {
-            Sub_1_View()
-        }else if mainViewModel.subType == 1 {
-            Sub_2_View()
-        }else{
-            Sub_3_View()
-        }
+        
+       Sub_Event()
+        
+//        if mainViewModel.subType == 0 {
+//            Sub_1_View()
+//        }else if mainViewModel.subType == 1 {
+//            Sub_2_View()
+//        }else{
+//            Sub_3_View()
+//        }
     }
 }
 
