@@ -93,8 +93,9 @@ class HomeViewModel : CommandViewModel {
     }
     
     func getTags(){
-
-        guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc%&offset=\(tagRandomOffset)&limit=\(AppConfig.limit)") else {
+        print("ViewModel HomeViewModel getTags")
+        guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc&offset=\(tagRandomOffset)&limit=\(AppConfig.limit)") else {
+            print("ViewModel HomeViewModel getTags return")
             return
         }
         print("ViewModel HomeViewModel tagURL \(url.absoluteString)")

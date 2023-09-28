@@ -40,7 +40,12 @@ struct SpecialView: View {
                 ShufflePack()
                 DepthEffect()
                 DynamicIsland()
-                PromotionView()
+                
+                if !store.isPro(){
+                    PromotionView()
+                }
+                
+                
                 
                
                 
@@ -95,7 +100,7 @@ extension SpecialView{
             
               
             
-            if let product = store.isVer1() ? store.weekProduct : store.yearlv2SalaProduct {
+            if let product = store.isVer1() ? store.weekProduct : store.yearlv2Sale50Product {
                 VStack(spacing : 0){
                     Text("Give your Phone")
                         .mfont(17, .bold)
@@ -231,6 +236,7 @@ extension SpecialView{
                             Task{
                                 let b = await store.restore()
                                 if b {
+                                    store.fetchProducts()
                                     showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                                 }else{
                                     showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")

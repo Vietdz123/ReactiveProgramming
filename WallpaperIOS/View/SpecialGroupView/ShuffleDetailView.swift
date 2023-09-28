@@ -27,6 +27,7 @@ struct ShuffleDetailView: View {
     
     @State var showContentPremium : Bool = false
     @State var showSub : Bool = false
+    @State var showTuto : Bool = false
     
     var body: some View {
         
@@ -135,7 +136,7 @@ extension ShuffleDetailView{
         ZStack{
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
-            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlv2SalaProduct , let monthV2 = store.monthProductV2 {
+            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlv2Sale50Product , let monthV2 = store.monthProductV2 {
                 VStack(spacing : 0){
                     Spacer()
                     
@@ -248,7 +249,7 @@ extension ShuffleDetailView{
                                         }
                                     }
                                     .overlay(
-                                        Text("Sale 30%")
+                                        Text("Sale 50%")
                                             .mfont(10, .bold)
                                           .multilineTextAlignment(.center)
                                           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -555,6 +556,7 @@ extension ShuffleDetailView{
                                 Task{
                                     let b = await store.restore()
                                     if b {
+                                        store.fetchProducts()
                                         showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                                     }else{
                                         showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -637,25 +639,34 @@ extension ShuffleDetailView{
                         Image("crown")
                             .resizable()
                             .frame(width: 20, height: 20, alignment: .center)
+                            .frame(width: 40, height: 44, alignment: .center)
                     })
                     
                   
                 }
               
-                
-                
-                NavigationLink(destination: {
-                    TutorialShuffleView()
+                Button(action: {
+                    showTuto.toggle()
                 }, label: {
                     Image( "help")
                         .resizable()
                         .aspectRatio( contentMode: .fit)
                         .foregroundColor(.white)
                         .frame(width: 24, height: 24)
+                        .frame(width: 44, height: 44)
                     
                         .contentShape(Rectangle())
-                }).padding(.horizontal, 20)
+                }).padding(.trailing, 10)
                 
+                
+                NavigationLink(
+                    destination: TutorialShuffleView(),
+                    isActive: $showTuto,
+                    label: {
+                        EmptyView()
+                    })
+                
+            
                 
                 
                 
@@ -736,77 +747,67 @@ extension ShuffleDetailView{
     }
     
     func createAlbum(albumName: String) {
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
-        }) { success, error in
-            if success {
-                wallpaper.path.forEach({
-                    path in
-                    downloadImageToGallery(title: path.fileName, urlStr: path.path.full)
-                })
-                DispatchQueue.main.async {
-                    isDownloading = false
-                }
-            } else {
-                DispatchQueue.main.async {
-                    isDownloading = false
-                }
-                showToastWithContent(image: "xmark", color: .red, mess: "Error, can't create Albumn")
-            }
-        }
-    }
-
-    func downloadImageToGallery(title : String, urlStr : String){
+        
         DispatchQueue.main.async {
             isDownloading = true
         }
-        let defaultSession = URLSession(configuration: .default)
-        var dataTask: URLSessionDataTask? = nil
-        DispatchQueue.global(qos: .background).async {
-            let imgURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageDownloaded")
-            print("FILE_MANAGE \(imgURL)")
-            if let url = URL(string: urlStr) {
-                let filePath = imgURL.appendingPathComponent("\(title).jpg")
-
-                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
-                    DispatchQueue.main.async {
-                        do {
-                            try data?.write(to: filePath)
-                            PHPhotoLibrary.shared().performChanges({
-                               // PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: filePath)
-                         
-                                let request = PHAssetChangeRequest.creationRequestForAsset(from: UIImage(contentsOfFile: filePath.path)!)
-                                            let placeholder = request.placeholderForCreatedAsset
-                                            let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.getAlbum()!)
-                                            let enumeration: NSArray = [placeholder!]
-                                            albumChangeRequest!.addAssets(enumeration)
-                                            
-                                
-                            }) { completed, error in
-                                if completed {
-                                    DispatchQueue.main.async {
-                                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                    }
-                                    
-                                } else if let error = error {
-                                    DispatchQueue.main.async {
-                                        showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-                                    }
-                                    
-                                }
-                            }
-                        } catch {
-                            DispatchQueue.main.async {
-                                showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-                            }
+        
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+        }) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    
+                    if let albumn = getAlbum() {
+                        wallpaper.path.forEach({
+                            path in
+                            downloadImageToGallery(title: path.fileName, urlStr: path.path.full, album: albumn)
+                        })
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
+                            isDownloading = false
+                            showTutorialFirst()
+                            
                             
                         }
+                    }else{
+                        isDownloading = false
+                        showToastWithContent(image: "xmark", color: .red, mess: "Error, can't create Albumn")
                     }
-                    dataTask = nil
-                })
-                dataTask?.resume()
+                    
+                    
+                  
+                } else {
+                    isDownloading = false
+                    showToastWithContent(image: "xmark", color: .red, mess: "Error, can't create Albumn")
+                }
             }
+           
         }
+    }
+
+    func downloadImageToGallery(title : String, urlStr : String, album : PHAssetCollection){
+      
+        
+        DownloadFileHelper.downloadFromUrlToSanbox(fileName: title, urlImage: URL(string: urlStr), onCompleted: {
+            urlImage in
+            if let urlImage {
+                PHPhotoLibrary.shared().performChanges({
+                    let request = PHAssetChangeRequest.creationRequestForAsset(from: UIImage(contentsOfFile: urlImage.path )!)
+                                let placeholder = request.placeholderForCreatedAsset
+                                let albumChangeRequest = PHAssetCollectionChangeRequest(for: album)
+                                let enumeration: NSArray = [placeholder!]
+                                albumChangeRequest!.addAssets(enumeration)
+                                
+                }) { _, _ in
+                    
+                }
+
+            }
+        })
+        
+        
+      
     }
 
     func getAlbum() -> PHAssetCollection? {
@@ -819,6 +820,16 @@ extension ShuffleDetailView{
             return album
         }else{
             return nil
+        }
+    }
+    
+    func showTutorialFirst() {
+        let showTutoshuffle = UserDefaults.standard.bool(forKey: "show_tuto_shuffleee")
+        if showTutoshuffle == false{
+            UserDefaults.standard.set(true, forKey: "show_tuto_shuffleee")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                showTuto.toggle()
+            })
         }
     }
     

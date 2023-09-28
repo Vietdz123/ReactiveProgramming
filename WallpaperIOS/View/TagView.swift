@@ -15,7 +15,7 @@ struct TagView: View {
     @EnvironmentObject var store : MyStore
     @EnvironmentObject var favViewModel : FavoriteViewModel
     @EnvironmentObject var interAd : InterstitialAdLoader
-
+    
     @State var currentTagName : String = ""
     @State var adStatus : AdStatus = .loading
     
@@ -40,11 +40,11 @@ struct TagView: View {
                     .onAppear(perform: {
                         currentTagName = viewModel.tag
                     })
-           
+                
             }.frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 44)
                 .padding(.horizontal, 20)
-               
+            
             HStack{
                 
                 Menu{
@@ -61,9 +61,9 @@ struct TagView: View {
                     HStack{
                         Text("\(viewModel.sortedBy.rawValue)")
                             .mfont(12, .regular)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .padding(.leading, 16)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .padding(.leading, 16)
                         Spacer()
                         Image("downnn")
                             .resizable()
@@ -78,60 +78,60 @@ struct TagView: View {
                         )
                 }
                 
-              
+                
                 
                 Spacer()
                 
             } .padding(16)
             
-        
-                ScrollView(.vertical, showsIndicators: false){
-                    LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8  ){
+            
+            ScrollView(.vertical, showsIndicators: false){
+                LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8  ){
+                    
+                    
+                    ForEach(0..<viewModel.wallpapers.count, id: \.self){
+                        i in
                         
                         
-                        ForEach(0..<viewModel.wallpapers.count, id: \.self){
-                            i in
+                        let  wallpaper = viewModel.wallpapers[i]
+                        let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
+                        
+                        NavigationLink(destination: {
+                            WLView( index: i)
+                                .environmentObject(viewModel  as CommandViewModel)
+                                .environmentObject(reward)
+                                .environmentObject(store)
+                                .environmentObject(favViewModel)
+                                .environmentObject(interAd)
+                        }, label: {
                             
+                            WebImage(url: URL(string: string))
                             
-                            let  wallpaper = viewModel.wallpapers[i]
-                            let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                            
-                            NavigationLink(destination: {
-                                WLView( index: i)
-                                    .environmentObject(viewModel  as CommandViewModel)
-                                    .environmentObject(reward)
-                                    .environmentObject(store)
-                                    .environmentObject(favViewModel)
-                                    .environmentObject(interAd)
-                            }, label: {
-
-                                WebImage(url: URL(string: string))
-                                
-                                   .onSuccess { image, data, cacheType in
-                                       // Success
-                                       // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-                                   }
-                                   .resizable()
-                                   .placeholder {
-                                       placeHolderImage()
-                                           .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-                                   }
-                                   .indicator(.activity) // Activity Indicator
-                                   .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                   .scaledToFill()
-                                   .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                .onSuccess { image, data, cacheType in
+                                    // Success
+                                    // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
+                                }
+                                .resizable()
+                                .placeholder {
+                                    placeHolderImage()
+                                        .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                }
+                                .indicator(.activity) // Activity Indicator
+                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                .scaledToFill()
+                                .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
                                 .overlay(
                                     ZStack{
                                         if !store.isPro() && wallpaper.content_type == "private"{
                                             
-                                         
-                                                Image("coin")
-                                                    .resizable()
-                                                    .frame(width: 13.33, height: 13.33, alignment: .center)
-                                              
-                                                 
-                                          .frame(width: 16, height: 16, alignment: .center)
+                                            
+                                            Image("coin")
+                                                .resizable()
+                                                .frame(width: 13.33, height: 13.33, alignment: .center)
+                                            
+                                            
+                                                .frame(width: 16, height: 16, alignment: .center)
                                                 .background(
                                                     Capsule()
                                                         .fill(Color.black.opacity(0.7))
@@ -148,28 +148,28 @@ struct TagView: View {
                                         viewModel.getWallpapers()
                                     }
                                 })
-                            })
-                            
-                            
-                           
-                            
-                        }
-                      
-                    }.padding( 16)
+                        })
+                        
+                        
+                        
+                        
+                    }
                     
-                }.refreshable {
-                    viewModel.randomOffset = Int.random(in: 0...viewModel.maxCount)
-                    viewModel.currentOffset = viewModel.randomOffset
-                    viewModel.wallpapers.removeAll()
-                    viewModel.getWallpapers()
-                }
+                }.padding( 16)
                 
-              
-          
-                
-      
-    
-           
+            }.refreshable {
+                viewModel.randomOffset = Int.random(in: 0...viewModel.maxCount)
+                viewModel.currentOffset = viewModel.randomOffset
+                viewModel.wallpapers.removeAll()
+                viewModel.getWallpapers()
+            }
+            
+            
+            
+            
+            
+            
+            
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .overlay(
@@ -183,14 +183,15 @@ struct TagView: View {
             .addBackground()
             .onAppear(perform: {
                 if currentTagName != viewModel.tag{
+                    viewModel.sortedBy = .Newest
                     viewModel.wallpapers = []
                     viewModel.currentOffset = 0
                     viewModel.getWallpapers()
                 }
-               
-
+                
+                
             })
-            
+        
     }
 }
 

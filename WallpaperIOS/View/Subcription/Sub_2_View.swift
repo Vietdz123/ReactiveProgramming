@@ -10,6 +10,10 @@ import SwiftUI
 struct Sub_2_View: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var store : MyStore
+    
+    
+    @State private var showBtnClose : Bool = false
+    
     var body: some View {
         VStack(spacing : 0){
           
@@ -19,9 +23,14 @@ struct Sub_2_View: View {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
-                        Image("close.circle.fill")
-                            .resizable()
-                            .frame(width: 24, height: 24)
+                        ZStack{
+                            if showBtnClose{
+                                Image("close.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .opacity(0.7)
+                            }
+                        } .frame(width: 24, height: 24)
                     })
                     
                 }
@@ -43,7 +52,7 @@ struct Sub_2_View: View {
                 
             Spacer()
        
-            if let product = store.isPro() ? store.weekProduct  : store.yearlv2SalaProduct {
+            if let product = store.isVer1() ? store.weekProduct  : store.yearlv2Sale50Product {
                 
            
             
@@ -70,22 +79,21 @@ struct Sub_2_View: View {
               .padding(.top, 8)
             
             Button(action: {
-                showProgressSubView()
+           
                 store.isPurchasing = true
                 store.purchase(product: product, onBuySuccess: {
                     b in
                        if b {
                            DispatchQueue.main.async{
                                store.isPurchasing = false
-                               hideProgressSubView()
+                               presentationMode.wrappedValue.dismiss()
                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                              
                            }
                           
                        }else{
                            DispatchQueue.main.async{
                                store.isPurchasing = false
-                               hideProgressSubView()
+                               
                                showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                            }
                        }
@@ -175,6 +183,7 @@ struct Sub_2_View: View {
                     Task{
                         let b = await store.restore()
                         if b {
+                            store.fetchProducts()
                             showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                         }else{
                             showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -201,7 +210,21 @@ struct Sub_2_View: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             )
-        
+            .onViewDidLoad {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                    withAnimation(.easeOut){
+                        showBtnClose = true
+                    }
+                })
+            }
+            .overlay(
+                ZStack{
+                    if store.isPurchasing{
+                       ProgressBuySubView()
+                            .ignoresSafeArea()
+                    }
+                }
+            )
             
     }
 }

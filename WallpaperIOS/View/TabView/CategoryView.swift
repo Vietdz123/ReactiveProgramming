@@ -34,7 +34,7 @@ struct CategoryView: View {
                 }, label: {
                     EmptyView()
                 })
-               
+                
                 
                 Spacer()
                     .frame(height : 16)
@@ -45,50 +45,148 @@ struct CategoryView: View {
                     GeometryReader{
                         proxy in
                         let size = proxy.size
-                        ZStack{
+                        ZStack(alignment: .bottomLeading){
                             WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_banner_image_url") ?? ""))
                             
-                                                    .onSuccess { image, data, cacheType in
+                                .onSuccess { image, data, cacheType in
+                                    
+                                }
+                                .resizable()
+                                .indicator(.activity) // Activity Indicator
+                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                .scaledToFill()
+                                .frame(width: size.width, height: size.height)
                             
-                                                    }
-                                                    .resizable()
-                                                    .indicator(.activity) // Activity Indicator
-                                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                                    .scaledToFill()
-                                                    .frame(width: size.width, height: size.height)
-                        }
-                        VStack(spacing : 0){
-                            Spacer()
-                            Text("Just 17.99$/year")
-                                .mfont(15, .regular)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(.white)
-                              .padding(.leading, 35)
                             
-                            Button(action: {
+                            if let productEv = store.isVer1() ? store.weekProduct : store.yearlv2Sale50Product {
                                 
-                            }, label: {
-                                Text("Claim!")
-                                    .mfont(17, .bold)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                                  .frame(width: 92, height: 32)
-                                  .background(
-                                    Capsule()
-                                    .fill(Color(red: 1, green: 0.87, blue: 0.19))
-                                  )
-                            })
-                            .padding(.top, 8)
-                            .padding(.bottom, 16)
-                            .padding(.leading, 48)
-                            
-                        }.frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .topLeading)
+                                VStack(spacing : 0){
+                                    
+                                    Text("Just \(productEv.displayPrice)/\(store.isVer1() ? "week" : "year")")
+                                        .mfont(13, .regular)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+                                    
+                                    
+                                    Button(action: {
+                                        
+                                        if store.purchasedIds.isEmpty{
+                                            store.isPurchasing = true
+                                            showProgressSubView()
+                                            
+                                            
+                                            store.purchase(product: productEv, onBuySuccess: { b in
+                                                if b {
+                                                    DispatchQueue.main.async{
+                                                        store.isPurchasing = false
+                                                        hideProgressSubView()
+                                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                                        
+                                                    }
+                                                    
+                                                }else{
+                                                    DispatchQueue.main.async{
+                                                        store.isPurchasing = false
+                                                        hideProgressSubView()
+                                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                                    }
+                                                }
                                                 
+                                            })
+                                            
+                                        }
+                                        
+                                    }, label: {
+                                        Text("Claim!")
+                                            .mfont(17, .bold)
+                                            .multilineTextAlignment(.center)
+                                            .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                            .frame(width: 92, height: 32)
+                                            .background(
+                                                Capsule()
+                                                    .fill(Color(red: 1, green: 0.87, blue: 0.19))
+                                            )
+                                    }).padding(.top, 12)
+                                    
+                                    
+                                    HStack(spacing : 4){
+                                     
+                                        
+                                        Button(action: {
+                                            
+                                            
+                                            if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                                UIApplication.shared.open(url)
+                                            }
+                                            
+                                        }, label: {
+                                            Text("Privacy Policy")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+                                            
+                                        })
+                                        
+                                        Text("|")
+                                            .mfont(12, .regular)
+                                            .foregroundColor(.white)
+                                        
+                                        Button(action: {
+                                            
+                                            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                                UIApplication.shared.open(url)
+                                            }
+                                        }, label: {
+                                            Text("Terms of Use")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+                                            
+                                        })
+                                     
+                                        Text("|")
+                                            .mfont(12, .regular)
+                                            .foregroundColor(.white)
+                                        Button(action: {
+                                            Task{
+                                                let b = await store.restore()
+                                                if b {
+                                                    store.fetchProducts()
+                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                                                }else{
+                                                    showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                                                }
+                                            }
+                                            
+                                        }, label: {
+                                            Text("Restore")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+                                            
+                                        })
+                                       
+                                    }
+                                    .padding(.top, 8)
+                                    
+                                    
+                                }  .padding(.bottom, 8)
+                                    .padding(.leading, 16)
+                                
+                                
+                            }
+                            
+                            
+                            
+                        }
+                        
+                        
+                        
                         
                     }.frame(width: getRect().width - 32 , height: ( getRect().width - 32 ) * 504 / 1080 )
                         .cornerRadius(8)
                     
-
+                    
                 }
                 
                 LazyVStack(spacing : 0){
@@ -109,7 +207,7 @@ struct CategoryView: View {
                                     })
                                 Spacer()
                                 Button(action: {
-                                   
+                                    
                                     categoryPageViewModel.category = categoryData.category
                                     viewModel.navigate.toggle()
                                 }, label: {
@@ -151,13 +249,13 @@ struct CategoryView: View {
                                                     WebImage(url: URL(string: string))
                                                     
                                                         .onSuccess { image, data, cacheType in
-                                                          
+                                                            
                                                         }
                                                         .resizable()
                                                         .placeholder {
                                                             placeHolderImage()
                                                                 .frame(width: 108, height: 216)
-                                                               
+                                                            
                                                         }
                                                         .indicator(.activity) // Activity Indicator
                                                         .transition(.fade(duration: 0.5)) // Fade Transition with duration
@@ -197,14 +295,14 @@ struct CategoryView: View {
                                     ProgressView()
                                 }
                                 
-                             
+                                
                             }.frame(height : 216)
                                 .onAppear(perform : {
                                     if categoryData.wallpapers.isEmpty {
                                         viewModel.loadDataWhenAppear(index: index)
                                     }
                                 })
-                           
+                            
                             
                         }
                         .padding(.bottom, 16)
@@ -223,7 +321,7 @@ struct CategoryView: View {
             .refreshable {
                 viewModel.categorieWithData.removeAll()
                 viewModel.getAllCategory()
-           //     viewModel.getCategoryWithData()
+                //     viewModel.getCategoryWithData()
             }
         }.addBackground()
     }

@@ -456,6 +456,7 @@ struct LiveWLView: View {
             }else{
                 WatchRVtoGetWLDialog(urlStr: liveWL.image_variations.preview_small.url, show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
                     if b{
+                        ctrlViewModel.showDialogDownload.toggle()
                         downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                                 urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                 urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
@@ -495,103 +496,62 @@ struct LiveWLView: View {
         }
     }
     
+   
     func downloadVideoToGallery(title : String, urlVideoStr : String, urlImageStr : String){
+        
         DispatchQueue.main.async {
             ctrlViewModel.isDownloading = true
         }
         
-        let defaultSession = URLSession(configuration: .default)
-        var dataTask: URLSessionDataTask? = nil
-        DispatchQueue.global(qos: .background).async {
-            let imgURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageDownloaded")
-            if let url = URL(string: urlImageStr) {
-                let filePath = imgURL.appendingPathComponent("\(title).jpg")
-                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
-                    DispatchQueue.main.async {
-                        do {
-                            try data?.write(to: filePath)
-                            PHPhotoLibrary.shared().performChanges({
-                                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: filePath)
-                            }) { completed, error in
-                                if completed {
-                                    //MARK : download image successfull, download image
-                                    downloadVideo(title: title, urlVideoStr: urlVideoStr, urlFilePathImage: filePath)
-                                    
-                                } else if let error = error {
-                                    print(error.localizedDescription)
-                                    
-                                }
-                            }
-                        } catch {
-                            
-                            print(error.localizedDescription)
-                        }
-                    }
-                    dataTask = nil
-                })
-                dataTask?.resume()
-            }
-        }
-    }
-    
-    func downloadVideo(title : String, urlVideoStr : String, urlFilePathImage : URL){
-        let defaultSession = URLSession(configuration: .default)
-        var dataTask: URLSessionDataTask? = nil
-        DispatchQueue.global(qos: .background).async {
-            if let url = URL(string: urlVideoStr) {
-                let videoDirectoryURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("VideoDownloaded")
-                let filePath = videoDirectoryURL.appendingPathComponent("\(title).mov")
-                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
-                    DispatchQueue.main.async {
-                        do {
-                            try data?.write(to: filePath)
-                            
-                            LivePhoto.generate(from: urlFilePathImage, videoURL: filePath, progress: {
-                                _ in
-                            }, completion: {_,resources in
-                                if resources != nil{
-                                    LivePhoto.saveToLibrary(resources!, completion: {
-                                        b in
-                                        if b{
-                                            DispatchQueue.main.async {
-                                                ctrlViewModel.isDownloading = false
-                                                showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                                
-                                                if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-                                                    UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-                                                    ctrlViewModel.showTuto = true
-                                                }
-                                                
-                                                let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                                                UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                                                if !store.isPro() && downloadCount == 1 {
-                                                    ctrlViewModel.navigateView.toggle()
-                                                }
-                                                
-                                            }
-                                        }else{
+        DownloadFileHelper.downloadFromUrlToSanbox(fileName: title, urlImage: URL(string: urlImageStr), onCompleted: {
+            urlImage in
+            if let urlImage {
+                DownloadFileHelper.saveVideoLiveToLibSanbox(fileName: title, videoURL: URL(string: urlVideoStr), onCompleted: {
+                    urlVideo in
+                    if let urlVideo{
+                        
+                        LivePhoto.generate(from: urlImage, videoURL: urlVideo, progress: {
+                            _ in
+                        }, completion: {_,resources in
+                            if resources != nil{
+                                LivePhoto.saveToLibrary(resources!, completion: {
+                                    b in
+                                    if b{
+                                        DispatchQueue.main.async {
                                             ctrlViewModel.isDownloading = false
-                                            showToastWithContent(image: "xmark", color: .red, mess:"failure")
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                                            
+                                            if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
+                                                UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
+                                                ctrlViewModel.showTuto = true
+                                            }
+                                            
+                                            let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
+                                            UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
+                                            if !store.isPro() && downloadCount == 1 {
+                                                ctrlViewModel.navigateView.toggle()
+                                            }
+                                            
                                         }
-                                    })
-                                }
-                                
-                            })
-                            
-                        } catch {
-                            DispatchQueue.main.async {
-                                ctrlViewModel.isDownloading = false
-                                showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
+                                    }else{
+                                        ctrlViewModel.isDownloading = false
+                                        showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                                    }
+                                })
                             }
-                        }
+                            
+                        })
+                        
+                    }else{
+                        ctrlViewModel.isDownloading = false
+                        showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
                     }
-                    dataTask = nil
                 })
-                dataTask?.resume()
+            }else{
+                ctrlViewModel.isDownloading = true
+                showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
             }
-        }
-        
+        })
     }
-    
     
 }

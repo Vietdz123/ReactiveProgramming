@@ -63,6 +63,11 @@ struct SearchView: View {
                         .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
                 ) {
                     viewmodel.searchTag(text: $0)
+                    
+                    if findViewModel.query == $0{
+                        return
+                    }
+                    
                     findViewModel.wallpapers.removeAll()
                     findViewModel.query = $0
                     findViewModel.getWallpapers()
@@ -243,14 +248,20 @@ struct SearchView: View {
            .transition(.fade(duration: 0.5)) // Fade Transition with duration
            .scaledToFill()
         .frame(width:width , height: width * 2)
-        .cornerRadius(2)
+       
+        //.blur(radius: 1)
      
         .overlay(
-            Text(tag.title)
-                .mfont(16, .italic)
-                .foregroundColor(.white)
-                .shadow(color: .black, radius: 1)
+            ZStack{
+                Color.black.opacity(0.2)
+                Text(tag.title)
+                    .mfont(16, .italic)
+                    .foregroundColor(.white)
+                    .shadow(color: .black, radius: 1)
+            }
+           
         )
+        .cornerRadius(2)
         .onTapGesture {
             tagViewModel.tag = tag.title
             viewmodel.navigateToTag.toggle()

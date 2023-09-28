@@ -26,12 +26,23 @@ struct SplashScreenView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(Color.main, lineWidth: 2)
                     )
-                Text(AppConfig.APP_NAME)
-                    .mfont(24, .bold)
-                    .foregroundColor(.main)
+                
+                Image("wallive")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 115, height: 67)
+                
+                            TextTypingAnimView(text: "Starting your wonderful journey...",color : .white ,fontSize: 17, weight: .italic)
+                    .padding(.top ,93)
+                            
             }
             
         }
+//        .overlay(
+
+//            
+//            , alignment: .bottom
+//        )
         .onAppear(perform: {
                 player = AVPlayer(url:  Bundle.main.url(forResource: "bg", withExtension: "mp4")!)
                 player!.play()

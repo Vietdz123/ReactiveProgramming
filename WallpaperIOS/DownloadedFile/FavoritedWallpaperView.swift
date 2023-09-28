@@ -44,7 +44,7 @@ struct FavoritedWallpaperView: View {
                 )
             if !favViewModel.listFavWL.isEmpty {
                 ScrollView(.vertical, showsIndicators: false){
-                    LazyVGrid(columns: [GridItem(spacing: 8), GridItem(spacing: 0)], content: {
+                    LazyVGrid(columns: [GridItem(spacing: 8),GridItem(spacing: 8), GridItem(spacing: 0)], content: {
                         ForEach(favViewModel.listFavWL, id: \.wl_id){
                             wallpaper in
                             NavigationLink(destination: {
@@ -471,52 +471,25 @@ struct FavWallpaperDetailView: View {
     
     
     func downloadImageToGallery(title : String, urlStr : String){
-        let defaultSession = URLSession(configuration: .default)
-        var dataTask: URLSessionDataTask? = nil
-        DispatchQueue.global(qos: .background).async {
-            let imgURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageDownloaded")
-            print("FILE_MANAGE \(imgURL)")
-            if let url = URL(string: urlStr) {
-                let filePath = imgURL.appendingPathComponent("\(title).jpg")
-                if FileManager.default.fileExists(atPath: filePath.path){
-                    DispatchQueue.main.async {
-                        showToastWithContent(image: "xmark", color: .red, mess: "File already exists!")
+        
+        
+        DownloadFileHelper.downloadFromUrlToSanbox(fileName: title, urlImage: URL(string: urlStr), onCompleted: {
+            url in
+            if let url {
+                DownloadFileHelper.saveImageToLibFromURLSanbox(url: url, onComplete: {
+                    success in
+                    if success{
+                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                    }else{
+                        showToastWithContent(image: "xmark", color: .red, mess: "Download Failure")
                     }
-                 
-                    return
-                }
-                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
-                    DispatchQueue.main.async {
-                        do {
-                            try data?.write(to: filePath)
-                            PHPhotoLibrary.shared().performChanges({
-                                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: filePath)
-                            }) { completed, error in
-                                if completed {
-                                    DispatchQueue.main.async {
-                                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                    }
-                                  
-                                } else if let error = error {
-                                    DispatchQueue.main.async {
-                                        showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-                                    }
-                                   
-                                }
-                            }
-                        } catch {
-                            DispatchQueue.main.async {
-                                showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-                            }
-                         
-                        }
-                    }
-                    dataTask = nil
                 })
-                dataTask?.resume()
+            }else{
+                showToastWithContent(image: "xmark", color: .red, mess: "Download Failure")
             }
-        }
-
+        })
+        
+      
     }
   
    

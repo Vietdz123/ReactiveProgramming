@@ -29,10 +29,11 @@ struct IDProduct {
     static let COIN_2 = "com.ezt.wl.coinpack2"
     static let COIN_3 = "com.ezt.wl.coinpack3"
     
-    static let YEARLY_FREE_TRIAL = "com.ezt.wl.year_4"
-    static let YEARLY_NO_FREE_TRIAL = "com.ezt.wl.year_3"
+    static let YEARLY_FREE_TRIAL = "com.ezt.wl.year_4" //  "com.ezt.wl.year_6"
+    static let YEARLY_SALE_50 = "com.ezt.wl.year_3"
+    static let YEARLY_ORIGINAL = "com.ezt.wl.year_5"
     
-    static let MONTHLY_V2 = "com.ezt.wl.month_1"
+    static let MONTHLY_V2 = "com.ezt.wl.month_1" // "com.ezt.wl.month_2"
     static let THREE_MONTH = "com.ezt.wl.3months"
 }
 
@@ -44,7 +45,7 @@ class MyStore: ObservableObject {
 
     @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1,
                                                   IDProduct.MONTH_1 , IDProduct.MONTH,
-                                                  IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_NO_FREE_TRIAL, IDProduct.MONTHLY_V2, IDProduct.THREE_MONTH,
+                                                  IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_SALE_50, IDProduct.YEARLY_ORIGINAL ,IDProduct.MONTHLY_V2, IDProduct.THREE_MONTH,
                                                   IDProduct.YEAR_1, IDProduct.YEAR_2 ,
                                                   IDProduct.UNLIMITED ,
                                                   IDProduct.COIN_1 , IDProduct.COIN_2  ,IDProduct.COIN_3,
@@ -62,9 +63,9 @@ class MyStore: ObservableObject {
     @Published var coin_product_3 : Product?
     @Published var allowFetcConfigWhenError : Bool = true
     
-    
+    @Published var yearlyOriginalProduct : Product?
     @Published var yearlyFreeTrialProduct : Product?
-    @Published var yearlv2SalaProduct :  Product?
+    @Published var yearlv2Sale50Product :  Product?
     @Published var monthProductV2 : Product?
     @Published var threeMonthProduct : Product?
     
@@ -102,29 +103,6 @@ class MyStore: ObservableObject {
     
     
 
-
-    func fetchMonthProductForFirsttime() {
-        print("MYSTORE---fetchMonthProductForFirsttime")
-
-        if UserDefaults.standard.bool(forKey: "fetchMonthProductForFirsttime") == false {
-            UserDefaults.standard.set(true, forKey: "fetchMonthProductForFirsttime")
-        }else{
-            return
-        }
-
-        Task {
-            do {
-                let products = try await Product.products(for: allProductIdLoad )
-                DispatchQueue.main.async {
-                    if let productM = products.first {
-                        self.monthProduct = productM
-                        print("MYSTORE---fetchMonthProductForFirsttime_success")
-                    }
-                }
-            }
-        }
-    }
-
     func fetchConfig() {
         print("MYSTORE---fetchConfig")
         remoteConfig.fetch { (status, error) -> Void in
@@ -133,8 +111,7 @@ class MyStore: ObservableObject {
             if status == .success {
                 print("MYSTORE---fetchConfig-success")
                 self.remoteConfig.activate { changed, error in
-                    let productsJsonStr = self.remoteConfig.configValue(forKey: "products").stringValue ?? "[\"com.ezt.wl.monthly\", \"com.ezt.wl.yearly\"]"
-                //    self.getProductsIdFromRemote(productJsonStr: productsJsonStr)
+                
                     let coin_costs = self.remoteConfig.configValue(forKey: "coin_costs").stringValue ?? "[20, 50, 150]"
                     self.extractCoinCost(coin_cost:  coin_costs)
 
@@ -153,7 +130,7 @@ class MyStore: ObservableObject {
                     let is_v1           = self.remoteConfig.configValue(forKey: "is_v1").boolValue
                     let url_image_bg_event = self.remoteConfig.configValue(forKey: "sub_event_bg_image_url").stringValue ?? "https://cdn-wallpaper.eztechglobal.com/upload/images/full/2023/09/25/1695615834_Dkptf.png"
                     let url_image_banner_event = self.remoteConfig.configValue(forKey: "sub_event_banner_image_url").stringValue ?? "https://cdn-wallpaper.eztechglobal.com/upload/images/full/2023/09/25/1695635611_5n8d8.png"
-                    
+                    let has_event = self.remoteConfig.configValue(forKey: "has_event").boolValue
 
                     UserDefaults.standard.set(wl_domain,       forKey: "wl_domain")
                     UserDefaults.standard.set(reward_delay,    forKey: "delay_reward")
@@ -165,10 +142,11 @@ class MyStore: ObservableObject {
 
                     
                     //MARK NEWVERSION
-                    UserDefaults.standard.set(false,  forKey: "is_v1")
+                    UserDefaults.standard.set(is_v1,  forKey: "is_v1")
                     UserDefaults.standard.set(url_image_bg_event, forKey: "sub_event_bg_image_url")
                     UserDefaults.standard.set(url_image_banner_event, forKey: "sub_event_banner_image_url")
-                    UserDefaults.standard.set(true, forKey: "has_event")
+                    UserDefaults.standard.set(has_event, forKey: "has_event")
+                 
                 }
 
 
@@ -267,11 +245,14 @@ class MyStore: ObservableObject {
                         case IDProduct.MONTH_1 :
                             self.monthProduct = productttt
                             break
+                        case IDProduct.YEARLY_ORIGINAL:
+                            self.yearlyOriginalProduct = productttt
+                            break
                         case IDProduct.YEARLY_FREE_TRIAL:
                             self.yearlyFreeTrialProduct = productttt
                             break
-                        case IDProduct.YEARLY_NO_FREE_TRIAL:
-                            self.yearlv2SalaProduct = productttt
+                        case IDProduct.YEARLY_SALE_50:
+                            self.yearlv2Sale50Product = productttt
                             break
                         case IDProduct.MONTHLY_V2:
                             self.monthProductV2 = productttt
@@ -350,50 +331,60 @@ class MyStore: ObservableObject {
                                 self.purchasedIds.append(trans.productID)
                                 self.Firebase_log("Sub_buy_successful_1_weekly(2)")
                                 onBuySuccess(true)
+                                break
                             case IDProduct.WEEK_1:
                                 self.purchasedIds.append(trans.productID)
                                 self.Firebase_log("Sub_buy_successful_1_weekly(1)")
                                 onBuySuccess(true)
+                                break
                             case IDProduct.MONTH_1:
                                 self.purchasedIds.append(trans.productID)
                                 self.Firebase_log("Sub_buy_successful_1_monthly(1)")
                                 onBuySuccess(true)
-                                
+                                break
                             case IDProduct.MONTHLY_V2:
                                 self.purchasedIds.append(trans.productID)
                                 onBuySuccess(true)
-                                
+                                break
+                            case IDProduct.YEARLY_ORIGINAL:
+                                self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
+                                break
                             case IDProduct.YEARLY_FREE_TRIAL:
                                 self.purchasedIds.append(trans.productID)
                                 onBuySuccess(true)
-                                
-                            case IDProduct.YEARLY_NO_FREE_TRIAL:
+                                break
+                            case IDProduct.YEARLY_SALE_50:
                                 self.purchasedIds.append(trans.productID)
                                 onBuySuccess(true)
-                            
+                                break
                             case IDProduct.THREE_MONTH:
                                 self.purchasedIds.append(trans.productID)
                                 onBuySuccess(true)
-                                
+                                break
                             case IDProduct.COIN_1:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_1_coin"), forKey: "current_coin")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_1")
                                 onBuySuccess(true)
+                                break
                             case IDProduct.COIN_2:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_2_coin"), forKey: "current_coin")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_2")
                                 onBuySuccess(true)
+                                break
                             case IDProduct.COIN_3:
                                 let currentCoin = UserDefaults.standard.integer(forKey: "current_coin")
                                 UserDefaults.standard.set(currentCoin + UserDefaults.standard.integer(forKey: "pack_3_coin"), forKey: "current_coin")
                                 self.Firebase_log("Sub_buy_successful_coin_pack_3")
                                 onBuySuccess(true)
+                                break
 
 
                             default:
                                 print("no_data")
+                                break
                             }
 
 
@@ -403,6 +394,7 @@ class MyStore: ObservableObject {
                     case .unverified(_, _):
                         self.Firebase_log("Sub_buy_failure_unverified")
                         onBuySuccess(false)
+                        break
                     }
                 case .userCancelled:
                     self.Firebase_log("Sub_buy_failure_userCancelled")

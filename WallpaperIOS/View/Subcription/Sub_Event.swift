@@ -13,11 +13,10 @@ struct Sub_Event: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var store : MyStore
     
+    
+    @State private var showBtnClose : Bool = false
+    
     var body: some View {
-      
-         
-               
-            
             VStack(spacing : 0){
                 HStack{
                     Spacer()
@@ -25,9 +24,14 @@ struct Sub_Event: View {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
-                        Image("close.circle.fill")
-                            .resizable()
-                            .frame(width: 24, height: 24)
+                        ZStack{
+                            if showBtnClose{
+                                Image("close.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .opacity(0.7)
+                            }
+                        } .frame(width: 24, height: 24)
                     })
                     
                 }
@@ -64,21 +68,18 @@ struct Sub_Event: View {
                     
                     
                     Button(action: {
-                        
                         store.isPurchasing = true
-                        showProgressSubView()
                         store.purchase(product: product, onBuySuccess: {
                             b in
                                if b {
                                    DispatchQueue.main.async{
                                        store.isPurchasing = false
-                                       hideProgressSubView()
+                                       presentationMode.wrappedValue.dismiss()
                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                    }
                                }else{
                                    DispatchQueue.main.async{
                                        store.isPurchasing = false
-                                       hideProgressSubView()
                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                                    }
                                }
@@ -125,7 +126,7 @@ struct Sub_Event: View {
                     
                     }
                 }else{
-                    if let product = store.yearlv2SalaProduct{
+                    if let product = store.yearlv2Sale50Product{
                         
                    
                     
@@ -136,10 +137,10 @@ struct Sub_Event: View {
                       .padding(.top, 28)
                     
                         HStack(spacing : 0){
-                            Text("Total \(product.displayPrice)/week ")
+                            Text("Total \(product.displayPrice)/year ")
                                 .mfont(17, .bold)
                                 .foregroundColor(.black)
-                            Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/week)")
+                            Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/year)")
                                 .mfont(17, .bold)
                                 .foregroundColor(.black)
                                 .overlay(
@@ -153,21 +154,18 @@ struct Sub_Event: View {
                     
                     
                     Button(action: {
-                        
                         store.isPurchasing = true
-                        showProgressSubView()
                         store.purchase(product: product, onBuySuccess: {
                             b in
                                if b {
                                    DispatchQueue.main.async{
                                        store.isPurchasing = false
-                                       hideProgressSubView()
+                                       presentationMode.wrappedValue.dismiss()
                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                    }
                                }else{
                                    DispatchQueue.main.async{
                                        store.isPurchasing = false
-                                       hideProgressSubView()
                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
                                    }
                                }
@@ -260,6 +258,7 @@ struct Sub_Event: View {
                         Task{
                             let b = await store.restore()
                             if b {
+                                store.fetchProducts()
                                 showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                             }else{
                                 showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -281,7 +280,6 @@ struct Sub_Event: View {
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .background(
                     WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_bg_image_url") ?? ""))
-                    
                         .onSuccess { image, data, cacheType in
                           
                         }
@@ -291,6 +289,21 @@ struct Sub_Event: View {
                         .scaledToFill()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .ignoresSafeArea()
+                )
+                .onViewDidLoad {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                        withAnimation(.easeOut){
+                            showBtnClose = true
+                        }
+                    })
+                }
+                .overlay(
+                    ZStack{
+                        if store.isPurchasing{
+                           ProgressBuySubView()
+                                .ignoresSafeArea()
+                        }
+                    }
                 )
             
         }

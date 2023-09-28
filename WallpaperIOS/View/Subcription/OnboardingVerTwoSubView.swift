@@ -19,7 +19,7 @@ struct OnboardingVerTwoSubView: View {
     @EnvironmentObject var store : MyStore
     @State var currentProduct : Int = 2
     
-    @State var showXmark : Bool =  true
+    @State var showXmark : Bool =  false
     @State var navigateToHome : Bool = false
     
     @EnvironmentObject var homeVM : HomeViewModel
@@ -68,6 +68,19 @@ struct OnboardingVerTwoSubView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .ignoresSafeArea()
                 .background(Color.black)
+                .onChange(of: currentPage, perform: { page in
+                    if page >= 5 {
+                        withAnimation(.easeIn){
+                            showXmark = false
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                            withAnimation(.easeInOut){
+                                showXmark = true
+                            }
+                        })
+                    }
+                })
                 .overlay(
                     content()
                 )
@@ -75,17 +88,20 @@ struct OnboardingVerTwoSubView: View {
                     ZStack{
                         if currentPage >= 5  && showXmark {
                             Button(action: {
+                                
+                                UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                                
                                 if currentPage == 5{
                                     withAnimation(.linear){
                                         currentPage = 6
                                     }
-                                    showXmark = false
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                                        withAnimation(.easeInOut){
-                                            showXmark = true
-                                        }
-                                        
-                                    })
+//                                    showXmark = false
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+//                                        withAnimation(.easeInOut){
+//                                            showXmark = true
+//                                        }
+//                                        
+//                                    })
                                     
                                     
                                 }else{
@@ -97,13 +113,22 @@ struct OnboardingVerTwoSubView: View {
                                 Image("close.circle.fill")
                                     .resizable()
                                     .frame(width: 24, height: 24)
-                                    .foregroundColor(.white)
-                            }).padding(.horizontal, 16)
+                                    .frame(width: 56, height: 40, alignment: .center)
+                                    .opacity(0.5)
+                            })
                         }
                      
                     }
                     
                     , alignment: .topTrailing
+                )
+            
+                .overlay(
+                    ZStack{
+                        if store.isPurchasing {
+                            ProgressBuySubView()
+                        }
+                    }
                 )
             
         }
@@ -147,8 +172,11 @@ extension OnboardingVerTwoSubView{
                 }else if currentPage == 5 {
                     Page_5(currentProduct: $currentProduct)
                         .environmentObject(store)
+                        
+                
                 }else{
                   Page_6()
+                     
                 }
                       
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -160,6 +188,8 @@ extension OnboardingVerTwoSubView{
                             currentPage += 1
                         }
                     }else if currentPage == 5 {
+                        UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                        
                         if currentProduct == 1 {
                             if let monthPro = store.monthProductV2 {
                                 purchasesss(product: monthPro)
@@ -176,6 +206,9 @@ extension OnboardingVerTwoSubView{
                         
                         
                     }else if currentPage == 6 {
+                        
+                        UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                        
                         if let yearPro = store.yearlyFreeTrialProduct {
                             purchasesss(product: yearPro)
                         }
@@ -241,6 +274,7 @@ extension OnboardingVerTwoSubView{
                                 Task{
                                     let b = await store.restore()
                                     if b {
+                                        store.fetchProducts()
                                         showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                                     }else{
                                         showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -277,14 +311,14 @@ extension OnboardingVerTwoSubView{
     
     func purchasesss(product : Product) {
         store.isPurchasing = true
-        showProgressSubView()
+     //   showProgressSubView()
         Firebase_log("Click_buy_in_onboarding")
         store.purchase(product: product, onBuySuccess: { b in
             if b {
 
                 DispatchQueue.main.async{
                     store.isPurchasing = false
-                    hideProgressSubView()
+              //      hideProgressSubView()
                     Firebase_log("Click_buy_in_onboarding_successful")
                     
                     showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
@@ -294,8 +328,9 @@ extension OnboardingVerTwoSubView{
                 }
             }else{
                 DispatchQueue.main.async{
+                  
                     store.isPurchasing = false
-                    hideProgressSubView()
+             //       hideProgressSubView()
                 }
             }
     
@@ -350,7 +385,10 @@ extension OnboardingVerTwoSubView{
     }
     
     func Screen_5() -> some View{
+       
         VideoOnboarding(video_name: "video4v2")
+        
+        
     }
     
    
@@ -396,6 +434,9 @@ extension OnboardingVerTwoSubView{
                                 .resizable()
                                 .frame(width: 24, height: 24)
                             
+                          //
+                            //TextTypingAnimView(text: opt, color: .white, fontSize: 17, weight: .bold)
+
                             Text(opt)
                                 .mfont(17, .bold)
                                 .foregroundColor(.white)
@@ -438,17 +479,58 @@ extension OnboardingVerTwoSubView{
                                     Color("black_bg"),
                                     Color("black_bg")], startPoint: .top, endPoint: .bottom)
         ).padding(.bottom, 24)
+          
     }
     
 }
 
 struct VideoOnboarding : View{
+    
     @State var avPlayer : AVPlayer?
     let video_name : String
+  
+    
     var body: some View{
         ZStack{
             if  avPlayer != nil{
                 MyVideoPlayer(player: avPlayer!)
+                    .ignoresSafeArea()
+                    .gesture(DragGesture())
+            }
+        }
+        
+        .onAppear(perform: {
+            avPlayer = AVPlayer(url:  Bundle.main.url(forResource: video_name, withExtension: "mp4")!)
+            avPlayer!.play()
+        })
+        .onDisappear(perform: {
+            if avPlayer != nil{
+                avPlayer!.pause()
+            }
+            avPlayer = nil
+        })
+        
+        
+    }
+}
+
+
+struct VideoOnboardingForSC5 : View{
+    
+    @State var avPlayer : AVPlayer?
+    let video_name : String
+  
+    
+    var body: some View{
+        ZStack(alignment: .top) {
+            
+            if let avPlayer {
+                VStack(spacing : 0){
+                    MyVideoPlayer(player: avPlayer, aspect: .resizeAspect)
+                    Spacer()
+                }
+               
+                
                     .ignoresSafeArea()
                     .gesture(DragGesture())
             }

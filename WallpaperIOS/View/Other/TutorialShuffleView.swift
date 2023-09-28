@@ -71,6 +71,9 @@ struct TutorialShuffleView: View {
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .addBackground()
+            .onAppear(perform: {
+                UserDefaults.standard.set(true, forKey: "show_tuto_shuffleee")
+            })
     }
     
     

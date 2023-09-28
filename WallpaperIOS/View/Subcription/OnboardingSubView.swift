@@ -49,9 +49,10 @@ struct OnboardingSubView: View {
                                 Image("close.circle.fill")
                                     .resizable()
                                     .frame(width: 24, height: 24)
-                                    .foregroundColor(.white)
+                                    .frame(width: 56, height: 40, alignment: .center)
+                                    .opacity(0.5)
                             })
-                            .padding(.horizontal, 16)
+                            
                         }
                     }, alignment: .topTrailing
                     
@@ -104,7 +105,7 @@ struct OnboardingSubView: View {
                         Text(getTextSubTitle(page:page))
                             .foregroundColor(.white)
                             .mfont(24, .regular)
-                        
+                            .multilineTextAlignment(.center)
                             .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay(0.1), value: page)
                             .padding(.horizontal, 27)
                             .padding(.bottom, 32)
@@ -122,14 +123,14 @@ struct OnboardingSubView: View {
                             UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                             if let weekPro = store.weekProductNotSale {
                                 store.isPurchasing = true
-                                showProgressSubView()
+                            //    showProgressSubView()
                                 Firebase_log("Click_buy_in_onboarding")
                                 store.purchase(product: weekPro, onBuySuccess: { b in
                                     if b {
 
                                         DispatchQueue.main.async{
                                             store.isPurchasing = false
-                                            hideProgressSubView()
+                                //            hideProgressSubView()
                                             Firebase_log("Click_buy_in_onboarding_successful")
                                             
                                             showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
@@ -140,7 +141,7 @@ struct OnboardingSubView: View {
                                     }else{
                                         DispatchQueue.main.async{
                                             store.isPurchasing = false
-                                            hideProgressSubView()
+                                  //          hideProgressSubView()
                                         }
                                     }
                             
@@ -209,6 +210,7 @@ struct OnboardingSubView: View {
                                     Task{
                                         let b = await store.restore()
                                         if b {
+                                            store.fetchProducts()
                                             showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                                         }else{
                                             showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -254,6 +256,13 @@ struct OnboardingSubView: View {
             })
             
         }
+        .overlay(
+            ZStack{
+                if store.isPurchasing {
+                    ProgressBuySubView()
+                }
+            }
+        )
     }
     
     func getTextTitle(page : Int) -> String{

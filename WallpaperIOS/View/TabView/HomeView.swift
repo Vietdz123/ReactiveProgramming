@@ -109,7 +109,7 @@ struct HomeView: View {
                                                         .cornerRadius(8)
                                                 }
                                             }else{
-                                                if let yearSale = store.yearlv2SalaProduct{
+                                                if let yearSale = store.yearlv2Sale50Product{
                                                     SubInHome2(size: size, product: yearSale)
                                                         .cornerRadius(8)
                                                 }
@@ -124,6 +124,8 @@ struct HomeView: View {
                                 )
                                 
                                 .onAppear(perform: {
+                                //    print("HomeView Details Image: id_\(wallpaper.id) size preview: w \(wallpaper.variations.preview_small.resolution.width)  h \(wallpaper.variations.preview_small.resolution.height)")
+                                    
                                     if viewModel.shouldLoadData(id: index){
                                         viewModel.getWallpapers()
                                         
@@ -327,6 +329,7 @@ extension HomeView {
                     Task{
                         let b = await store.restore()
                         if b {
+                            store.fetchProducts()
                             showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                         }else{
                             showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
@@ -417,7 +420,10 @@ extension HomeView {
                            DispatchQueue.main.async{
                                store.isPurchasing = false
                                hideProgressSubView()
-                               showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                               DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                   showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                               })
+                            
                               
                            }
                           
@@ -425,7 +431,10 @@ extension HomeView {
                            DispatchQueue.main.async{
                                store.isPurchasing = false
                                hideProgressSubView()
-                               showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                               DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                   showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                               })
+                               
                            }
                        }
                 })
@@ -514,6 +523,7 @@ extension HomeView {
                     Task{
                         let b = await store.restore()
                         if b {
+                            store.fetchProducts()
                             showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                         }else{
                             showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")

@@ -76,7 +76,10 @@
         "name" : "Load Products"
       },
       {
-        "current" : null,
+        "current" : {
+          "index" : 1,
+          "type" : "purchase"
+        },
         "enabled" : false,
         "name" : "Purchase"
       },
@@ -101,12 +104,18 @@
         "name" : "App Transaction"
       },
       {
-        "current" : null,
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
         "enabled" : false,
         "name" : "Manage Subscriptions Sheet"
       },
       {
-        "current" : null,
+        "current" : {
+          "index" : 0,
+          "type" : "refund request"
+        },
         "enabled" : false,
         "name" : "Refund Request Sheet"
       },
@@ -115,7 +124,8 @@
         "enabled" : false,
         "name" : "Offer Code Redeem Sheet"
       }
-    ]
+    ],
+    "_timeRate" : 0
   },
   "subscriptionGroups" : [
     {
@@ -350,7 +360,7 @@
           ],
           "productID" : "com.ezt.wl.year_3",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Yearly_No_Free_Trial",
+          "referenceName" : "Yearly_Sale",
           "subscriptionGroupID" : "5CA6DDB4",
           "type" : "RecurringSubscription"
         },
@@ -401,6 +411,31 @@
           "productID" : "com.ezt.wl.3months",
           "recurringSubscriptionPeriod" : "P3M",
           "referenceName" : "ThreeMonth",
+          "subscriptionGroupID" : "5CA6DDB4",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "34.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "5D0CD5F5",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ezt.wl.year_5",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "YearOriginal",
           "subscriptionGroupID" : "5CA6DDB4",
           "type" : "RecurringSubscription"
         }

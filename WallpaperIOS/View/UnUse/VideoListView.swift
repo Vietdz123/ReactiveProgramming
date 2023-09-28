@@ -542,7 +542,7 @@ struct ReelsPlayer : View{
 
 struct MyVideoPlayer : UIViewControllerRepresentable {
     var player : AVPlayer
-    
+    var aspect : AVLayerVideoGravity = .resizeAspectFill
     func makeCoordinator() -> Coordinator {
         return Coordinator(parent: self)
     }
@@ -552,7 +552,8 @@ struct MyVideoPlayer : UIViewControllerRepresentable {
         controller.player = player
         controller.showsPlaybackControls = false
         player.isMuted  = true
-        controller.videoGravity = .resizeAspectFill
+       
+        controller.videoGravity = aspect
         controller.disableGestureRecognition()
         controller.view.isUserInteractionEnabled = false
         player.actionAtItemEnd = .none

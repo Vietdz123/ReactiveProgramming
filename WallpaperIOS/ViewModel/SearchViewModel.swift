@@ -25,7 +25,7 @@ class SearchViewModel: ObservableObject {
     
     func getTags(){
 
-        guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc%&offset=\(tagCurrentOfffset)&limit=\(AppConfig.limit)") else {
+        guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc&offset=\(tagCurrentOfffset)&limit=\(AppConfig.limit)") else {
             return
         }
         print("ViewModel SearchViewModel tagURL \(url.absoluteString)")
@@ -54,13 +54,16 @@ class SearchViewModel: ObservableObject {
     
     
     func searchTag(text : String) {
+        if searchText == text {
+            return
+        }
         searchText = text
         if text.isEmpty || text.count == 1 {
             return
         }else{
             tagCurrentOfffset = 0
             tags.removeAll()
-            guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc%&title_search=\(text)") else {
+            guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc&title_search=\(text)") else {
                 return
             }
             print("ViewModel SearchViewModel tagURL \(url.absoluteString)")

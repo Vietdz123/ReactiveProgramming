@@ -27,6 +27,8 @@ struct SubcriptionVIew: View {
     @State var player : AVPlayer?
     @State var isT1 : Bool = true
     
+    @State var showBtnClose : Bool = false
+    
     var body: some View {
         ZStack{
             if player != nil {
@@ -34,11 +36,11 @@ struct SubcriptionVIew: View {
                     .ignoresSafeArea()
             }
             
-            //        if store.isVer1(){
-            //SubView_1()
-            //     }else{
-                     SubView_2()
-            //   }
+            if store.isVer1(){
+                SubView_1()
+            }else{
+                SubView_2()
+            }
             
             
         }
@@ -52,6 +54,13 @@ struct SubcriptionVIew: View {
                 self.player!.play()
             }
             Firebase_log("Sub_view_show_total")
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                withAnimation(.easeOut){
+                    showBtnClose = true
+                }
+            })
             
             
         })
@@ -77,9 +86,16 @@ extension SubcriptionVIew {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Image("close.circle.fill")
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    ZStack{
+                        if showBtnClose{
+                            Image("close.circle.fill")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .frame(width: 40, height: 40)
+                                .opacity(0.7)
+                        }
+                    }.frame(width: 40, height: 40)
+                    
                 })
                 
             }
@@ -292,127 +308,134 @@ extension SubcriptionVIew {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Image("close.circle.fill")
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                    ZStack{
+                        if showBtnClose{
+                            Image("close.circle.fill")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .frame(width: 40, height: 40)
+                                .opacity(0.7)
+                            
+                        }
+                    }.frame(width: 40, height: 40)
                 })
                 
             }
             .frame(maxWidth: .infinity)
             Spacer()
-         
-                
-                ResizableLottieView(filename: "star")
-                    .frame(width: 80, height: 80)
-                
-                Text("Wallive Premium")
-                    .mfont(24, .bold)
-                    .foregroundColor(.yellow)
-                    .padding(.top, 8)
+            
+            
+            ResizableLottieView(filename: "star")
+                .frame(width: 80, height: 80)
+            
+            Text("Wallive Premium")
+                .mfont(24, .bold)
+                .foregroundColor(.yellow)
+                .padding(.top, 8)
             Text("Give your Phone A Cool Makeover")
                 .mfont(17, .bold)
                 .foregroundColor(.white)
                 .padding(.top, 4)
                 .padding(.bottom, 16)
-                
-                
-                OptForProUser()
             
-                
+            
+            OptForProUser()
+            
+            
             Spacer()
-                
-                ZStack{
-                    if store.purchasedIds.isEmpty{
-                        if let yearlyNoFreeTrial = store.yearlv2SalaProduct{
+            
+            ZStack{
+                if store.purchasedIds.isEmpty{
+                    if let yearlyNoFreeTrial = store.yearlyOriginalProduct{
+                        
+                        VStack(spacing : 0){
+                            Text("Just \(yearlyNoFreeTrial.displayPrice)/year.")
+                                .mfont(17, .bold)
+                            Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 12))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/month! )")
+                                .mfont(15, .regular)
+                                .padding(.top, 6)
                             
-                            VStack(spacing : 0){
-                                Text("Just \(yearlyNoFreeTrial.displayPrice)/year.")
-                                    .mfont(17, .bold)
-                                Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 12))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/month! )")
-                                    .mfont(15, .regular)
-                                    .padding(.top, 6)
-                                
-                                
-                                Button(action: {
-                                    if store.purchasedIds.isEmpty{
-                                        store.isPurchasing = true
-                                        showProgressSubView()
-                                        Firebase_log("Sub_click_buy_sub_total")
-                                        
-                                        
-                                        
-                                       
-                                        store.purchase(product: yearlyNoFreeTrial, onBuySuccess: { b in
-                                            if b {
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                                                    presentationMode.wrappedValue.dismiss()
-                                                }
-                                                
-                                            }else{
-                                                DispatchQueue.main.async{
-                                                    store.isPurchasing = false
-                                                    hideProgressSubView()
-                                                    showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-                                                }
+                            
+                            Button(action: {
+                                if store.purchasedIds.isEmpty{
+                                    store.isPurchasing = true
+                                    showProgressSubView()
+                                    Firebase_log("Sub_click_buy_sub_total")
+                                    
+                                    
+                                    
+                                    
+                                    store.purchase(product: yearlyNoFreeTrial, onBuySuccess: { b in
+                                        if b {
+                                            DispatchQueue.main.async{
+                                                store.isPurchasing = false
+                                                hideProgressSubView()
+                                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                                presentationMode.wrappedValue.dismiss()
                                             }
                                             
-                                        })
+                                        }else{
+                                            DispatchQueue.main.async{
+                                                store.isPurchasing = false
+                                                hideProgressSubView()
+                                                showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                            }
+                                        }
                                         
-                                    }
-                                 
-                                }, label: {
-                                    HStack{
-                                        
-                                        Text( "BUY SUBSCRIPTION" )
-                                            .mfont(17, .bold)
-                                            .foregroundColor(.black)
-                                            .overlay(
-                                                ZStack{
-                                                    if store.isPurchasing{
-                                                        EZProgressView()
-                                                    }
-                                                }.offset(x : -36)
-                                                , alignment: .leading
-                                            )
-                                    }
+                                    })
                                     
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 56)
-                                    .contentShape(Rectangle())
-                                })
-                                .background(
-                                    Capsule()
-                                        .foregroundColor(.yellow)
-                                )
-                                .padding(.horizontal, 24)
-                                .padding(.top, 16)
-                                .disabled(store.isPurchasing)
-                            }
-                            
-                        
-                            
-                            
-                            
+                                }
+                                
+                            }, label: {
+                                HStack{
+                                    
+                                    Text( "BUY SUBSCRIPTION" )
+                                        .mfont(17, .bold)
+                                        .foregroundColor(.black)
+                                        .overlay(
+                                            ZStack{
+                                                if store.isPurchasing{
+                                                    EZProgressView()
+                                                }
+                                            }.offset(x : -36)
+                                            , alignment: .leading
+                                        )
+                                }
+                                
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 56)
+                                .contentShape(Rectangle())
+                            })
+                            .background(
+                                Capsule()
+                                    .foregroundColor(.yellow)
+                            )
+                            .padding(.horizontal, 24)
+                            .padding(.top, 16)
+                            .disabled(store.isPurchasing)
                         }
-                     
+                        
+                        
+                        
                         
                         
                     }
+                    
+                    
+                    
                 }
-                
-                
-                
-                
-                
-                
-                BottomButton()
-                
-                
-                
-           
+            }
+            
+            
+            
+            
+            
+            
+            BottomButton()
+            
+            
+            
+            
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
@@ -538,6 +561,7 @@ extension SubcriptionVIew {
                 Task{
                     let b = await store.restore()
                     if b {
+                        store.fetchProducts()
                         showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
                     }else{
                         showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")

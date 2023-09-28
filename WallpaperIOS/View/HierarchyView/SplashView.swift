@@ -18,7 +18,7 @@ struct SplashView: View {
     @StateObject var interAd : InterstitialAdLoader = .init()
     @StateObject var homeVM : HomeViewModel = .init()
     @State private var splash_process = 0.0
-    let timer = Timer.publish(every: 0.03, on: .main, in: .common).autoconnect()
+    
     
     let openAd : OpenAd = OpenAd()
     @Environment(\.scenePhase)  var scenePhase
@@ -74,41 +74,45 @@ struct SplashView: View {
             
         }.navigationViewStyle(.stack)
             .navigationTransition(.fade(.out))
-            .onAppear(perform: {
+            .onViewDidLoad {
                 openAd.requestAppOpenAd()
-            })
-            .onReceive(timer) { _ in
-                if splash_process < 100 {
-                    splash_process += 1
-                }
+                Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true, block: { timer in
+                    
+                                    if splash_process < 100 {
+                                        splash_process += 1
+                                    }else{
+                                        timer.invalidate()
+                                    }
+                })
             }
+
             .onChange(of: splash_process, perform: {
                 newValue in
                 if splash_process == 100 {
                     
                     
                  
-                  //  if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-//                    if myStore.isVer1(){
- //                      appVM.navigateToOnboarding.toggle()
-//                    }else{
+                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+                   if myStore.isVer1(){
+                       appVM.navigateToOnboarding.toggle()
+                    }else{
                     appVM.navigateToOnboarding2.toggle()
-//                    }
+                    }
                         
-//
-//                    }else{
-//                        
-//                        if myStore.isPro(){
-                          //  appVM.navigateToHome.toggle()
-//                        }else{
-//                            openAd.tryToPresentAd(onCommit: {
-//                                _ in
-//                                appVM.navigateToHome.toggle()
-//                            })
-//                        }
-//                        
-//                        
-//                    }
+
+                    }else{
+                        
+                        if myStore.isPro(){
+                            appVM.navigateToHome.toggle()
+                        }else{
+                            openAd.tryToPresentAd(onCommit: {
+                                _ in
+                                appVM.navigateToHome.toggle()
+                            })
+                        }
+                        
+                        
+                    }
                     
                 }
             })

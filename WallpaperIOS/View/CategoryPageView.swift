@@ -20,11 +20,7 @@ struct CategoryPageView: View {
     @State var adStatus : AdStatus = .loading
     
     @Namespace var anim
-    
-    
-    
-    
-    
+
     
     var body: some View {
         VStack(spacing : 0){
@@ -174,6 +170,7 @@ struct CategoryPageView: View {
             }
             .onAppear(perform: {
                 if ( viewModel.category?.title ?? "" ) != currentCategoryName {
+                    viewModel.categorySort = .NEW
                     viewModel.wallpapers = []
                     viewModel.currentOffset = 0
                     viewModel.getWallpapers()
@@ -201,21 +198,6 @@ struct CategoryPageView: View {
         .addBackground()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

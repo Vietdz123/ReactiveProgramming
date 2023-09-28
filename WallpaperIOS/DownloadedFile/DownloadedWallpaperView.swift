@@ -84,7 +84,7 @@ struct DownloadedWallpaperView: View {
                         }.frame(maxWidth: .infinity, maxHeight: .infinity)
                     }else{
                         ScrollView(.vertical, showsIndicators: false){
-                            LazyVGrid(columns: [GridItem.init(spacing  : 8), GridItem.init()], spacing: 8){
+                            LazyVGrid(columns: [GridItem.init(spacing  : 8),GridItem.init(spacing  : 8), GridItem.init()], spacing: 8){
                                 ForEach(0..<viewModel.imageDownloadeds.count, id: \.self){ i  in
                                     let url = viewModel.imageDownloadeds[i]
                                     NavigationLink(destination: {

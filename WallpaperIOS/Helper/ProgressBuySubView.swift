@@ -12,7 +12,7 @@ extension View{
         DispatchQueue.main.async {
             if getRootViewController().view.subviews.contains(where: {
                 view in
-                return view.tag == 2008
+                return view.tag == 134
             }){
                 return
             }
@@ -24,19 +24,23 @@ extension View{
             toastViewController.view.frame.size = CGSize(width: getRect().width, height: getRect().height)
             toastViewController.view.backgroundColor = .clear
             toastViewController.view.frame.origin = CGPoint(x: 0 , y:  0)
-            toastViewController.view.tag = 2008
+            toastViewController.view.tag = 134
             getRootViewController().view.addSubview(toastViewController.view)
         }
     }
     
     func hideProgressSubView(){
+        print("Hide Progress View")
         DispatchQueue.main.async {
-            
             getRootViewController().view.subviews.forEach({
                 view in
-                if view.tag == 2008 {
+                print("Hide Progress View \(view.tag)")
+                if view.tag == 134 {
                     view.removeFromSuperview()
                 }
+                
+              
+                
             })
         }
     }
@@ -67,6 +71,9 @@ struct ProgressBuySubView: View {
                 VisualEffectView(effect: UIBlurEffect(style: .dark))
                     .ignoresSafeArea()
             )
+//            .onTapGesture {
+//                hideProgressSubView()
+//            }
     }
 }
 
