@@ -239,6 +239,7 @@ struct LiveWLView: View {
                                  
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 48)
+                                        .contentShape(Rectangle())
                                         .background(
                                             Capsule().fill(Color.main)
                                         )

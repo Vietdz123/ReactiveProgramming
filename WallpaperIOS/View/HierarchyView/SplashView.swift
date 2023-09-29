@@ -28,7 +28,7 @@ struct SplashView: View {
         NavigationView{
             ZStack{
                 
-            //    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+               
                     NavigationLink(destination:
                         OnboardingSubView()
                         .navigationBarTitle("", displayMode: .inline)
@@ -52,7 +52,7 @@ struct SplashView: View {
                                    , isActive: $appVM.navigateToOnboarding2, label: {
                         EmptyView()
                     })
-             //   }
+               
                 
                 
                 

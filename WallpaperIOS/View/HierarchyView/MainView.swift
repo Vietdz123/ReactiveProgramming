@@ -229,7 +229,7 @@ struct MainView: View {
                             .scaleEffect(mainViewModel.scale ? 3 : 1, anchor: .center)
                             .offset(x : mainViewModel.translate ?  -getRect().width / 2 + 64  : 0, y : mainViewModel.translate ? ( -getRect().height / 2 + 64 ) : 0 )
                             .padding(.trailing, 16)
-                            .padding(.bottom, ( store.allowShowBanner() ? 24 : 0 ) + 128 - getSafeArea().bottom)
+                            .padding(.bottom, ( store.allowShowBanner() ? 36 : 0 ) + 128 - getSafeArea().bottom)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                             .matchedGeometryEffect(id: "GIFT", in: anim)
                             .onTapGesture {

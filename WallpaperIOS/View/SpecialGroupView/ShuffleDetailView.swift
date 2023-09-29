@@ -545,6 +545,7 @@ extension ShuffleDetailView{
                         
                       
                             .frame(width: 240, height: 48)
+                            .contentShape(Rectangle())
                             .background(
                                 Capsule()
                                     .foregroundColor(.main)
@@ -677,7 +678,7 @@ extension ShuffleDetailView{
             Spacer()
             
             Button(action: {
-                getPhotoPermission(status: {
+                getPhotoPermissionForCreateAlbum(status: {
                     b in
                     if b {
                         if store.isPro() {
@@ -698,6 +699,10 @@ extension ShuffleDetailView{
                             }
                         }
                         
+                    }else{
+                        DispatchQueue.main.async {
+                            showToastWithContent(image: "xmark", color: .red, mess: "No permissions to create photo albums!")
+                        }
                     }
                 })
                
@@ -715,9 +720,8 @@ extension ShuffleDetailView{
                             }.offset(x : -36)
                             , alignment: .leading
                         )
-                }
-             
-                    .frame(width: 240, height: 48)
+                }.frame(width: 240, height: 48)
+                    .contentShape(Rectangle())
                     .background(
                         Capsule()
                             .foregroundColor(.main)

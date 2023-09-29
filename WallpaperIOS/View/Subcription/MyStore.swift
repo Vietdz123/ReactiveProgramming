@@ -29,11 +29,11 @@ struct IDProduct {
     static let COIN_2 = "com.ezt.wl.coinpack2"
     static let COIN_3 = "com.ezt.wl.coinpack3"
     
-    static let YEARLY_FREE_TRIAL = "com.ezt.wl.year_4" //  "com.ezt.wl.year_6"
+    static let YEARLY_FREE_TRIAL =  "com.ezt.wl.year_6"
     static let YEARLY_SALE_50 = "com.ezt.wl.year_3"
     static let YEARLY_ORIGINAL = "com.ezt.wl.year_5"
     
-    static let MONTHLY_V2 = "com.ezt.wl.month_1" // "com.ezt.wl.month_2"
+    static let MONTHLY_V2 = "com.ezt.wl.month_2"
     static let THREE_MONTH = "com.ezt.wl.3months"
 }
 

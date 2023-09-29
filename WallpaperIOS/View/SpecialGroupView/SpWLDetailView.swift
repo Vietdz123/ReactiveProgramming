@@ -78,7 +78,18 @@ struct SpWLDetailView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
-              
+                        .overlay(
+                            ZStack{
+                                if viewModel.wallpapers[index].specialContentV2ID == 3{
+                                    Image("dynamic")
+                                        .resizable()
+                                        
+                                }
+                                    
+                                
+                               
+                            }
+                        )
                         .onAppear(perform: {
                             if i == (viewModel.wallpapers.count - 3){
                                 viewModel.getWallpapers()
@@ -95,22 +106,16 @@ struct SpWLDetailView: View {
                         .ignoresSafeArea()
                 )
                 .tabViewStyle(.page(indexDisplayMode: .never))
+              
                 .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    withAnimation{
-                        ctrlViewModel.showControll.toggle()
-                    }
-                }
+               
                 
                 
                 if ctrlViewModel.showControll{
                     ControllView()
                 }
                 
-                if ctrlViewModel.showPreview {
-                    Preview()
-                }
-                
+              
                 if showBuySubAtScreen {
                     SubInScreen()
      
@@ -606,9 +611,8 @@ extension SpWLDetailView{
                                     , alignment: .leading
                                 )
                         }
-                        
-                      
                             .frame(width: 240, height: 48)
+                            .contentShape(Rectangle())
                             .background(
                                 Capsule()
                                     .foregroundColor(.main)
@@ -747,36 +751,8 @@ extension SpWLDetailView{
             
             Spacer()
             
-            HStack{
-                Button(action: {
-                    let wallpaper = viewModel.wallpapers[index]
-                    if !favViewModel.isFavorite(id: wallpaper.id) {
-                        favViewModel.addFavoriteWLToCoreData(id: wallpaper.id ,
-                                                             preview_url: wallpaper.path.first?.path.preview ?? "",
-                                                             url: wallpaper.path.first?.path.full ?? "",
-                                                             type:  "image",
-                                                             contentType: wallpaper.contentType == 1 ? "private" : "cost",
-                                                             cost: Int(wallpaper.cost))
-                        ServerHelper.sendImageSpecialDataToServer(type: "favorite", id: wallpaper.id)
-                    }else{
-                        favViewModel.deleteFavWL(id: wallpaper.id)
-                    }
-                    
-                    
-                }, label: {
-                    Image( favViewModel.isFavorite(id: viewModel.wallpapers[index].id) ? "heart.fill" : "heart")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio( contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .frame(width: 48, height: 48)
-                        .containerShape(Circle())
-                        .background(
-                            Circle()
-                                .fill(Color.mblack_bg.opacity(0.7))
-                                .frame(width: 48, height: 48)
-                        )
-                })
+           
+               
 
                 Button(action: {
                     
@@ -848,85 +824,25 @@ extension SpWLDetailView{
                                 , alignment: .leading
                             )
                     }
-                
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .contentShape(Capsule())
+                    .frame(width: 240, height: 48)
+                        .contentShape(Rectangle())
                         .background(
                             Capsule().fill(Color.main)
                         )
                 }).padding(.horizontal, 16)
                 
                 
-                Button(action: {
-                    withAnimation{
-                        ctrlViewModel.showControll = false
-                        ctrlViewModel.showPreview = true
-                    }
-                }, label: {
-                    Image("preview")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio( contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .frame(width: 48, height: 48)
-                        .background(
-                            Circle()
-                                .fill(Color.mblack_bg.opacity(0.7))
-                                .frame(width: 48, height: 48)
-                        )
-                }) .frame(width: 48, height: 48)
-                    .containerShape(Circle())
-            }
+               
+           
             .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .padding(.bottom, 40)
+            .frame(height: 48)
+            .padding(.bottom, 48)
         }
         
     }
     
-    @ViewBuilder
-    func Preview() -> some View{
-        TabView(selection: $ctrlViewModel.isHome){
-            Image("lock_preview_hour")
-                .resizable()
-                .scaledToFill()
-            
-                .onTapGesture {
-                    withAnimation{
-                        ctrlViewModel.showPreview = false
-                        
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                        withAnimation{
-                            ctrlViewModel.showControll = true
-                        }
-                    })
-                }.tag(true)
-            
-            
-            Image("preview_home")
-                .resizable()
-                .scaledToFill()
-                .onTapGesture {
-                    withAnimation{
-                        ctrlViewModel.showPreview = false
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                        withAnimation{
-                            ctrlViewModel.showControll = true
-                        }
-                    })
-                }.tag(false)
-            
-        }
-        .tabViewStyle(.page(indexDisplayMode: .always))
-        .background{
-            Color.clear
-        }
-        .ignoresSafeArea()
-    }
+  
     
     @ViewBuilder
     func DialogGetWL(urlStr : String) -> some View{

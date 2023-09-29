@@ -310,7 +310,7 @@ struct WallpaperOnePageDetails: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 48)
                     
-                        .contentShape(Capsule())
+                        .contentShape(Rectangle())
                         .background(
                             Capsule().fill(Color.main)
                         )

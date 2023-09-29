@@ -358,7 +358,7 @@ struct WLView: View {
                     
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
-                    .contentShape(Capsule())
+                    .contentShape(Rectangle())
                     .background(
                         Capsule().fill(Color.main)
                     )
@@ -523,75 +523,7 @@ struct WLView: View {
         
     }
     
-//    func downloadImageToGallery(title : String, urlStr : String){
-//        
-//        DispatchQueue.main.async {
-//            ctrlViewModel.isDownloading = true
-//        }
-//        
-//        let defaultSession = URLSession(configuration: .default)
-//        var dataTask: URLSessionDataTask? = nil
-//        DispatchQueue.global(qos: .background).async {
-//            let imgURL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageDownloaded")
-//            print("FILE_MANAGE \(imgURL)")
-//            if let url = URL(string: urlStr) {
-//                let filePath = imgURL.appendingPathComponent("\(title).jpg")
-//                if FileManager.default.fileExists(atPath: filePath.path){
-//                    DispatchQueue.main.async {
-//                        ctrlViewModel.isDownloading = false
-//                        showToastWithContent(image: "xmark", color: .red, mess: "File already exists!")
-//                    }
-//                    return
-//                }
-//                dataTask = defaultSession.dataTask(with: url, completionHandler: {  data, res, err in
-//                    DispatchQueue.main.async {
-//                        do {
-//                            try data?.write(to: filePath)
-//                            PHPhotoLibrary.shared().performChanges({
-//                                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: filePath)
-//                            }) { completed, error in
-//                                if completed {
-//                                    DispatchQueue.main.async {
-//                                        ctrlViewModel.isDownloading = false
-//                                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-//                                        if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-//                                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-//                                            ctrlViewModel.showTutorial = true
-//                                        }
-//                                        
-//                                        let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-//                                        UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-//                                        if !store.isPro() && downloadCount == 1 {
-//                                            ctrlViewModel.navigateView.toggle()
-//                                        }else{
-//                                            showRateView()
-//                                        }
-//                                        
-//                                        
-//                                    }
-//                                    
-//                                } else if let error = error {
-//                                    DispatchQueue.main.async {
-//                                        ctrlViewModel.isDownloading = false
-//                                        showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-//                                    }
-//                                    
-//                                }
-//                            }
-//                        } catch {
-//                            DispatchQueue.main.async {
-//                                ctrlViewModel.isDownloading = false
-//                                showToastWithContent(image: "xmark", color: .red, mess: error.localizedDescription)
-//                            }
-//                            
-//                        }
-//                    }
-//                    dataTask = nil
-//                })
-//                dataTask?.resume()
-//            }
-//        }
-//    }
+
     
 }
 
