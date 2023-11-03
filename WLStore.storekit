@@ -322,9 +322,10 @@
           "groupNumber" : 1,
           "internalID" : "8B73CB0B",
           "introductoryOffer" : {
+            "displayPrice" : "0.99",
             "internalID" : "9D4EE6F7",
             "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
+            "subscriptionPeriod" : "P3D"
           },
           "localizations" : [
             {

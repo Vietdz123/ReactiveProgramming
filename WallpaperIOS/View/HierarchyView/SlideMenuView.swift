@@ -57,7 +57,7 @@ struct SlideMenuView: View {
                         VStack(spacing : 0){
                             if !store.isPro(){
                                 NavigationLink(destination: {
-                                    SubcriptionVIew()
+                                    EztSubcriptionView()
                                         .environmentObject(store)
                                         .navigationBarTitle("", displayMode: .inline)
                                         .navigationBarHidden(true)
@@ -81,7 +81,7 @@ struct SlideMenuView: View {
                                 })
                                 
                                 NavigationLink(destination: {
-                                    SubcriptionVIew()
+                                    EztSubcriptionView()
                                         .environmentObject(store)
                                         .navigationBarTitle("", displayMode: .inline)
                                         .navigationBarHidden(true)

@@ -22,7 +22,7 @@ struct WallpaperOnePageDetails: View {
         ZStack(alignment: .top){
             
             NavigationLink(destination:
-                            SubcriptionVIew().environmentObject(store)
+                            EztSubcriptionView().environmentObject(store)
                            , isActive: $ctrlViewModel.navigateView, label: {
                 EmptyView()
             })
@@ -79,8 +79,11 @@ struct WallpaperOnePageDetails: View {
             
             if ctrlViewModel.showDialogBuyCoin{
                 //if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                  DialogGetWLByCoin(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+                 // DialogGetWLByCoin(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
                 //}
+                SpecialSubView(onClickClose: {
+                    ctrlViewModel.showDialogBuyCoin = false
+                })
                
             }
            

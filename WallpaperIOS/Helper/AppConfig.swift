@@ -46,6 +46,12 @@ extension View{
     }
 }
 
+//extension String{
+//    func localizable() -> String
+//    {
+//        return NSLocalizedString("splash_text", comment: "")
+//    }
+//}
 
 
 extension UIApplication {

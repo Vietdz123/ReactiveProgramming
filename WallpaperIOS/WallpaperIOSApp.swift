@@ -48,7 +48,14 @@ struct WallpaperIOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-      
+            
+//            EztSubcriptionView()
+            
+//            NavigationView{
+//                EztMainView()
+//            } .preferredColorScheme(.dark)
+               
+            
             SplashView()
                 .statusBarHidden(false)
                 .preferredColorScheme(.dark)
@@ -96,49 +103,3 @@ extension AppDelegate : MessagingDelegate{
 
 
 
-//var remoteConfig = RemoteConfig.remoteConfig()
-//let settings = RemoteConfigSettings()
-//settings.minimumFetchInterval = 0
-//remoteConfig.configSettings = settings
-//remoteConfig.setDefaults(fromPlist: "GoogleService-Info")
-//fetchConfig(remoteConfig: remoteConfig)
-
-
-//func fetchConfig(remoteConfig : RemoteConfig) {
-//
-//    remoteConfig.fetch { (status, error) -> Void in
-//        if status == .success {
-//           remoteConfig.activate { changed, error in
-//                let wl_domain = remoteConfig.configValue(forKey: "wl_domain").stringValue ?? "http://3.8.138.29/"
-//                let reward_delay = remoteConfig.configValue(forKey: "reward_delay").numberValue
-//                let allowShowRate = remoteConfig.configValue(forKey: "allow_show_rate").boolValue
-//                let productsJsonStr = remoteConfig.configValue(forKey: "products").stringValue ?? "[\"com.ezt.wl.monthly\", \"com.ezt.wl.yearly\"]"
-//
-//
-//                UserDefaults.standard.set(wl_domain, forKey: "wl_domain")
-//                UserDefaults.standard.set(reward_delay, forKey: "delay_reward")
-//                UserDefaults.standard.set(allowShowRate, forKey: "allow_show_rate")
-//                UserDefaults.standard.set(productsJsonStr, forKey: "products")
-//
-//
-//
-//                print("FIREBSE REMOTE CONFIG wl_domain \(wl_domain)")
-//                print("FIREBSE REMOTE CONFIG reward_delay \(reward_delay)")
-//                print("FIREBSE REMOTE CONFIG allowShowRate \(allowShowRate)")
-//               print("FIREBSE REMOTE CONFIG productsJsonStr \(productsJsonStr)")
-//
-//
-//
-//
-//
-//            }
-//        } else {
-//            print("Config not fetched")
-//            print("Error: \(error?.localizedDescription ?? "No error available.")")
-//        }
-//
-//    }
-//
-//
-//
-//}

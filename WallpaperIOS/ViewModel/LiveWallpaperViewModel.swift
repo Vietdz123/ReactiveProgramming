@@ -15,6 +15,7 @@ class LiveWallpaperViewModel: ObservableObject {
    
     init(){
         domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
+       // domain = "https://devwallpaper.eztechglobal.com/"
         getDataByPage()
     }
 
@@ -22,6 +23,10 @@ class LiveWallpaperViewModel: ObservableObject {
         guard let url  = URL(string: "\(domain)api/v1/videos?limit=\(AppConfig.limit)&offset=\(offsetCount)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
             return
         }
+//        
+//        guard let url  = URL(string: "\(domain)api/v1/videos?limit=138&offset=\(offsetCount)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
+//            return
+//        }
         
         print("LIVE WALLPAPER \(url.absoluteString)")
         

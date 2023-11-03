@@ -12,12 +12,18 @@ import SwiftUI
 // Depth Effect "https://devwallpaper.eztechglobal.com/api/v1/image-specials?limit=\(AppConfig.limit)\(getSortParamStr())&with=special_content+type,id,title&where=special_content_v2_id+5&app=2"
 // Shuffle "https://devwallpaper.eztechglobal.com/api/v1/image-specials?limit=\(AppConfig.limit)\(getSortParamStr())&with=special_content+type,id,title&where=special_content_v2_id+4&app=2"
 
+enum SpSort : String, CaseIterable {
+    case NEW = "Newest"
+    case POPULAR = "Popular"
+}
+
 class SpViewModel: ObservableObject {
    
     @Published var wallpapers : [SpWallpaper] = []
     @Published var currentOffset : Int = 0
     @Published var domain : String
-    
+    @Published var sort : SpSort = .NEW
+   
   
     
     
@@ -35,9 +41,47 @@ class SpViewModel: ObservableObject {
     }
     
     func getSortParamStr() -> String {
-        return "&order_by=id+desc"
+        if sort == .NEW{
+            return "&order_by=id+desc"
+        }else{
+            return "&order_by=daily_rating+desc,id+desc"
+        }
+       
     }
     
+}
+
+class SpecialPageViewModel : SpViewModel {
+    @Published var type : Int = 0
+    @Published var tagId : Int = 0
+    @Published var currentTag : String = ""
+    
+    override func getWallpapers() {
+        if type == 0 || tagId == 0{
+            return
+        }
+        
+        let urlString = "\(domain)api/v1/image-specials?limit=\(AppConfig.limit)&offset=\(currentOffset)&with=special_content+type,id,title&where=special_content_v2_id+\(type)&tag=\(tagId)\(getSortParamStr())\(AppConfig.forOnlyIOS)"
+        guard let url  = URL(string: urlString) else {
+            return
+        }
+        
+        print("SpecialPageViewModel type \(type) tagId \(tagId): \(url)")
+        
+        URLSession.shared.dataTask(with: url){
+            data, _ ,_  in
+            if let data{
+                if let dataCategory = try? JSONDecoder().decode(SpResponse.self, from: data){
+                    DispatchQueue.main.async {
+                        self.wallpapers.append(contentsOf:  dataCategory.data.data)
+                        self.currentOffset = self.currentOffset + AppConfig.limit
+                    }
+                }
+            }
+            
+          
+        }.resume()
+    }
 }
 
 

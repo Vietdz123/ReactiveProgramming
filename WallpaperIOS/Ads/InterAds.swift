@@ -15,11 +15,11 @@ let adUnitID = "ca-app-pub-3940256099942544/4411468910"
 let adUnitID = "ca-app-pub-5782595411387549/7246551467"
 #endif
 
-#if DEBUG
-let delay = 60000
-#else
-let delay = 30000
-#endif
+//#if DEBUG
+//let delay = 60000
+//#else
+//let delay = 30000
+//#endif
 
  class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate {
     @Published var interstitial: GADInterstitialAd?
@@ -83,6 +83,7 @@ let delay = 30000
     }
 
     func showAd( onCommit: @escaping () -> ()  ){
+        let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
         self.onComplete = onCommit
             if Date().currentTimeMillis() - timeShowPrev > delay {
                 guard let root = UIApplication.shared.windows.first?.rootViewController else {

@@ -57,7 +57,7 @@ struct DynamicView: View {
                                     .environmentObject(viewModel as SpViewModel)
                                     .environmentObject(store)
                                     .environmentObject(interAd)
-                                    .environmentObject(favViewModel)
+                                   
                                     .environmentObject(reward)
                             }, label: {
                                 WebImage(url: URL(string: string))

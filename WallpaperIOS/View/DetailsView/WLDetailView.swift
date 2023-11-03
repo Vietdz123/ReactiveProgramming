@@ -45,7 +45,7 @@ struct WLView: View {
             
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
-                    SubcriptionVIew()
+                    EztSubcriptionView()
                         .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
@@ -129,8 +129,12 @@ struct WLView: View {
                 
                 if ctrlViewModel.showDialogBuyCoin{
                   //  if let urlStr = viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                        DialogGetWLByCoin(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+                      //  DialogGetWLByCoin(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
                  //   }
+                    SpecialSubView(onClickClose: {
+                        ctrlViewModel.showDialogBuyCoin = false
+                    })
+                    
                     
                 }
             }

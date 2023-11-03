@@ -59,15 +59,15 @@ struct Sub_1_View: View {
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
-            if let product = store.isVer1() ?  store.weekProduct : store.yearlv2Sale50Product {
+            if let product =  store.yearlv2Sale50Product {
                 
                 
                 
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/\(store.isVer1() ? "week" : "year") ")
+                    Text("Total \(product.displayPrice)/\("year") ")
                         .mfont(15, .regular)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "week" : "year"))")
+                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\( "year"))")
                         .mfont(15, .regular)
                         .foregroundColor(.white)
                         .overlay(
@@ -100,13 +100,20 @@ struct Sub_1_View: View {
                 
                 Button(action: {
                     store.isPurchasing = true
-                 
+                    
+                    let log =  "Click_Buy_Sub_In_Promotion_Year_Sale"
+                    Firebase_log(log)
                     store.purchase(product: product, onBuySuccess: {
                         b in
                            if b {
                                DispatchQueue.main.async{
                                    store.isPurchasing = false
                                    presentationMode.wrappedValue.dismiss()
+                                   
+                                   let log1 =
+                                   "Buy_Sub_In_Success_Promotion_Year_Sale"
+                                   Firebase_log(log1)
+                                   
                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                  
                                   

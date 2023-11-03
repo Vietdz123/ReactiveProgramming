@@ -14,7 +14,7 @@ struct DepthEffectView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
-    @EnvironmentObject var favViewModel : FavoriteViewModel
+ 
     @EnvironmentObject var interAd : InterstitialAdLoader
     
     @State var adStatus : AdStatus = .loading
@@ -55,19 +55,15 @@ struct DepthEffectView: View {
                                     .environmentObject(viewModel as SpViewModel)
                                     .environmentObject(store)
                                     .environmentObject(interAd)
-                                    .environmentObject(favViewModel)
                                     .environmentObject(reward)
                             }, label: {
                                 WebImage(url: URL(string: string))
-                                    .onSuccess { image, data, cacheType in
-                                    }
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                    .indicator(.activity) // Activity Indicator
-                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                  
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)

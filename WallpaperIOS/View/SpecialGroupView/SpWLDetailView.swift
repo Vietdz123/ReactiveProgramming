@@ -36,7 +36,7 @@ struct SpWLDetailView: View {
             
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
-                    SubcriptionVIew()
+                    EztSubcriptionView()
                         .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
@@ -117,7 +117,10 @@ struct SpWLDetailView: View {
                 
               
                 if showBuySubAtScreen {
-                    SubInScreen()
+                   SpecialSubView( onClickClose: {
+                       showBuySubAtScreen = false
+                   })
+                   .environmentObject(store)
      
                 }
             }
@@ -183,7 +186,7 @@ struct SpWLDetailView: View {
 
         )
         .fullScreenCover(isPresented: $showSub, content: {
-            SubcriptionVIew()
+            EztSubcriptionView()
                 .environmentObject(store)
         })
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
@@ -205,7 +208,7 @@ extension SpWLDetailView{
         ZStack{
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
-            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlv2Sale50Product , let monthV2 = store.monthProductV2 {
+            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlyOriginalProduct , let weekNotSale = store.weekProductNotSale {
                 VStack(spacing : 0){
                     Spacer()
                     
@@ -257,34 +260,10 @@ extension SpWLDetailView{
                                         
                                     }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
                                     
-                                    ZStack{
-                                        if store.isVer1(){
-                                            
+                           
                                             HStack{
                                                 VStack(spacing : 2){
-                                                    Text("Best Offer")
-                                                        .mfont(16, .bold)
-                                                        .foregroundColor(.white)
-                                                       
-                                                    Text("\(weekPro.displayPrice)/week")
-                                                        .mfont(12, .regular)
-                                                      .foregroundColor(.white)
-                                                     
-                                                }.frame(maxWidth: .infinity, alignment: .leading)
-                                                
-                                                Spacer()
-                                                
-                                                Text("\(weekPro.displayPrice)/week")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                  .padding(.trailing, 16)
-                                            }
-                                            
-                                            
-                                        }else {
-                                            HStack{
-                                                VStack(spacing : 2){
-                                                    Text("Best Offer")
+                                                    Text("Annually")
                                                         .mfont(16, .bold)
                                                         .foregroundColor(.white)
                                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -296,16 +275,13 @@ extension SpWLDetailView{
                                                 
                                                 Spacer()
                                                 
-                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:12))\(removeDigits(string:yearV2.displayPrice))/month")
+                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:51))\(removeDigits(string:yearV2.displayPrice))/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
                                             }
                                             
-                                          
-                                        }
-                                    }
-                                    
+                               
                                   
                                                     
                                       
@@ -318,7 +294,7 @@ extension SpWLDetailView{
                                         }
                                     }
                                     .overlay(
-                                        Text("Sale 50%")
+                                        Text("BEST VALUE")
                                             .mfont(10, .bold)
                                           .multilineTextAlignment(.center)
                                           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -381,40 +357,16 @@ extension SpWLDetailView{
                                         
                                     }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
                                     
-                                    ZStack{
-                                        if store.isVer1(){
+                                  
                                             HStack{
                                                 VStack(spacing : 2){
-                                                    Text("Monthly")
-                                                        .mfont(16, .bold)
-                                                        .foregroundColor(.white)
-                                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                                     
-                                                    Text("\(monthPro.displayPrice)/month")
-                                                        .mfont(12, .regular)
-                                                      .foregroundColor(.white)
-                                                      .frame(maxWidth: .infinity, alignment: .leading)
-                                                      
-                                                }
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                                Spacer()
-                                                Text("\(decimaPriceToStr(price: monthPro.price , chia: 4))\(removeDigits(string: monthPro.displayPrice ))/week")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                  .padding(.trailing, 16)
-                                            }
-                                            
-                                            
-                                        }else {
-                                            HStack{
-                                                VStack(spacing : 2){
-                                                    Text("Monthly")
+                                                    Text("Weekly")
                                                         .mfont(16, .bold)
                                                         .foregroundColor(.white)
                                                         .frame(maxWidth: .infinity, alignment: .leading)
                                                     
                                                     
-                                                    Text("\(monthV2.displayPrice)/month")
+                                                    Text("\(weekNotSale.displayPrice)/week")
                                                         .mfont(12, .regular)
                                                       .foregroundColor(.white)
                                                       .frame(maxWidth: .infinity, alignment: .leading)
@@ -422,17 +374,13 @@ extension SpWLDetailView{
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                                 
                                                 Spacer()
-                                                Text("\(monthV2.displayPrice)/month")
+                                                Text("\(weekNotSale.displayPrice)/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
                                             }
                                             
-                                           
-                                        }
-                                    
-                                   
-                                    }
+                             
                                       
                                 }.frame(maxWidth: .infinity)
                                     .frame(height: 48)
@@ -476,11 +424,9 @@ extension SpWLDetailView{
                                     .frame(width: 320, alignment: .top)
                                 
                                 Group{
-                                    if store.isVer1(){
-                                        Text("Only \(weekPro.displayPrice) per week.")
-                                    }else{
+                                
                                         Text("Only \(yearV2.displayPrice) per year.")
-                                    }
+                                   
                                     
                                     Text("Auto-renewable. Cancel anytime.")
                                     
@@ -541,7 +487,7 @@ extension SpWLDetailView{
                              
                                 Firebase_log("Sub_click_buy_weekly")
                                 
-                                let product = store.isVer1() ? weekPro : yearV2
+                                let product =  yearV2
                                 
                                 store.purchase(product: product, onBuySuccess: { b in
                                     if b {
@@ -568,7 +514,7 @@ extension SpWLDetailView{
                             }else {
                          
                                 Firebase_log("Sub_click_buy_monthly")
-                                let product = store.isVer1() ? monthPro : monthV2
+                                let product = weekNotSale
                                 
                                 store.purchase(product: product, onBuySuccess: { b in
                                     if b {

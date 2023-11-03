@@ -207,13 +207,6 @@ struct SearchView: View {
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .overlay(
-            ZStack{
-                if store.allowShowBanner(){
-                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
-                }
-            }, alignment: .bottom
-        )
         .edgesIgnoringSafeArea(.bottom)
         .addBackground()
         .onDisappear(perform: {

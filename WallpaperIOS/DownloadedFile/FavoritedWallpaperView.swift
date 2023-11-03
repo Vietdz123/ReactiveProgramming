@@ -196,9 +196,12 @@ struct FavWallpaperDetailView: View {
             }
             
             if ctrlViewModel.showDialogBuyCoin{
-                if let urlStr = wallpaper.preview_url{
-                  DialogGetWLByCoin(urlStr: urlStr)
-                }
+//                if let urlStr = wallpaper.preview_url{
+//                  DialogGetWLByCoin(urlStr: urlStr)
+//                }
+                SpecialSubView(onClickClose: {
+                    ctrlViewModel.showDialogBuyCoin = false
+                })
                
             }
            

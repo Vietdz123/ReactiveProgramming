@@ -8,6 +8,7 @@
 import SwiftUI
 import NavigationTransitions
 
+import AppTrackingTransparency
 
 struct SplashView: View {
     
@@ -28,19 +29,19 @@ struct SplashView: View {
         NavigationView{
             ZStack{
                 
-               
-                    NavigationLink(destination:
-                        OnboardingSubView()
-                        .navigationBarTitle("", displayMode: .inline)
-                        .navigationBarHidden(true)
-                        .environmentObject(homeVM)
-                        .environmentObject(myStore)
-                        .environmentObject(interAd)
-                        .environmentObject(rewardAd)
-                                   , isActive: $appVM.navigateToOnboarding, label: {
-                        EmptyView()
-                    })
-                    
+//               
+//                    NavigationLink(destination:
+//                        OnboardingSubView()
+//                        .navigationBarTitle("", displayMode: .inline)
+//                        .navigationBarHidden(true)
+//                        .environmentObject(homeVM)
+//                        .environmentObject(myStore)
+//                        .environmentObject(interAd)
+//                        .environmentObject(rewardAd)
+//                                   , isActive: $appVM.navigateToOnboarding, label: {
+//                        EmptyView()
+//                    })
+//                    
                     NavigationLink(destination:
                         OnboardingVerTwoSubView()
                         .navigationBarTitle("", displayMode: .inline)
@@ -58,8 +59,7 @@ struct SplashView: View {
                 
                 
                 NavigationLink(destination:
-                                MainView()
-                    .environmentObject(homeVM)
+                                EztMainView()
                     .environmentObject(myStore)
                     .environmentObject(interAd)
                     .environmentObject(rewardAd)
@@ -89,30 +89,39 @@ struct SplashView: View {
             .onChange(of: splash_process, perform: {
                 newValue in
                 if splash_process == 100 {
-                    
-                    
-                 
-                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-                   if myStore.isVer1(){
-                       appVM.navigateToOnboarding.toggle()
-                    }else{
-                    appVM.navigateToOnboarding2.toggle()
-                    }
-                        
-
-                    }else{
-                        
-                        if myStore.isPro(){
-                            appVM.navigateToHome.toggle()
-                        }else{
-                            openAd.tryToPresentAd(onCommit: {
-                                _ in
-                                appVM.navigateToHome.toggle()
-                            })
-                        }
-                        
-                        
-                    }
+                //    appVM.navigateToHome.toggle()
+                   appVM.navigateToOnboarding2.toggle()
+//                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+//                        
+//                        
+//                        ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+//                            if status == .authorized{
+//                                Firebase_log("tracking_authorized")
+//                            }
+//                            
+//                          })
+//                        
+//                        
+//                   if myStore.isVer1(){
+//                       appVM.navigateToOnboarding.toggle()
+//                    }else{
+//                        appVM.navigateToOnboarding2.toggle()
+//                    }
+//                        
+//
+//                    }else{
+//                        
+//                        if myStore.isPro(){
+//                            appVM.navigateToHome.toggle()
+//                        }else{
+//                            openAd.tryToPresentAd(onCommit: {
+//                                _ in
+//                                appVM.navigateToHome.toggle()
+//                            })
+//                        }
+//                        
+//                        
+//                    }
                     
                 }
             })

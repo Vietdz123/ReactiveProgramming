@@ -119,6 +119,7 @@ class MyStore: ObservableObject {
 
                     let wl_domain       =  self.remoteConfig.configValue(forKey: "wl_domain").stringValue ?? "http://3.8.138.29/"
                     let reward_delay    = self.remoteConfig.configValue(forKey: "reward_delay").numberValue
+                    let inter_delay    = self.remoteConfig.configValue(forKey: "inter_delay").numberValue
                     let allowShowRate   = self.remoteConfig.configValue(forKey: "allow_show_rate").boolValue
                     let allowShowBanner = self.remoteConfig.configValue(forKey: "allow_show_banner").boolValue
                     let exclusiveCost   = self.remoteConfig.configValue(forKey: "exclusive_cost").numberValue
@@ -133,7 +134,9 @@ class MyStore: ObservableObject {
                     let has_event = self.remoteConfig.configValue(forKey: "has_event").boolValue
 
                     UserDefaults.standard.set(wl_domain,       forKey: "wl_domain")
+                  //  UserDefaults.standard.set("https://devwallpaper.eztechglobal.com/",       forKey: "wl_domain")
                     UserDefaults.standard.set(reward_delay,    forKey: "delay_reward")
+                    UserDefaults.standard.set(inter_delay,    forKey: "delay_inter")
                     UserDefaults.standard.set(allowShowRate,   forKey: "allow_show_rate")
                     UserDefaults.standard.set(allowShowBanner, forKey: "allow_show_banner")
                     UserDefaults.standard.set(exclusiveCost,   forKey: "exclusive_cost")
@@ -168,9 +171,9 @@ class MyStore: ObservableObject {
 
     }
     
-    func isVer1() -> Bool {
-        return UserDefaults.standard.bool(forKey:  "is_v1")
-    }
+//    func isVer1() -> Bool {
+//        return false //UserDefaults.standard.bool(forKey:  "is_v1")
+//    }
 
     func isHasEvent() -> Bool{
         return UserDefaults.standard.bool(forKey:  "has_event")

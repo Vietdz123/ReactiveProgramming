@@ -10,12 +10,6 @@ import AVKit
 
 import FirebaseAnalytics
 
-enum BuyType {
-    case WEEKLY
-    case MONTHLY
-    case YEARLY
-    case UNLIMITED
-}
 
 struct SubcriptionVIew: View {
     @Namespace var anim
@@ -36,12 +30,9 @@ struct SubcriptionVIew: View {
                     .ignoresSafeArea()
             }
             
-            if store.isVer1(){
-                SubView_1()
-            }else{
+           
                 SubView_2()
-            }
-            
+         
             
         }
         .navigationBarTitle("", displayMode: .inline)
@@ -351,7 +342,7 @@ extension SubcriptionVIew {
                         VStack(spacing : 0){
                             Text("Just \(yearlyNoFreeTrial.displayPrice)/year.")
                                 .mfont(17, .bold)
-                            Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 12))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/month! )")
+                            Text("( Lest than \(decimaPriceToStr(price: yearlyNoFreeTrial.price , chia: 51))\(removeDigits(string: yearlyNoFreeTrial.displayPrice ))/week! )")
                                 .mfont(15, .regular)
                                 .padding(.top, 6)
                             

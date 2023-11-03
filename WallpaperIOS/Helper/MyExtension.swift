@@ -34,6 +34,11 @@ extension View{
         return str
     }
     
+    func getDisplayPrice(price : Decimal,chia : Double, displayPrice : String) -> String{
+        let first = decimaPriceToStr(price: price, chia: chia)
+        let last = removeDigits(string: displayPrice)
+        return first+last
+    }
     
     
     
@@ -68,8 +73,11 @@ extension View{
     }
     
     func placeHolderImage() -> some View{
-        Image("place_holder")
-            .resizable()
+        Color.white.opacity(0.2)
+            .overlay(
+                ResizableLottieView(filename: "loading4")
+                    .frame(width: 48, height: 48)
+            )
         
     }
     

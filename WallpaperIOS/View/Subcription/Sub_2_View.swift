@@ -52,20 +52,20 @@ struct Sub_2_View: View {
                 
             Spacer()
        
-            if let product = store.isVer1() ? store.weekProduct  : store.yearlv2Sale50Product {
+            if let product =  store.yearlv2Sale50Product {
                 
            
             
-                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  store.isVer1() ? 7 : 12))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "Day" : "Month" ).")
+                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  51))\(removeDigits(string: product.displayPrice ))/\("Week" ).")
                 .mfont(24, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/\(store.isVer1() ? "week" : "year" ) ")
+                    Text("Total \(product.displayPrice)/\( "year" ) ")
                         .mfont(17, .bold)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\(store.isVer1() ? "week" : "year" ))")
+                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\("year" ))")
                         .mfont(17, .bold)
                         .foregroundColor(.white)
                         .overlay(
@@ -81,6 +81,8 @@ struct Sub_2_View: View {
             Button(action: {
            
                 store.isPurchasing = true
+                let log = "Click_Buy_Sub_In_Promotion_Year_Sale"
+                Firebase_log(log)
                 store.purchase(product: product, onBuySuccess: {
                     b in
                        if b {
@@ -88,6 +90,9 @@ struct Sub_2_View: View {
                                store.isPurchasing = false
                                presentationMode.wrappedValue.dismiss()
                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                               let log1 = 
+                               "Buy_Sub_In_Success_Promotion_Year_Sale"
+                               Firebase_log(log1)
                            }
                           
                        }else{

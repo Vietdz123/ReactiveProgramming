@@ -32,54 +32,59 @@ struct ShuffleDetailView: View {
     var body: some View {
         
         ZStack{
-            TabView(selection: $currentIndex){
-                ForEach(0..<wallpaper.path.count, id: \.self) {
-                    i in
-                    let imgStr = wallpaper.path[i].path.preview
-                    
-                    AsyncImage(url: URL(string: imgStr)){
-                        phase in
-                        if let image = phase.image {
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: getRect().width, height: getRect().height)
-                                .clipped()
+            
+     
+                TabView(selection: $currentIndex){
+                    ForEach(0..<wallpaper.path.count, id: \.self) {
+                        i in
+                        let imgStr = wallpaper.path[i].path.preview
+                        
+                        AsyncImage(url: URL(string: imgStr)){
+                            phase in
+                            if let image = phase.image {
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: getRect().width, height: getRect().height)
+                                    .clipped()
 
-                        } else if phase.error != nil {
-                            AsyncImage(url: URL(string: imgStr)){
-                                phase in
-                                if let image = phase.image {
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: getRect().width, height: getRect().height)
-                                        .clipped()
+                            } else if phase.error != nil {
+                                AsyncImage(url: URL(string: imgStr)){
+                                    phase in
+                                    if let image = phase.image {
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: getRect().width, height: getRect().height)
+                                            .clipped()
+                                    }
                                 }
+
+                            } else {
+                                ResizableLottieView(filename: "placeholder_anim")
+                                    .frame(width: 200, height: 200)
                             }
 
-                        } else {
-                            ResizableLottieView(filename: "placeholder_anim")
-                                .frame(width: 200, height: 200)
+
                         }
-
-
+                           .frame(maxWidth : .infinity, maxHeight: .infinity)
+                           .ignoresSafeArea()
+                          
+                        
                     }
-                       .frame(maxWidth : .infinity, maxHeight: .infinity)
-                       .ignoresSafeArea()
-                      
-                    
                 }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .ignoresSafeArea()
-            VStack(spacing : 0){
-                Image("lock_preview_shuff")
-                    .resizable()
-                    .scaledToFit()
-                
-                Spacer()
-            }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .ignoresSafeArea()
+                VStack(spacing : 0){
+                    Image("lock_preview_shuff")
+                        .resizable()
+                        .scaledToFit()
+                    
+                    Spacer()
+                }
+            
+            
+            
           
             
             VStack(spacing: 0){
@@ -87,8 +92,11 @@ struct ShuffleDetailView: View {
             }
             
             if showBuySubAtScreen {
-              SubInScreen()
-               
+              //SubInScreen()
+               SpecialSubView(onClickClose: {
+                   showBuySubAtScreen = false
+               })
+                    .environmentObject(store)
                     
             }
             
@@ -108,7 +116,7 @@ struct ShuffleDetailView: View {
                 
             )
             .fullScreenCover(isPresented: $showSub, content: {
-                SubcriptionVIew()
+                EztSubcriptionView()
                     .environmentObject(store)
             })
             .onAppear(perform: {
@@ -136,7 +144,7 @@ extension ShuffleDetailView{
         ZStack{
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
-            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlv2Sale50Product , let monthV2 = store.monthProductV2 {
+            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlyOriginalProduct , let weekNotSale = store.weekProductNotSale {
                 VStack(spacing : 0){
                     Spacer()
                     
@@ -188,34 +196,11 @@ extension ShuffleDetailView{
                                         
                                     }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
                                     
-                                    ZStack{
-                                        if store.isVer1(){
-                                            
+                                
+                                 
                                             HStack{
                                                 VStack(spacing : 2){
-                                                    Text("Best Offer")
-                                                        .mfont(16, .bold)
-                                                        .foregroundColor(.white)
-                                                       
-                                                    Text("\(weekPro.displayPrice)/week")
-                                                        .mfont(12, .regular)
-                                                      .foregroundColor(.white)
-                                                     
-                                                }.frame(maxWidth: .infinity, alignment: .leading)
-                                                
-                                                Spacer()
-                                                
-                                                Text("\(weekPro.displayPrice)/week")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                  .padding(.trailing, 16)
-                                            }
-                                            
-                                            
-                                        }else {
-                                            HStack{
-                                                VStack(spacing : 2){
-                                                    Text("Best Offer")
+                                                    Text("Annually")
                                                         .mfont(16, .bold)
                                                         .foregroundColor(.white)
                                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -227,15 +212,14 @@ extension ShuffleDetailView{
                                                 
                                                 Spacer()
                                                 
-                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:12))\(removeDigits(string:yearV2.displayPrice))/month")
+                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:51))\(removeDigits(string:yearV2.displayPrice))/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
                                             }
                                             
                                           
-                                        }
-                                    }
+                                   
                                     
                                   
                                                     
@@ -249,7 +233,7 @@ extension ShuffleDetailView{
                                         }
                                     }
                                     .overlay(
-                                        Text("Sale 50%")
+                                        Text("BEST VALUE")
                                             .mfont(10, .bold)
                                           .multilineTextAlignment(.center)
                                           .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -312,40 +296,16 @@ extension ShuffleDetailView{
                                         
                                     }.frame(width: 24, height: 24)  .padding(.horizontal, 16)
                                     
-                                    ZStack{
-                                        if store.isVer1(){
+                        
                                             HStack{
                                                 VStack(spacing : 2){
-                                                    Text("Monthly")
-                                                        .mfont(16, .bold)
-                                                        .foregroundColor(.white)
-                                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                                     
-                                                    Text("\(monthPro.displayPrice)/month")
-                                                        .mfont(12, .regular)
-                                                      .foregroundColor(.white)
-                                                      .frame(maxWidth: .infinity, alignment: .leading)
-                                                      
-                                                }
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                                Spacer()
-                                                Text("\(decimaPriceToStr(price: monthPro.price , chia: 4))\(removeDigits(string: monthPro.displayPrice ))/week")
-                                                    .mfont(12, .regular)
-                                                  .foregroundColor(.white)
-                                                  .padding(.trailing, 16)
-                                            }
-                                            
-                                            
-                                        }else {
-                                            HStack{
-                                                VStack(spacing : 2){
-                                                    Text("Monthly")
+                                                    Text("Weekly")
                                                         .mfont(16, .bold)
                                                         .foregroundColor(.white)
                                                         .frame(maxWidth: .infinity, alignment: .leading)
                                                     
                                                     
-                                                    Text("\(monthV2.displayPrice)/month")
+                                                    Text("\(weekNotSale.displayPrice)/week")
                                                         .mfont(12, .regular)
                                                       .foregroundColor(.white)
                                                       .frame(maxWidth: .infinity, alignment: .leading)
@@ -353,17 +313,14 @@ extension ShuffleDetailView{
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                                 
                                                 Spacer()
-                                                Text("\(monthV2.displayPrice)/month")
+                                                Text("\(weekNotSale.displayPrice)/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
                                             }
                                             
                                            
-                                        }
-                                    
-                                   
-                                    }
+                                 
                                       
                                 }.frame(maxWidth: .infinity)
                                     .frame(height: 48)
@@ -407,11 +364,9 @@ extension ShuffleDetailView{
                                     .frame(width: 320, alignment: .top)
                                 
                                 Group{
-                                    if store.isVer1(){
-                                        Text("Only \(weekPro.displayPrice) per week.")
-                                    }else{
+                                 
                                         Text("Only \(yearV2.displayPrice) per year.")
-                                    }
+                                   
                                     
                                     Text("Auto-renewable. Cancel anytime.")
                                     
@@ -472,7 +427,9 @@ extension ShuffleDetailView{
                              
                                 Firebase_log("Sub_click_buy_weekly")
                                 
-                                let product = store.isVer1() ? weekPro : yearV2
+                                let product =  yearV2
+                           //     let log =
+                                
                                 
                                 store.purchase(product: product, onBuySuccess: { b in
                                     if b {
@@ -499,7 +456,7 @@ extension ShuffleDetailView{
                             }else {
                          
                                 Firebase_log("Sub_click_buy_monthly")
-                                let product = store.isVer1() ? monthPro : monthV2
+                                let product = weekNotSale
                                 
                                 store.purchase(product: product, onBuySuccess: { b in
                                     if b {

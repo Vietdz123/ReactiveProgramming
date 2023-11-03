@@ -39,7 +39,7 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
     func loadRewardedAd() {
        
         
-      
+        
         if rewardedAd != nil {
             return
         }

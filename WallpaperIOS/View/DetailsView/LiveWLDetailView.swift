@@ -27,16 +27,16 @@ struct LiveWLView: View {
     
     @AppStorage("remoteCf_live_using_coin", store: .standard) var remoteCf_live_using_coin : Bool = false
     
-   
+    
     
     var body: some View {
         GeometryReader{
             proxy in
             let size = proxy.size
-
+            
             ZStack{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
-                    SubcriptionVIew()
+                    EztSubcriptionView()
                         .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
@@ -45,42 +45,42 @@ struct LiveWLView: View {
                 })
                 
                 if !viewModel.liveWallpapers.isEmpty{
-                        TabView(selection: $currentIndex){
-                            ForEach(0..<viewModel.liveWallpapers.count, id: \.self){
-                                i in
-                                let livewallpaper = viewModel.liveWallpapers[i]
-                                ReelsPlayer( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
-                                    .frame(width: size.width)
-                                    .rotationEffect(.init(degrees: -90))
-                                    .ignoresSafeArea(.all)
-                                    .tag(i)
-                                    .onAppear(perform: {
-                                        print("LIVE WL url :\(livewallpaper.video_variations.adapted.url)")
-                                        
-                                        generator.notificationOccurred(.success)
-                                        
-                                        if viewModel.shouldLoadData(id: i){
-                                            viewModel.getDataByPage()
-                                        }
-                                        
-                                        if !store.isPro(){
-                                            inter.showAd(onCommit: {})
-                                        }
-                                    })
-                                
-                                
-                            }
+                    TabView(selection: $currentIndex){
+                        ForEach(0..<viewModel.liveWallpapers.count, id: \.self){
+                            i in
+                            let livewallpaper = viewModel.liveWallpapers[i]
+                            ReelsPlayer( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
+                                .frame(width: size.width)
+                                .rotationEffect(.init(degrees: -90))
+                                .ignoresSafeArea(.all)
+                                .tag(i)
+                                .onAppear(perform: {
+                                    print("LIVE WL url :\(livewallpaper.video_variations.adapted.url)")
+                                    
+                                    generator.notificationOccurred(.success)
+                                    
+                                    if viewModel.shouldLoadData(id: i){
+                                        viewModel.getDataByPage()
+                                    }
+                                    
+                                    if !store.isPro(){
+                                        inter.showAd(onCommit: {})
+                                    }
+                                })
+                            
                             
                         }
-                        .rotationEffect(.init(degrees: 90))
-                        .frame(width: size.height)
-                        .tabViewStyle(.page(indexDisplayMode: .never))
-                        .frame(width: size.width)
-                        .background(Color.black)
-                        .onTapGesture {
-                            ctrlViewModel.showControll.toggle()
-                        }
-
+                        
+                    }
+                    .rotationEffect(.init(degrees: 90))
+                    .frame(width: size.height)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .frame(width: size.width)
+                    .background(Color.black)
+                    .onTapGesture {
+                        ctrlViewModel.showControll.toggle()
+                    }
+                    
                     if ctrlViewModel.showControll{
                         VStack(spacing : 0){
                             HStack(spacing : 0){
@@ -99,35 +99,11 @@ struct LiveWLView: View {
                                 Spacer()
                                 
                                 if !store.isPro(){
-                                 //   if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                                        HStack(spacing : 0){
-                                            Image("coin")
-                                                .resizable()
-                                                .frame(width: 13, height: 13)
-                                            
-                                            if #available(iOS 16, *){
-                                                Text(remoteCf_live_using_coin ? " \(viewModel.liveWallpapers[currentIndex].cost ?? 0)" :   " 0")
-                                                    .mfont(13, .regular)
-                                                    .foregroundColor(.white)
-                                            }else{
-                                                Text(" \(viewModel.liveWallpapers[currentIndex].cost ?? 0)")
-                                                    .mfont(13, .regular)
-                                                    .foregroundColor(.white)
-                                            }
-                                            
-                                        
-                                            
-                                            
-                                            
-                                            
-                                        }.frame(width: 38, height: 20)
-                                        
-                                            .background(
-                                                Capsule()
-                                                    .fill(Color.black.opacity(0.7))
-                                            )
-                                          
-                                 //   }
+                                    Image("crown")
+                                        .resizable()
+                                        .frame(width: 18, height: 18, alignment: .center)
+                                       
+                       
                                 }
                                 
                                 
@@ -152,7 +128,7 @@ struct LiveWLView: View {
                                 }).padding(.trailing, 20)
                                 
                                 
-                            
+                                
                                 
                                 
                             }.frame(maxWidth: .infinity)
@@ -194,6 +170,8 @@ struct LiveWLView: View {
                                 
                                 Button(action: {
                                     
+                                    
+                                    
                                     getPhotoPermission(status: {
                                         b in
                                         if b {
@@ -202,10 +180,10 @@ struct LiveWLView: View {
                                                                         urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                                         urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                                                 ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                            
+                                                
                                                 
                                             }else{
-                                               
+                                                
                                                 DispatchQueue.main.async {
                                                     withAnimation{
                                                         ctrlViewModel.showDialogDownload.toggle()
@@ -216,13 +194,13 @@ struct LiveWLView: View {
                                             
                                         }
                                     })
+                                    //
                                     
-                                   
                                     
                                     
                                 }, label: {
                                     HStack{
-                                      
+                                        
                                         
                                         Text("Save")
                                             .mfont(16, .bold)
@@ -236,19 +214,19 @@ struct LiveWLView: View {
                                                 , alignment: .leading
                                             )
                                     }
-                                 
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 48)
-                                        .contentShape(Rectangle())
-                                        .background(
-                                            Capsule().fill(Color.main)
-                                        )
+                                    
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .contentShape(Rectangle())
+                                    .background(
+                                        Capsule().fill(Color.main)
+                                    )
                                 }).padding(.horizontal, 16)
                                 
                                 
                                 Button(action: {
                                     withAnimation{
-                                       
+                                        
                                         ctrlViewModel.showControll = false
                                         ctrlViewModel.showPreview = true
                                         
@@ -289,7 +267,7 @@ struct LiveWLView: View {
                                 .onTapGesture {
                                     withAnimation{
                                         ctrlViewModel.showPreview = false
-                                       
+                                        
                                         
                                     }
                                     
@@ -302,7 +280,7 @@ struct LiveWLView: View {
                                 .onTapGesture {
                                     withAnimation{
                                         ctrlViewModel.showPreview = false
-                                      
+                                        
                                         
                                     }
                                     
@@ -317,7 +295,7 @@ struct LiveWLView: View {
                     }
                     
                     if firsttimeliveWL {
-       
+                        
                         ResizableLottieView(filename: "viewmore")
                             .frame(width: getRect().width - 60)
                             .onAppear(perform: {
@@ -364,68 +342,68 @@ struct LiveWLView: View {
         .overlay(
             ZStack(alignment: .bottom){
                 if ctrlViewModel.showInfo {
-                 //   if let wallpaper = viewModel.liveWallpapers[currentIndex] {
-                        Color.black.opacity(0.5).ignoresSafeArea()
-                            .onTapGesture {
-                                ctrlViewModel.showInfo = false
-                            }
-                        
-                        VStack(spacing : 8){
-                            Text("Tag: \(getTag(wl:viewModel.liveWallpapers[currentIndex]))")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text("Author: \(viewModel.liveWallpapers[currentIndex].author ?? "Unknow")")
-                                .foregroundColor(.white)
-                                .mfont(16, .regular)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("Liscense: \(viewModel.liveWallpapers[currentIndex].license ?? "Unknow")")
-                                .foregroundColor(.white)
-                                .mfont(16, .regular)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-                            .overlay(
-                                Button(action: {
-                                    ctrlViewModel.showInfo = false
-                                    
-                                }, label: {
-                                    Image(systemName: "xmark")
-                                        .resizable()
-                                        .foregroundColor(.white)
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width : 14, height: 14)
-                                        .padding(12)
-                                    
-                                }), alignment: .topTrailing
-                            )
-                            .background(
-                                Color.mblack_bg
-                                    .opacity(0.9)
-                            )
-                            .cornerRadius(16)
-                            .padding()
-                  //  }
-                }
-            }
-        
-        )
-       
-            .sheet(isPresented: $ctrlViewModel.showTuto, content: {
-                TutorialContentView()
-                
-            })
-            .overlay{
-                if ctrlViewModel.showDialogDownload{
-               //     if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                      Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
-
-                 //   }
+                    //   if let wallpaper = viewModel.liveWallpapers[currentIndex] {
+                    Color.black.opacity(0.5).ignoresSafeArea()
+                        .onTapGesture {
+                            ctrlViewModel.showInfo = false
+                        }
                     
+                    VStack(spacing : 8){
+                        Text("Tag: \(getTag(wl:viewModel.liveWallpapers[currentIndex]))")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Text("Author: \(viewModel.liveWallpapers[currentIndex].author ?? "Unknow")")
+                            .foregroundColor(.white)
+                            .mfont(16, .regular)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Liscense: \(viewModel.liveWallpapers[currentIndex].license ?? "Unknow")")
+                            .foregroundColor(.white)
+                            .mfont(16, .regular)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+                        .overlay(
+                            Button(action: {
+                                ctrlViewModel.showInfo = false
+                                
+                            }, label: {
+                                Image(systemName: "xmark")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width : 14, height: 14)
+                                    .padding(12)
+                                
+                            }), alignment: .topTrailing
+                        )
+                        .background(
+                            Color.mblack_bg
+                                .opacity(0.9)
+                        )
+                        .cornerRadius(16)
+                        .padding()
+                    //  }
                 }
+            }
+            
+        )
+        
+        .sheet(isPresented: $ctrlViewModel.showTuto, content: {
+            TutorialContentView()
+            
+        })
+        .overlay{
+            if ctrlViewModel.showDialogDownload{
+                //     if let liveWL = viewModel.liveWallpapers[currentIndex] {
+                Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
+                
+                //   }
                 
             }
+            
+        }
         
-            
-            
+        
+        
         
     }
     
@@ -439,12 +417,12 @@ struct LiveWLView: View {
                     ctrlViewModel.showDialogDownload.toggle()
                     if currentCoin >= ( liveWL.cost ?? 0  ){
                         currentCoin = currentCoin - ( liveWL.cost ?? 0  )
-                     
+                        
                         downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                                 urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                 urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                         ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                    
+                        
                         
                     }else{
                         showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
@@ -463,7 +441,7 @@ struct LiveWLView: View {
                                                 urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                         ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
                     }
-              
+                    
                 }, clickBuyPro: {
                     ctrlViewModel.showDialogDownload.toggle()
                     ctrlViewModel.navigateView.toggle()
@@ -471,7 +449,7 @@ struct LiveWLView: View {
                     .environmentObject(reward)
             }
             
-         
+            
         }else{
             BuyWithCoinDialog(urlStr: liveWL.image_variations.preview_small.url, coin: liveWL.cost ?? 0,
                               show: $ctrlViewModel.showDialogDownload,
@@ -479,12 +457,12 @@ struct LiveWLView: View {
                 ctrlViewModel.showDialogDownload.toggle()
                 if currentCoin >= ( liveWL.cost ?? 0  ){
                     currentCoin = currentCoin - ( liveWL.cost ?? 0  )
-                 
+                    
                     downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                             urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                             urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                     ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                
+                    
                     
                 }else{
                     showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
@@ -497,8 +475,11 @@ struct LiveWLView: View {
         }
     }
     
-   
+    
     func downloadVideoToGallery(title : String, urlVideoStr : String, urlImageStr : String){
+        
+        print("LIVE URL SERVER video ", urlVideoStr)
+        print("LIVE URL SERVER image ", urlImageStr)
         
         DispatchQueue.main.async {
             ctrlViewModel.isDownloading = true
@@ -507,41 +488,59 @@ struct LiveWLView: View {
         DownloadFileHelper.downloadFromUrlToSanbox(fileName: title, urlImage: URL(string: urlImageStr), onCompleted: {
             urlImage in
             if let urlImage {
+                
+                print("LIVE URL IMAGE in Sanbox: ", urlImage.absoluteString)
+                
                 DownloadFileHelper.saveVideoLiveToLibSanbox(fileName: title, videoURL: URL(string: urlVideoStr), onCompleted: {
                     urlVideo in
                     if let urlVideo{
+                        print("LIVE URL VIDEO in Sanbox: ", urlVideo.absoluteString)
+                        
+                        
+
                         
                         LivePhoto.generate(from: urlImage, videoURL: urlVideo, progress: {
-                            _ in
-                        }, completion: {_,resources in
-                            if resources != nil{
-                                LivePhoto.saveToLibrary(resources!, completion: {
-                                    b in
-                                    if b{
-                                        DispatchQueue.main.async {
-                                            ctrlViewModel.isDownloading = false
-                                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                            
-                                            if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-                                                UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-                                                ctrlViewModel.showTuto = true
-                                            }
-                                            
-                                            let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                                            UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                                            if !store.isPro() && downloadCount == 1 {
-                                                ctrlViewModel.navigateView.toggle()
-                                            }
-                                            
-                                        }
-                                    }else{
-                                        ctrlViewModel.isDownloading = false
-                                        showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
-                                    }
-                                })
-                            }
-                            
-                        })
+                                                    _ in
+                                                }, completion: {_,resources in
+                                                    if let resources{
+                                                        
+                                                        print("LIVE RESOURCE video : \(resources.pairedVideo.absoluteString)")
+                                                        print("LIVE RESOURCE image : \(resources.pairedImage.absoluteString)")
+                                                        
+                                                        LivePhoto.saveToLibrary(resources, completion: {
+                                                            b in
+                                                            if b{
+                                                                DispatchQueue.main.async {
+                                                                    ctrlViewModel.isDownloading = false
+                                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                                                                    
+                                                                    if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
+                                                                        UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
+                                                                        ctrlViewModel.showTuto = true
+                                                                    }
+                        
+                                                                    let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
+                                                                    UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
+                                                                    if !store.isPro() && downloadCount == 1 {
+                                                                        ctrlViewModel.navigateView.toggle()
+                                                                    }
+                        
+                                                                }
+                                                            }else{
+                                                                DispatchQueue.main.async {
+                                                                    ctrlViewModel.isDownloading = false
+                                                                    showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                                                                }
+                                                            }
+                                                        })
+                                                    }else{
+                                                        DispatchQueue.main.async {
+                                                            ctrlViewModel.isDownloading = false
+                                                            showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                                                        }
+                                                    }
+                        
+                                                })
                         
                     }else{
                         ctrlViewModel.isDownloading = false

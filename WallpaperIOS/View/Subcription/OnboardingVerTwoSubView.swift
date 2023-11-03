@@ -9,8 +9,10 @@ import SwiftUI
 import AVKit
 import StoreKit
 #Preview {
-    OnboardingVerTwoSubView()
-        .environmentObject(MyStore())
+    SplashView()
+    
+//    OnboardingVerTwoSubView()
+//        .environmentObject(MyStore())
 }
 
 
@@ -30,9 +32,10 @@ struct OnboardingVerTwoSubView: View {
         "100% free during the trial.",
         "Easily cancel anytime.",
         "Get full access to all features and content. Why not try?",
-        "One-time-only offer for new user. The firrst week is on us."
+        "One-time-only offer for new user. The first 3-day is on us."
     ]
     
+
     
  
     
@@ -40,7 +43,7 @@ struct OnboardingVerTwoSubView: View {
     var body: some View {
         ZStack{
             NavigationLink(destination:
-                            MainView()
+                            EztMainView()
                            
                 .environmentObject(homeVM)
                 .environmentObject(store)
@@ -63,13 +66,15 @@ struct OnboardingVerTwoSubView: View {
                     .tag(5)
                 Screen_6()
                     .tag(6)
+                Screen_7()
+                    .tag(7)
                 
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .ignoresSafeArea()
                 .background(Color.black)
                 .onChange(of: currentPage, perform: { page in
-                    if page >= 5 {
+                    if page >= 6 {
                         withAnimation(.easeIn){
                             showXmark = false
                         }
@@ -86,14 +91,14 @@ struct OnboardingVerTwoSubView: View {
                 )
                 .overlay(
                     ZStack{
-                        if currentPage >= 5  && showXmark {
+                        if currentPage >= 6  && showXmark {
                             Button(action: {
                                 
                                 UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                                 
-                                if currentPage == 5{
+                                if currentPage == 6{
                                     withAnimation(.linear){
-                                        currentPage = 6
+                                        currentPage = 7
                                     }
 //                                    showXmark = false
 //                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -145,7 +150,7 @@ extension OnboardingVerTwoSubView{
         VStack(spacing : 0){
             
             ZStack{
-                if currentPage < 5 {
+                if currentPage < 6 {
                     
                     VStack(spacing : 0){
                         
@@ -157,25 +162,32 @@ extension OnboardingVerTwoSubView{
                         .padding(.horizontal, 48)
                         Text(getTextSubTitle(page:currentPage))
                         .mfont(24, .regular)
+                        .lineLimit(2)
+                  //      .fixedSize()
+                        .multilineTextAlignment(.center)
                         .foregroundColor(.white)
                         
+                       
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 32)
                       
-                        .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 48)
+//                        .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
+                        
+                       
                         
                         
-                    }.frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .bottom)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .bottom)
                         .padding(.bottom, 24)
                     
                     
-                }else if currentPage == 5 {
-                    Page_5(currentProduct: $currentProduct)
+                }else if currentPage == 6 {
+                    Page_6(currentProduct: $currentProduct)
                         .environmentObject(store)
                         
                 
                 }else{
-                  Page_6()
+                  Page_7()
                      
                 }
                       
@@ -183,34 +195,39 @@ extension OnboardingVerTwoSubView{
             
             Button(action: {
               
-                    if currentPage < 5 {
+                    if currentPage < 6 {
                         withAnimation(.linear){
                             currentPage += 1
                         }
-                    }else if currentPage == 5 {
+                    }else if currentPage == 6 {
                         UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                        Firebase_log("Click_Buy_Sub_In_Onb")
+                        
+                 
                         
                         if currentProduct == 1 {
-                            if let monthPro = store.monthProductV2 {
-                                purchasesss(product: monthPro)
+                            if let weekPro = store.weekProductNotSale {
+                                Firebase_log("Click_Buy_Sub_In_Onb_Week")
+                                purchasesss(product: weekPro, string: "Onb_Week")
                             }
                         }else if  currentProduct == 2 {
                             if let yearPro = store.yearlyFreeTrialProduct {
-                                purchasesss(product: yearPro)
+                                Firebase_log("Click_Buy_Sub_In_Onb_Year_FreeTrial")
+                                purchasesss(product: yearPro, string: "Onb_Year_FreeTrial")
                             }
                         }else if  currentProduct == 3 {
-                            if let threeMonthPro = store.threeMonthProduct {
-                                purchasesss(product: threeMonthPro)
+                            if let month24Pro = store.monthProduct {
+                                Firebase_log("Click_Buy_Sub_In_Onb_Month")
+                                purchasesss(product: month24Pro, string: "Onb_Month")
                             }
                         }
                         
                         
-                    }else if currentPage == 6 {
-                        
+                    }else if currentPage == 7 {
                         UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
-                        
                         if let yearPro = store.yearlyFreeTrialProduct {
-                            purchasesss(product: yearPro)
+                            Firebase_log("Click_Buy_Sub_In_Consider_Year_FT")
+                            purchasesss(product: yearPro, string: "Consider_Year_FT")
                         }
                     }
                    
@@ -220,7 +237,7 @@ extension OnboardingVerTwoSubView{
                 HStack{
                     
                   
-                    Text(( currentProduct == 2 && currentPage == 5 ) ? "Try for free" : "Continue")
+                    Text( currentPage == 7 ? "Start 3-DAY Free Trial" : "Continue")
                     .mfont(16, .bold)
                     .foregroundColor(.black)
                     
@@ -258,7 +275,7 @@ extension OnboardingVerTwoSubView{
             )
             .overlay(
                 ZStack{
-                    if currentPage == 5 || currentPage == 6 {
+                    if currentPage >= 6 {
                         HStack(spacing : 4){
                             Button(action: {
                                 if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
@@ -309,17 +326,15 @@ extension OnboardingVerTwoSubView{
     }
     
     
-    func purchasesss(product : Product) {
+    func purchasesss(product : Product, string : String) {
         store.isPurchasing = true
-     //   showProgressSubView()
-        Firebase_log("Click_buy_in_onboarding")
+       
         store.purchase(product: product, onBuySuccess: { b in
             if b {
 
                 DispatchQueue.main.async{
                     store.isPurchasing = false
-              //      hideProgressSubView()
-                    Firebase_log("Click_buy_in_onboarding_successful")
+                    Firebase_log("Buy_Sub_Success_In_\(string)")
                     
                     showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                     withAnimation{
@@ -328,9 +343,7 @@ extension OnboardingVerTwoSubView{
                 }
             }else{
                 DispatchQueue.main.async{
-                  
                     store.isPurchasing = false
-             //       hideProgressSubView()
                 }
             }
     
@@ -349,6 +362,8 @@ extension OnboardingVerTwoSubView{
             return "Depth Effect"
         }else if page == 4 {
             return "Shuffle Packs"
+        }else if page == 5 {
+            return "Widgets"
         }else{
             return ""
         }
@@ -363,6 +378,8 @@ extension OnboardingVerTwoSubView{
             return "Amazing 3D effects"
         }else if page == 4 {
             return "Automatically change exciting wallpapers"
+        }else if page == 5 {
+            return "An exclusive experience like never before"
         }else{
             return ""
         }
@@ -385,6 +402,11 @@ extension OnboardingVerTwoSubView{
     }
     
     func Screen_5() -> some View{
+        VideoOnboarding(video_name: "video5")
+      
+    }
+    
+    func Screen_6() -> some View{
        
         VideoOnboarding(video_name: "video4v2")
         
@@ -393,17 +415,15 @@ extension OnboardingVerTwoSubView{
     
    
     
-    func Screen_6() -> some View{
-        Image("bg_sc6")
+    func Screen_7() -> some View{
+        Image("considerr")
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea()
-            .clipped()
             .gesture(DragGesture())
     }
     
-    func Page_6() -> some View{
+    func Page_7() -> some View{
         VStack(spacing : 0){
             Text("Wait a Moment")
                 .mfont(24, .bold)
@@ -450,7 +470,7 @@ extension OnboardingVerTwoSubView{
                 }
                 
             if let yearlyFreeTrialProduct = store.yearlyFreeTrialProduct {
-                Text("Try 7 days for free")
+                Text("Try 3 days for free")
                     .mfont(17, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
@@ -551,15 +571,15 @@ struct VideoOnboardingForSC5 : View{
     }
 }
 
-struct Page_5: View {
+struct Page_6: View {
     
     @Binding var currentProduct : Int
     @EnvironmentObject var store : MyStore
     let list_2 : [String] = [
-        "No ADs.",
-        "All Live Wallpapers.",
-        "All Exclusive Wallpapers.",
-        "All Special Wallpapers."
+        "Unlimited Premium Wallpapers",
+        "Unlimited Premium Widgets",
+        "No ADs."
+       
     ]
     
     
@@ -592,7 +612,7 @@ struct Page_5: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 12, height: 12)
                         
-                        Text("All Exclusive Wallpapers.")
+                        Text(opt)
                             .mfont(17, .bold)
                         .foregroundColor(.white)
                         
@@ -605,9 +625,9 @@ struct Page_5: View {
              
             }
             
-            if let monthProduct = store.monthProductV2,
+            if let weekProduct = store.weekProductNotSale,
                let yearTrialProduct = store.yearlyFreeTrialProduct,
-               let threeMonthProduct = store.threeMonthProduct  {
+               let month24Product = store.monthProduct  {
                 
                 GeometryReader{
                     proxy in
@@ -647,17 +667,18 @@ struct Page_5: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                     .padding(.top, 8)
-                                Text("MONTH")
+                                Text("WEEK")
                                     .mfont(17, .bold)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                                Text("\(monthProduct.displayPrice)/mo.")
+                                Text("\(weekProduct.displayPrice)/week.")
                                     .mfont(13, .regular)
+                                    .lineLimit(1)
                                   .multilineTextAlignment(.center)
                                   .foregroundColor(.white)
                                 
-                                Text("Billed monthly")
+                                Text("Billed weekly")
                                     .mfont(9, .regular)
                                   .multilineTextAlignment(.center)
                                   .foregroundColor(.white)
@@ -681,7 +702,7 @@ struct Page_5: View {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(currentProduct == 2 ? Color.main : Color.main.opacity(0.4))
                                 .overlay(
-                                    Text("7-Day Free Trial")
+                                    Text("3-Day Free Trial")
                                         .mfont(15, .bold)
                                         .foregroundColor(.black)
                                         .frame( height: 40)
@@ -689,17 +710,17 @@ struct Page_5: View {
                                 )
                             
                             VStack(spacing : 0){
-                                Text("12")
+                                Text("52")
                                     .mfont(17, .bold)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                     .padding(.top, 8)
-                                Text("MONTH")
+                                Text("WEEK")
                                     .mfont(17, .bold)
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                                Text("\(decimaPriceToStr(price: yearTrialProduct.price , chia: 12))\(removeDigits(string: yearTrialProduct.displayPrice ))/mo.")
+                                Text("\(decimaPriceToStr(price: yearTrialProduct.price , chia: 51))\(removeDigits(string: yearTrialProduct.displayPrice ))/week.")
                                     .mfont(13, .regular)
                                   .multilineTextAlignment(.center)
                                   .foregroundColor(.white)
@@ -732,64 +753,63 @@ struct Page_5: View {
                                     currentProduct = 2
                                 }
                             }
-                           
-                        
                         ZStack(alignment: .bottom){
+                            Color.clear
+                            
+                          
+                                
+                            
+                            if currentProduct == 3 {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.main)
+                                    .frame( height: 100)
+                            }
                             
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(currentProduct == 3 ? Color.main : Color.main.opacity(0.4))
-                                .overlay(
-                                    Text("Popular")
-                                        .mfont(15, .bold)
-                                        .foregroundColor(.black)
-                                        .frame( height: 40)
-                                    , alignment: .top
-                                )
-                            VStack(spacing : 0){
-                                Text("3")
-                                    .mfont(17, .bold)
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(.white)
-                                    .padding(.top, 8)
-                                Text("MONTH")
-                                    .mfont(17, .bold)
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(.white)
-                                
-                                Text("\(decimaPriceToStr(price: threeMonthProduct.price , chia: 3))\(removeDigits(string: threeMonthProduct.displayPrice ))/mo.")
-                                    .mfont(13, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
-                                
-                                Text("Billed quarterly")
-                                    .mfont(9, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
-                                
-                            }
-                            .frame(maxWidth : .infinity)
-                            .frame( height: 100, alignment : .top)
-                                .background(
-                                    ZStack{
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(
-                                                LinearGradient(colors: [Color.mblack_bg, Color.mblack_bg , Color.mblack_bg ,Color.mblack_bg.opacity(0.6)], startPoint: .top, endPoint: .bottom)
-                                            )
-                                            .frame( height: 100)
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(Color.white.opacity(0.15))
-                                            .frame( height: 100)
-                                    }
-                                   
-                                )
+                                .fill(Color.mblack_bg)
+                                .frame( height: 96)
+                                .padding(2)
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.white.opacity(0.15))
+                                .frame( height: 96)
                                 .padding(2)
                             
-                        }.frame(width: widthItem * 1.5, height: size.height)
+                            
+                            VStack(spacing : 0){
+                                                                Text("4")
+                                                                    .mfont(17, .bold)
+                                                                    .multilineTextAlignment(.center)
+                                                                    .foregroundColor(.white)
+                                                                    .padding(.top, 8)
+                                                                Text("WEEK")
+                                                                    .mfont(17, .bold)
+                                                                    .multilineTextAlignment(.center)
+                                                                    .foregroundColor(.white)
+                                
+                                                                Text("\(decimaPriceToStr(price: month24Product.price , chia: 4))\(removeDigits(string: month24Product.displayPrice ))/week.")
+                                                                    .mfont(13, .regular)
+                                                                  .multilineTextAlignment(.center)
+                                                                  .foregroundColor(.white)
+                                
+                                                                Text("Billed monthly")
+                                                                    .mfont(9, .regular)
+                                                                  .multilineTextAlignment(.center)
+                                                                  .foregroundColor(.white)
+                                
+                            }.frame( height: 96, alignment : .top)
+                                .padding(2)
+                           
+                           
+                            
+                        }.frame(width: widthItem * 1.5)
+                            .frame(maxHeight: .infinity)
                             .onTapGesture {
                                 withAnimation{
                                     currentProduct = 3
                                 }
                             }
+                        
+
                         
                         
                     }
@@ -822,7 +842,7 @@ struct Page_5: View {
                     }.frame( height: 18)
                     ZStack{
                         if currentProduct == 1 {
-                            Text("Just \(monthProduct.displayPrice) per month, cancel any time.")
+                            Text("Just \(weekProduct.displayPrice) per week, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
@@ -832,7 +852,7 @@ struct Page_5: View {
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }else if currentProduct == 3 {
-                            Text("Just \(threeMonthProduct.displayPrice) per 3 months, cancel any time.")
+                            Text("Just \(month24Product.displayPrice) per month, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)

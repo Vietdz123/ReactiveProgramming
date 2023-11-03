@@ -49,7 +49,7 @@ struct VideoListView: View {
             
             ZStack{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
-                    SubcriptionVIew()
+                    EztSubcriptionView()
                         .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
