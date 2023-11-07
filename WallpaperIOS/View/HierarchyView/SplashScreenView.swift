@@ -32,7 +32,8 @@ struct SplashScreenView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 115, height: 67)
                 
-                TextTypingAnimView(text: "Starting your wonderful journey...",color : .white ,fontSize: 17, weight: .italic)
+            TextTypingAnimView(text: "Starting your wonderful journey...",color : .white ,fontSize: 17, weight: .italic)
+             
                     .padding(.top ,93)
                             
                

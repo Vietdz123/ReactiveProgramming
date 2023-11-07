@@ -44,7 +44,7 @@ struct EztDynamicIsland: View {
                                         .environmentObject(store)
                                  }, label: {
                                     HStack(spacing : 0){
-                                        Text("See more")
+                                        Text("See more".toLocalize())
                                             .mfont(11, .regular)
                                             .foregroundColor(.white)
                                         Image("arrow.right")
@@ -147,7 +147,7 @@ extension EztDynamicIsland {
     func Newset() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Newest")
+                Text("Newest".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -161,7 +161,7 @@ extension EztDynamicIsland {
                        .environmentObject(store)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -248,7 +248,7 @@ extension EztDynamicIsland {
     func Popular() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Popular")
+                Text("Popular".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -262,7 +262,7 @@ extension EztDynamicIsland {
                        .environmentObject(store)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

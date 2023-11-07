@@ -13,7 +13,7 @@ struct WidgetTutorialView: View {
     
     var body: some View {
         VStack(spacing : 0){
-            Text("Tutorial")
+            Text("Tutorial".toLocalize())
                 .mfont(20, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
@@ -35,7 +35,7 @@ struct WidgetTutorialView: View {
               )
             ScrollView(.vertical, showsIndicators: false){
                 
-                Text("How to Add Widget")
+                Text("How to Add Widget".toLocalize())
                     .mfont(17, .bold)
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
@@ -69,7 +69,7 @@ struct WidgetTutorialView: View {
                           .foregroundColor(Color(red: 0.13, green: 0.11, blue: 0.15))
                     )
                 
-                Text(text)
+                Text(text.toLocalize())
                     .mfont(15, .regular)
                     .multilineTextAlignment(.leading)
                   .foregroundColor(.white)

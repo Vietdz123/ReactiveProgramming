@@ -26,7 +26,7 @@ struct WidgetListView: View {
                     .frame(width: 24, height: 24)
                     .containerShape(Rectangle())
             })
-            Text("Widget")
+            Text("Widget".toLocalize())
                 .foregroundColor(.white)
                 .mfont(22, .bold)
                 .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -42,7 +42,7 @@ struct WidgetListView: View {
                         sort in
                         
                   
-                            Text(sort.rawValue)
+                            Text(sort.rawValue.toLocalize())
                                 .mfont(13, .bold)
                               .multilineTextAlignment(.center)
                               .foregroundColor(.white)

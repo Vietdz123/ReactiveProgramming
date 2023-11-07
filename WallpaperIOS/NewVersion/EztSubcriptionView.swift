@@ -46,7 +46,7 @@ struct EztSubcriptionView: View {
                     Button(action: {
                         
                     }, label: {
-                        Text("Restore")
+                        Text("Restore".toLocalize())
                             .mfont(13, .regular)
                             .foregroundColor(.white)
                     }).padding(.leading, 16)
@@ -77,14 +77,14 @@ struct EztSubcriptionView: View {
                         ResizableLottieView(filename: "star")
                             .frame(width: 80, height: 80)
                         
-                        Text("Wallive Premium")
+                        Text("Wallive Premium".toLocalize())
                             .mfont(24, .bold)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.main)
                             .padding(.top, 8)
                         
                         
-                        Text("Give your Phone A Cool Makeover")
+                        Text("Give your Phone A Cool Makeover".toLocalize())
                             .mfont(17, .bold)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
@@ -132,7 +132,7 @@ struct EztSubcriptionView: View {
                             }, label: {
                                 HStack{
                                     
-                                    Text( "BUY SUBSCRIPTION" )
+                                    Text( "BUY SUBSCRIPTION".toLocalize() )
                                         .mfont(17, .bold)
                                         .foregroundColor(.black)
                                                                         .overlay(
@@ -235,7 +235,7 @@ extension EztSubcriptionView{
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("Unlimited Premium Wallpapers.")
+                Text("Unlimited Premium Wallpapers".toLocalize())
                     .mfont(17, .bold)
                     .foregroundColor(.white)
                     .padding(.leading,  16)
@@ -248,7 +248,7 @@ extension EztSubcriptionView{
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("Unlimited Premium Widgets.")
+                Text("Unlimited Premium Widgets".toLocalize())
                     .mfont(17, .bold)
                     .foregroundColor(.white)
                     .padding(.leading,  16)
@@ -263,7 +263,7 @@ extension EztSubcriptionView{
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("No ADs.")
+                Text("No ADs.".toLocalize())
                     .mfont(17, .bold)
                     .foregroundColor(.white)
                     .padding(.leading,  16)
@@ -335,12 +335,12 @@ extension EztSubcriptionView{
                 
                 HStack{
                     VStack(spacing : 2){
-                        Text("Weekly")
+                        Text("Weekly".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text("\(product.displayPrice)/week")
+                        Text( String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice)  )
+                      //  Text("\(product.displayPrice)/week")
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -348,7 +348,8 @@ extension EztSubcriptionView{
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(product.displayPrice)/week")
+                   // Text("\(product.displayPrice)/week")
+                    Text( String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice)  )
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -420,12 +421,12 @@ extension EztSubcriptionView{
                 
                 HStack{
                     VStack(spacing : 2){
-                        Text("Monthly")
+                        Text("Monthly".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text("\(product.displayPrice)/month")
+                        Text( String(format: NSLocalizedString("%@/month", comment: ""), product.displayPrice)  )
+                            //  Text("\(product.displayPrice)/month")
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -433,9 +434,10 @@ extension EztSubcriptionView{
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(decimaPriceToStr(price: product.price ,chia: 4))\(removeDigits(string: product.displayPrice))/week")
+                    Text( String(format: NSLocalizedString("%@/week", comment: ""), "\(decimaPriceToStr(price: product.price ,chia: 4))\(removeDigits(string: product.displayPrice))")  )
+//                    Text("\(decimaPriceToStr(price: product.price ,chia: 4))\(removeDigits(string: product.displayPrice))/week")
                         .mfont(12, .regular)
-                        .foregroundColor(.white)
+                                            .foregroundColor(.white)
                         .padding(.trailing, 16)
                 }
                 
@@ -509,12 +511,12 @@ extension EztSubcriptionView{
                 
                 HStack{
                     VStack(spacing : 2){
-                        Text("Annually")
+                        Text("Annually".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text("\(product.displayPrice)/year")
+                        Text( String(format: NSLocalizedString("%@/year", comment: ""), product.displayPrice)  )
+                       // Text("\(product.displayPrice)/year")
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -522,7 +524,8 @@ extension EztSubcriptionView{
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
+                   // Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
+                    Text( String(format: NSLocalizedString("%@/week", comment: ""), "\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))")  )
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -553,7 +556,7 @@ extension EztSubcriptionView{
                 }
             }
             .overlay(alignment: .topTrailing){
-                Text("Best value".uppercased())
+                Text("Best value".toLocalize())
                     .mfont(10, .bold)
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -579,7 +582,7 @@ extension EztSubcriptionView{
                 }
                 
             }, label: {
-                Text("Privacy Policy")
+                Text("Privacy Policy".toLocalize())
                     .underline()
                     .foregroundColor(.white)
                     .mfont(9, .regular)
@@ -592,7 +595,7 @@ extension EztSubcriptionView{
                     UIApplication.shared.open(url)
                 }
             }, label: {
-                Text("Terms of Use")
+                Text("Terms of Use".toLocalize())
                     .underline()
                     .foregroundColor(.white)
                     .mfont(9, .regular)

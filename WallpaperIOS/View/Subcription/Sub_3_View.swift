@@ -37,7 +37,7 @@ struct Sub_3_View: View {
             .frame(maxWidth: .infinity)
             .padding(16)
             Spacer()
-            Text("This offer will expire in:")
+            Text("This offer will expire in:".toLocalize())
                 .mfont(15, .regular)
               .multilineTextAlignment(.center)
               .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -97,17 +97,20 @@ struct Sub_3_View: View {
                 
            
             
-                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  51))\(removeDigits(string: product.displayPrice ))/\("Week").")
+//                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  51))\(removeDigits(string: product.displayPrice ))/\("Week").")
+                Text( String(format: NSLocalizedString("ONLY %@/Week", comment: ""), getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice)) )
                 .mfont(24, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
               .padding(.top, 28)
             
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/\("year") ")
+                  //  Text("Total \(product.displayPrice)/\("year") ")
+                    Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice ) )
                         .mfont(17, .bold)
                         .foregroundColor(.black)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\("year"))")
+//                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\("year"))")
+                    Text( String(format: NSLocalizedString("(%@/year)", comment: ""), getDisplayPrice(price: product.price, chia: 0.5, displayPrice: product.displayPrice)) )
                         .mfont(17, .bold)
                         .foregroundColor(.black)
                         .overlay(

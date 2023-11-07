@@ -56,6 +56,8 @@ struct WallpaperIOSApp: App {
 //            } .preferredColorScheme(.dark)
                
             
+     
+            
             SplashView()
                 .statusBarHidden(false)
                 .preferredColorScheme(.dark)

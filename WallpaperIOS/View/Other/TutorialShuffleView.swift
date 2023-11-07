@@ -90,7 +90,7 @@ struct TutorialShuffleView: View {
                           .foregroundColor(Color(red: 0.13, green: 0.11, blue: 0.15))
                     )
                 
-                Text(text)
+                Text(text.toLocalize())
                     .mfont(15, .regular)
                     .multilineTextAlignment(.leading)
                   .foregroundColor(.white)

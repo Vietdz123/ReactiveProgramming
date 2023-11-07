@@ -68,7 +68,7 @@ struct SlideMenuView: View {
                                             .padding(16)
                                         
                                         Text("Unlock all Features")
-                                            .mfont(17, .bold)
+                                            .mfont(17, .bold, line : 1)
                                             .foregroundColor(.white)
                                         Spacer()
                                         Image("off")
@@ -204,7 +204,7 @@ struct SlideMenuView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .frame(height: 56)
                                 .padding(.leading, 16)
-                            Text("Terms of us")
+                            Text("Terms of use")
                                 .mfont(17, .regular)
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity, alignment: .leading)

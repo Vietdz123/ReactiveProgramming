@@ -76,11 +76,13 @@ struct GiftSub_1_View: View {
                         
                         
                         HStack(spacing : 0){
-                            Text("Just \(product.displayPrice)/year (")
+                           // Text("Just \(product.displayPrice)/year ")
+                            Text(String(format: NSLocalizedString("Just %@/year.", comment: ""), product.displayPrice))
                                 .mfont(13, .regular)
                               .multilineTextAlignment(.center)
                               .foregroundColor(.white)
-                            Text("\(getDisplayPrice(price: product.price ,chia: 0.5,displayPrice: product.displayPrice ))/year)")
+                          
+                            Text(String(format: NSLocalizedString("(%@/year)", comment: ""), getDisplayPrice(price: product.price ,chia: 0.5,displayPrice: product.displayPrice )))
                                 .mfont(13, .regular)
                               .multilineTextAlignment(.center)
                               .foregroundColor(.white)
@@ -89,10 +91,7 @@ struct GiftSub_1_View: View {
                                     .fill(.white)
                                     .frame(height: 1)
                               )
-//                            Text("/year)")
-//                                .mfont(13, .regular)
-//                              .multilineTextAlignment(.center)
-//                              .foregroundColor(.white)
+
                         }.padding(.top, 8)
                         
                         
@@ -129,8 +128,10 @@ struct GiftSub_1_View: View {
                             
                         }, label: {
                             HStack(spacing : 0){
-                                Text("Seize Now")
+                                Text("Seize Now".toLocalize())
                                     .mfont(20, .bold)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                                   .multilineTextAlignment(.center)
                                   .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                                   .frame(width: 100, height: 28, alignment: .top)

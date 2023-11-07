@@ -11,8 +11,8 @@ import StoreKit
 #Preview {
     SplashView()
     
-//    OnboardingVerTwoSubView()
-//        .environmentObject(MyStore())
+    //    OnboardingVerTwoSubView()
+    //        .environmentObject(MyStore())
 }
 
 
@@ -35,9 +35,9 @@ struct OnboardingVerTwoSubView: View {
         "One-time-only offer for new user. The first 3-day is on us."
     ]
     
-
     
- 
+    
+    
     
     
     var body: some View {
@@ -49,7 +49,7 @@ struct OnboardingVerTwoSubView: View {
                 .environmentObject(store)
                 .environmentObject(interAd)
                 .environmentObject(rewardAd)
-                        , isActive: $navigateToHome, label: {
+                           , isActive: $navigateToHome, label: {
                 EmptyView()
             })
             
@@ -100,13 +100,13 @@ struct OnboardingVerTwoSubView: View {
                                     withAnimation(.linear){
                                         currentPage = 7
                                     }
-//                                    showXmark = false
-//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-//                                        withAnimation(.easeInOut){
-//                                            showXmark = true
-//                                        }
-//                                        
-//                                    })
+                                    //                                    showXmark = false
+                                    //                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                                    //                                        withAnimation(.easeInOut){
+                                    //                                            showXmark = true
+                                    //                                        }
+                                    //
+                                    //                                    })
                                     
                                     
                                 }else{
@@ -122,7 +122,7 @@ struct OnboardingVerTwoSubView: View {
                                     .opacity(0.5)
                             })
                         }
-                     
+                        
                     }
                     
                     , alignment: .topTrailing
@@ -137,9 +137,9 @@ struct OnboardingVerTwoSubView: View {
                 )
             
         }
-   
-            
-    
+        
+        
+        
     }
 }
 
@@ -154,108 +154,108 @@ extension OnboardingVerTwoSubView{
                     
                     VStack(spacing : 0){
                         
-                        Text(getTextTitle(page:currentPage))
-                        .mfont(32, .bold)
-                        .foregroundColor(.main)
-                       
-                        .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
-                        .padding(.horizontal, 48)
-                        Text(getTextSubTitle(page:currentPage))
-                        .mfont(24, .regular)
-                        .lineLimit(2)
-                  //      .fixedSize()
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
+                        Text(getTextTitle(page:currentPage).toLocalize())
+                            .mfont(32, .bold)
+                            .foregroundColor(.main)
                         
-                       
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 32)
-                      
-//                        .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
+                            .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
+                            .padding(.horizontal, 48)
+                        Text(getTextSubTitle(page:currentPage).toLocalize())
+                            .mfont(24, .regular, line: 2)
+                            .lineLimit(2)
+                        //      .fixedSize()
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
                         
-                       
+                        
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 32)
+                        
+                        //                        .animation(.interactiveSpring(response: 0.9, dampingFraction: 0.8, blendDuration: 0.5).delay( 0.2 ) , value: currentPage)
+                        
+                        
                         
                         
                     }
                     .frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .bottom)
-                        .padding(.bottom, 24)
+                    .padding(.bottom, 24)
                     
                     
                 }else if currentPage == 6 {
                     Page_6(currentProduct: $currentProduct)
                         .environmentObject(store)
-                        
-                
+                    
+                    
                 }else{
-                  Page_7()
-                     
+                    Page_7()
+                    
                 }
-                      
+                
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
             
             Button(action: {
-              
-                    if currentPage < 6 {
-                        withAnimation(.linear){
-                            currentPage += 1
+                
+                if currentPage < 6 {
+                    withAnimation(.linear){
+                        currentPage += 1
+                    }
+                }else if currentPage == 6 {
+                    UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                    Firebase_log("Click_Buy_Sub_In_Onb")
+                    
+                    
+                    
+                    if currentProduct == 1 {
+                        if let weekPro = store.weekProductNotSale {
+                            Firebase_log("Click_Buy_Sub_In_Onb_Week")
+                            purchasesss(product: weekPro, string: "Onb_Week")
                         }
-                    }else if currentPage == 6 {
-                        UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
-                        Firebase_log("Click_Buy_Sub_In_Onb")
-                        
-                 
-                        
-                        if currentProduct == 1 {
-                            if let weekPro = store.weekProductNotSale {
-                                Firebase_log("Click_Buy_Sub_In_Onb_Week")
-                                purchasesss(product: weekPro, string: "Onb_Week")
-                            }
-                        }else if  currentProduct == 2 {
-                            if let yearPro = store.yearlyFreeTrialProduct {
-                                Firebase_log("Click_Buy_Sub_In_Onb_Year_FreeTrial")
-                                purchasesss(product: yearPro, string: "Onb_Year_FreeTrial")
-                            }
-                        }else if  currentProduct == 3 {
-                            if let month24Pro = store.monthProduct {
-                                Firebase_log("Click_Buy_Sub_In_Onb_Month")
-                                purchasesss(product: month24Pro, string: "Onb_Month")
-                            }
-                        }
-                        
-                        
-                    }else if currentPage == 7 {
-                        UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                    }else if  currentProduct == 2 {
                         if let yearPro = store.yearlyFreeTrialProduct {
-                            Firebase_log("Click_Buy_Sub_In_Consider_Year_FT")
-                            purchasesss(product: yearPro, string: "Consider_Year_FT")
+                            Firebase_log("Click_Buy_Sub_In_Onb_Year_FreeTrial")
+                            purchasesss(product: yearPro, string: "Onb_Year_FreeTrial")
+                        }
+                    }else if  currentProduct == 3 {
+                        if let month24Pro = store.monthProduct {
+                            Firebase_log("Click_Buy_Sub_In_Onb_Month")
+                            purchasesss(product: month24Pro, string: "Onb_Month")
                         }
                     }
-                   
+                    
+                    
+                }else if currentPage == 7 {
+                    UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
+                    if let yearPro = store.yearlyFreeTrialProduct {
+                        Firebase_log("Click_Buy_Sub_In_Consider_Year_FT")
+                        purchasesss(product: yearPro, string: "Consider_Year_FT")
+                    }
+                }
+                
                 
                 
             }, label: {
                 HStack{
                     
-                  
-                    Text( currentPage == 7 ? "Start 3-DAY Free Trial" : "Continue")
-                    .mfont(16, .bold)
-                    .foregroundColor(.black)
                     
-                
+                    Text( currentPage == 7 ? "Start 3-DAY Free Trial".toLocalize() : "Continue".toLocalize())
+                        .mfont(16, .bold, line: 2)
+                        .foregroundColor(.black)
+                    
+                    
                 }
-                    .frame(maxWidth: .infinity)
-                    .frame(height : 56)
-                    .contentShape(Rectangle())
-                    .overlay(
-                        ZStack{
-                            ResizableLottieView(filename: "arrow")
-                                .frame(width: 32, height: 32 )
-                                .padding(.trailing , 24)
-                        }
-                        
-                        
-                        , alignment: .trailing
-                    )
+                .frame(maxWidth: .infinity)
+                .frame(height : 56)
+                .contentShape(Rectangle())
+                .overlay(
+                    ZStack{
+                        ResizableLottieView(filename: "arrow")
+                            .frame(width: 32, height: 32 )
+                            .padding(.trailing , 24)
+                    }
+                    
+                    
+                    , alignment: .trailing
+                )
             })
             .background(
                 Capsule().fill(Color.main)
@@ -282,7 +282,7 @@ extension OnboardingVerTwoSubView{
                                     UIApplication.shared.open(url)
                                 }
                             }, label: {
-                                Text("Privacy Policy").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                Text("Privacy Policy".toLocalize()).mfont(10, .regular).foregroundColor(.white.opacity(0.7))
                             })
                             
                             Text("|").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
@@ -299,7 +299,7 @@ extension OnboardingVerTwoSubView{
                                 }
                                 
                             }, label: {
-                                Text("Restore").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                Text("Restore".toLocalize()).mfont(10, .regular).foregroundColor(.white.opacity(0.7))
                             })
                             
                             Text("|").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
@@ -309,18 +309,18 @@ extension OnboardingVerTwoSubView{
                                     UIApplication.shared.open(url)
                                 }
                             }, label: {
-                                Text("Term of use").mfont(10, .regular).foregroundColor(.white.opacity(0.7))
+                                Text("Term of use".toLocalize()).mfont(10, .regular).foregroundColor(.white.opacity(0.7))
                             })
                             
-                          
+                            
                             
                         }.edgesIgnoringSafeArea(.bottom)
                     }
                 }
-                    
-                   
-                    
-               
+                
+                
+                
+                
                 , alignment: .bottom
             )
     }
@@ -328,10 +328,10 @@ extension OnboardingVerTwoSubView{
     
     func purchasesss(product : Product, string : String) {
         store.isPurchasing = true
-       
+        
         store.purchase(product: product, onBuySuccess: { b in
             if b {
-
+                
                 DispatchQueue.main.async{
                     store.isPurchasing = false
                     Firebase_log("Buy_Sub_Success_In_\(string)")
@@ -346,10 +346,8 @@ extension OnboardingVerTwoSubView{
                     store.isPurchasing = false
                 }
             }
-    
-            
-        }
-    )
+            }
+        )
     }
     
     
@@ -385,7 +383,7 @@ extension OnboardingVerTwoSubView{
         }
     }
     
-  
+    
     
     func Screen_1() -> some View{
         VideoOnboarding(video_name: "video1")
@@ -403,17 +401,17 @@ extension OnboardingVerTwoSubView{
     
     func Screen_5() -> some View{
         VideoOnboarding(video_name: "video5")
-      
+        
     }
     
     func Screen_6() -> some View{
-       
+        
         VideoOnboarding(video_name: "video4v2")
         
         
     }
     
-   
+    
     
     func Screen_7() -> some View{
         Image("considerr")
@@ -425,69 +423,70 @@ extension OnboardingVerTwoSubView{
     
     func Page_7() -> some View{
         VStack(spacing : 0){
-            Text("Wait a Moment")
+            Text("Wait a Moment".toLocalize())
                 .mfont(24, .bold)
                 .foregroundColor(.main)
                 .padding(.top, 100  )
                 .frame(maxWidth: .infinity, alignment : .leading)
                 .padding(.horizontal, 40)
-            Text("Consider the following before you")
+            Text("Consider the following before you".toLocalize())
                 .mfont(17, .regular)
-              .foregroundColor(.white)
+                .foregroundColor(.white)
             
-              .frame(maxWidth: .infinity, alignment : .leading)
-              .padding(.horizontal, 40)
-            Text("make the final decistion")
+                .frame(maxWidth: .infinity, alignment : .leading)
+                .padding(.horizontal, 40)
+            Text("make the final decistion".toLocalize())
                 .mfont(17, .regular)
-              .foregroundColor(.white)
+                .foregroundColor(.white)
             
-              .frame(maxWidth: .infinity, alignment : .leading)
-              .padding(.horizontal, 40)
+                .frame(maxWidth: .infinity, alignment : .leading)
+                .padding(.horizontal, 40)
             
             Spacer()
             
-         
-                VStack(spacing : 16){
-                    ForEach(list_1, id: \.self){ opt in
-                        HStack(spacing : 16){
-                            Image("check")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                            
-                          //
-                            //TextTypingAnimView(text: opt, color: .white, fontSize: 17, weight: .bold)
-
-                            Text(opt)
-                                .mfont(17, .bold)
-                                .foregroundColor(.white)
-                            
-                            
-                        }.frame(maxWidth: .infinity, alignment: .leading)
+            
+            VStack(spacing : 16){
+                ForEach(list_1, id: \.self){ opt in
+                    HStack(spacing : 16){
+                        Image("check")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        
+                        //
+                        //TextTypingAnimView(text: opt, color: .white, fontSize: 17, weight: .bold)
+                        
+                        Text(opt.toLocalize())
+                            .mfont(17, .bold, line : 3)
+                            .foregroundColor(.white)
                         
                         
-                            .padding(.horizontal, 40)
-                    }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    
+                        .padding(.horizontal, 40)
                 }
-                
+            }
+            
             if let yearlyFreeTrialProduct = store.yearlyFreeTrialProduct {
-                Text("Try 3 days for free")
+                Text("Try 3 days for free".toLocalize())
                     .mfont(17, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.top, 56)
                 
-                Text("Then \(yearlyFreeTrialProduct.displayPrice)/year. No Payment Now")
+              //  Text("Then \(yearlyFreeTrialProduct.displayPrice)/year. No Payment Now")
+              Text(  String(format: NSLocalizedString("Then %@/year. No Payment Now", comment: ""), "\(yearlyFreeTrialProduct.displayPrice)"))
                     .mfont(13, .regular)
                     .foregroundColor(.white)
             }
             
-             
-           
-                
             
-           
             
-           
+            
+            
+            
+            
+            
             
             
         }
@@ -499,7 +498,7 @@ extension OnboardingVerTwoSubView{
                                     Color("black_bg"),
                                     Color("black_bg")], startPoint: .top, endPoint: .bottom)
         ).padding(.bottom, 24)
-          
+        
     }
     
 }
@@ -508,7 +507,7 @@ struct VideoOnboarding : View{
     
     @State var avPlayer : AVPlayer?
     let video_name : String
-  
+    
     
     var body: some View{
         ZStack{
@@ -539,7 +538,7 @@ struct VideoOnboardingForSC5 : View{
     
     @State var avPlayer : AVPlayer?
     let video_name : String
-  
+    
     
     var body: some View{
         ZStack(alignment: .top) {
@@ -549,10 +548,10 @@ struct VideoOnboardingForSC5 : View{
                     MyVideoPlayer(player: avPlayer, aspect: .resizeAspect)
                     Spacer()
                 }
-               
                 
-                    .ignoresSafeArea()
-                    .gesture(DragGesture())
+                
+                .ignoresSafeArea()
+                .gesture(DragGesture())
             }
         }
         
@@ -579,7 +578,7 @@ struct Page_6: View {
         "Unlimited Premium Wallpapers",
         "Unlimited Premium Widgets",
         "No ADs."
-       
+        
     ]
     
     
@@ -594,12 +593,12 @@ struct Page_6: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 32, height: 32)
                     
-                    Text("Wallive Premium")
+                    Text("Wallive Premium".toLocalize())
                         .mfont(24, .bold)
-                    .foregroundColor(.main)
+                        .foregroundColor(.main)
                     
                 }.frame(maxWidth: .infinity, alignment : .leading)
-                    
+                
                     .padding(.leading, 63)
                 
                 
@@ -612,17 +611,18 @@ struct Page_6: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 12, height: 12)
                         
-                        Text(opt)
-                            .mfont(17, .bold)
-                        .foregroundColor(.white)
+                        Text(opt.toLocalize())
+                            .mfont(17, .bold, line: 2)
+                            .foregroundColor(.white)
                         
                     }.frame(maxWidth: .infinity, alignment : .leading)
-                        .frame(height: 24)
+                        
                         .padding(.leading, 73)
+                        .padding(.trailing, 48)
                     
                 }
                 
-             
+                
             }
             
             if let weekProduct = store.weekProductNotSale,
@@ -634,16 +634,16 @@ struct Page_6: View {
                     let size = proxy.size
                     let widthItem = ( size.width - 48 ) / 5
                     
-                 
+                    
                     
                     HStack(spacing : 8){
                         
-                   
+                        
                         ZStack(alignment: .bottom){
                             Color.clear
                             
-                          
-                                
+                            
+                            
                             
                             if currentProduct == 1 {
                                 RoundedRectangle(cornerRadius: 16)
@@ -672,21 +672,22 @@ struct Page_6: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                                Text("\(weekProduct.displayPrice)/week.")
+                          //      Text("\(weekProduct.displayPrice)/week.")
+                                Text( String(format: NSLocalizedString("%@/week", comment: ""), weekProduct.displayPrice) )
                                     .mfont(13, .regular)
                                     .lineLimit(1)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
                                 Text("Billed weekly")
                                     .mfont(9, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
                             }.frame( height: 96, alignment : .top)
                                 .padding(2)
-                           
-                           
+                            
+                            
                             
                         }.frame(width: widthItem * 1.5)
                             .frame(maxHeight: .infinity)
@@ -697,7 +698,7 @@ struct Page_6: View {
                             }
                         
                         ZStack(alignment: .bottom){
-                           
+                            
                             
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(currentProduct == 2 ? Color.main : Color.main.opacity(0.4))
@@ -720,32 +721,32 @@ struct Page_6: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                                Text("\(decimaPriceToStr(price: yearTrialProduct.price , chia: 51))\(removeDigits(string: yearTrialProduct.displayPrice ))/week.")
+                                Text( String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: yearTrialProduct.price, chia: 51, displayPrice: yearTrialProduct.displayPrice) ) )
                                     .mfont(13, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
                                 Text("Billed annually")
                                     .mfont(9, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
                             }
                             .frame(maxWidth : .infinity)
                             .frame( height: 100, alignment : .top)
-                                .background(
-                                    ZStack{
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(
-                                                LinearGradient(colors: [Color.mblack_bg, Color.mblack_bg , Color.mblack_bg ,Color.mblack_bg.opacity(0.6)], startPoint: .top, endPoint: .bottom)
-                                            )
-                                            .frame( height: 100)
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(Color.white.opacity(0.15))
-                                            .frame( height: 100)
-                                    }
-                                )
-                                .padding(2)
+                            .background(
+                                ZStack{
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(
+                                            LinearGradient(colors: [Color.mblack_bg, Color.mblack_bg , Color.mblack_bg ,Color.mblack_bg.opacity(0.6)], startPoint: .top, endPoint: .bottom)
+                                        )
+                                        .frame( height: 100)
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color.white.opacity(0.15))
+                                        .frame( height: 100)
+                                }
+                            )
+                            .padding(2)
                             
                         }.frame(width: widthItem * 2, height: size.height)
                             .onTapGesture {
@@ -756,8 +757,8 @@ struct Page_6: View {
                         ZStack(alignment: .bottom){
                             Color.clear
                             
-                          
-                                
+                            
+                            
                             
                             if currentProduct == 3 {
                                 RoundedRectangle(cornerRadius: 16)
@@ -776,30 +777,31 @@ struct Page_6: View {
                             
                             
                             VStack(spacing : 0){
-                                                                Text("4")
-                                                                    .mfont(17, .bold)
-                                                                    .multilineTextAlignment(.center)
-                                                                    .foregroundColor(.white)
-                                                                    .padding(.top, 8)
-                                                                Text("WEEK")
-                                                                    .mfont(17, .bold)
-                                                                    .multilineTextAlignment(.center)
-                                                                    .foregroundColor(.white)
+                                Text("4")
+                                    .mfont(17, .bold)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                                    .padding(.top, 8)
+                                Text("WEEK")
+                                    .mfont(17, .bold)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
-                                                                Text("\(decimaPriceToStr(price: month24Product.price , chia: 4))\(removeDigits(string: month24Product.displayPrice ))/week.")
-                                                                    .mfont(13, .regular)
-                                                                  .multilineTextAlignment(.center)
-                                                                  .foregroundColor(.white)
+                               // Text("\(decimaPriceToStr(price: month24Product.price , chia: 4))\(removeDigits(string: month24Product.displayPrice ))/week.")
+                                Text( String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: month24Product.price, chia: 4, displayPrice: month24Product.displayPrice) ) )
+                                    .mfont(13, .regular)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
-                                                                Text("Billed monthly")
-                                                                    .mfont(9, .regular)
-                                                                  .multilineTextAlignment(.center)
-                                                                  .foregroundColor(.white)
+                                Text("Billed monthly")
+                                    .mfont(9, .regular)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                                 
                             }.frame( height: 96, alignment : .top)
                                 .padding(2)
-                           
-                           
+                            
+                            
                             
                         }.frame(width: widthItem * 1.5)
                             .frame(maxHeight: .infinity)
@@ -809,7 +811,7 @@ struct Page_6: View {
                                 }
                             }
                         
-
+                        
                         
                         
                     }
@@ -834,33 +836,36 @@ struct Page_6: View {
                                 
                                 Text("No Payment Now!")
                                     .mfont(13, .bold)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
                             }
                         }
-                      
+                        
                     }.frame( height: 18)
                     ZStack{
                         if currentProduct == 1 {
-                            Text("Just \(weekProduct.displayPrice) per week, cancel any time.")
+                            Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(weekProduct.displayPrice)") )
+                         //   Text("Just \(weekProduct.displayPrice) per week, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }else if currentProduct == 2 {
-                            Text("Just \(yearTrialProduct.displayPrice) per year, cancel any time.")
+                          //  Text("Just \(yearTrialProduct.displayPrice) per year, cancel any time.")
+                            Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(yearTrialProduct.displayPrice)") )
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }else if currentProduct == 3 {
-                            Text("Just \(month24Product.displayPrice) per month, cancel any time.")
+                            Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(month24Product.displayPrice)") )
+                          //  Text("Just \(month24Product.displayPrice) per month, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }
                     }.frame(height : 15)
                     
-                  
-                        
+                    
+                    
                 }.frame(height : 37, alignment: .bottom)
                 
             }
@@ -869,7 +874,7 @@ struct Page_6: View {
             
             
             
-              
+            
             
             
             

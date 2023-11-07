@@ -16,8 +16,10 @@ enum K2D  : String, CaseIterable {
 
 
 extension View{
-    func mfont(_ size : CGFloat, _ k2d : K2D) -> some View{
+    func mfont(_ size : CGFloat, _ k2d : K2D, line : Int = 1) -> some View{
         self.font(.custom(k2d.rawValue, size: size))
+            .lineLimit(line)
+            .minimumScaleFactor(0.5)
             .offset(y : -2)
     }
     

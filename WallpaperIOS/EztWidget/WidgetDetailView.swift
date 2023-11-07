@@ -22,7 +22,7 @@ struct WidgetDetailView: View {
                         .frame(width: 48, height: 48, alignment: .center)
                         .containerShape(Rectangle())
                     Spacer()
-                    Text("Widget")
+                    Text("Widget".toLocalize())
                         .mfont(20, .bold)
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.main)

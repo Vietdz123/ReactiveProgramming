@@ -48,7 +48,7 @@ struct PreviewWidgetSheet: View {
                             .frame(width: 24, height: 24)
                     })
                     Spacer()
-                    Text("Preview")
+                    Text("Preview".toLocalize())
                         .mfont(17, .bold)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.white)
@@ -237,7 +237,7 @@ struct PreviewWidgetSheet: View {
                             ZStack{
                                 ResizableLottieView(filename: "preview_wg")
                                     .frame(width: 160, height: 160, alignment: .center)
-                                Text("Tab here for preview")
+                                Text("Tap here for preview".toLocalize())
                                     .mfont(13, .regular)
                                     .foregroundColor(.white)
                                     .frame(width: 184, height: 40)
@@ -274,7 +274,7 @@ struct PreviewWidgetSheet: View {
                     
                    
                 }, label: {
-                    Text("Save")
+                    Text("Save".toLocalize())
                         .mfont(16, .bold)
                       .multilineTextAlignment(.center)
                       .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -304,9 +304,7 @@ struct PreviewWidgetSheet: View {
         .fullScreenCover(isPresented: $showTuto, content: {
             WidgetTutorialView()
         })
-        .fullScreenCover(isPresented: $showSubView, content: {
-         //   SpecialSubView(fromDefault : false)
-        })
+      
     }
     
  

@@ -52,7 +52,7 @@ struct EztSpecialPageView: View {
                     sort in
                     
               
-                        Text(sort.rawValue)
+                        Text(sort.rawValue.toLocalize())
                             .mfont(13, .bold)
                           .multilineTextAlignment(.center)
                           .foregroundColor(.white)

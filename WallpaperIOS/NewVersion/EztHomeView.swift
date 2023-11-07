@@ -61,7 +61,7 @@ extension EztHomeView{
     func TopWallpaper() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Top Wallpapers")
+                Text("Top Wallpapers".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -77,7 +77,7 @@ extension EztHomeView{
                         .environmentObject(favViewModel)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -190,7 +190,7 @@ extension EztHomeView{
         VStack(spacing : 16){
             
             HStack(spacing :0){
-                Text("Shuffle Packs")
+                Text("Shuffle Packs".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -207,7 +207,7 @@ extension EztHomeView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -303,7 +303,7 @@ extension EztHomeView{
     func WidgetInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Interactive Widgets")
+                Text("Interactive Widgets".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -316,7 +316,7 @@ extension EztHomeView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -381,7 +381,7 @@ extension EztHomeView{
     func DepthEffectViewInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Depth Effect")
+                Text("Depth Effect".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -397,7 +397,7 @@ extension EztHomeView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -504,7 +504,7 @@ extension EztHomeView{
     func DynamicIslandViewInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Dynamic Island")
+                Text("Dynamic Island".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -519,7 +519,7 @@ extension EztHomeView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -642,7 +642,7 @@ extension EztHomeView{
                 
                 if let product = store.yearlv2Sale50Product{
                     VStack(spacing : 0){
-                        Text("Unlock All Features")
+                        Text("Unlock all Features".toLocalize())
                             .mfont(17, .bold)
                             .foregroundColor(.main)
                             .frame(maxWidth: .infinity, alignment : .leading)
@@ -652,13 +652,17 @@ extension EztHomeView{
                             .padding(.top, 12)
                         
                         HStack(spacing : 0){
-                            Text("ONLY ")
-                                .mfont(15, .regular)
-                                .foregroundColor(.white)
-                            Text("\(getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ))")
-                                .mfont(17, .bold)
-                                .foregroundColor(.main)
-                            Text("/week.")
+//                            Text("ONLY ".toLocalize())
+//                                .mfont(15, .regular)
+//                                .foregroundColor(.white)
+//                            Text("\(getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ))")
+//                                .mfont(17, .bold)
+//                                .foregroundColor(.main)
+//                            Text("/week.")
+//                                .mfont(15, .regular)
+//                                .foregroundColor(.white)
+                            
+                            Text(String(format: NSLocalizedString("ONLY %@/Week", comment: ""), getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ) ))
                                 .mfont(15, .regular)
                                 .foregroundColor(.white)
                         }.frame(maxWidth: .infinity, alignment: .leading)
@@ -718,7 +722,7 @@ extension EztHomeView{
                                 }
                             })
                         }, label: {
-                            Text("Claim Now!")
+                            Text("Claim Now!".toLocalize())
                                 .mfont(17, .bold)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
@@ -746,7 +750,7 @@ extension EztHomeView{
                             Button(action: {
                                 
                             }, label: {
-                                Text("Privacy Policy ")
+                                Text("Privacy Policy ".toLocalize())
                                     .mfont(9, .regular)
                                     .multilineTextAlignment(.trailing)
                                     .foregroundColor(.white)
@@ -759,7 +763,7 @@ extension EztHomeView{
                             Button(action: {
                                 
                             }, label: {
-                                Text("Restore")
+                                Text("Restore".toLocalize())
                                     .mfont(9, .regular)
                                     .multilineTextAlignment(.trailing)
                                     .foregroundColor(.white)
@@ -772,7 +776,7 @@ extension EztHomeView{
                             Button(action: {
                                 
                             }, label: {
-                                Text("Term of use")
+                                Text("Term of use".toLocalize())
                                     .mfont(9, .regular)
                                     .multilineTextAlignment(.trailing)
                                     .foregroundColor(.white)

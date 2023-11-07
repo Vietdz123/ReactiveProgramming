@@ -49,9 +49,7 @@ struct CompositionalView<Content, Content2 ,Item, ID> : View where Content : Vie
                 if layoutType(row: row) == .type3 {
                    
                    content2(Int(( index + 1 ) / 3))
-                        .onAppear(perform: {
-                            print("DUC DUC DUC ", ( index + 1 ) / 3 )
-                        })
+                       
                    
                 }
             }

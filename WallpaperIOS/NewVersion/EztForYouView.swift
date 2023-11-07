@@ -144,7 +144,7 @@ struct EztForYouView: View {
                         .foregroundColor(.white)
                         .padding(.top, 20)
 
-                    Text("Awesome category for you!")
+                    Text("Awesome category for you!".toLocalize())
                         .mfont(11, .regular)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.leading)
@@ -152,7 +152,7 @@ struct EztForYouView: View {
                         .padding(.top, 4)
                     Spacer()
                     HStack(spacing : 12){
-                        Text("Discover")
+                        Text("Discover".toLocalize())
                             .mfont(15, .regular)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)

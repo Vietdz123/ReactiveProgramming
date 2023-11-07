@@ -230,7 +230,7 @@ extension EztMainView{
             
             Spacer()
             
-            Text(mainViewModel.currentTab == .HOME ? "Wallive" : mainViewModel.currentTab.rawValue)
+            Text(mainViewModel.currentTab == .HOME ? "Wallive" : mainViewModel.currentTab.rawValue.toLocalize())
                 .mfont(20, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.main)
@@ -276,16 +276,16 @@ extension EztMainView{
                         // .padding(.leading, 12)
                         //  .padding(.trailing, 12)
                         
-                        Text("Last chance for your gift...")
+                        Text("Last chance for your gift...".toLocalize())
                             .mfont(15, .bold)
                             .foregroundColor(.white)
-                            .lineLimit(1)
-                            .fixedSize()
+                            
+                            
                         Spacer()
                       
                          
                    
-                            Text("Open")
+                            Text("Open".toLocalize())
                                 .mfont(13, .bold)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -339,7 +339,7 @@ extension EztMainView{
                         ZStack{
                             if mainViewModel.currentTab == tab{
 
-                                Text(tab.rawValue.uppercased())
+                                Text(tab.rawValue.uppercased().toLocalize())
                                     .mfont(16,  .bold )
                                     .foregroundColor(.white)
                                     .frame(maxHeight: .infinity)
@@ -378,7 +378,7 @@ extension EztMainView{
                                 
                                     
                             }else{
-                                Text(tab.rawValue.uppercased())
+                                Text(tab.rawValue.uppercased().toLocalize())
                                     .mfont(16,  .regular)
                                     .foregroundColor(.white.opacity(0.7))
                                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 12, trailing: 8))

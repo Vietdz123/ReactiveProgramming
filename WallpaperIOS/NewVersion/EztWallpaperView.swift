@@ -14,7 +14,7 @@ import SwiftUI
 enum WallpaperTab : String, CaseIterable{
     case ForYou = "For You"
     case Category = "Category"
-    case ShufflePack = "ShufflePack"
+    case ShufflePack = "Shuffle Pack"
     case DepthEffect = "Depth Effect"
     case DynamicIsland = "Dynamic Island"
     case Live = "Live Wallpapers"
@@ -112,7 +112,7 @@ extension EztWallpaperView{
                     ForEach(WallpaperTab.allCases, id : \.rawValue){
                         tab in
                         
-                        Text(tab.rawValue)
+                        Text(tab.rawValue.toLocalize())
                             .mfont(13,ctrlVM.currentTab == tab ? .bold : .regular)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)

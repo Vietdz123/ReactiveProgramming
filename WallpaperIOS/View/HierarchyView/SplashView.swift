@@ -29,19 +29,7 @@ struct SplashView: View {
         NavigationView{
             ZStack{
                 
-//               
-//                    NavigationLink(destination:
-//                        OnboardingSubView()
-//                        .navigationBarTitle("", displayMode: .inline)
-//                        .navigationBarHidden(true)
-//                        .environmentObject(homeVM)
-//                        .environmentObject(myStore)
-//                        .environmentObject(interAd)
-//                        .environmentObject(rewardAd)
-//                                   , isActive: $appVM.navigateToOnboarding, label: {
-//                        EmptyView()
-//                    })
-//                    
+                    
                     NavigationLink(destination:
                         OnboardingVerTwoSubView()
                         .navigationBarTitle("", displayMode: .inline)

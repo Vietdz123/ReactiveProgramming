@@ -33,7 +33,7 @@ struct EztShufflePackView: View {
                         
                         VStack(spacing : 0){
                             HStack(spacing : 0){
-                                Text("\(data.specialTag.title)")
+                                Text("\(data.specialTag.title)".toLocalize())
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,7 +48,7 @@ struct EztShufflePackView: View {
                                         .environmentObject(store)
                                 }, label: {
                                     HStack(spacing : 0){
-                                        Text("See more")
+                                        Text("See more".toLocalize())
                                             .mfont(11, .regular)
                                             .foregroundColor(.white)
                                         Image("arrow.right")
@@ -219,7 +219,7 @@ extension EztShufflePackView{
     func NewestView() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Newest")
+                Text("Newest".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -234,7 +234,7 @@ extension EztShufflePackView{
                           .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -367,7 +367,7 @@ extension EztShufflePackView{
     func PopularView() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Popular")
+                Text("Popular".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -384,7 +384,7 @@ extension EztShufflePackView{
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

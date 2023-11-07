@@ -275,7 +275,7 @@ extension SpWLDetailView{
                                                 
                                                 Spacer()
                                                 
-                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:51))\(removeDigits(string:yearV2.displayPrice))/week")
+                                                Text("\(getDisplayPrice(price: yearV2.price , chia: 51, displayPrice: yearV2.displayPrice ))/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
@@ -710,37 +710,21 @@ extension SpWLDetailView{
                                 ServerHelper.sendImageSpecialDataToServer(type: "download", id: viewModel.wallpapers[index].id)
                             }else{
                                 
-                                if viewModel.wallpapers[index].specialContentV2ID == 3 {
+                             
                                     
-                                    if !UserDefaults.standard.bool(forKey: "try_dynamic_island"){
-                                        UserDefaults.standard.set(true, forKey: "try_dynamic_island")
-                                        downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? ""))
-                                        ServerHelper.sendImageSpecialDataToServer(type: "download", id: viewModel.wallpapers[index].id)
-                                    }else{
+                               
                                         DispatchQueue.main.async {
                                             withAnimation(.easeInOut){
                                                 showBuySubAtScreen.toggle()
                                             }
                                         }
                                         
-                                    }
+                               
                                     
                                   
-                                }else{
-                                    if !UserDefaults.standard.bool(forKey: "try_depth_effec"){
-                                        UserDefaults.standard.set(true, forKey: "try_depth_effec")
-                                        downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? ""))
-                                        ServerHelper.sendImageSpecialDataToServer(type: "download", id: viewModel.wallpapers[index].id)
-                                    }else{
-                                        DispatchQueue.main.async {
-                                            withAnimation(.easeInOut){
-                                                showBuySubAtScreen.toggle()
-
-                                            }
-                                        }
-                                       
-                                    }
-                                }
+                               
+                                
+                              
                                 
                                
                                
@@ -810,27 +794,27 @@ extension SpWLDetailView{
             .environmentObject(store)
     }
     
-    @ViewBuilder
-    func DialogGetWLByCoin(urlStr : String) -> some View{
-        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            if currentCoin >= exclusiveCost{
-                currentCoin = currentCoin - exclusiveCost
-                DispatchQueue.main.async{
-                   
-                    downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? "").replacingOccurrences(of: "\"", with: ""))
-                    ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
-                }
-            }else{
-                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-            }
-        }, onBuyPro: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            ctrlViewModel.navigateView.toggle()
-        }).environmentObject(store)
-            .environmentObject(reward)
-    }
-    
+//    @ViewBuilder
+//    func DialogGetWLByCoin(urlStr : String) -> some View{
+//        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            if currentCoin >= exclusiveCost{
+//                currentCoin = currentCoin - exclusiveCost
+//                DispatchQueue.main.async{
+//                   
+//                    downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? "").replacingOccurrences(of: "\"", with: ""))
+//                    ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
+//                }
+//            }else{
+//                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
+//            }
+//        }, onBuyPro: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            ctrlViewModel.navigateView.toggle()
+//        }).environmentObject(store)
+//            .environmentObject(reward)
+//    }
+//    
     
     func downloadImageToGallery(title : String, urlStr : String){
         DispatchQueue.main.async {

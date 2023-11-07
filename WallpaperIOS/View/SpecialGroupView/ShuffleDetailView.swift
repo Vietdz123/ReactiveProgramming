@@ -212,7 +212,7 @@ extension ShuffleDetailView{
                                                 
                                                 Spacer()
                                                 
-                                                Text("\(decimaPriceToStr(price: yearV2.price ,chia:51))\(removeDigits(string:yearV2.displayPrice))/week")
+                                                Text("\(getDisplayPrice(price: yearV2.price , chia: 51, displayPrice: yearV2.displayPrice ))/week")
                                                     .mfont(12, .regular)
                                                   .foregroundColor(.white)
                                                   .padding(.trailing, 16)
@@ -642,18 +642,14 @@ extension ShuffleDetailView{
                             createAlbum(albumName: "Shuffle \(wallpaper.id)")
                             ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpaper.id)
                         }else{
-                            if !UserDefaults.standard.bool(forKey: "try_shuffle_pack"){
-                                UserDefaults.standard.set(true, forKey: "try_shuffle_pack")
-                                createAlbum(albumName: "Shuffle \(wallpaper.id)")
-                                ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpaper.id)
-                            }else{
+                        
                                 DispatchQueue.main.async {
                                     withAnimation(.easeInOut){
                                         showBuySubAtScreen.toggle()
                                     }
                                 }
                                
-                            }
+                        
                         }
                         
                     }else{

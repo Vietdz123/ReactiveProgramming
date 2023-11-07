@@ -14,8 +14,8 @@ struct SpecialSubView: View {
 
     @Environment(\.presentationMode) var presentationMode
     
-    let vip_op : [String] = [    "Unlimited Premium Wallpapers",
-                                 "Unlimited Premium Widgets",
+    let vip_op : [String] = [    "Unlimited Premium Wallpaper",
+                                 "Unlimited Premium Widget",
                                  "No ADs."]
     @EnvironmentObject var store : MyStore
     @State var showSubView : Bool = true
@@ -99,19 +99,19 @@ extension SpecialSubView{
                 .resizable()
                 .frame(width: 126, height: 96)
             
-            Text("Premium".uppercased())
+            Text("PREMIUM".toLocalize())
                 .mfont(32, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
                 .padding(.top, 12)
             
-            Text("Content".uppercased())
+            Text("CONTENT".toLocalize())
                 .mfont(32, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
                 .offset(y : -8)
             
-            Text("Bringing you a wonderful experience!")
+            Text("Bringing you a wonderful experience!".toLocalize())
                 .mfont(17, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
@@ -127,7 +127,7 @@ extension SpecialSubView{
                     Image("stone_yellow")
                         .resizable()
                         .frame(width: 12, height: 8)
-                    Text(opt)
+                    Text(opt.toLocalize())
                         .mfont(17, .bold)
                         .foregroundColor(.white)
                         .padding(.leading, 24)
@@ -182,7 +182,7 @@ extension SpecialSubView{
                         HStack{
                             
                             
-                            Text("Continue")
+                            Text("Continue".toLocalize())
                                 .mfont(16, .bold)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -271,7 +271,7 @@ extension SpecialSubView{
                 .shadow(color: .black.opacity(0.25), radius: 4, x: 0, y: -4)
                 .frame(height: 39)
                 .padding(.top, 56)
-            Text("Premium".uppercased())
+            Text("PREMIUM".toLocalize())
                 .mfont(32, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
@@ -279,7 +279,7 @@ extension SpecialSubView{
                 .frame(height: 45)
                 .padding(.top, -8)
             
-            Text("Unlimited Premium Features")
+            Text("Unlimited Premium Features".toLocalize())
                 .mfont(17, .italic)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
@@ -296,14 +296,16 @@ extension SpecialSubView{
             Spacer()
             
             if let yearSale = store.yearlv2Sale50Product{
-                Text("Less than \(getDisplayPrice(price:yearSale.price, chia: 51, displayPrice:yearSale.displayPrice))/Week")
+              //  Text("Less than \(getDisplayPrice(price:yearSale.price, chia: 51, displayPrice:yearSale.displayPrice))/Week")
+                Text(String(format: NSLocalizedString("Less than %@/week", comment: ""), getDisplayPrice(price:yearSale.price, chia: 51, displayPrice:yearSale.displayPrice)))
                     .mfont(24, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .lineLimit(1)
                     .fixedSize()
                 
-                Text("Just \(yearSale.displayPrice)/year (\(getDisplayPrice(price:yearSale.price, chia: 0.5, displayPrice:yearSale.displayPrice))/year)")
+              
+                Text(String(format: NSLocalizedString("Just %@/year", comment: ""), yearSale.displayPrice))
                     .mfont(15, .regular)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
@@ -340,7 +342,7 @@ extension SpecialSubView{
                         }
                     }
                 }, label: {
-                    Text("RESTORE")
+                    Text("RESTORE".toLocalize())
                         .mfont(10, .regular)
                         .foregroundColor(.white)
                 })
@@ -361,7 +363,7 @@ extension SpecialSubView{
                         UIApplication.shared.open(url)
                     }
                 }, label: {
-                    Text("PRIVACY")
+                    Text("PRIVACY".toLocalize())
                         .mfont(10, .regular)
                         .foregroundColor(.white)
                 })
@@ -391,7 +393,7 @@ extension SpecialSubView{
     func GiftView() -> some View{
         VStack(spacing : 0){
             Spacer()
-            Text("Wow! Here is a special\ndeal for you")
+            Text("Wow! Here is a special\ndeal for you".toLocalize())
                 .mfont(20, .bold)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -405,7 +407,7 @@ extension SpecialSubView{
             )
             .overlay(alignment: .bottom){
                 
-                Text("Show me")
+                Text("Show me".toLocalize())
                     .mfont(20, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -478,12 +480,13 @@ extension SpecialSubView{
                 
                 HStack{
                     VStack(spacing : 2){
-                        Text("Weekly")
+                        Text("Weekly".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text("\(product.displayPrice)/week")
+                       // Text("\(product.displayPrice)/week")
+                        Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -491,7 +494,8 @@ extension SpecialSubView{
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(product.displayPrice)/week")
+                   // Text("\(product.displayPrice)/week")
+                    Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -563,12 +567,12 @@ extension SpecialSubView{
                 
                 HStack{
                     VStack(spacing : 2){
-                        Text("Monthly")
+                        Text("Monthly".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text("\(product.displayPrice)/month")
+                        Text(String(format: NSLocalizedString("%@/month", comment: ""), product.displayPrice))
+                       // Text("\(product.displayPrice)/month")
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -576,7 +580,8 @@ extension SpecialSubView{
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(decimaPriceToStr(price: product.price ,chia: 4))\(removeDigits(string: product.displayPrice))/week")
+                    Text(String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: product.price, chia: 4, displayPrice: product.displayPrice) ))
+                 //   Text("\(decimaPriceToStr(price: product.price ,chia: 4))\(removeDigits(string: product.displayPrice))/week")
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -651,18 +656,20 @@ extension SpecialSubView{
             ZStack{
                 HStack{
                     VStack(spacing : 2){
-                        Text("Annually")
+                        Text("Annually".toLocalize())
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("\(product.displayPrice)/year")
+                        Text(String(format: NSLocalizedString("%@/year", comment: ""), product.displayPrice ))
+                      
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
+                    Text(String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice) ))
+               //     Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -688,7 +695,7 @@ extension SpecialSubView{
                 }
             }
             .overlay(alignment: .topTrailing){
-                Text("Best value".uppercased())
+                Text("Best value".toLocalize())
                     .mfont(10, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))

@@ -58,7 +58,7 @@ extension EztWidgetView{
     func WidgetNEW() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("New Trending")
+                Text("New Trending".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -71,7 +71,7 @@ extension EztWidgetView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -129,7 +129,7 @@ extension EztWidgetView{
     func WidgetPOPULAR() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Popular")
+                Text("Popular".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -142,7 +142,7 @@ extension EztWidgetView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -214,7 +214,7 @@ extension EztWidgetView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -272,7 +272,7 @@ extension EztWidgetView{
     func WidgetROUNTINE() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Rountine monitor")
+                Text("Rountine monitor".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -285,7 +285,7 @@ extension EztWidgetView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

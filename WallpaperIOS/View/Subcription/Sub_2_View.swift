@@ -56,16 +56,19 @@ struct Sub_2_View: View {
                 
            
             
-                Text("ONLY \(decimaPriceToStr(price: product.price , chia:  51))\(removeDigits(string: product.displayPrice ))/\("Week" ).")
+//                Text("ONLY \( getDisplayPrice(price: product.price ,chia: 51, displayPrice: product.displayPrice ) )/\("Week" ).")
+                Text( String(format: NSLocalizedString("ONLY %@/Week", comment: ""), getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice)) )
                 .mfont(24, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/\( "year" ) ")
+               //     Text("Total \(product.displayPrice)/\( "year" ) ")
+                    Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice ) )
                         .mfont(17, .bold)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\("year" ))")
+//                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\("year" ))")
+                    Text( String(format: NSLocalizedString("(%@/year)", comment: ""), getDisplayPrice(price: product.price, chia: 0.5, displayPrice: product.displayPrice)) )
                         .mfont(17, .bold)
                         .foregroundColor(.white)
                         .overlay(

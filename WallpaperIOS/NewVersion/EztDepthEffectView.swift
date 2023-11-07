@@ -45,7 +45,7 @@ struct EztDepthEffectView: View {
                                        .environmentObject(store)
                                 }, label: {
                                     HStack(spacing : 0){
-                                        Text("See more")
+                                        Text("See more".toLocalize())
                                             .mfont(11, .regular)
                                             .foregroundColor(.white)
                                         Image("arrow.right")
@@ -145,7 +145,7 @@ extension EztDepthEffectView {
     func Newset() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Newest")
+                Text("Newest".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -160,7 +160,7 @@ extension EztDepthEffectView {
                    
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -241,7 +241,7 @@ extension EztDepthEffectView {
     func Popular() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
-                Text("Popular")
+                Text("Popular".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -255,7 +255,7 @@ extension EztDepthEffectView {
                        .environmentObject(store)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more")
+                        Text("See more".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

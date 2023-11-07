@@ -333,35 +333,35 @@ struct VideoListView: View {
                 TutorialContentView()
                 
             })
-            .overlay{
-                if ctrlViewModel.showDialogDownload{
-                //    if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                        BuyWithCoinDialog(urlStr: viewModel.liveWallpapers[currentIndex].image_variations.preview_small.url, coin: viewModel.liveWallpapers[currentIndex].cost ?? 0,
-                                          show: $ctrlViewModel.showDialogDownload,
-                                          onBuyWithCoin: {
-                            ctrlViewModel.showDialogDownload.toggle()
-                            if currentCoin >= ( viewModel.liveWallpapers[currentIndex].cost ?? 0  ){
-                                currentCoin = currentCoin - ( viewModel.liveWallpapers[currentIndex].cost ?? 0  )
-                              
-                                downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                                        urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                                        urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                             
-                                ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                
-                            }else{
-                                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-                            }
-                        }, onBuyPro: {
-                            ctrlViewModel.showDialogDownload.toggle()
-                            ctrlViewModel.navigateView.toggle()
-                        }).environmentObject(store)
-                            .environmentObject(reward)
-                 //   }
-                    
-                }
-                
-            }
+//            .overlay{
+//                if ctrlViewModel.showDialogDownload{
+//                //    if let liveWL = viewModel.liveWallpapers[currentIndex] {
+//                        BuyWithCoinDialog(urlStr: viewModel.liveWallpapers[currentIndex].image_variations.preview_small.url, coin: viewModel.liveWallpapers[currentIndex].cost ?? 0,
+//                                          show: $ctrlViewModel.showDialogDownload,
+//                                          onBuyWithCoin: {
+//                            ctrlViewModel.showDialogDownload.toggle()
+//                            if currentCoin >= ( viewModel.liveWallpapers[currentIndex].cost ?? 0  ){
+//                                currentCoin = currentCoin - ( viewModel.liveWallpapers[currentIndex].cost ?? 0  )
+//                              
+//                                downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
+//                                                        urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
+//                                                        urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
+//                             
+//                                ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+//                                
+//                            }else{
+//                                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
+//                            }
+//                        }, onBuyPro: {
+//                            ctrlViewModel.showDialogDownload.toggle()
+//                            ctrlViewModel.navigateView.toggle()
+//                        }).environmentObject(store)
+//                            .environmentObject(reward)
+//                 //   }
+//                    
+//                }
+//                
+//            }
             .onChange(of: ctrlViewModel.showControll, perform: {
                 newValue in
                 showBottomBar = newValue

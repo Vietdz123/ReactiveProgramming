@@ -43,15 +43,16 @@ struct Sub_Event: View {
                     if let product = store.yearlv2Sale50Product{
                         
                    
-                    
-                        Text("ONLY \(decimaPriceToStr(price: product.price , chia: 51))\(removeDigits(string: product.displayPrice ))/Week.")
+                        Text( String(format: NSLocalizedString("ONLY %@/week", comment: ""),  getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayName) ) )
+                   //     Text("ONLY \(decimaPriceToStr(price: product.price , chia: 51))\(removeDigits(string: product.displayPrice ))/Week.")
                         .mfont(24, .bold)
                       .multilineTextAlignment(.center)
                       .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                       .padding(.top, 28)
                     
                         HStack(spacing : 0){
-                            Text("Total \(product.displayPrice)/year ")
+                            Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice) )
+                         //   Text("Total \(product.displayPrice)/year ")
                                 .mfont(17, .bold)
                                 .foregroundColor(.black)
                             Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/year)")

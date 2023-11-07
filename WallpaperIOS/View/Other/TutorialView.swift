@@ -21,7 +21,7 @@ let steps: [TutorialStep] = [
     .init(title: "Tap lower-left button.", subtitle: ""),
     .init(title: "Swipe up.", subtitle: ""),
     .init(title: "Tap User as Wallpaper.", subtitle: ""),
-    .init(title: " Move the image and choose a display option. Tap Set. ", subtitle: ""),
+    .init(title: "Move the image and choose a display option. Tap Set. ", subtitle: ""),
     .init(title: "Set the wallpaper and choose where you want it to show up.", subtitle: "")
 ]
 
@@ -83,7 +83,7 @@ struct TutorialContentView: View {
                
             }
             
-            Text("Wallpaper Guide")
+            Text("Wallpaper Guide".toLocalize())
                 .mfont(20, .bold)
                 .foregroundColor(.yellow)
                 .padding(.bottom)
@@ -105,10 +105,11 @@ struct TutorialContentView: View {
             VStack {
                
                 VStack(alignment: .center) {
-                    Text("Step \(index + 1)")
+           
+                    Text( String(format: NSLocalizedString("Step %@", comment: ""), "\(index + 1)") )
                         .mfont(16, .bold)
                     
-                    Text(steps[index].title)
+                    Text(steps[index].title.toLocalize())
                         .mfont(14, .regular)
                   
                 }

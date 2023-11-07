@@ -414,26 +414,26 @@ struct WallpaperOnePageDetails: View {
             .environmentObject(store)
     }
     
-    @ViewBuilder
-    func DialogGetWLByCoin(urlStr : String) -> some View{
-        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            if currentCoin >= exclusiveCost{
-                currentCoin = currentCoin - exclusiveCost
-                DispatchQueue.main.async{
-                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-                 
-                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
-                }
-            }else{
-                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-            }
-        }, onBuyPro: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            ctrlViewModel.navigateView.toggle()
-        }).environmentObject(store)
-            .environmentObject(reward)
-    }
+//    @ViewBuilder
+//    func DialogGetWLByCoin(urlStr : String) -> some View{
+//        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            if currentCoin >= exclusiveCost{
+//                currentCoin = currentCoin - exclusiveCost
+//                DispatchQueue.main.async{
+//                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+//                 
+//                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+//                }
+//            }else{
+//                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
+//            }
+//        }, onBuyPro: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            ctrlViewModel.navigateView.toggle()
+//        }).environmentObject(store)
+//            .environmentObject(reward)
+//    }
     
     
     func downloadImageToGallery(title : String, urlStr : String){

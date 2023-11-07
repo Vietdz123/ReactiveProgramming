@@ -451,27 +451,27 @@ struct FavWallpaperDetailView: View {
             .environmentObject(store)
     }
     
-    @ViewBuilder
-    func DialogGetWLByCoin(urlStr : String) -> some View{
-        BuyWithCoinDialog(urlStr: urlStr, coin: Int(wallpaper.cost) ,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            if currentCoin >= Int(( wallpaper.cost  )){
-                currentCoin = currentCoin - Int(( wallpaper.cost  ))
-                DispatchQueue.main.async{
-                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: wallpaper.url ?? "")
-              
-                    ServerHelper.sendImageDataToServer(type: "set", id: Int(wallpaper.wl_id))
-                }
-            }else{
-                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-            }
-        }, onBuyPro: {
-            ctrlViewModel.showDialogBuyCoin.toggle()
-            ctrlViewModel.navigateView.toggle()
-        }).environmentObject(store)
-            .environmentObject(reward)
-    }
-    
+//    @ViewBuilder
+//    func DialogGetWLByCoin(urlStr : String) -> some View{
+//        BuyWithCoinDialog(urlStr: urlStr, coin: Int(wallpaper.cost) ,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            if currentCoin >= Int(( wallpaper.cost  )){
+//                currentCoin = currentCoin - Int(( wallpaper.cost  ))
+//                DispatchQueue.main.async{
+//                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: wallpaper.url ?? "")
+//              
+//                    ServerHelper.sendImageDataToServer(type: "set", id: Int(wallpaper.wl_id))
+//                }
+//            }else{
+//                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
+//            }
+//        }, onBuyPro: {
+//            ctrlViewModel.showDialogBuyCoin.toggle()
+//            ctrlViewModel.navigateView.toggle()
+//        }).environmentObject(store)
+//            .environmentObject(reward)
+//    }
+//    
     
     func downloadImageToGallery(title : String, urlStr : String){
         

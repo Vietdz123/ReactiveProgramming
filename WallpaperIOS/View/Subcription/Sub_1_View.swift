@@ -64,10 +64,13 @@ struct Sub_1_View: View {
                 
                 
                 HStack(spacing : 0){
-                    Text("Total \(product.displayPrice)/\("year") ")
-                        .mfont(15, .regular)
+//                    Text("Total \(product.displayPrice)/\("year") ")
+//                        .mfont(15, .regular)
+                    Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice ) )
+                        .mfont(15, .bold)
                         .foregroundColor(.white)
-                    Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\( "year"))")
+                   // Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/\( "year"))")
+                    Text( String(format: NSLocalizedString("(%@/year)", comment: ""), getDisplayPrice(price: product.price, chia: 0.5, displayPrice: product.displayPrice)) )
                         .mfont(15, .regular)
                         .foregroundColor(.white)
                         .overlay(
@@ -81,7 +84,7 @@ struct Sub_1_View: View {
                 
              
                 HStack(spacing : 2){
-                    Text("This offer will expire in")
+                    Text("This offer will expire in".toLocalize())
                         .mfont(17, .regular)
                         .foregroundColor(.white)
                     
