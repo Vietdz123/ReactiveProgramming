@@ -12,11 +12,11 @@ import UIKit
 import GoogleMobileAds
 
 
-#if DEBUG
-let adRewardUnitID = "ca-app-pub-3940256099942544/1712485313"
-#else
-let adRewardUnitID = "ca-app-pub-5782595411387549/3315917452"
-#endif
+//#if DEBUG
+//let adRewardUnitID = "ca-app-pub-3940256099942544/1712485313"
+//#else
+//let adRewardUnitID = "ca-app-pub-5782595411387549/3315917452"
+//#endif
 
 
 class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
@@ -49,7 +49,7 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
      
         self.loadTime+=1
         print("ADS LOAD RV")
-        GADRewardedAd.load(withAdUnitID: adRewardUnitID, request: request) { [weak self](rewardedAd, error) in
+        GADRewardedAd.load(withAdUnitID: AdsConfig.rewardID, request: request) { [weak self](rewardedAd, error) in
             
             if let error = error {
                 if self!.loadTime < 4 {

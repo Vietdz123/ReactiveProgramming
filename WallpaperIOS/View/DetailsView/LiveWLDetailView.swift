@@ -409,29 +409,13 @@ struct LiveWLView: View {
     
     @ViewBuilder
     func Dialog(liveWL : LiveWallpaper) -> some View{
-        if #available(iOS 16, *){
+        
             if remoteCf_live_using_coin {
-//                BuyWithCoinDialog(urlStr: liveWL.image_variations.preview_small.url, coin: liveWL.cost ?? 0,
-//                                  show: $ctrlViewModel.showDialogDownload,
-//                                  onBuyWithCoin: {
-//                    ctrlViewModel.showDialogDownload.toggle()
-//                    if currentCoin >= ( liveWL.cost ?? 0  ){
-//                        currentCoin = currentCoin - ( liveWL.cost ?? 0  )
-//                        
-//                        downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-//                                                urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-//                                                urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-//                        ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-//                        
-//                        
-//                    }else{
-//                        showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-//                    }
-//                }, onBuyPro: {
-//                    ctrlViewModel.showDialogDownload.toggle()
-//                    ctrlViewModel.navigateView.toggle()
-//                }).environmentObject(store)
-//                    .environmentObject(reward)
+              
+                SpecialSubView(onClickClose: {
+                    ctrlViewModel.showDialogDownload = false
+                })
+
             }else{
                 WatchRVtoGetWLDialog(urlStr: liveWL.image_variations.preview_small.url, show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
                     if b{
@@ -440,6 +424,10 @@ struct LiveWLView: View {
                                                 urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                 urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                         ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+                    }else{
+                        DispatchQueue.main.async {
+                            showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                        }
                     }
                     
                 }, clickBuyPro: {
@@ -450,29 +438,7 @@ struct LiveWLView: View {
             }
             
             
-        }else{
-            //            BuyWithCoinDialog(urlStr: liveWL.image_variations.preview_small.url, coin: liveWL.cost ?? 0,
-            //                              show: $ctrlViewModel.showDialogDownload,
-            //                              onBuyWithCoin: {
-            //                ctrlViewModel.showDialogDownload.toggle()
-            //                if currentCoin >= ( liveWL.cost ?? 0  ){
-            //                    currentCoin = currentCoin - ( liveWL.cost ?? 0  )
-            //
-            //                    downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-            //                                            urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-            //                                            urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-            //                    ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-            //
-            //
-            //                }else{
-            //                    showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-            //                }
-            //            }, onBuyPro: {
-            //                ctrlViewModel.showDialogDownload.toggle()
-            //                ctrlViewModel.navigateView.toggle()
-            //            }).environmentObject(store)
-            //                .environmentObject(reward)
-                    }
+        
         
     }
     

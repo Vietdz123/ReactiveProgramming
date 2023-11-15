@@ -9,11 +9,11 @@ import SwiftUI
 import GoogleMobileAds
 import UIKit
 
-#if DEBUG
-let adUnitID = "ca-app-pub-3940256099942544/4411468910"
-#else
-let adUnitID = "ca-app-pub-5782595411387549/7246551467"
-#endif
+//#if DEBUG
+//let adUnitID = "ca-app-pub-3940256099942544/4411468910"
+//#else
+//let adUnitID = "ca-app-pub-5782595411387549/7246551467"
+//#endif
 
 //#if DEBUG
 //let delay = 60000
@@ -40,7 +40,7 @@ let adUnitID = "ca-app-pub-5782595411387549/7246551467"
         let request = GADRequest()
         loadTime += 1
         print("ADS LOAD INTER")
-        GADInterstitialAd.load(withAdUnitID: adUnitID,
+        GADInterstitialAd.load(withAdUnitID: AdsConfig.interID,
                                request: request,
                                completionHandler: {
             [self] ad, error in

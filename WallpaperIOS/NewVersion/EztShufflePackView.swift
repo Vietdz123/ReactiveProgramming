@@ -33,11 +33,11 @@ struct EztShufflePackView: View {
                         
                         VStack(spacing : 0){
                             HStack(spacing : 0){
-                                Text("\(data.specialTag.title)".toLocalize())
+                                Text("\(data.specialTag.title)")
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.vertical, 12)
+                                 
                                 Spacer()
                                
                                 
@@ -152,12 +152,12 @@ struct EztShufflePackView: View {
                                                             .overlay(
                                                                 
                                                                 ZStack{
-                                                               //     if !store.isPro(){
+                                                                if !store.isPro(){
                                                                         Image("crown")
                                                                             .resizable()
                                                                             .frame(width: 16, height: 16, alignment: .center)
                                                                             .padding(8)
-                                                             //       }
+                                                                   }
                                                                 }
                                                                 
                                                                 , alignment: .topTrailing
@@ -205,6 +205,12 @@ struct EztShufflePackView: View {
             
             
         }
+        .refreshable {
+            wallpaperCatelogVM.shufflePackNew.removeAll()
+            wallpaperCatelogVM.shufflePackPopular.removeAll()
+            wallpaperCatelogVM.getshufflePackNew()
+            wallpaperCatelogVM.getshufflePackPopular()
+        }
         
         
 
@@ -223,7 +229,7 @@ extension EztShufflePackView{
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                  
                 Spacer()
                
                 
@@ -371,7 +377,7 @@ extension EztShufflePackView{
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                   
                 Spacer()
                
                 

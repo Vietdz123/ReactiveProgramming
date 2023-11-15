@@ -30,27 +30,191 @@ struct EztHomeView: View {
     
     var body: some View {
         
+            ScrollView(.vertical, showsIndicators : false){
+                VStack(spacing : 0){
+                    if !store.isPro(){
+                        if let product = store.yearlv2Sale50Product{
+                            VStack(spacing : 0){
+                                Text("Unlock all Features".toLocalize())
+                                    .mfont(17, .bold)
+                                    .foregroundColor(.main)
+                                    .frame(maxWidth: .infinity, alignment : .leading)
+                                    .shadow(color: .main.opacity(0.1), radius: 2)
+                                    .shadow(color: .main.opacity(0.6), radius: 2)
+                                    .padding(.leading, 16)
+                                    .padding(.top, 12)
+                                
+                                HStack(spacing : 0){
+
+                                    
+                                    Text(String(format: NSLocalizedString("ONLY %@/Week", comment: ""), getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ) ))
+                                        .mfont(15, .regular)
+                                        .foregroundColor(.white)
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                    .padding(.leading, 16)
+                                    .padding(.top, 8)
+                                
+                                HStack(spacing : 0){
+                                   // Text("Total \(product.displayPrice)/year ")
+                                    Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice) )
+                                        .mfont(13, .regular)
+                                        .foregroundColor(.white)
+                                    
+                                    Text("(\(getDisplayPrice(price: product.price,chia:0.5, displayPrice: product.displayPrice ))/year)")
+                                        .mfont(13, .regular)
+                                        .foregroundColor(.white)
+                                        .overlay(
+                                            Rectangle()
+                                                .fill(Color.white)
+                                                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                                                .frame(height: 1)
+                                        )
+                                }
+                                
+                                .frame(maxWidth: .infinity, alignment : .leading)
+                                .padding(.leading, 16)
+                                .padding(.top, 1)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    store.isPurchasing = true
+                                    showProgressSubView()
+                                    let log =  "Click_Buy_Sub_In_HomeBanner"
+                                    Firebase_log(log)
+                                    store.purchase(product: product, onBuySuccess: {
+                                        b in
+                                        if b {
+                                            DispatchQueue.main.async{
+                                                hideProgressSubView()
+                                                store.isPurchasing = false
+                                                
+                                                
+                                                let log1 =
+                                                "Buy_Sub_In_Success_HomeBanner"
+                                                Firebase_log(log1)
+                                                showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                                
+                                                
+                                            }
+                                            
+                                        }else{
+                                            DispatchQueue.main.async{
+                                                store.isPurchasing = false
+                                                hideProgressSubView()
+                                                showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                            }
+                                        }
+                                    })
+                                }, label: {
+                                    Text("Claim Now!".toLocalize())
+                                        .mfont(17, .bold)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 36)
+                                        .padding(.horizontal, 16)
+                                        .background(
+                                            Capsule()
+                                                .fill(
+                                                    LinearGradient(
+                                                        stops: [
+                                                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                        ],
+                                                        startPoint: UnitPoint(x: 0, y: 1.38),
+                                                        endPoint: UnitPoint(x: 1, y: -0.22)
+                                                    )
+                                                )
+                                        )
+                                }).padding(.horizontal, 16)
+                                
+                                
+                                HStack{
+                                    Button(action: {
+                                        
+                                    }, label: {
+                                        Text("Privacy Policy ".toLocalize())
+                                            .mfont(9, .regular)
+                                            .multilineTextAlignment(.trailing)
+                                            .foregroundColor(.white)
+                                    })
+                                    
+                                    Text("|")
+                                        .mfont(9, .regular)
+                                        .multilineTextAlignment(.trailing)
+                                        .foregroundColor(.white)
+                                    Button(action: {
+                                        
+                                    }, label: {
+                                        Text("Restore".toLocalize())
+                                            .mfont(9, .regular)
+                                            .multilineTextAlignment(.trailing)
+                                            .foregroundColor(.white)
+                                    })
+                                    
+                                    Text("|")
+                                        .mfont(9, .regular)
+                                        .multilineTextAlignment(.trailing)
+                                        .foregroundColor(.white)
+                                    Button(action: {
+                                        
+                                    }, label: {
+                                        Text("Term of use".toLocalize())
+                                            .mfont(9, .regular)
+                                            .multilineTextAlignment(.trailing)
+                                            .foregroundColor(.white)
+                                    })
+                                    
+                                    
+                                }.frame(height: 13)
+                                    .padding(.top, 6)
+                                    .padding(.bottom, 6)
+                                
+                                
+                                
+                                
+                            }.frame(width: getRect().width - 32, height: (getRect().width - 32)  * 160 / 343 , alignment: .topLeading)
+                                .background(
+                                    Image("banner_home_hori")
+                                        .resizable()
+                                        .scaledToFit()
+                                )
+                                .padding(.horizontal, 16)
+                        }
+                        
+                    }
+                    
+                LazyVStack(spacing: 0, content: {
+                    
+                
+               
+                    
+                    
+                  
+                    ShufflePackInHome()
+                    WidgetInHome()
+                    TopWallpaper()
+                    DepthEffectViewInHome()
+                    DynamicIslandViewInHome()
+                    
+                    
+                    
+                    Spacer()
+                        .frame(height: 160)
+                })
+                
+            }
+            }
+            .refreshable {
+                
+            }
+       
         
-        ScrollView(.vertical, showsIndicators : false){
-            LazyVStack(spacing: 0, content: {
-                
-                BannerSub()
-                
-                
-                TopWallpaper()
-                ShufflePackInHome()
-                WidgetInHome()
-                DepthEffectViewInHome()
-                DynamicIslandViewInHome()
-                
-                
-                
-                Spacer()
-                    .frame(height: 160)
-            })
-            
-            
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+      
+        
         
         
     }
@@ -313,7 +477,7 @@ extension EztHomeView{
                 NavigationLink(destination: {
                     WidgetListView()
                         .environmentObject(widgetViewModel)
-                    
+                        .environmentObject(store)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See more".toLocalize())
@@ -337,15 +501,24 @@ extension EztHomeView{
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
-                                ForEach(0..<7, id: \.self) { count in
+                                ForEach(0..<4, id: \.self) { count in
                                     let widgetObj = widgetViewModel.widgets[count]
                                     
                                     
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(store)
                                     }, label: {
                                         
                                         ItemWidgetView(widget: widgetObj)
+                                            .overlay(alignment : .topTrailing){
+                                                if !store.isPro(){
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                        .padding(8)
+                                                }
+                                            }
                                         
                                         
                                     })
@@ -634,175 +807,11 @@ extension EztHomeView{
     }
     
     
-    func BannerSub() -> some View{
-        ZStack{
-            if !store.isPro(){
-                
-                
-                
-                if let product = store.yearlv2Sale50Product{
-                    VStack(spacing : 0){
-                        Text("Unlock all Features".toLocalize())
-                            .mfont(17, .bold)
-                            .foregroundColor(.main)
-                            .frame(maxWidth: .infinity, alignment : .leading)
-                            .shadow(color: .main.opacity(0.1), radius: 2)
-                            .shadow(color: .main.opacity(0.6), radius: 2)
-                            .padding(.leading, 16)
-                            .padding(.top, 12)
-                        
-                        HStack(spacing : 0){
-//                            Text("ONLY ".toLocalize())
-//                                .mfont(15, .regular)
-//                                .foregroundColor(.white)
-//                            Text("\(getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ))")
-//                                .mfont(17, .bold)
-//                                .foregroundColor(.main)
-//                            Text("/week.")
-//                                .mfont(15, .regular)
-//                                .foregroundColor(.white)
-                            
-                            Text(String(format: NSLocalizedString("ONLY %@/Week", comment: ""), getDisplayPrice(price: product.price,chia:51, displayPrice: product.displayPrice ) ))
-                                .mfont(15, .regular)
-                                .foregroundColor(.white)
-                        }.frame(maxWidth: .infinity, alignment: .leading)
-                        
-                            .padding(.leading, 16)
-                            .padding(.top, 8)
-                        
-                        HStack(spacing : 0){
-                            Text("Total \(product.displayPrice)/year ")
-                                .mfont(13, .regular)
-                                .foregroundColor(.white)
-                            
-                            Text("(\(getDisplayPrice(price: product.price,chia:0.5, displayPrice: product.displayPrice ))/year)")
-                                .mfont(13, .regular)
-                                .foregroundColor(.white)
-                                .overlay(
-                                    Rectangle()
-                                        .fill(Color.white)
-                                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                                        .frame(height: 1)
-                                )
-                        }
-                        
-                        .frame(maxWidth: .infinity, alignment : .leading)
-                        .padding(.leading, 16)
-                        .padding(.top, 1)
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            store.isPurchasing = true
-                            showProgressSubView()
-                            let log =  "Click_Buy_Sub_In_HomeBanner"
-                            Firebase_log(log)
-                            store.purchase(product: product, onBuySuccess: {
-                                b in
-                                if b {
-                                    DispatchQueue.main.async{
-                                        hideProgressSubView()
-                                        store.isPurchasing = false
-                                        
-                                        
-                                        let log1 =
-                                        "Buy_Sub_In_Success_HomeBanner"
-                                        Firebase_log(log1)
-                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-                                        
-                                        
-                                    }
-                                    
-                                }else{
-                                    DispatchQueue.main.async{
-                                        store.isPurchasing = false
-                                        hideProgressSubView()
-                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-                                    }
-                                }
-                            })
-                        }, label: {
-                            Text("Claim Now!".toLocalize())
-                                .mfont(17, .bold)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 36)
-                                .padding(.horizontal, 16)
-                                .background(
-                                    Capsule()
-                                        .fill(
-                                            LinearGradient(
-                                                stops: [
-                                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                                ],
-                                                startPoint: UnitPoint(x: 0, y: 1.38),
-                                                endPoint: UnitPoint(x: 1, y: -0.22)
-                                            )
-                                        )
-                                )
-                        }).padding(.horizontal, 16)
-                        
-                        
-                        HStack{
-                            Button(action: {
-                                
-                            }, label: {
-                                Text("Privacy Policy ".toLocalize())
-                                    .mfont(9, .regular)
-                                    .multilineTextAlignment(.trailing)
-                                    .foregroundColor(.white)
-                            })
-                            
-                            Text("|")
-                                .mfont(9, .regular)
-                                .multilineTextAlignment(.trailing)
-                                .foregroundColor(.white)
-                            Button(action: {
-                                
-                            }, label: {
-                                Text("Restore".toLocalize())
-                                    .mfont(9, .regular)
-                                    .multilineTextAlignment(.trailing)
-                                    .foregroundColor(.white)
-                            })
-                            
-                            Text("|")
-                                .mfont(9, .regular)
-                                .multilineTextAlignment(.trailing)
-                                .foregroundColor(.white)
-                            Button(action: {
-                                
-                            }, label: {
-                                Text("Term of use".toLocalize())
-                                    .mfont(9, .regular)
-                                    .multilineTextAlignment(.trailing)
-                                    .foregroundColor(.white)
-                            })
-                            
-                            
-                        }.frame(height: 13)
-                            .padding(.top, 6)
-                            .padding(.bottom, 6)
-                        
-                        
-                        
-                        
-                    }.frame(width: getRect().width - 32, height: (getRect().width - 32)  * 160 / 343 , alignment: .topLeading)
-                        .background(
-                            Image("banner_home_hori")
-                                .resizable()
-                                .scaledToFit()
-                        )
-                        .padding(.horizontal, 16)
-                }
-                
-            }
-        }
+   
+      
         
-    }
+        
+   
     
     
     func PlaceHolderListLoad() -> some View{

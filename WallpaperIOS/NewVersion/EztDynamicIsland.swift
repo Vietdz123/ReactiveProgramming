@@ -34,7 +34,7 @@ struct EztDynamicIsland: View {
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.vertical, 12)
+                                  
 
                                 Spacer()
                                 NavigationLink(destination: {
@@ -137,7 +137,12 @@ struct EztDynamicIsland: View {
            
             
         }
-        
+        .refreshable {
+            wallpaperCatelogVM.dynamicNew.removeAll()
+            wallpaperCatelogVM.dynamicPopular.removeAll()
+            wallpaperCatelogVM.getDynamicNew()
+            wallpaperCatelogVM.getDynamicPopular()
+        }
         
 
     }
@@ -151,7 +156,7 @@ extension EztDynamicIsland {
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                   
 
                 Spacer()
                NavigationLink(destination: {
@@ -252,7 +257,7 @@ extension EztDynamicIsland {
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                    
 
                 Spacer()
                NavigationLink(destination: {

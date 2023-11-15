@@ -317,7 +317,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "34.99",
+          "displayPrice" : "39.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "8B73CB0B",
@@ -334,7 +334,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.ezt.wl.year_4",
+          "productID" : "com.ezt.wl.year_6",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Yearly_Free_Trial",
           "subscriptionGroupID" : "5CA6DDB4",
@@ -347,7 +347,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "17.99",
+          "displayPrice" : "19.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "7A11587B",
@@ -422,7 +422,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "34.99",
+          "displayPrice" : "39.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "5D0CD5F5",

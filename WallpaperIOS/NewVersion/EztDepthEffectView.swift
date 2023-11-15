@@ -35,7 +35,7 @@ struct EztDepthEffectView: View {
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.vertical, 12)
+                                   
 
                                 Spacer()
                                NavigationLink(destination: {
@@ -135,7 +135,12 @@ struct EztDepthEffectView: View {
          
             
         }
-        
+        .refreshable {
+            wallpaperCatelogVM.depthEffectNew.removeAll()
+            wallpaperCatelogVM.depthEffectPopular.removeAll()
+            wallpaperCatelogVM.getDepthEffectNew()
+            wallpaperCatelogVM.getDepthEffectPopular()
+        }
         
 
     }
@@ -149,7 +154,7 @@ extension EztDepthEffectView {
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                    
 
                 Spacer()
                NavigationLink(destination: {
@@ -245,7 +250,7 @@ extension EztDepthEffectView {
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 12)
+                  
 
                 Spacer()
                NavigationLink(destination: {

@@ -112,10 +112,8 @@ class MyStore: ObservableObject {
                 print("MYSTORE---fetchConfig-success")
                 self.remoteConfig.activate { changed, error in
                 
-                    let coin_costs = self.remoteConfig.configValue(forKey: "coin_costs").stringValue ?? "[20, 50, 150]"
-                    self.extractCoinCost(coin_cost:  coin_costs)
-
-
+                    let using_new_sub_screen_for_onb      =  self.remoteConfig.configValue(forKey: "using_new_sub_screen_for_onb").boolValue
+                    UserDefaults.standard.set(using_new_sub_screen_for_onb,   forKey: "using_new_usb_in_onb")
 
                     let wl_domain       =  self.remoteConfig.configValue(forKey: "wl_domain").stringValue ?? "http://3.8.138.29/"
                     let reward_delay    = self.remoteConfig.configValue(forKey: "reward_delay").numberValue
@@ -149,6 +147,18 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(url_image_bg_event, forKey: "sub_event_bg_image_url")
                     UserDefaults.standard.set(url_image_banner_event, forKey: "sub_event_banner_image_url")
                     UserDefaults.standard.set(has_event, forKey: "has_event")
+                    
+                    
+                    //MARK ADS ID
+                    let bannerID = self.remoteConfig.configValue(forKey: "id_banner_ads").stringValue ?? AdsConfig.def_bannerID
+                    let rewardID = self.remoteConfig.configValue(forKey: "id_reward_ads").stringValue ?? AdsConfig.def_rewardID
+                    let interID = self.remoteConfig.configValue(forKey: "id_inter_ads").stringValue ?? AdsConfig.def_interID
+                    let openID = self.remoteConfig.configValue(forKey: "id_open_ads").stringValue ?? AdsConfig.def_openID
+                    
+                    UserDefaults.standard.set(bannerID, forKey: "id_banner_ads")
+                    UserDefaults.standard.set(rewardID, forKey: "id_reward_ads")
+                    UserDefaults.standard.set(interID, forKey: "id_inter_ads")
+                    UserDefaults.standard.set(openID, forKey: "id_open_ads")
                  
                 }
 
@@ -171,9 +181,9 @@ class MyStore: ObservableObject {
 
     }
     
-//    func isVer1() -> Bool {
-//        return false //UserDefaults.standard.bool(forKey:  "is_v1")
-//    }
+    func usingOnboardingSub2() -> Bool {
+        return UserDefaults.standard.bool(forKey:  "using_new_usb_in_onb")
+    }
 
     func isHasEvent() -> Bool{
         return UserDefaults.standard.bool(forKey:  "has_event")
@@ -200,25 +210,25 @@ class MyStore: ObservableObject {
         }
     }
 
-    func extractCoinCost(coin_cost : String){
-        let data = Data(coin_cost.utf8)
-        do {
-            if let coinCosts = try JSONSerialization.jsonObject(with: data, options: []) as? [Int] {
-                if coinCosts.count == 3 {
-                    UserDefaults.standard.set(coinCosts[0], forKey: "pack_1_coin")
-                    UserDefaults.standard.set(coinCosts[1], forKey: "pack_2_coin")
-                    UserDefaults.standard.set(coinCosts[2], forKey: "pack_3_coin")
-                }
-
-
-
-            }
-        } catch _ as NSError {
-            UserDefaults.standard.set(20, forKey: "pack_1_coin")
-            UserDefaults.standard.set(50, forKey: "pack_2_coin")
-            UserDefaults.standard.set(150, forKey: "pack_3_coin")
-        }
-    }
+//    func extractCoinCost(coin_cost : String){
+//        let data = Data(coin_cost.utf8)
+//        do {
+//            if let coinCosts = try JSONSerialization.jsonObject(with: data, options: []) as? [Int] {
+//                if coinCosts.count == 3 {
+//                    UserDefaults.standard.set(coinCosts[0], forKey: "pack_1_coin")
+//                    UserDefaults.standard.set(coinCosts[1], forKey: "pack_2_coin")
+//                    UserDefaults.standard.set(coinCosts[2], forKey: "pack_3_coin")
+//                }
+//
+//
+//
+//            }
+//        } catch _ as NSError {
+//            UserDefaults.standard.set(20, forKey: "pack_1_coin")
+//            UserDefaults.standard.set(50, forKey: "pack_2_coin")
+//            UserDefaults.standard.set(150, forKey: "pack_3_coin")
+//        }
+//    }
 
     func isPro() -> Bool {
         return !purchasedIds.isEmpty

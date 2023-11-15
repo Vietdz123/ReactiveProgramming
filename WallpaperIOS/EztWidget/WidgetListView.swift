@@ -12,7 +12,7 @@ struct WidgetListView: View {
     @EnvironmentObject var viewModel : WidgetMainViewModel
     @Namespace var anim
     @Environment(\.presentationMode) var presentationMode
-    
+    @EnvironmentObject var storeVM : MyStore
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -101,15 +101,30 @@ struct WidgetListView: View {
                         
                         NavigationLink(destination: {
                             WidgetDetailView(widget: widget)
-                                
+                                .environmentObject(storeVM)
                         }, label: {
                             ItemWidgetViewFull(widget: widget)
+                                .overlay(alignment : .topTrailing){
+                                    if !storeVM.isPro(){
+                                        Image("crown")
+                                            .resizable()
+                                            .frame(width: 16, height: 16, alignment: .center)
+                                            .padding(8)
+                                    }
+                                }
+                              
+                        }).onAppear(perform: {
+                            if viewModel.shouldLoadData(id: count){
+                                viewModel.getWidgets()
+                            }
                         })
                         
                     }
                 })
             }
-      
+            .refreshable {
+                
+            }
             
             
         

@@ -23,7 +23,7 @@ struct DialogUpdateIOS: View {
                   .padding(.top, 16)
                 
                 Text("To access this feature, please update\nyour device to iOS 17.".toLocalize())
-                    .mfont(13, .regular)
+                    .mfont(13, .regular, line : 2)
                   .multilineTextAlignment(.center)
                   .foregroundColor(.white)
                   .frame(maxWidth: .infinity)

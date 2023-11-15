@@ -130,8 +130,9 @@ class ExclusiveViewModel : CommandViewModel {
     
     override func getWallpapers() {
         
-        
-        let urlString = "\(domain)api/v1/data?limit=\(AppConfig.limit)&offset=\(currentOffset)&order_by=daily_rating+desc,updated_at+desc\(AppConfig.forOnlyIOS)&types[]=private&app=2&screen=exclusive"
+     
+//        let urlString = "https://devwallpaper.eztechglobal.com/api/v1/data?limit=\(AppConfig.limit)&offset=\(currentOffset)&order_by=daily_rating+desc,updated_at+desc\(AppConfig.forOnlyIOS)&types[]=private&screen=exclusive&only_app=1"
+        let urlString = "\(domain)api/v1/data?limit=\(AppConfig.limit)&offset=\(currentOffset)&order_by=daily_rating+desc,updated_at+desc\(AppConfig.forOnlyIOS)&types[]=private&app=2&screen=exclusive&only_app=1"
         
         
         

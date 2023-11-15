@@ -235,7 +235,9 @@ extension View{
         LottieView {
             await LottieAnimation.loadedFrom(url:  URL(string: widget.getURLStringLottie().first ?? "")! )
         } .looping()
-            .frame(width: 320, height: 160)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 320, height: 320 / 2.2)
             .overlay{
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.white.opacity(0.4), lineWidth : 1)
@@ -249,12 +251,16 @@ extension View{
     func ItemWidgetViewFull(widget : EztWidget) -> some View{
         LottieView {
             await LottieAnimation.loadedFrom(url:  URL(string: widget.getURLStringLottie().first ?? "")! )
-        } .looping()
-            .frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+        }
+            .looping()
+            .resizable()
+            .scaledToFill()
+            .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
             .overlay{
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.white.opacity(0.4), lineWidth : 1)
             }
+        
             .clipShape(
                 RoundedRectangle(cornerRadius: 16)
             )
@@ -269,7 +275,7 @@ extension View{
                     ForEach(0..<3, id: \.self) { count in
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color.white.opacity(0.2))
-                            .frame(width: 320, height: 160)
+                            .frame(width: 320, height: 320 / 2.2)
                     }
                 })
             }

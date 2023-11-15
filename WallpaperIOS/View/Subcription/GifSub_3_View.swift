@@ -68,10 +68,8 @@ struct GifSub_3_View: View {
                                 .mfont(24, .bold)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.main)
-                            Text("/Week")
-                                .mfont(24, .bold)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
+                            Text("/Week".toLocalize())
+
                         }
                         
                         

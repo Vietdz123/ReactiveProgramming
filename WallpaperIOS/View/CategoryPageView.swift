@@ -47,6 +47,10 @@ struct CategoryPageView: View {
                 .frame(height: 44)
                 .padding(.horizontal, 20)
             
+            if currentCategoryName != "New Trending"{
+                
+         
+            
             HStack{
                 
                 
@@ -135,7 +139,7 @@ struct CategoryPageView: View {
                 
             } .padding(16)
             
-            
+            }
             
             
             

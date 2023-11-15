@@ -33,7 +33,8 @@ struct WallpaperOnePageDetails: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(width: getRect().width, height: getRect().height)
+                        .frame(maxWidth: .infinity, maxHeight : .infinity)
+                       // .frame(width: getRect().width, height: getRect().height)
                         .clipped()
 
                 } else if phase.error != nil {
@@ -43,7 +44,8 @@ struct WallpaperOnePageDetails: View {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: getRect().width, height: getRect().height)
+                                .frame(maxWidth: .infinity, maxHeight : .infinity)
+                                //.frame(width: getRect().width, height: getRect().height)
                                 .clipped()
                         }
                     }
@@ -55,9 +57,9 @@ struct WallpaperOnePageDetails: View {
 
 
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(.all)
-         
+           // .frame(width: getRect().width, height: getRect().height)
+            .frame(maxWidth: .infinity, maxHeight : .infinity)
+            .ignoresSafeArea()
             .onTapGesture {
                 ctrlViewModel.showControll.toggle()
             }
@@ -89,6 +91,7 @@ struct WallpaperOnePageDetails: View {
            
             
         }
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
         .addBackground()
         .overlay(
             ZStack(alignment: .bottom){
@@ -137,16 +140,18 @@ struct WallpaperOnePageDetails: View {
             }
         
         )
-        
-        .onAppear(perform: {
-    
-            if !store.isPro(){
-                inter.showAd {
+        .overlay(
+            ZStack{
+                if ctrlViewModel.showContentPremium {
+                    let url  = (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")
+                        SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
+                            ctrlViewModel.showContentPremium = false
+                            ctrlViewModel.showDialogBuyCoin = true
+                        })
                 }
             }
-           
-        })
-   
+
+        )
          .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
              TutorialContentView()
          })
@@ -171,23 +176,22 @@ struct WallpaperOnePageDetails: View {
                 Spacer()
 
                 ZStack{
-                    if !store.isPro() {
-                        HStack(spacing : 0){
-                            Image("coin")
+                    if !store.isPro() && wallpaper.content_type == "private" {
+                       
+                        Button(action: {
+                            ctrlViewModel.showContentPremium = true
+                        }, label: {
+                            Image("crown")
                                 .resizable()
-                                .frame(width: 13, height: 13)
-                            Text(" \( wallpaper.cost == 0 ? 0 : exclusiveCost )")
-                                .mfont(13, .regular)
-                                .foregroundColor(.white)
+                                .frame(width: 18, height: 18, alignment: .center)
+                                .frame(width: 34, height: 40)
+                        })
 
-                        }.frame(width: 38, height: 20)
-                            .background(
-                                Capsule()
-                                    .fill(Color.black.opacity(0.7))
-                            )
-                        
                     }
-                }.frame(width: 38, height: 20)
+                    
+                    
+                  
+                }
                 
                 
                 Button(action: {
@@ -345,8 +349,7 @@ struct WallpaperOnePageDetails: View {
             .frame(height: 56)
             .padding(.bottom, 40)
         }
-        .padding(.top, getSafeArea().top)
-        .padding(.bottom, getSafeArea().bottom)
+        
        
     }
     

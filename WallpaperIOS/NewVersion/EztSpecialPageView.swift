@@ -131,6 +131,7 @@ struct EztSpecialPageView: View {
                                
                                 if wallpaper.specialContentV2ID == 1 {
                                     ItemShuffleWL2(wallpaper: wallpaper, isPro: storeVM.isPro())
+                                        .padding(.bottom, 8)
                                 }else if wallpaper.specialContentV2ID == 2{
                                     ItemDepthEffectWL(wallpaper: wallpaper, isPro: storeVM.isPro())
                                 }else{

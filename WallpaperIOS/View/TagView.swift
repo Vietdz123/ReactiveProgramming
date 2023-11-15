@@ -33,7 +33,7 @@ struct TagView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text(viewModel.tag)
+                Text(viewModel.tag.toLocalize())
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)

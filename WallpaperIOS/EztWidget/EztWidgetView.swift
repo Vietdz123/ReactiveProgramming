@@ -22,9 +22,8 @@ struct EztWidgetView: View {
     @StateObject var digitalWidgetVM : WidgetMainViewModel = .init()
     @StateObject var rountineWidgetVM : WidgetMainViewModel = .init()
     
+    @EnvironmentObject var storeVM : MyStore
     var body: some View {
-        
-        
         ScrollView(.vertical, showsIndicators : false){
             LazyVStack(spacing : 0 ,content: {
                 
@@ -38,19 +37,28 @@ struct EztWidgetView: View {
             })
             
         }
-        
-        
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .addBackground()
-        
-        
-        
+        .refreshable {
+            newWidgetVM.currentOffset = 0
+            popularWidgetVM.currentOffset = 0
+            digitalWidgetVM.currentOffset = 0
+            rountineWidgetVM.currentOffset = 0
+            
+            newWidgetVM.widgets.removeAll()
+            popularWidgetVM.widgets.removeAll()
+            digitalWidgetVM.widgets.removeAll()
+            rountineWidgetVM.widgets.removeAll()
+            
+            newWidgetVM.getWidgets()
+            popularWidgetVM.getWidgets()
+            digitalWidgetVM.getWidgets()
+            rountineWidgetVM.getWidgets()
+            
+            
+          
+        }
     }
-    
-    
-    
-    
-    
     
 }
 
@@ -68,6 +76,7 @@ extension EztWidgetView{
                 NavigationLink(destination: {
                     WidgetListView()
                         .environmentObject(newWidgetVM)
+                        .environmentObject(storeVM)
                     
                 }, label: {
                     HStack(spacing : 0){
@@ -92,12 +101,21 @@ extension EztWidgetView{
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
-                                ForEach(0..<7, id: \.self) { count in
+                                ForEach(0..<4, id: \.self) { count in
                                     let widgetObj = newWidgetVM.widgets[count]
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(storeVM)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
+                                            .overlay(alignment : .topTrailing){
+                                                if !storeVM.isPro(){
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                        .padding(8)
+                                                }
+                                            }
                                     })
                                     
                                     
@@ -139,7 +157,7 @@ extension EztWidgetView{
                 NavigationLink(destination: {
                     WidgetListView()
                         .environmentObject(popularWidgetVM)
-                    
+                        .environmentObject(storeVM)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See more".toLocalize())
@@ -163,12 +181,21 @@ extension EztWidgetView{
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
-                                ForEach(0..<7, id: \.self) { count in
+                                ForEach(0..<4, id: \.self) { count in
                                     let widgetObj = popularWidgetVM.widgets[count]
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(storeVM)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
+                                            .overlay(alignment : .topTrailing){
+                                                if !storeVM.isPro(){
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                        .padding(8)
+                                                }
+                                            }
                                     })
                                     
                                     
@@ -211,7 +238,7 @@ extension EztWidgetView{
                 NavigationLink(destination: {
                     WidgetListView()
                         .environmentObject(digitalWidgetVM)
-                    
+                        .environmentObject(storeVM)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See more".toLocalize())
@@ -235,12 +262,21 @@ extension EztWidgetView{
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
-                                ForEach(0..<rountineWidgetVM.widgets.count, id: \.self) { count in
+                                ForEach(0..<4, id: \.self) { count in
                                     let widgetObj = digitalWidgetVM.widgets[count]
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(storeVM)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
+                                            .overlay(alignment : .topTrailing){
+                                                if !storeVM.isPro(){
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                        .padding(8)
+                                                }
+                                            }
                                     })
                                     
                                     
@@ -282,7 +318,7 @@ extension EztWidgetView{
                 NavigationLink(destination: {
                     WidgetListView()
                         .environmentObject(rountineWidgetVM)
-                    
+                        .environmentObject(storeVM)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See more".toLocalize())
@@ -306,12 +342,21 @@ extension EztWidgetView{
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
-                                ForEach(0..<rountineWidgetVM.widgets.count, id: \.self) { count in
+                                ForEach(0..<4, id: \.self) { count in
                                     let widgetObj = rountineWidgetVM.widgets[count]
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(storeVM)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
+                                            .overlay(alignment : .topTrailing){
+                                                if !storeVM.isPro(){
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 16, height: 16, alignment: .center)
+                                                        .padding(8)
+                                                }
+                                            }
                                     })
                                     
                                     

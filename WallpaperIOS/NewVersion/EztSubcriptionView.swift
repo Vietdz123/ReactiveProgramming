@@ -85,9 +85,10 @@ struct EztSubcriptionView: View {
                         
                         
                         Text("Give your Phone A Cool Makeover".toLocalize())
-                            .mfont(17, .bold)
+                            .mfont(17, .bold, line: 2)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
+                            .padding(.horizontal, 24)
                             .padding(.top, 4)
                         
                         OptForProUser().padding(.top, 24)
@@ -163,7 +164,7 @@ struct EztSubcriptionView: View {
                         
                         
                         Text("The subscription will be renewed automatically. You can cancel anytime.")
-                            .mfont(11, .regular)
+                            .mfont(11, .regular, line : 4)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -171,7 +172,7 @@ struct EztSubcriptionView: View {
                             .padding(.top, 8)
                         
                         Text("Payments are charged to the user’s Apple ID account at confirmation of purchase. Subscriptions automatically renew unless the user cancels at least 24 hours before the end of current period. The account is charged for renewal within 24-hours before the end of the current period. Users can manage and cancel subscriptions in their account settings on the App Store.")
-                            .mfont(9, .regular)
+                            .mfont(9, .regular, line: 5)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)

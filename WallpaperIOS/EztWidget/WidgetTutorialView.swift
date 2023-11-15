@@ -70,7 +70,7 @@ struct WidgetTutorialView: View {
                     )
                 
                 Text(text.toLocalize())
-                    .mfont(15, .regular)
+                    .mfont(15, .regular, line: 3)
                     .multilineTextAlignment(.leading)
                   .foregroundColor(.white)
                   .frame(maxWidth: .infinity, alignment: .leading)

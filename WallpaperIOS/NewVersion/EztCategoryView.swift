@@ -40,154 +40,150 @@ struct EztCategoryView: View {
              
                 
                 
-//                if store.isHasEvent() && !store.isPro(){
-//
-//                    GeometryReader{
-//                        proxy in
-//                        let size = proxy.size
-//                        ZStack(alignment: .bottomLeading){
-//                            WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_banner_image_url") ?? ""))
-//
-//                                .onSuccess { image, data, cacheType in
-//
-//                                }
-//                                .resizable()
-//                                .indicator(.activity) // Activity Indicator
-//                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
-//                                .scaledToFill()
-//                                .frame(width: size.width, height: size.height)
-//
-//
-//                            if let productEv = store.isVer1() ? store.weekProduct : store.yearlv2Sale50Product {
-//
-//                                VStack(spacing : 0){
-//
-//                                    Text("Just \(productEv.displayPrice)/\(store.isVer1() ? "week" : "year")")
-//                                        .mfont(13, .regular)
-//                                        .multilineTextAlignment(.center)
-//                                        .foregroundColor(.white)
-//
-//
-//                                    Button(action: {
-//
-//                                        if store.purchasedIds.isEmpty{
-//                                            store.isPurchasing = true
-//                                            showProgressSubView()
-//                                            if store.isVer1(){
-//                                                Firebase_log("Click_Buy_Sub_In_Ev_Banner_Week_Sale")
-//                                            }else{
-//                                                Firebase_log("Click_Buy_Sub_In_Ev_Banner_Year_Sale")
-//                                            }
-//
-//                                            store.purchase(product: productEv, onBuySuccess: { b in
-//                                                if b {
-//                                                    DispatchQueue.main.async{
-//                                                        store.isPurchasing = false
-//                                                        hideProgressSubView()
-//                                                        if store.isVer1(){
-//                                                            Firebase_log("Buy_Sub_Success_In_Ev_Banner_Week_Sale")
-//                                                        }else{
-//                                                            Firebase_log("Buy_Sub_In_Success_Ev_Banner_Year_Sale")
-//                                                        }
-//                                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
-//                                                    }
-//                                                }else{
-//                                                    DispatchQueue.main.async{
-//                                                        store.isPurchasing = false
-//                                                        hideProgressSubView()
-//                                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
-//                                                    }
-//                                                }
-//                                            })
-//                                        }
-//
-//                                    }, label: {
-//                                        Text("Claim!")
-//                                            .mfont(17, .bold)
-//                                            .multilineTextAlignment(.center)
-//                                            .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-//                                            .frame(width: 92, height: 32)
-//                                            .background(
-//                                                Capsule()
-//                                                    .fill(Color(red: 1, green: 0.87, blue: 0.19))
-//                                            )
-//                                    }).padding(.top, 12)
-//
-//
-//                                    HStack(spacing : 4){
-//                                        Button(action: {
-//                                            if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
-//                                                UIApplication.shared.open(url)
-//                                            }
-//                                        }, label: {
-//                                            Text("Privacy Policy")
-//                                                .underline()
-//                                                .foregroundColor(.white)
-//                                                .mfont(8, .regular)
-//
-//                                        })
-//
-//                                        Text("|")
-//                                            .mfont(12, .regular)
-//                                            .foregroundColor(.white)
-//
-//                                        Button(action: {
-//
-//                                            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
-//                                                UIApplication.shared.open(url)
-//                                            }
-//                                        }, label: {
-//                                            Text("Terms of Use")
-//                                                .underline()
-//                                                .foregroundColor(.white)
-//                                                .mfont(8, .regular)
-//
-//                                        })
-//
-//                                        Text("|")
-//                                            .mfont(12, .regular)
-//                                            .foregroundColor(.white)
-//                                        Button(action: {
-//                                            Task{
-//                                                let b = await store.restore()
-//                                                if b {
-//                                                    store.fetchProducts()
-//                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
-//                                                }else{
-//                                                    showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
-//                                                }
-//                                            }
-//
-//                                        }, label: {
-//                                            Text("Restore")
-//                                                .underline()
-//                                                .foregroundColor(.white)
-//                                                .mfont(8, .regular)
-//
-//                                        })
-//
-//                                    }
-//                                    .padding(.top, 8)
-//
-//
-//                                }  .padding(.bottom, 8)
-//                                    .padding(.leading, 16)
-//
-//
-//                            }
-//
-//
-//
-//                        }
-//
-//
-//
-//
-//                    }.frame(width: getRect().width - 32 , height: ( getRect().width - 32 ) * 504 / 1080 )
-//                        .cornerRadius(8)
-//
-//
-//                }
+                if store.isHasEvent() && !store.isPro(){
+
+                    GeometryReader{
+                        proxy in
+                        let size = proxy.size
+                        ZStack(alignment: .bottomLeading){
+                            WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_banner_image_url") ?? ""))
+
+                                .onSuccess { image, data, cacheType in
+
+                                }
+                                .resizable()
+                                .indicator(.activity) // Activity Indicator
+                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                .scaledToFill()
+                                .frame(width: size.width, height: size.height)
+
+
+                            if let productEv =  store.yearlv2Sale50Product {
+
+                                VStack(spacing : 0){
+
+                                    Text("Just \(productEv.displayPrice)/\"year")
+                                        .mfont(13, .regular)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+
+
+                                    Button(action: {
+
+                                        if store.purchasedIds.isEmpty{
+                                            store.isPurchasing = true
+                                            showProgressSubView()
+                                          
+                                                Firebase_log("Click_Buy_Sub_In_Ev_Banner_Year_Sale")
+                                         
+
+                                            store.purchase(product: productEv, onBuySuccess: { b in
+                                                if b {
+                                                    DispatchQueue.main.async{
+                                                        store.isPurchasing = false
+                                                        hideProgressSubView()
+                                                      
+                                                            Firebase_log("Buy_Sub_In_Success_Ev_Banner_Year_Sale")
+                                                      
+                                                        showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                                    }
+                                                }else{
+                                                    DispatchQueue.main.async{
+                                                        store.isPurchasing = false
+                                                        hideProgressSubView()
+                                                        showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                                    }
+                                                }
+                                            })
+                                        }
+
+                                    }, label: {
+                                        Text("Claim!")
+                                            .mfont(17, .bold)
+                                            .multilineTextAlignment(.center)
+                                            .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                            .frame(width: 92, height: 32)
+                                            .background(
+                                                Capsule()
+                                                    .fill(Color(red: 1, green: 0.87, blue: 0.19))
+                                            )
+                                    }).padding(.top, 12)
+
+
+                                    HStack(spacing : 4){
+                                        Button(action: {
+                                            if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                                UIApplication.shared.open(url)
+                                            }
+                                        }, label: {
+                                            Text("Privacy Policy")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+
+                                        })
+
+                                        Text("|")
+                                            .mfont(12, .regular)
+                                            .foregroundColor(.white)
+
+                                        Button(action: {
+
+                                            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                                UIApplication.shared.open(url)
+                                            }
+                                        }, label: {
+                                            Text("Terms of Use")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+
+                                        })
+
+                                        Text("|")
+                                            .mfont(12, .regular)
+                                            .foregroundColor(.white)
+                                        Button(action: {
+                                            Task{
+                                                let b = await store.restore()
+                                                if b {
+                                                    store.fetchProducts()
+                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                                                }else{
+                                                    showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                                                }
+                                            }
+
+                                        }, label: {
+                                            Text("Restore")
+                                                .underline()
+                                                .foregroundColor(.white)
+                                                .mfont(8, .regular)
+
+                                        })
+
+                                    }
+                                    .padding(.top, 8)
+
+
+                                }  .padding(.bottom, 8)
+                                    .padding(.leading, 16)
+
+
+                            }
+
+
+
+                        }
+
+
+
+
+                    }.frame(width: getRect().width - 32 , height: ( getRect().width - 32 ) * 504 / 1080 )
+                        .cornerRadius(8)
+
+
+               }
                 
                 LazyVStack(spacing : 0){
                     ForEach(0..<viewModel.categorieWithData.count, id: \.self){
@@ -195,11 +191,11 @@ struct EztCategoryView: View {
                         let categoryData  = viewModel.categorieWithData[index]
                         VStack(spacing : 0){
                             HStack(spacing : 0){
-                                Text("\(categoryData.category.title)")
+                                Text(categoryData.category.title )
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.vertical, 12)
+                                  
                                     .onAppear(perform: {
                                         if viewModel.checkIfLoadData(i: index){
                                             viewModel.getCategoryWithData()

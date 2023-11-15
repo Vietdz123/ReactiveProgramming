@@ -77,39 +77,36 @@ struct SplashView: View {
             .onChange(of: splash_process, perform: {
                 newValue in
                 if splash_process == 100 {
-                //    appVM.navigateToHome.toggle()
-                   appVM.navigateToOnboarding2.toggle()
-//                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-//                        
-//                        
-//                        ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-//                            if status == .authorized{
-//                                Firebase_log("tracking_authorized")
-//                            }
-//                            
-//                          })
-//                        
-//                        
-//                   if myStore.isVer1(){
-//                       appVM.navigateToOnboarding.toggle()
-//                    }else{
-//                        appVM.navigateToOnboarding2.toggle()
-//                    }
-//                        
-//
-//                    }else{
-//                        
-//                        if myStore.isPro(){
-//                            appVM.navigateToHome.toggle()
-//                        }else{
-//                            openAd.tryToPresentAd(onCommit: {
-//                                _ in
-//                                appVM.navigateToHome.toggle()
-//                            })
-//                        }
-//                        
-//                        
-//                    }
+                    
+                    if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
+                        
+                        
+                        ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                            if status == .authorized{
+                                Firebase_log("tracking_authorized")
+                            }
+                            
+                          })
+                        
+                        
+                 
+                        appVM.navigateToOnboarding2.toggle()
+                   
+                        
+
+                    }else{
+                        
+                        if myStore.isPro(){
+                            appVM.navigateToHome.toggle()
+                        }else{
+                            openAd.tryToPresentAd(onCommit: {
+                                _ in
+                                appVM.navigateToHome.toggle()
+                            })
+                        }
+                        
+                        
+                    }
                     
                 }
             })

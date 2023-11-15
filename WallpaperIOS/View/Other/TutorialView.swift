@@ -110,7 +110,7 @@ struct TutorialContentView: View {
                         .mfont(16, .bold)
                     
                     Text(steps[index].title.toLocalize())
-                        .mfont(14, .regular)
+                        .mfont(14, .regular, line: 3)
                   
                 }
                 .fixedSize(horizontal: false, vertical: true)

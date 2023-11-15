@@ -11,6 +11,9 @@ import SDWebImageSwiftUI
 struct WidgetDetailView: View {
     let widget : EztWidget
     @Environment(\.presentationMode) var presentaionMode
+    
+    @EnvironmentObject var storeVM : MyStore
+    
     var body: some View {
         ZStack(alignment: .bottom){
             VStack(spacing : 0){
@@ -42,9 +45,9 @@ struct WidgetDetailView: View {
                 .ignoresSafeArea()
                 .opacity(0.9)
             
-            PreviewWidgetSheet(widget: widget, clickClose: {
+            PreviewWidgetSheet( widget: widget,clickClose: {
                 presentaionMode.wrappedValue.dismiss()
-            })
+            }).environmentObject(storeVM)
             
             
         }

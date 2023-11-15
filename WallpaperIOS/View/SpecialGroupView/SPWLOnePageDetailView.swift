@@ -43,14 +43,17 @@ struct SPWLOnePageDetailView: View {
                     EmptyView()
                 })
                 
-//                
+                
 //            AsyncImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  ))){
 //                phase in
 //                if let image = phase.image {
 //                    image
 //                        .resizable()
+//                        
 //                        .scaledToFill()
-//                       
+//                        .frame(maxWidth : .infinity, maxHeight : .infinity)
+//                        .clipped()
+//                        
 //
 //                } else if phase.error != nil {
 //                    AsyncImage(url: URL(string: wallpaper.path.first?.path.full ?? "")){
@@ -59,6 +62,8 @@ struct SPWLOnePageDetailView: View {
 //                            image
 //                                .resizable()
 //                                .scaledToFill()
+//                                .frame(maxWidth : .infinity, maxHeight : .infinity)
+//                                .clipped()
 //                               
 //                        }
 //                    }
@@ -69,7 +74,8 @@ struct SPWLOnePageDetailView: View {
 //                }
 //
 //
-//            }
+//            }.frame(maxWidth : .infinity, maxHeight : .infinity)
+//                .ignoresSafeArea()
 //            .overlay(
 //                ZStack{
 //                    if wallpaper.specialContentV2ID == 3{
@@ -82,8 +88,9 @@ struct SPWLOnePageDetailView: View {
 //                   
 //                }
 //            )
-//            .frame(width: getRect().width, height: getRect().height)
-//            .clipped()
+           
+           
+            
          
                 
                
@@ -110,15 +117,17 @@ struct SPWLOnePageDetailView: View {
                             WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  )))
                               
                                 .resizable()
-                               
                                 .scaledToFill()
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .clipped()
+                               
                                 
                         .overlay(
                             ZStack{
                                 if wallpaper.specialContentV2ID == 3{
                                     Image("dynamic")
                                         .resizable()
-            
+                                      
                                 }
             
             
@@ -127,7 +136,7 @@ struct SPWLOnePageDetailView: View {
                         )
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .ignoresSafeArea()
-                        .clipped()
+                        
                       
                      
         
@@ -212,7 +221,7 @@ extension SPWLOnePageDetailView{
         ZStack{
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
-            if let weekPro = store.weekProduct , let monthPro = store.monthProduct, let yearV2 = store.yearlyOriginalProduct , let weekNotSale = store.weekProductNotSale {
+            if  let monthPro = store.monthProduct, let yearV2 = store.yearlyOriginalProduct , let weekNotSale = store.weekProductNotSale {
                 VStack(spacing : 0){
                     Spacer()
                     

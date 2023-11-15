@@ -21,6 +21,7 @@ class ControllViewModel : ObservableObject {
     @Published var showDialogBuyCoin : Bool = false
     @Published var navigateView : Bool = false
     @Published var isDownloading : Bool = false
+    @Published var showContentPremium : Bool = false
     
 }
 
@@ -195,6 +196,18 @@ struct WLView: View {
             }
             
         )
+        .overlay(
+            ZStack{
+                if ctrlViewModel.showContentPremium {
+                    let url  = (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: "")
+                        SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
+                            ctrlViewModel.showContentPremium = false
+                            ctrlViewModel.showDialogBuyCoin = true
+                        })
+                }
+            }
+
+        )
         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
             TutorialContentView()
         })
@@ -220,24 +233,20 @@ struct WLView: View {
                 
                 Spacer()
                 ZStack{
-                    if !store.isPro(){
-                        
-                        HStack(spacing : 0){
-                            Image("coin")
+                    if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
+                        Button(action: {
+                            ctrlViewModel.showContentPremium = true
+                        }, label: {
+                            Image("crown")
                                 .resizable()
-                                .frame(width: 13, height: 13)
-                            Text(" \( (viewModel.wallpapers[index].cost ?? 0) == 0 ? 0 : exclusiveCost  )")
-                                .mfont(13, .regular)
-                                .foregroundColor(.white)
-                            
-                        }.frame(width: 38, height: 20)
-                            .background(
-                                Capsule()
-                                    .fill(Color.black.opacity(0.7))
-                            )
+                                .frame(width: 18, height: 18, alignment: .center)
+                                .frame(width: 34, height: 40)
+                        })
+                       
+
                     }
                     
-                }.frame(width: 38, height: 20)
+                }
                 
                 
                 Button(action: {
@@ -249,7 +258,7 @@ struct WLView: View {
                         .frame(width: 24, height: 24)
                         .frame(width: 40, height: 40)
                         .contentShape(Rectangle())
-                }).padding(.leading, 8)
+                })
                 
                 Button(action: {
                     ctrlViewModel.showTutorial.toggle()
@@ -401,7 +410,7 @@ struct WLView: View {
     func Preview() -> some View{
         TabView(selection: $ctrlViewModel.isHome){
             
-            Image("preview_lock")
+            Image("dynamic")
                 .resizable()
                 .scaledToFill()
             

@@ -10,12 +10,14 @@ import StoreKit
 
 struct SpecialSubView: View {
     
+    var from : String = "WL"
+    
     var fromDefault : Bool = true
 
     @Environment(\.presentationMode) var presentationMode
     
-    let vip_op : [String] = [    "Unlimited Premium Wallpaper",
-                                 "Unlimited Premium Widget",
+    let vip_op : [String] = [    "Unlimited Premium Wallpapers",
+                                 "Unlimited Premium Widgets",
                                  "No ADs."]
     @EnvironmentObject var store : MyStore
     @State var showSubView : Bool = true
@@ -153,10 +155,16 @@ extension SpecialSubView{
                         if store.purchasedIds.isEmpty{
                             store.isPurchasing = true
                             showProgressSubView()
-                            Firebase_log("Sub_click_buy_sub_total")
-                            
-                            
+                          
                             let product : Product = buyType == .YEARLY ? yearProduct :  ( buyType == .MONTHLY ? monthProduct : weekProduct )
+                            
+                            let productString : String = buyType == .YEARLY ? "Year" :  ( buyType == .MONTHLY ? "Month" : "Week" )
+                            
+                         
+                            
+                            Firebase_log("Sub_click_buy_sub_total")
+                            Firebase_log("Sub_click_buy_In_Special_\(productString)_\(from)")
+                            
                             
                             store.purchase(product: product, onBuySuccess: { b in
                                 if b {
@@ -164,6 +172,10 @@ extension SpecialSubView{
                                         store.isPurchasing = false
                                         hideProgressSubView()
                                         showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                        
+                                        Firebase_log("Buy_Sub_Success_In_Special_\(productString)_\(from)")
+                                        
+                                        onClickClose()
                                         
                                     }
                                     
@@ -302,7 +314,7 @@ extension SpecialSubView{
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .lineLimit(1)
-                    .fixedSize()
+                    .padding(.horizontal, 12)
                 
               
                 Text(String(format: NSLocalizedString("Just %@/year", comment: ""), yearSale.displayPrice))
@@ -313,7 +325,34 @@ extension SpecialSubView{
                 
                 
                 Button(action: {
-                    
+                    if store.purchasedIds.isEmpty{
+                        store.isPurchasing = true
+                        showProgressSubView()
+                        Firebase_log("Sub_click_buy_sub_total")
+                        
+                        
+                        
+                        store.purchase(product: yearSale, onBuySuccess: { b in
+                            if b {
+                                DispatchQueue.main.async{
+                                    store.isPurchasing = false
+                                    hideProgressSubView()
+                                    showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
+                                    onClickClose()
+                                    
+                                }
+                                
+                            }else{
+                                DispatchQueue.main.async{
+                                    store.isPurchasing = false
+                                    hideProgressSubView()
+                                    showToastWithContent(image: "xmark", color: .red, mess: "Purchase failure!")
+                                }
+                            }
+                            
+                        })
+                        
+                    }
                 }, label: {
                     Text("Claim Offer")
                         .mfont(20, .bold)
@@ -394,7 +433,7 @@ extension SpecialSubView{
         VStack(spacing : 0){
             Spacer()
             Text("Wow! Here is a special\ndeal for you".toLocalize())
-                .mfont(20, .bold)
+                .mfont(20, .bold, line: 2)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                 .frame(width: 263, alignment: .top)

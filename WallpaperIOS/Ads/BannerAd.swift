@@ -8,11 +8,11 @@
 import SwiftUI
 import GoogleMobileAds
 
-#if DEBUG
-let adBannerUnitID = "ca-app-pub-3940256099942544/2934735716"
-#else
-let adBannerUnitID = "ca-app-pub-5782595411387549/9881325801"
-#endif
+//#if DEBUG
+//let adBannerUnitID = "ca-app-pub-3940256099942544/2934735716"
+//#else
+//let adBannerUnitID = "ca-app-pub-5782595411387549/9881325801"
+//#endif
 
 enum AdFormat {
     
@@ -62,7 +62,7 @@ struct BannerViewController: UIViewControllerRepresentable  {
         let viewController = UIViewController()
         let view = GADBannerView(adSize: adSize)
         view.delegate = context.coordinator
-        view.adUnitID = adUnitID
+        view.adUnitID = AdsConfig.bannerID
         print("LOAD_ BANNER ADS")
         view.rootViewController = viewController
         view.load(GADRequest())

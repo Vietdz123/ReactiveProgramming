@@ -15,7 +15,7 @@ class LiveWallpaperViewModel: ObservableObject {
    
     init(){
         domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
-       // domain = "https://devwallpaper.eztechglobal.com/"
+     //   domain = "https://devwallpaper.eztechglobal.com/"
         getDataByPage()
     }
 

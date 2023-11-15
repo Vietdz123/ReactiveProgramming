@@ -314,8 +314,8 @@
             filePath = "WallpaperIOS/EztWidget/PreviewWidgetSheet.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -425,8 +425,8 @@
             filePath = "WallpaperIOS/EztWidget/EztWidgetView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
             landmarkName = "WidgetDIGITAL()"
             landmarkType = "7">
          </BreakpointContent>

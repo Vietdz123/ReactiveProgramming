@@ -62,23 +62,11 @@ class EztMainViewModel : ObservableObject{
       
         
         if subTypeSave == 0 {
-            if Bool.random() {
                 UserDefaults.standard.set(1, forKey: "gift_sub_type")
-            }else{
-                UserDefaults.standard.set(2, forKey: "gift_sub_type")
-            }
         }else if subTypeSave == 1 {
-            if Bool.random() {
-                UserDefaults.standard.set(0, forKey: "gift_sub_type")
-            }else{
                 UserDefaults.standard.set(2, forKey: "gift_sub_type")
-            }
         }else if subTypeSave == 2{
-            if Bool.random() {
                 UserDefaults.standard.set(0, forKey: "gift_sub_type")
-            }else{
-                UserDefaults.standard.set(1, forKey: "gift_sub_type")
-            }
         }
         
        
@@ -277,8 +265,9 @@ extension EztMainView{
                         //  .padding(.trailing, 12)
                         
                         Text("Last chance for your gift...".toLocalize())
-                            .mfont(15, .bold)
+                            .mfont(15, .bold, line: 1)
                             .foregroundColor(.white)
+                            .multilineTextAlignment(.leading)
                             
                             
                         Spacer()

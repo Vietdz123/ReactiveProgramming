@@ -49,7 +49,7 @@ class WidgetMainViewModel: ObservableObject {
                let itemsCurrentLoad = try? JSONDecoder().decode(EztWidgetResponse.self, from: data)
                
                DispatchQueue.main.async {
-                   self.widgets = itemsCurrentLoad?.data.data  ?? []
+                   self.widgets.append(contentsOf: itemsCurrentLoad?.data.data  ?? [])
                    self.currentOffset = self.currentOffset + AppConfig.limit
                    print("WidgetViewModel widgets count: \(self.widgets.count)")
 
@@ -79,7 +79,7 @@ class WidgetMainViewModel: ObservableObject {
         if sort == .NEW{
             return "&order_by=id+desc"
         }else{
-            return "&order_by=daily_rating+desc,id+desc"
+            return "&order_by=daily_rating+desc,order+asc"
         }
        
     }

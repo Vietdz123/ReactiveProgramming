@@ -21,6 +21,8 @@ struct PreviewWidgetSheet: View {
     
     @AppStorage("wg_tuto", store: .standard) var showTapJson : Bool = false
     
+    @EnvironmentObject var storeVM : MyStore
+    
     @State var days : [WeekendDayModel] = [
         WeekendDayModel(day: .sunday),
         WeekendDayModel(day: .monday),
@@ -34,6 +36,7 @@ struct PreviewWidgetSheet: View {
     
     
     let clickClose : () -> ()
+    
     
     var body: some View {
         ZStack(alignment: .bottom){
@@ -81,7 +84,7 @@ struct PreviewWidgetSheet: View {
                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
                             }
-                        }.frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                        }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                             .cornerRadius(16)
                             .padding(.vertical, 24)
                             .contentShape(Rectangle())
@@ -118,7 +121,7 @@ struct PreviewWidgetSheet: View {
                                     .indicator(.activity) // Activity Indicator
                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
-                                    .frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                                    .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                                 
                                 HStack(spacing : 0){
                                     ForEach(0..<days.count, id : \.self){
@@ -152,7 +155,7 @@ struct PreviewWidgetSheet: View {
                                     .padding(.horizontal, 16)
                                     .padding(.bottom, 8)
                                 
-                            }.frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                            }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                         }else
                         {
                             ZStack(alignment: .bottom){
@@ -174,7 +177,7 @@ struct PreviewWidgetSheet: View {
                                     .indicator(.activity) // Activity Indicator
                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
-                                    .frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                                    .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                                 
                                 HStack(spacing : 0){
                                     ForEach(0..<days.count, id : \.self){
@@ -217,7 +220,7 @@ struct PreviewWidgetSheet: View {
                                     .padding(.horizontal, 16)
                                     .padding(.bottom, 8)
                                 
-                            }.frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                            }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                         }
                         
                       
@@ -235,6 +238,7 @@ struct PreviewWidgetSheet: View {
                     .overlay{
                         if !showTapJson{
                             ZStack{
+                                Color.black.opacity(0.2)
                                 ResizableLottieView(filename: "preview_wg")
                                     .frame(width: 160, height: 160, alignment: .center)
                                 Text("Tap here for preview".toLocalize())
@@ -243,7 +247,7 @@ struct PreviewWidgetSheet: View {
                                     .frame(width: 184, height: 40)
                                     .background(
                                         RoundedRectangle(cornerRadius: 16)
-                                            .fill(Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.4))
+                                            .fill(Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.8))
                                     )
                                     .offset(x : 44 ,y : 52)
                                 
@@ -261,11 +265,28 @@ struct PreviewWidgetSheet: View {
                 
                 Button(action: {
                     if #available(iOS 17, *) {
-                        WDNetworkManager.shared.downloadFile(data: widget, completion: {
-                            DispatchQueue.main.async{
-                                showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
-                            }
-                        })
+                        if storeVM.isPro(){
+                            WDNetworkManager.shared.downloadFile(data: widget, completion: {
+                                DispatchQueue.main.async{
+                                    showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
+                                    let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
+                                    
+                                    ServerHelper.sendDataWidget(widget_id: widget.id)
+                                    
+                                    if show == false{
+                                        UserDefaults.standard.set(true, forKey: "wg_show_when_download")
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                            showTuto.toggle()
+                                        })
+                                    }
+                                    
+                                }
+                            })
+                        }else{
+                            showSubView.toggle()
+                        }
+                        
+                       
                     } else {
                         showUpdate.toggle()
                     }
@@ -301,8 +322,18 @@ struct PreviewWidgetSheet: View {
                 DialogUpdateIOS(show: $showUpdate)
             }
         }
+        .overlay{
+            if showSubView{
+                SpecialSubView( from : "WG" ,onClickClose: {
+                    showSubView = false
+                })
+            }
+        }
         .fullScreenCover(isPresented: $showTuto, content: {
             WidgetTutorialView()
+        })
+        .onAppear(perform: {
+            print("HUYYYYY ga non: \(widget.set)")
         })
       
     }

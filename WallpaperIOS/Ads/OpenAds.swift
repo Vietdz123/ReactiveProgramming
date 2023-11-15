@@ -9,12 +9,12 @@ import SwiftUI
 import Foundation
 import GoogleMobileAds
 
-
-#if DEBUG
-let openAdsId = "ca-app-pub-3940256099942544/5662855259"
-#else
-let openAdsId = "ca-app-pub-5782595411387549/4564547807"
-#endif
+//
+//#if DEBUG
+//let openAdsId = "ca-app-pub-3940256099942544/5662855259"
+//#else
+//let openAdsId = "ca-app-pub-5782595411387549/4564547807"
+//#endif
 
 final class OpenAd: NSObject, GADFullScreenContentDelegate {
     var appOpenAd: GADAppOpenAd?
@@ -30,7 +30,7 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         }
         print("LOAD_ADS OPEN")
         let request = GADRequest()
-        GADAppOpenAd.load(withAdUnitID: openAdsId,
+        GADAppOpenAd.load(withAdUnitID: AdsConfig.openID,
                           request: request,
                           orientation: UIInterfaceOrientation.portrait,
                           completionHandler: { (appOpenAdIn, _) in
