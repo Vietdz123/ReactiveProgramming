@@ -408,7 +408,9 @@ struct WallpaperOnePageDetails: View {
                 }
                 
             }else{
-                showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                DispatchQueue.main.async{
+                    showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                }
             }
         }, clickBuyPro: {
             ctrlViewModel.showDialogRV.toggle()

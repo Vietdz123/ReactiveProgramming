@@ -44,23 +44,24 @@ struct Sub_Event: View {
                         
                    
                         Text( String(format: NSLocalizedString("ONLY %@/week", comment: ""),  getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayName) ) )
-                   //     Text("ONLY \(decimaPriceToStr(price: product.price , chia: 51))\(removeDigits(string: product.displayPrice ))/Week.")
                         .mfont(24, .bold)
                       .multilineTextAlignment(.center)
-                      .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                      .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                       .padding(.top, 28)
                     
                         HStack(spacing : 0){
                             Text( String(format: NSLocalizedString("Total %@/year", comment: ""), product.displayPrice) )
                          //   Text("Total \(product.displayPrice)/year ")
                                 .mfont(17, .bold)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                             Text("(\(decimaPriceToStr(price: product.price , chia: 0.5))\(removeDigits(string: product.displayPrice ))/year)")
                                 .mfont(17, .bold)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                                 .overlay(
                                     Rectangle()
-                                        .fill(Color.black.opacity(0.8))
+                                        .fill(
+                                            Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000") ?? Color.white
+                                        )
                                         .frame(height: 1)
 
                                 )
@@ -93,7 +94,7 @@ struct Sub_Event: View {
                     }, label: {
                         Capsule()
                             .fill(
-                                Color.white
+                                Color.init(hex: UserDefaults.standard.string(forKey: "btnBgColor") ?? "000000") ?? Color.white
                             )
                             .frame(maxWidth: .infinity)
                             .frame(height: 64)
@@ -104,7 +105,7 @@ struct Sub_Event: View {
                                     Text("Seize Now")
                                         .mfont(20, .bold)
                                       .multilineTextAlignment(.center)
-                                      .foregroundColor(.black)
+                                      .foregroundColor( Color.init(hex: UserDefaults.standard.string(forKey: "btnTextColor") ?? "000000"))
                                       .overlay(
                                           ZStack{
                                               if store.isPurchasing{
@@ -122,6 +123,7 @@ struct Sub_Event: View {
                                 .resizable()
                                 .renderingMode(.template)
                                 .foregroundColor(.black)
+                                
                                 .frame(width: 24, height: 24)
                                 .padding(.trailing, 20)
                             , alignment: .trailing
@@ -149,7 +151,7 @@ struct Sub_Event: View {
                     }, label: {
                         Text("Privacy Policy")
                             .underline()
-                            .foregroundColor(.black)
+                            .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                             .mfont(12, .regular)
                         
                     })
@@ -166,7 +168,7 @@ struct Sub_Event: View {
                     }, label: {
                         Text("Terms of Use")
                             .underline()
-                            .foregroundColor(.black)
+                            .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                             .mfont(12, .regular)
                         
                     })
@@ -188,7 +190,7 @@ struct Sub_Event: View {
                     }, label: {
                         Text("Restore")
                             .underline()
-                            .foregroundColor(.black)
+                            .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))
                             .mfont(12, .regular)
                         
                     })
@@ -199,16 +201,13 @@ struct Sub_Event: View {
                 
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .background(
-                    WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_bg_image_url") ?? ""))
-                        .onSuccess { image, data, cacheType in
-                          
-                        }
-                        .resizable()
-                        .indicator(.activity) // Activity Indicator
-                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    ZStack{
+                        WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_bg_image_url") ?? ""))
+                            .resizable()
+                            .scaledToFill()
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
                         .ignoresSafeArea()
+                   
                 )
                 .onViewDidLoad {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {

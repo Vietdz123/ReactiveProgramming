@@ -460,7 +460,9 @@ struct WLView: View {
                     ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                 }
             }else{
-                showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                DispatchQueue.main.async{
+                    showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                }
             }
         }, clickBuyPro: {
             ctrlViewModel.showDialogRV.toggle()
@@ -468,28 +470,7 @@ struct WLView: View {
         }).environmentObject(reward)
             .environmentObject(store)
     }
-//    
-//    @ViewBuilder
-//    func DialogGetWLByCoin(urlStr : String) -> some View{
-//        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
-//            ctrlViewModel.showDialogBuyCoin.toggle()
-//            if currentCoin >= exclusiveCost{
-//                currentCoin = currentCoin - exclusiveCost
-//                DispatchQueue.main.async{
-//                  
-//                    downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-//                    ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
-//                }
-//            }else{
-//                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-//            }
-//        }, onBuyPro: {
-//            ctrlViewModel.showDialogBuyCoin.toggle()
-//            ctrlViewModel.navigateView.toggle()
-//        }).environmentObject(store)
-//            .environmentObject(reward)
-//    }
-  
+
     
     
     func downloadImageToGallery(title : String, urlStr : String){

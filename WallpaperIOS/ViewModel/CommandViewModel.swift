@@ -37,6 +37,8 @@ class CommandViewModel: ObservableObject {
         return id == wallpapers.count - 6
     }
     
+  
+    
     func getSortParamStr() -> String {
         switch sortedBy {
             

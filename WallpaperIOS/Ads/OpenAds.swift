@@ -35,6 +35,12 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
                           orientation: UIInterfaceOrientation.portrait,
                           completionHandler: { (appOpenAdIn, _) in
             self.appOpenAd = appOpenAdIn
+            if  self.appOpenAd != nil{
+                print("LOAD_ADS OPEN has")
+            }else{
+                print("LOAD_ADS OPEN no")
+            }
+            
             self.appOpenAd?.fullScreenContentDelegate = self
             self.loadTime = Date()
            
@@ -45,8 +51,11 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         print("LOAD_ADS tryToPresentAd")
         self.onComplete = onCommit
         if let gOpenAd = self.appOpenAd {
+            print("LOAD_ADS tryToPresentAd has open")
             gOpenAd.present(fromRootViewController: (UIApplication.shared.windows.first?.rootViewController)!)
         } else {
+            print("Load_ADS openid \(AdsConfig.openID)")
+            print("LOAD_ADS tryToPresentAd no open")
             onCommit(false)
             self.requestAppOpenAd()
         }

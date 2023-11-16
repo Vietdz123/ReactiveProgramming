@@ -10,7 +10,7 @@ import Foundation
 #if DEBUG
 let m_debug = true
 #else
-let m_debug = fasle
+let m_debug = false
 #endif
 
 

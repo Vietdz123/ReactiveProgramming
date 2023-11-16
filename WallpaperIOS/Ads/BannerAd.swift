@@ -109,7 +109,7 @@ struct BannerAdView: View {
     
     var body: some View {
         HStack {
-                BannerViewController(adUnitID: adBannerUnitID, adSize: adFormat.adSize, adStatus: $adStatus)
+            BannerViewController(adUnitID: AdsConfig.bannerID, adSize: adFormat.adSize, adStatus: $adStatus)
                 .frame(width: adFormat.size.width, height: adStatus == .success ?  adFormat.size.height : 0.0  )
         }
 

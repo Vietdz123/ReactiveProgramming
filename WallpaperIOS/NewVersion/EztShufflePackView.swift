@@ -93,8 +93,7 @@ struct EztShufflePackView: View {
                                                                placeHolderImage()
                                                                    .frame(width: 100, height: 200)
                                                            }
-                                                           .indicator(.activity) // Activity Indicator
-                                                           .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                                         
                                                            .scaledToFill()
                                                             .frame(width: 100, height: 200)
                                                             .cornerRadius(8)
