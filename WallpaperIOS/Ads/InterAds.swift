@@ -23,6 +23,8 @@ import UIKit
 
  class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate {
     @Published var interstitial: GADInterstitialAd?
+     
+ 
     private var timeShowPrev : Int = 0
     private var onComplete: ( () -> () )?
      private var loadTime : Int = 0
@@ -85,6 +87,8 @@ import UIKit
     func showAd( onCommit: @escaping () -> ()  ){
         let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
         self.onComplete = onCommit
+
+        
             if Date().currentTimeMillis() - timeShowPrev > delay {
                 guard let root = UIApplication.shared.windows.first?.rootViewController else {
                     if onComplete != nil {

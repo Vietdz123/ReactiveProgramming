@@ -3101,9 +3101,6 @@
         }
       }
     },
-    "Just %@/\"year" : {
-
-    },
     "Just %@/year" : {
       "localizations" : {
         "de" : {
@@ -4548,6 +4545,7 @@
       }
     },
     "ONLY %@/week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7964,7 +7962,6 @@
       }
     },
     "Update app" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8566,7 +8563,6 @@
       }
     },
     "We've got an app version with a better experience for you, update the app to enjoy!" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

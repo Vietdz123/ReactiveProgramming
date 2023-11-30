@@ -719,7 +719,7 @@ extension EztHomeView{
                                     .environmentObject(rewardAd)
                                     .environmentObject(interAd)
                             }, label: {
-                                WebImage(url: URL(string: dynamicVM.wallpapers.first?.path.first?.path.extraSmall ?? ""))
+                                WebImage(url: URL(string: dynamicVM.wallpapers.first?.path.first?.path.small ?? ""))
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -750,7 +750,7 @@ extension EztHomeView{
                                     i in
                                     let wallpaper = dynamicVM.wallpapers[i]
                                     
-                                    let string = wallpaper.path.first?.path.extraSmall ?? ""
+                                    let string = wallpaper.path.first?.path.small ?? ""
                                     
                                     NavigationLink(destination: {
                                         SpWLDetailView(index: i)

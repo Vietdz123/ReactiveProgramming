@@ -11,4 +11,5 @@ enum EztTab : String, CaseIterable{
     case HOME = "Home"
     case WALLPAPER = "Wallpaper"
     case WIDGET = "Widget"
+    case WATCHFACE = "Watch Face"
 }

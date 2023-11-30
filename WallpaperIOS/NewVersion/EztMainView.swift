@@ -127,7 +127,11 @@ struct EztMainView : View {
                         .environmentObject(favViewModel)
                         .gesture(DragGesture())
                         .tag(EztTab.WIDGET)
-                }).tabViewStyle(.page(indexDisplayMode: .never))
+                    
+                    EztWatchFaceView()
+                        .environmentObject(store)
+                        .tag(EztTab.WATCHFACE)
+                })
         
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .overlay(
@@ -147,7 +151,9 @@ struct EztMainView : View {
             }
             
             
-        }.addBackground()
+        }//.addBackground()
+        .navigationBarTitle("", displayMode: .inline)
+            .navigationBarHidden(true)
             .onAppear(perform: {
                 if  mainViewModel.showMenu{
                     mainViewModel.showMenu = false
@@ -311,6 +317,7 @@ extension EztMainView{
                 }
                 .frame(height: 68, alignment: .bottom)
                 .clipped()
+               
                 
                 })
                 
@@ -328,13 +335,20 @@ extension EztMainView{
                         ZStack{
                             if mainViewModel.currentTab == tab{
 
-                                Text(tab.rawValue.uppercased().toLocalize())
-                                    .mfont(16,  .bold )
-                                    .foregroundColor(.white)
+                                
+                                VStack(spacing : 4){
+                                    Image("\(tab.rawValue)111")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20, alignment: .center)
+                                    
+                                    Text(tab.rawValue.uppercased().toLocalize())
+                                        .mfont(11,  .bold)
+                                        .foregroundColor(.white)
+                                    
+                                }
                                     .frame(maxHeight: .infinity)
-                                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 12, trailing: 8))
                                     .background(
-                                        
                                         TrapezoidShape()
                                             .fill(
                                                 LinearGradient(
@@ -346,8 +360,6 @@ extension EztMainView{
                                                 endPoint: UnitPoint(x: 0.5, y: 1)
                                                 )
                                             )
-                                        
-                                        
                                         .blur(radius: 15)
                                         .opacity(0.7)
                                         .matchedGeometryEffect(id: "MAIN_TABB", in: anim)
@@ -359,21 +371,33 @@ extension EztMainView{
                                                     .fill(Color.main)
                                                     .frame(width: 16, height: 2)
                                                     .matchedGeometryEffect(id: "MAIN_TAB", in: anim)
-                                                    .offset(y : 12)
+                                                    .padding(.bottom, 8)
+                                                    //.offset(y : 0)
                                                 
                                             }
-                                        }
+                                        }, alignment : .bottom
                                     )
-                                
-                                    
                             }else{
-                                Text(tab.rawValue.uppercased().toLocalize())
-                                    .mfont(16,  .regular)
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 12, trailing: 8))
+                             
                                 
+                                VStack(spacing : 4){
+                                    Image("\(tab.rawValue)111")
+                                        .resizable()
+                                        .renderingMode(.template)
+                                        .foregroundColor(.white.opacity(0.7))
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20, alignment: .center)
+                                    
+                                    Text(tab.rawValue.uppercased().toLocalize())
+                                        .mfont(11,  .regular)
+                                        .foregroundColor(.white.opacity(0.7))
+                                       
+                                    
+                                }
+                               // .padding(EdgeInsets(top: 0, leading: 8, bottom: 12, trailing: 8))
                             }
-                        }
+                        }.padding(.horizontal, 8)
+                            .padding(.bottom, 8)
                         
                         
                     }.frame(maxWidth: .infinity, maxHeight : .infinity)
@@ -389,15 +413,15 @@ extension EztMainView{
                 .frame(height: 72)
                 .background(
                     VisualEffectView(effect: UIBlurEffect(style: .dark))
-                        
+                   // Color.red
                 )
                 .background(Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.7))
                
         }
         .frame(maxWidth: .infinity)
-        .background(.white.opacity(0.001))
+    //    .background(.white.opacity(0.001))
         .frame(height: store.isPro() ? 72 : 152, alignment : .bottom)
-            .background(.clear)
+         
         
     }
     

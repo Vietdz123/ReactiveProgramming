@@ -43,7 +43,7 @@ struct Sub_Event: View {
                     if let product = store.yearlv2Sale50Product{
                         
                    
-                        Text( String(format: NSLocalizedString("ONLY %@/week", comment: ""),  getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayName) ) )
+                        Text( String(format: NSLocalizedString("ONLY %@/Week", comment: ""),  getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice) ) )
                         .mfont(24, .bold)
                       .multilineTextAlignment(.center)
                       .foregroundColor(Color.init(hex: UserDefaults.standard.string(forKey: "textColor") ?? "000000"))

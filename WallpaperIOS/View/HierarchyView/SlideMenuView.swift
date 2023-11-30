@@ -223,44 +223,44 @@ struct SlideMenuView: View {
                             })
                             
                             
-//                            if store.isNewVeriosn(){
-//                                VStack(alignment : .leading ,spacing : 8){
-//                                    Text("We've got an app version with a better experience for you, update the app to enjoy!")
-//                                        .mfont(13, .regular)
-//                                      .foregroundColor(.white)
-//                                      .frame(maxWidth: .infinity, alignment: .topLeading)
-//                                    
-//                                    Button(action: {
-//                                        rateApp()
-//                                    }, label: {
-//                                        
-//                                        Text("Update app")
-//                                            .mfont(15, .bold)
-//                                          .multilineTextAlignment(.center)
-//                                          .foregroundColor(.white)
-//                                          .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-//                                          .background(
-//                                            Capsule()
-//                                                .fill( LinearGradient(
-//                                                    stops: [
-//                                                      Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-//                                                      Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-//                                                      Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-//                                                    ],
-//                                                    startPoint: UnitPoint(x: 0, y: 1.38),
-//                                                    endPoint: UnitPoint(x: 1, y: -0.22)
-//                                                  ))
-//                                          )
-//                                        
-//                                    })
-//                                }
-//                                .padding(EdgeInsets(top: 12, leading: 16, bottom: 16, trailing: 16))
-//                                .background(
-//                                    VisualEffectView(effect: UIBlurEffect(style: .light))
-//                                )
-//                                .cornerRadius(8)
-//                                .padding(.horizontal, 16)
-//                            }
+                            if store.isNewVeriosn(){
+                                VStack(alignment : .leading ,spacing : 8){
+                                    Text("We've got an app version with a better experience for you, update the app to enjoy!")
+                                        .mfont(13, .regular)
+                                      .foregroundColor(.white)
+                                      .frame(maxWidth: .infinity, alignment: .topLeading)
+                                    
+                                    Button(action: {
+                                        rateApp()
+                                    }, label: {
+                                        
+                                        Text("Update app")
+                                            .mfont(15, .bold)
+                                          .multilineTextAlignment(.center)
+                                          .foregroundColor(.white)
+                                          .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+                                          .background(
+                                            Capsule()
+                                                .fill( LinearGradient(
+                                                    stops: [
+                                                      Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                      Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                      Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                    ],
+                                                    startPoint: UnitPoint(x: 0, y: 1.38),
+                                                    endPoint: UnitPoint(x: 1, y: -0.22)
+                                                  ))
+                                          )
+                                        
+                                    })
+                                }
+                                .padding(EdgeInsets(top: 12, leading: 16, bottom: 16, trailing: 16))
+                                .background(
+                                    VisualEffectView(effect: UIBlurEffect(style: .light))
+                                )
+                                .cornerRadius(8)
+                                .padding(.horizontal, 16)
+                            }
                             
                             
                            

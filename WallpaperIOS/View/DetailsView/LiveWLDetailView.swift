@@ -175,7 +175,7 @@ struct LiveWLView: View {
                                     getPhotoPermission(status: {
                                         b in
                                         if b {
-                                            if store.isPro(){
+                                            if store.isPro()  {
                                                 downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                                                         urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                                         urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
@@ -184,9 +184,18 @@ struct LiveWLView: View {
                                                 
                                             }else{
                                                 
-                                                DispatchQueue.main.async {
-                                                    withAnimation{
-                                                        ctrlViewModel.showDialogDownload.toggle()
+                                                if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
+                                                    downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
+                                                                            urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
+                                                                            urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
+                                                    ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+                                                }else{
+                                                    
+                                                    
+                                                    DispatchQueue.main.async {
+                                                        withAnimation{
+                                                            ctrlViewModel.showDialogDownload.toggle()
+                                                        }
                                                     }
                                                 }
                                                 

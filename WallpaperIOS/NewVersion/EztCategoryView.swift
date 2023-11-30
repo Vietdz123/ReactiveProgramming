@@ -62,7 +62,7 @@ struct EztCategoryView: View {
 
                                 VStack(spacing : 0){
 
-                                    Text("Just \(productEv.displayPrice)/\"year")
+                                    Text("Just \(productEv.displayPrice)/year")
                                         .mfont(13, .regular)
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(.white)

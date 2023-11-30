@@ -118,6 +118,19 @@ class MyStore: ObservableObject {
                     let using_new_sub_screen_for_onb      =  self.remoteConfig.configValue(forKey: "using_new_sub_screen_for_onb").boolValue
                     UserDefaults.standard.set(using_new_sub_screen_for_onb,   forKey: "using_new_usb_in_onb")
                     
+                    
+                    //MARK ADS ID
+                    let bannerID = self.remoteConfig.configValue(forKey: "id_banner_ads").stringValue ?? AdsConfig.def_bannerID
+                    let rewardID = self.remoteConfig.configValue(forKey: "id_reward_ads").stringValue ?? AdsConfig.def_rewardID
+                    let interID = self.remoteConfig.configValue(forKey: "id_inter_ads").stringValue ?? AdsConfig.def_interID
+                    let openID = self.remoteConfig.configValue(forKey: "id_open_ads").stringValue ?? AdsConfig.def_openID
+                    
+                    UserDefaults.standard.set(bannerID, forKey: "id_banner_ads")
+                    UserDefaults.standard.set(rewardID, forKey: "id_reward_ads")
+                    UserDefaults.standard.set(interID, forKey: "id_inter_ads")
+                    UserDefaults.standard.set(openID, forKey: "id_open_ads")
+                    
+                    
                     let wl_domain       =  self.remoteConfig.configValue(forKey: "wl_domain").stringValue ?? "http://3.8.138.29/"
                     let reward_delay    = self.remoteConfig.configValue(forKey: "reward_delay").numberValue
                     let inter_delay    = self.remoteConfig.configValue(forKey: "inter_delay").numberValue
@@ -163,6 +176,10 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(btnBgColor, forKey: "btnBgColor")
                     
                     
+                    let allowDownloadContentFree = self.remoteConfig.configValue(forKey: "allow_download_free").boolValue
+                    UserDefaults.standard.set(allowDownloadContentFree, forKey: "allow_download_free")
+                    
+                    
                     SDWebImageManager.shared.loadImage(with: URL(string: url_image_bg_event), progress: nil, completed: {
                         _, _, _, _, _, _ in
                         print("Remote Config preload url_image_bg_event")
@@ -175,16 +192,7 @@ class MyStore: ObservableObject {
                         
                     })
 
-                    //MARK ADS ID
-                    let bannerID = self.remoteConfig.configValue(forKey: "id_banner_ads").stringValue ?? AdsConfig.def_bannerID
-                    let rewardID = self.remoteConfig.configValue(forKey: "id_reward_ads").stringValue ?? AdsConfig.def_rewardID
-                    let interID = self.remoteConfig.configValue(forKey: "id_inter_ads").stringValue ?? AdsConfig.def_interID
-                    let openID = self.remoteConfig.configValue(forKey: "id_open_ads").stringValue ?? AdsConfig.def_openID
-                    
-                    UserDefaults.standard.set(bannerID, forKey: "id_banner_ads")
-                    UserDefaults.standard.set(rewardID, forKey: "id_reward_ads")
-                    UserDefaults.standard.set(interID, forKey: "id_inter_ads")
-                    UserDefaults.standard.set(openID, forKey: "id_open_ads")
+                   
                     
                 }
                 

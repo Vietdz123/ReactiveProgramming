@@ -24,6 +24,10 @@ struct SplashView: View {
     let openAd : OpenAd = OpenAd()
     @Environment(\.scenePhase)  var scenePhase
     
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
+    
     
     var body: some View {
         NavigationView{
@@ -161,7 +165,7 @@ struct SplashView_Previews: PreviewProvider {
 
 class AppViewModel: ObservableObject {
     
-    @Published var appGoBackground : Bool = false
+    @Published var appGoBackground : Bool = true
     
     @Published var navigateToOnboarding : Bool = false
     @Published var navigateToOnboarding2 : Bool = false

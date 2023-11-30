@@ -118,7 +118,7 @@ extension EztWallpaperView{
                             .foregroundColor(.white)
                             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                             .id(tab)
-                            .frame(height : 28)
+                            .frame(height : 32)
                             .background(
                                 ZStack{
                                     Capsule()

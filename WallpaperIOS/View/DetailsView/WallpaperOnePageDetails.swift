@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import SDWebImageSwiftUI
 
 struct WallpaperOnePageDetails: View {
     @StateObject var ctrlViewModel : ControllViewModel = .init()
@@ -27,42 +28,47 @@ struct WallpaperOnePageDetails: View {
                 EmptyView()
             })
             
-            AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
-                phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight : .infinity)
-                       // .frame(width: getRect().width, height: getRect().height)
-                        .clipped()
-
-                } else if phase.error != nil {
-                    AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
-                        phase in
-                        if let image = phase.image {
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(maxWidth: .infinity, maxHeight : .infinity)
-                                //.frame(width: getRect().width, height: getRect().height)
-                                .clipped()
-                        }
-                    }
-                    
-                } else {
-                    ResizableLottieView(filename: "placeholder_anim")
-                        .frame(width: 80, height: 80)
-                }
-
-
-            }
-           // .frame(width: getRect().width, height: getRect().height)
-            .frame(maxWidth: .infinity, maxHeight : .infinity)
-            .ignoresSafeArea()
-            .onTapGesture {
-                ctrlViewModel.showControll.toggle()
-            }
+//            AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+//                phase in
+//                if let image = phase.image {
+//                    image
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(maxWidth: .infinity, maxHeight : .infinity)
+//                       // .frame(width: getRect().width, height: getRect().height)
+//                        .clipped()
+//
+//                } else if phase.error != nil {
+//                    AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+//                        phase in
+//                        if let image = phase.image {
+//                            image
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(maxWidth: .infinity, maxHeight : .infinity)
+//                                //.frame(width: getRect().width, height: getRect().height)
+//                                .clipped()
+//                        }
+//                    }
+//                    
+//                } else {
+//                    ResizableLottieView(filename: "placeholder_anim")
+//                        .frame(width: 80, height: 80)
+//                }
+//
+//
+//            }
+            
+            
+//            WebImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")))
+//                .resizable()
+//                .scaledToFill()
+//            .frame(maxWidth: .infinity, maxHeight : .infinity)
+//            .ignoresSafeArea()
+//            .clipped()
+//            .onTapGesture {
+//                ctrlViewModel.showControll.toggle()
+//            }
             
             if ctrlViewModel.showControll{
                 ControllView()
@@ -92,7 +98,16 @@ struct WallpaperOnePageDetails: View {
             
         }
         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
-        .addBackground()
+        .background(
+                        WebImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")))
+                            .resizable()
+                            .scaledToFill()
+                        .frame(maxWidth: .infinity, maxHeight : .infinity)
+                        .ignoresSafeArea()
+                        .clipped()
+        )
+        .navigationBarTitle("", displayMode: .inline)
+            .navigationBarHidden(true)
         .overlay(
             ZStack(alignment: .bottom){
                 if ctrlViewModel.showInfo {
@@ -266,16 +281,23 @@ struct WallpaperOnePageDetails: View {
                     getPhotoPermission(status: {
                         b in
                         if b{
-                            if store.isPro(){
+                            if store.isPro()   {
                                 downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                                 ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
                                 
                             }else{
                            
                                 if wallpaper.content_type == "free" {
-                                    DispatchQueue.main.async {
-                                        withAnimation{
-                                            ctrlViewModel.showDialogRV.toggle()
+                                    
+                                    if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
+                                        downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                                        ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                                    }else{
+                                        
+                                        DispatchQueue.main.async {
+                                            withAnimation{
+                                                ctrlViewModel.showDialogRV.toggle()
+                                            }
                                         }
                                     }
                                    
@@ -349,6 +371,7 @@ struct WallpaperOnePageDetails: View {
             .frame(height: 56)
             .padding(.bottom, 40)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         
        
     }
@@ -390,10 +413,11 @@ struct WallpaperOnePageDetails: View {
             
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
-        .background{
-            Color.clear
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
+        .clipped()
+        
+       
     }
     
     @ViewBuilder

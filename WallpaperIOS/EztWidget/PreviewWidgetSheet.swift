@@ -138,7 +138,7 @@ struct PreviewWidgetSheet: View {
                                                     .onSuccess { image, data, cacheType in
                                                     }
                                                     .resizable()
-                                                    .scaledToFit()
+                                                    .scaledToFill()
                                                 
                                               
                                                 
@@ -178,6 +178,7 @@ struct PreviewWidgetSheet: View {
                                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
                                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+                                    .clipped()
                                 
                                 HStack(spacing : 0){
                                     ForEach(0..<days.count, id : \.self){
@@ -232,7 +233,7 @@ struct PreviewWidgetSheet: View {
                     
                     
                     
-                }.frame(width: getRect().width - 32, height: getRect().width / 2 - 16)
+                }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .cornerRadius(16)
                     .padding(.vertical, 24)
                     .overlay{

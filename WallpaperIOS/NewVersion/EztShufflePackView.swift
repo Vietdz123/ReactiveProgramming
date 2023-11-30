@@ -84,7 +84,6 @@ struct EztShufflePackView: View {
                                                 }, label: {
                                                     ZStack(alignment: .trailing){
                                                         WebImage(url: URL(string: img3))
-                                                        
                                                            .onSuccess { image, data, cacheType in
                                                            
                                                            }

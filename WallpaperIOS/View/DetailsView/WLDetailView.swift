@@ -320,22 +320,31 @@ struct WLView: View {
                     getPhotoPermission(status: {
                         b in
                         if b {
-                            if store.isPro(){
+                            if store.isPro()  {
                                 downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                                 ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                             }else{
                           
                                 let wallpaper = viewModel.wallpapers[index]
                                 if wallpaper.content_type == "free" {
-                                    DispatchQueue.main.async {
-                                        withAnimation{
-                                            ctrlViewModel.showDialogRV.toggle()
+                                    
+                                    if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
+                                        downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                                        ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
+                                    }else{
+                                        DispatchQueue.main.async {
+                                            withAnimation{
+                                                ctrlViewModel.showDialogRV.toggle()
+                                            }
                                         }
                                     }
+                                    
+                                 
                                 }else{
+                                   
+                                    
                                     DispatchQueue.main.async {
                                         withAnimation{
-                                            
                                             ctrlViewModel.showDialogBuyCoin.toggle()
                                         }
                                         

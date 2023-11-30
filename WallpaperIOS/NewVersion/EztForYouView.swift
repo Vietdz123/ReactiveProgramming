@@ -108,7 +108,7 @@ struct EztForYouView: View {
                                     
                             }
                         
-                        }).padding(16)
+                        }).padding(.horizontal, 16)
                         
                         
                         

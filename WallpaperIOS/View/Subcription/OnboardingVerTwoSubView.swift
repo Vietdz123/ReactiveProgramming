@@ -182,13 +182,13 @@ extension OnboardingVerTwoSubView{
                     
                     
                 }else if currentPage == 6 {
-                    if store.usingOnboardingSub2(){
+                 //   if store.usingOnboardingSub2(){
                         Page_6_View_2(currentProduct: $currentProduct, navigateToHome : $navigateToHome)
                             .environmentObject(store)
-                    }else{
-                            Page_6(currentProduct: $currentProduct)
-                            .environmentObject(store)
-                    }
+//                    }else{
+//                            Page_6(currentProduct: $currentProduct)
+//                            .environmentObject(store)
+//                    }
                     
 
                     
@@ -990,39 +990,44 @@ struct Page_6_View_2 : View {
                       .padding(.top, 16)
                     
                     
-                    HStack(spacing : 0){
-                        Text("Use free trial")
-                            .mfont(17, .regular)
-                          .foregroundColor(.white)
-                          .padding(.leading, 24)
-                        Spacer()
-                        Button(action: {
-                            Firebase_log("Click_Buy_Sub_In_Onb")
+                    Button(action: {
+                        Firebase_log("Click_Buy_Sub_In_Onb")
+                        
+                        purchasesss(product: yearProductFreeTrial, string: "Onb2_Year_FreeTrial")
+                    }, label: {
+                        HStack(spacing : 0){
+                            Text("Use free trial")
+                                .mfont(17, .regular)
+                              .foregroundColor(.white)
+                              .padding(.leading, 24)
+                            Spacer()
                             
-                            purchasesss(product: yearProductFreeTrial, string: "Onb2_Year_FreeTrial")
-                        }, label: {
                             Image("off")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 44, height: 24)
                                 .padding(.trailing, 16)
-                        })
-                      
                             
-                        
-                    }
-                    .frame(height: 48)
-                    .background(
-                        Capsule()
-                            .fill(Color.white.opacity(0.2))
-                            .overlay(
-                              Capsule()
-                                .inset(by: 0.5)
-                                .stroke(.white.opacity(0.2), lineWidth: 1)
-                            )
-                      )
-                      .padding(.horizontal, 28)
-                      .padding(.top, 16)
+                       
+                          
+                                
+                            
+                        }
+                        .frame(height: 48)
+                        .background(
+                            Capsule()
+                                .fill(Color.white.opacity(0.2))
+                                .overlay(
+                                  Capsule()
+                                    .inset(by: 0.5)
+                                    .stroke(.white.opacity(0.2), lineWidth: 1)
+                                )
+                          )
+                          .padding(.horizontal, 28)
+                          .padding(.top, 16)
+                    })
+                    
+            
                     
                 }
                 
@@ -1129,6 +1134,7 @@ struct Page_6_View_2 : View {
             .onTapGesture{
                 withAnimation{
                     currentProduct = 1
+                    purchasesss(product: product, string: "Onb_Week")
                 }
             }
             .background(
@@ -1212,6 +1218,7 @@ struct Page_6_View_2 : View {
             .onTapGesture{
                 withAnimation{
                     currentProduct = 2
+                    purchasesss(product: product, string: "Onb2_Year_FreeTrial")
                 }
             }
             .background(
