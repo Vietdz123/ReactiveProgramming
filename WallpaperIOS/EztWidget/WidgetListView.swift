@@ -13,6 +13,8 @@ struct WidgetListView: View {
     @Namespace var anim
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var storeVM : MyStore
+    @EnvironmentObject  var reward : RewardAd
+    @EnvironmentObject var interAd : InterstitialAdLoader
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -102,16 +104,11 @@ struct WidgetListView: View {
                         NavigationLink(destination: {
                             WidgetDetailView(widget: widget)
                                 .environmentObject(storeVM)
+                                .environmentObject(reward)
+                                .environmentObject(interAd)
                         }, label: {
                             ItemWidgetViewFull(widget: widget)
-                                .overlay(alignment : .topTrailing){
-                                    if !storeVM.isPro(){
-                                        Image("crown")
-                                            .resizable()
-                                            .frame(width: 16, height: 16, alignment: .center)
-                                            .padding(8)
-                                    }
-                                }
+
                               
                         }).onAppear(perform: {
                             if viewModel.shouldLoadData(id: count){
@@ -135,6 +132,83 @@ struct WidgetListView: View {
     }
 }
 
-#Preview {
-    WidgetListView()
+
+struct HealthWidgetListView: View {
+   
+    let widgetList : [EztWidget]
+    @Namespace var anim
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var storeVM : MyStore
+    @EnvironmentObject  var reward : RewardAd
+    @EnvironmentObject var interAd : InterstitialAdLoader
+    var body: some View {
+        VStack(spacing : 0){
+            HStack(spacing : 0){
+            Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Image("back")
+                    .resizable()
+                    .aspectRatio( contentMode: .fit)
+                    .foregroundColor(.white)
+                    .frame(width: 24, height: 24)
+                    .containerShape(Rectangle())
+            })
+            Text("Widget".toLocalize())
+                .foregroundColor(.white)
+                .mfont(22, .bold)
+                .frame(maxWidth: .infinity).padding(.trailing, 18)
+                
+            
+        }.frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 44)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+           
+         
+            
+            ScrollView(.vertical, showsIndicators: false){
+                LazyVStack(spacing : 16 ,content: {
+                    ForEach(0..<widgetList.count, id: \.self) { count in
+                        let widget : EztWidget = widgetList[count]
+                        
+                        NavigationLink(destination: {
+                            WidgetDetailView(widget: widget)
+                                .environmentObject(storeVM)
+                                .environmentObject(reward)
+                                .environmentObject(interAd)
+                        }, label: {
+                            
+                            Image("\(widget.id)")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+                            .overlay{
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.white.opacity(0.4), lineWidth : 1)
+                            }
+                        
+                            .clipShape(
+                                RoundedRectangle(cornerRadius: 16)
+                            )
+
+                              
+                        })
+                        
+                    }
+                })
+            }
+            .refreshable {
+                
+            }
+            
+            
+        
+        
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .edgesIgnoringSafeArea(.bottom)
+            .addBackground()
+    }
 }
+
+

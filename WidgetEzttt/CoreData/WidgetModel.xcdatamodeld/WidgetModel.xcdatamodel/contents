@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="22G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CategoryHome" representedClassName="CategoryHome" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="currentCheckImageRoutine" optional="YES" attributeType="Transformable" valueTransformerName="ArrayTransformer"/>
+        <attribute name="currentIndexDigitalFriend" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="delayAnimation" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="digitalType" optional="YES" attributeType="String"/>
+        <attribute name="folderType" optional="YES" attributeType="String"/>
+        <attribute name="hasSound" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isCheckedRoutine" optional="YES" attributeType="Transformable" valueTransformerName="ArrayBoolTransformer"/>
+        <attribute name="isFirstImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="numberCheckedImages" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numberImagesRect" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numberImagesSquare" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="routineType" optional="YES" attributeType="String"/>
+        <attribute name="shouldPlaySound" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="soundType" optional="YES" attributeType="String"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemHome"/>
+    </entity>
+    <entity name="CategoryLock" representedClassName="CategoryLock" syncable="YES" codeGenerationType="class">
+        <attribute name="creationDate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="delayAnimation" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="familyType" optional="YES" attributeType="String"/>
+        <attribute name="fontSize" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fontType" optional="YES" attributeType="String"/>
+        <attribute name="hasSound" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isFirstImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lockType" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="numberImagesRect" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numberImagesSquare" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="soundType" optional="YES" attributeType="String"/>
+        <attribute name="textAlignment" optional="YES" attributeType="String"/>
+        <attribute name="textColor" optional="YES" attributeType="String"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemHome"/>
+    </entity>
+    <entity name="HealthItem" representedClassName="HealthItem" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ItemHome" representedClassName="ItemHome" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="family" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="routine_type" optional="YES" attributeType="String"/>
+    </entity>
+</model>

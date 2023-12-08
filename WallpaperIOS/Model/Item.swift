@@ -8,8 +8,6 @@
 import SwiftUI
 
 
-
-
 struct CategoryWithData : Codable {
     let category : Category
     var wallpapers : [Wallpaper] = []

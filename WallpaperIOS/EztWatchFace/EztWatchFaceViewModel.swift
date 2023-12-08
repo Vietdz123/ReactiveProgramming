@@ -13,7 +13,7 @@ class EztWatchFaceViewModel: SpViewModel {
         
         override func getWallpapers() {
             
-                let urlString = "\(domain)api/v1/image-specials?limit=\(AppConfig.limit)\(getSortParamStr())&offset=\(currentOffset)&with=special_content+type,id,title&where=special_content_v2_id+5\(AppConfig.forOnlyIOS)"
+            let urlString = "\(domain)\(APIHelper.WATCH_FACE)limit=\(AppConfig.limit)\(getSortParamStr())&offset=\(currentOffset)\(AppConfig.forOnlyIOS)"
                 
                 guard let url  = URL(string: urlString) else {
                     return

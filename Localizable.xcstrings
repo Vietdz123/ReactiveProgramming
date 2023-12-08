@@ -7,12 +7,6 @@
     " %@" : {
 
     },
-    " %d" : {
-
-    },
-    " %lld" : {
-
-    },
     "-50%" : {
 
     },
@@ -172,6 +166,12 @@
       }
     },
     "%@" : {
+
+    },
+    "%@ hrs" : {
+
+    },
+    "%@ oz" : {
 
     },
     "%@/month" : {
@@ -359,13 +359,16 @@
         }
       }
     },
-    "%d" : {
-
-    },
     "%lf" : {
 
     },
     "%lld" : {
+
+    },
+    "+ 1 hr" : {
+
+    },
+    "+ 12 oz" : {
 
     },
     "|" : {
@@ -479,6 +482,9 @@
         }
       }
     },
+    "10:09" : {
+
+    },
     "52" : {
 
     },
@@ -528,6 +534,12 @@
           }
         }
       }
+    },
+    "2345" : {
+
+    },
+    "ACTIVE ENERGY" : {
+
     },
     "Add a new wallpaper." : {
       "extractionState" : "manual",
@@ -671,6 +683,7 @@
       }
     },
     "Annually" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -766,6 +779,7 @@
 
     },
     "Auto-renewable. Cancel anytime." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -953,6 +967,7 @@
       }
     },
     "BEST VALUE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1183,6 +1198,12 @@
       }
     },
     "ButtonAppIntent" : {
+
+    },
+    "ButtonAppIntentSleep" : {
+
+    },
+    "ButtonAppIntentWater" : {
 
     },
     "BUY SUBSCRIPTION" : {
@@ -1514,6 +1535,7 @@
       }
     },
     "Choose your subscription plan:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1848,6 +1870,7 @@
       }
     },
     "Continue" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2036,6 +2059,9 @@
         }
       }
     },
+    "Depth Effect Category" : {
+
+    },
     "Digital Friend" : {
       "localizations" : {
         "de" : {
@@ -2129,7 +2155,11 @@
         }
       }
     },
+    "DISTANCE TRACKER" : {
+
+    },
     "Downloaded" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2221,6 +2251,9 @@
         }
       }
     },
+    "Dynamic Island Category" : {
+
+    },
     "Easily cancel anytime." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2269,6 +2302,7 @@
       }
     },
     "Emoji:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2300,6 +2334,7 @@
 
     },
     "Favorited" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2346,6 +2381,7 @@
       }
     },
     "Favorites" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2674,6 +2710,7 @@
       }
     },
     "Give Your Phone A Brand-New Look" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2766,10 +2803,20 @@
         }
       }
     },
+    "Health Viet" : {
+
+    },
+    "Health Widget" : {
+
+    },
+    "HealthConfigurationAppIntent" : {
+
+    },
     "Hello, World!" : {
 
     },
     "Home" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2862,8 +2909,16 @@
         }
       }
     },
+    "How to Add Shuffle Packs" : {
+
+    },
+    "How to Add Wallpaper" : {
+
+    },
+    "How to Add Watch Face" : {
+
+    },
     "How to Add Widget" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2956,6 +3011,9 @@
       }
     },
     "Image Viet" : {
+
+    },
+    "Interact Widget" : {
 
     },
     "Interactive Widgets" : {
@@ -3221,6 +3279,12 @@
           }
         }
       }
+    },
+    "Kcal" : {
+
+    },
+    "Km" : {
+
     },
     "Last chance for your gift..." : {
       "extractionState" : "stale",
@@ -3842,6 +3906,7 @@
       }
     },
     "More Options" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4070,6 +4135,7 @@
       }
     },
     "My Widget" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4499,6 +4565,7 @@
       }
     },
     "Only %@ per year." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4871,7 +4938,16 @@
         }
       }
     },
+    "Pick a Health" : {
+
+    },
     "Pick a image" : {
+
+    },
+    "Play a sound" : {
+
+    },
+    "Plays a widget sound" : {
 
     },
     "Please don’t close the page" : {
@@ -5239,6 +5315,9 @@
       }
     },
     "RandomRoutinButtonIntent" : {
+
+    },
+    "Rating Wallive" : {
 
     },
     "Remove Ads" : {
@@ -5890,6 +5969,9 @@
         }
       }
     },
+    "Share Wallive" : {
+
+    },
     "Show me" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6075,6 +6157,9 @@
           }
         }
       }
+    },
+    "Shuffle Packs Category" : {
+
     },
     "Simply watch ads to" : {
       "extractionState" : "stale",
@@ -6265,6 +6350,7 @@
       }
     },
     "splash_text" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -6406,6 +6492,12 @@
           }
         }
       }
+    },
+    "STEP COUNTER" : {
+
+    },
+    "Steps" : {
+
     },
     "Support" : {
       "localizations" : {
@@ -6925,6 +7017,12 @@
     "Task ID" : {
 
     },
+    "Task ID Sleep" : {
+
+    },
+    "Task ID Water" : {
+
+    },
     "Term of use" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -7098,9 +7196,6 @@
         }
       }
     },
-    "The live wallpaper you downloaded will be here" : {
-
-    },
     "The subscription will be renewed automatically. You can cancel anytime." : {
       "localizations" : {
         "de" : {
@@ -7146,9 +7241,6 @@
           }
         }
       }
-    },
-    "The wallpaper you downloaded will be here" : {
-
     },
     "Then %@/year. No Payment Now" : {
       "localizations" : {
@@ -7294,6 +7386,7 @@
       }
     },
     "Time:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7384,6 +7477,9 @@
           }
         }
       }
+    },
+    "Today" : {
+
     },
     "Top Wallpapers" : {
       "localizations" : {
@@ -7587,6 +7683,9 @@
           }
         }
       }
+    },
+    "TUE 16" : {
+
     },
     "Tutorial" : {
       "localizations" : {
@@ -8054,6 +8153,7 @@
       }
     },
     "Upload at: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8289,6 +8389,7 @@
       }
     },
     "Wallpaper" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8761,6 +8862,7 @@
       }
     },
     "Weekly" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

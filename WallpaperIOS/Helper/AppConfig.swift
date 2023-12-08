@@ -10,6 +10,8 @@ import StoreKit
 
 struct AppConfig {
     static let APP_NAME : String = "Wallive"
+    static let APP_IN_STORE_ID : String = "6449699978"
+    
     static let limit : Int = 15
     static let forOnlyIOS = "&mobile_app_id=2&app=2"
     
@@ -46,12 +48,7 @@ extension View{
     }
 }
 
-//extension String{
-//    func localizable() -> String
-//    {
-//        return NSLocalizedString("splash_text", comment: "")
-//    }
-//}
+
 
 
 extension UIApplication {

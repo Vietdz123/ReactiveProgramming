@@ -10,8 +10,8 @@ import FirebaseCore
 import FirebaseAnalytics
 import FirebaseMessaging
 import FirebaseRemoteConfig
-
-
+import AVFoundation
+import UserMessagingPlatform
 class AppDelegate : NSObject, UIApplicationDelegate {
     let FLURRY_API : String = "QZVMFBWBYKFV6QZPY5HM"
     
@@ -19,6 +19,18 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         print("MYSTORE--- FirebaseApp.configure() init")
         FirebaseApp.configure()
 
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("DEBUG: setup success")
+        } catch let error as NSError {
+            print("Setting category to AVAudioSessionCategoryPlayback failed: \(error)")
+        }
+        
+        
+        
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
                 Messaging.messaging().delegate = self
@@ -31,6 +43,8 @@ class AppDelegate : NSObject, UIApplicationDelegate {
             }
         }
         
+        requestGDPR()
+        
         return true
     }
     
@@ -39,7 +53,33 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         Messaging.messaging().setAPNSToken(deviceToken, type: .unknown)
     }
     
-    
+    func requestGDPR() {
+        print("GDPR requestGDPR")
+        let parameters = UMPRequestParameters()
+        parameters.tagForUnderAgeOfConsent = false
+        let debugSettings = UMPDebugSettings()
+        debugSettings.geography = .EEA
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
+          [weak self] requestConsentError in
+          guard let self else { return }
+
+          if let consentError = requestConsentError {
+            // Consent gathering failed.
+            return print("Error: \(consentError.localizedDescription)")
+          }
+
+//          UMPConsentForm.loadAndPresentIfRequired(from: getRe) {
+//            [weak self] loadAndPresentError in
+//            guard let self else { return }
+//
+//            if let consentError = loadAndPresentError {
+//              return print("Error: \(consentError.localizedDescription)")
+//            }
+//
+//           
+//          }
+        }
+    }
   
 }
 
@@ -48,19 +88,12 @@ struct WallpaperIOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-            
-//            EztSubcriptionView()
-            
-//            NavigationView{
-//                EztMainView()
-//            } .preferredColorScheme(.dark)
-               
-            
-     
+
             
             SplashView()
                 .statusBarHidden(false)
                 .preferredColorScheme(.dark)
+                
               
         }
     }

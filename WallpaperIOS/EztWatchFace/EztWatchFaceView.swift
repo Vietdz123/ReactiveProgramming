@@ -12,6 +12,8 @@ struct EztWatchFaceView: View {
     
     @StateObject var viewModel : EztWatchFaceViewModel = .init()
     @EnvironmentObject var store : MyStore
+    @EnvironmentObject  var reward : RewardAd
+    @EnvironmentObject var interAd : InterstitialAdLoader
     var body: some View {
 
         
@@ -30,6 +32,9 @@ struct EztWatchFaceView: View {
                         
                         NavigationLink(destination: {
                             WatchFaceDetailView(wallpaper: wallpaper)
+                                .environmentObject(store)
+                                .environmentObject(reward)
+                                .environmentObject(interAd)
                         }, label: {
                             
 
@@ -41,9 +46,10 @@ struct EztWatchFaceView: View {
                                             placeHolderImage()
                                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                         }
-                                        .scaledToFill()
-                                        .cornerRadius(32)
-                                        .padding(12)
+                                      //  .scaledToFill()
+                                        .cornerRadius(30)
+                                        .padding(11)
+                                    
                                 }
                                 
                            
@@ -56,24 +62,25 @@ struct EztWatchFaceView: View {
                                             .stroke(.white.opacity(0.3), lineWidth: 3)
 
                                 )
-                                .overlay(
-                                    ZStack{
-                                        if !store.isPro(){
-                                            Image("crown")
-                                                .resizable()
-                                                .frame(width: 16, height: 16, alignment: .center)
-                                                .padding(6)
-                                        }
-                                    }
-                                    
-                                 
-                                           
-                                    
-                                    , alignment: .topTrailing
-                                )
-                            
-                            
-                            
+                                .overlay(alignment: .topTrailing, content: {
+                                    VStack(alignment: .trailing, spacing : 0){
+                                        Text("TUE 16")
+                                        .mfont(11, .bold, line: 1)
+                                          .multilineTextAlignment(.trailing)
+                                          .foregroundColor(.white)
+                                          .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                        
+                                        Text("10:09")
+                                            .mfont(32, .regular, line: 1)
+                                          .multilineTextAlignment(.trailing)
+                                          .foregroundColor(.white)
+                                          .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                          .offset(y : -8)
+                                        
+                                        
+                                    }.padding(.top, 28)
+                                        .padding(.trailing , 24)
+                                })
                         })
                         .onAppear(perform: {
                             if i == ( viewModel.wallpapers.count - 6 ){

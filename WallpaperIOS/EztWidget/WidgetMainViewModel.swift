@@ -11,6 +11,9 @@ enum FetchWidgetType {
     case ALL
     case DigitalFriend
     case Routine
+    case Sound
+    case Gif
+    case DecisionMaker
     
     
 }
@@ -21,16 +24,13 @@ class WidgetMainViewModel: ObservableObject {
     @Published var currentOffset : Int = 0
     @Published var type : FetchWidgetType = .ALL
     @Published var sort : SpSort = .NEW
-   
-   
-    
     
     init(){
-        
+
     }
     
     func getWidgets(){
-        let urlString = "https://widget.eztechglobal.com/api/v1/widgets?with=category+id,name-apps+id,name-tags+id,name\(getFetchWidgetType())&limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())"
+        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())"
            
            guard let url  = URL(string: urlString) else {
                return
@@ -46,7 +46,7 @@ class WidgetMainViewModel: ObservableObject {
                    return
                }
                print("WidgetViewModel has data")
-               let itemsCurrentLoad = try? JSONDecoder().decode(EztWidgetResponse.self, from: data)
+               let itemsCurrentLoad = try? JSONDecoder().decode(EztWidgetHomeResponse.self, from: data)
                
                DispatchQueue.main.async {
                    self.widgets.append(contentsOf: itemsCurrentLoad?.data.data  ?? [])
@@ -71,6 +71,12 @@ class WidgetMainViewModel: ObservableObject {
             return "&where=category_id+2"
         case .Routine:
             return "&where=category_id+3"
+        case .Sound :
+            return "&where=category_id+4"
+        case .Gif:
+            return "&where=category_id+5"
+        case .DecisionMaker:
+            return "&where=category_id+7"
         }
        
     }

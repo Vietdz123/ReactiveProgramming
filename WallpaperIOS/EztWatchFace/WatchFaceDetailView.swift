@@ -9,8 +9,14 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct WatchFaceDetailView: View {
-    let wallpaper : SpWallpaper
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject  var reward : RewardAd
+    @EnvironmentObject var store : MyStore
+    @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    let wallpaper : SpWallpaper
+    @State var showBuySubAtScreen : Bool = false
+  
     var body: some View {
         
         
@@ -48,23 +54,21 @@ struct WatchFaceDetailView: View {
              
                 HStack{
                     Button(action: {
-                    
+                        shareLinkApp()
                     }, label: {
                         Image("share2")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                    }).padding(.trailing, 24)
-                    
-                    NavigationLink(destination: {
-                    WatchFaceTutorialView()
-                    }, label: {
-                        Image("help")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
                     })
+                    
+                    Image("crown")
+                        .resizable()
+                        .frame(width: 20, height: 20, alignment: .center)
+                        .frame(width: 56, height: 24)
+                    
                     Spacer()
+             
                  
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
@@ -91,6 +95,25 @@ struct WatchFaceDetailView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: .infinity, maxHeight : .infinity)
+                            .overlay(alignment: .trailing){
+                                VStack(alignment: .trailing, spacing : 0){
+                                    Text("TUE 16")
+                                    .mfont(11, .bold, line: 1)
+                                      .multilineTextAlignment(.trailing)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                    
+                                    Text("10:09")
+                                        .mfont(32, .regular, line: 1)
+                                      .multilineTextAlignment(.trailing)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                      .offset(y : -8)
+                                    
+                                    
+                                }.padding(.trailing, 8)
+                                    .padding(.bottom, 72)
+                            }
                             .padding(.leading, 14)
                             .padding(.trailing, 21)
                         Image("watchface_mockup")
@@ -104,9 +127,13 @@ struct WatchFaceDetailView: View {
                     .padding(.vertical, 24)
              
                 Button(action: {
-                    
+                    if store.isPro(){
+                        downloadImageToGallery(title: "Watch_\(wallpaper.id)", urlStr: wallpaper.path.first?.path.full ?? "")
+                    }else{
+                        showBuySubAtScreen.toggle()
+                    }
                   
-                    downloadImageToGallery(title: "Watch_\(wallpaper.id)", urlStr: wallpaper.path.first?.path.full ?? "")
+                    
                     
                    
                 }, label: {
@@ -131,13 +158,25 @@ struct WatchFaceDetailView: View {
                 )
                 .cornerRadius(16)
             
-          
+            if showBuySubAtScreen {
+                SpecialSubView( onClickClose: {
+                    showBuySubAtScreen = false
+                })
+                .environmentObject(store)
+            }
             
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .addBackground()
         .edgesIgnoringSafeArea(.bottom)
+        .onAppear(perform: {
+            if !store.isPro(){
+                interAd.showAd {
+                    
+                }
+            }
+        })
         
      
        

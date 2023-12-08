@@ -23,8 +23,5 @@ extension View{
             .offset(y : -2)
     }
     
-    func coinfont(_ size : CGFloat, _ k2d : K2D) -> some View{
-        self.font(.custom(k2d.rawValue, size: size))
-            .offset(y : -1)
-    }
+   
 }

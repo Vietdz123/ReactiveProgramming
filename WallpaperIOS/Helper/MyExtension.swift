@@ -122,6 +122,21 @@ extension View{
         getRootViewController().view.addSubview(toastViewController.view)
     }
     
+    func shareLinkApp(){
+        guard let url = URL(string: "https://apps.apple.com/vn/app/wallive-live-wallpaper-maker/id6449699978") else{
+            return
+        }
+        
+        shareLink(url: url)
+    }
+    
+    func shareLink(url: URL) {
+           let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+           UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+       }
+       
+
+    
 }
 struct VisualEffectView: UIViewRepresentable {
     var effect: UIVisualEffect?
