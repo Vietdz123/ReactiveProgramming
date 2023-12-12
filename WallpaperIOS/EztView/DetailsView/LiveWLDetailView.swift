@@ -16,7 +16,7 @@ struct LiveWLView: View {
     @EnvironmentObject var store : MyStore
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var inter : InterstitialAdLoader
- 
+    
     @Environment(\.presentationMode) var presentationMode
     @AppStorage("current_coin", store: .standard) var currentCoin = 0
     //@AppStorage("first_time_video_wl", store: .standard) var firsttimeliveWL : Bool = true
@@ -98,34 +98,37 @@ struct LiveWLView: View {
                                 
                                 Spacer()
                                 
-                                if !store.isPro(){
-                                    Image("crown")
-                                        .resizable()
-                                        .frame(width: 18, height: 18, alignment: .center)
-                                       
-                       
+                                HStack(spacing : 0){
+                                    //                                    ZStack{
+                                    //                                        if !store.isPro() && viewModel.wallpapers[currentIndex].content_type == "private" {
+                                    //                                            Button(action: {
+                                    //                                                ctrlViewModel.showContentPremium = true
+                                    //                                            }, label: {
+                                    //                                                Image("crown")
+                                    //                                                    .resizable()
+                                    //                                                    .frame(width: 18, height: 18, alignment: .center)
+                                    //                                                    .frame(width: 50, height: 44)
+                                    //                                            })
+                                    //
+                                    //
+                                    //                                        }
+                                    //
+                                    //                                    }
+                                    //
+                                    Button(action: {
+                                        ctrlViewModel.showPreview.toggle()
+                                        ctrlViewModel.showControll.toggle()
+                                    }, label: {
+                                        Image("preview")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 24, height: 24)
+                                            .padding(.trailing, 16)
+                                            .padding(.leading, 8)
+                                    })
+                                    
                                 }
                                 
-                                
-                                Button(action: {
-                                    ctrlViewModel.showInfo.toggle()
-                                }, label: {
-                                    Image( "info")
-                                        .resizable()
-                                        .aspectRatio( contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .contentShape(Rectangle())
-                                }).padding(.horizontal, 16)
-                                
-                                Button(action: {
-                                    ctrlViewModel.showTuto.toggle()
-                                }, label: {
-                                    Image( "help")
-                                        .resizable()
-                                        .aspectRatio( contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .contentShape(Rectangle())
-                                }).padding(.trailing, 20)
                                 
                                 
                                 
@@ -136,118 +139,78 @@ struct LiveWLView: View {
                                 .padding(.top, getSafeArea().top)
                             Spacer()
                             
-                            HStack{
-                                Button(action: {
-                                  
-                                }, label: {
-                                    Image(  "heart")
-                                        .resizable()
-                                        .foregroundColor(.white)
-                                        .aspectRatio( contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .frame(width: 48, height: 48)
-                                        .containerShape(Circle())
-                                        .background(
-                                            Circle()
-                                                .fill(Color.mblack_bg.opacity(0.7))
-                                                .frame(width: 48, height: 48)
-                                        )
-                                    
-                                }) .frame(width: 48, height: 48)
+                            
+                            
+                            
+                            
+                            Button(action: {
                                 
                                 
                                 
-                                Button(action: {
-                                    
-                                    
-                                    
-                                    getPhotoPermission(status: {
-                                        b in
-                                        if b {
-                                            if store.isPro()  {
+                                getPhotoPermission(status: {
+                                    b in
+                                    if b {
+                                        if store.isPro()  {
+                                            downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
+                                                                    urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
+                                                                    urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
+                                            ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+                                            
+                                            
+                                        }else{
+                                            
+                                            if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
                                                 downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
                                                                         urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
                                                                         urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
                                                 ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                                
-                                                
                                             }else{
                                                 
-                                                if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
-                                                    downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                                                            urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                                                            urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                                                    ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                                }else{
-                                                    
-                                                    
-                                                    DispatchQueue.main.async {
-                                                        withAnimation{
-                                                            ctrlViewModel.showDialogDownload.toggle()
-                                                        }
+                                                
+                                                DispatchQueue.main.async {
+                                                    withAnimation{
+                                                        ctrlViewModel.showDialogDownload.toggle()
                                                     }
                                                 }
-                                                
                                             }
                                             
                                         }
-                                    })
-                                    //
-                                    
-                                    
-                                    
-                                }, label: {
-                                    HStack{
-                                        
-                                        
-                                        Text("Save")
-                                            .mfont(16, .bold)
-                                            .foregroundColor(.mblack_fg)
-                                            .overlay(
-                                                ZStack{
-                                                    if ctrlViewModel.isDownloading{
-                                                        EZProgressView()
-                                                    }
-                                                }.offset(x : -36)
-                                                , alignment: .leading
-                                            )
-                                    }
-                                    
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 48)
-                                    .contentShape(Rectangle())
-                                    .background(
-                                        Capsule().fill(Color.main)
-                                    )
-                                }).padding(.horizontal, 16)
-                                
-                                
-                                Button(action: {
-                                    withAnimation{
-                                        
-                                        ctrlViewModel.showControll = false
-                                        ctrlViewModel.showPreview = true
                                         
                                     }
-                                }, label: {
-                                    Image("preview")
-                                        .resizable()
-                                        .foregroundColor(.white)
-                                        .aspectRatio( contentMode: .fit)
-                                        .frame(width: 24, height: 24)
-                                        .frame(width: 48, height: 48)
-                                        .background(
-                                            Circle()
-                                                .fill(Color.mblack_bg.opacity(0.7))
-                                                .frame(width: 48, height: 48)
+                                })
+                                //
+                                
+                                
+                                
+                            }, label: {
+                                HStack{
+                                    
+                                    
+                                    Text("Save")
+                                        .mfont(16, .bold)
+                                        .foregroundColor(.mblack_fg)
+                                        .overlay(
+                                            ZStack{
+                                                if ctrlViewModel.isDownloading{
+                                                    EZProgressView()
+                                                }
+                                            }.offset(x : -36)
+                                            , alignment: .leading
                                         )
-                                }) .frame(width: 48, height: 48)
-                                    .containerShape(Circle())
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .padding(.bottom, (  96 )  - getSafeArea().bottom)
+                                }
+                                
+                                .frame(maxWidth: .infinity)
+                                
+                                .frame(width: 240 , height: 48)
+                                .contentShape(Rectangle())
+                                .background(
+                                    Capsule().fill(Color.main)
+                                )
+                            }) .padding(.bottom, 48)
+                            
+                            
+                            
+                            
                             
                         }.frame(maxWidth: .infinity, maxHeight: .infinity)
                         
@@ -337,53 +300,6 @@ struct LiveWLView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
-        .overlay(
-            ZStack(alignment: .bottom){
-                if ctrlViewModel.showInfo {
-                    //   if let wallpaper = viewModel.liveWallpapers[currentIndex] {
-                    Color.black.opacity(0.5).ignoresSafeArea()
-                        .onTapGesture {
-                            ctrlViewModel.showInfo = false
-                        }
-                    
-                    VStack(spacing : 8){
-                        Text("Tag: \(getTag(wl:viewModel.liveWallpapers[currentIndex]))")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text("Author: \(viewModel.liveWallpapers[currentIndex].author ?? "Unknow")")
-                            .foregroundColor(.white)
-                            .mfont(16, .regular)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("Liscense: \(viewModel.liveWallpapers[currentIndex].license ?? "Unknow")")
-                            .foregroundColor(.white)
-                            .mfont(16, .regular)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-                        .overlay(
-                            Button(action: {
-                                ctrlViewModel.showInfo = false
-                                
-                            }, label: {
-                                Image(systemName: "xmark")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width : 14, height: 14)
-                                    .padding(12)
-                                
-                            }), alignment: .topTrailing
-                        )
-                        .background(
-                            Color.mblack_bg
-                                .opacity(0.9)
-                        )
-                        .cornerRadius(16)
-                        .padding()
-                    //  }
-                }
-            }
-            
-        )
         
         .sheet(isPresented: $ctrlViewModel.showTuto, content: {
             TutorialContentView()
@@ -391,13 +307,16 @@ struct LiveWLView: View {
         })
         .overlay{
             if ctrlViewModel.showDialogDownload{
-                //     if let liveWL = viewModel.liveWallpapers[currentIndex] {
-                Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
                 
-                //   }
+                Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
                 
             }
             
+        }
+        .overlay{
+            if ctrlViewModel.showGifView{
+                GiftView()
+            }
         }
         
         
@@ -406,36 +325,47 @@ struct LiveWLView: View {
     }
     
     @ViewBuilder
+    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+        if giftSubType == 0 {
+            GiftSub_1_View(show: $ctrlViewModel.showGifView)
+        }else if giftSubType == 1{
+            GiftSub_2_View(show: $ctrlViewModel.showGifView)
+        }else{
+            GifSub_3_View(show: $ctrlViewModel.showGifView)
+        }
+    }
+    
+    @ViewBuilder
     func Dialog(liveWL : LiveWallpaper) -> some View{
         
-            if remoteCf_live_using_coin {
-              
-                SpecialSubView(onClickClose: {
-                    ctrlViewModel.showDialogDownload = false
-                })
-
-            }else{
-                WatchRVtoGetWLDialog(urlStr: liveWL.image_variations.preview_small.url, show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
-                    if b{
-                        ctrlViewModel.showDialogDownload.toggle()
-                        downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                                urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                                urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                        ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                    }else{
-                        DispatchQueue.main.async {
-                            showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
-                        }
-                    }
-                    
-                }, clickBuyPro: {
+        if remoteCf_live_using_coin {
+            
+            SpecialSubView(onClickClose: {
+                ctrlViewModel.showDialogDownload = false
+            })
+            
+        }else{
+            WatchRVtoGetWLDialog(urlStr: liveWL.image_variations.preview_small.url, show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
+                if b{
                     ctrlViewModel.showDialogDownload.toggle()
-                    ctrlViewModel.navigateView.toggle()
-                }).environmentObject(store)
-                    .environmentObject(reward)
-            }
-            
-            
+                    downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
+                                            urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
+                                            urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
+                    ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+                }else{
+                    DispatchQueue.main.async {
+                        showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                    }
+                }
+                
+            }, clickBuyPro: {
+                ctrlViewModel.showDialogDownload.toggle()
+                ctrlViewModel.navigateView.toggle()
+            }).environmentObject(store)
+                .environmentObject(reward)
+        }
+        
+        
         
         
     }
@@ -459,77 +389,60 @@ struct LiveWLView: View {
                     if let urlVideo{
                         print("LIVE URL VIDEO in Sanbox: ", urlVideo.absoluteString)
                         
-                        Task{
-                            let livePhoto = try await LivePhoto.sharedInstance.assemble(photoURL: urlImage , videoURL: urlVideo) {  _ in
+                        
+                        
+                        
+                        LivePhoto.generate(from: urlImage, videoURL: urlVideo, progress: {
+                            _ in
+                        }, completion: {_,resources in
+                            if let resources{
+                                
+                                print("LIVE RESOURCE video : \(resources.pairedVideo.absoluteString)")
+                                print("LIVE RESOURCE image : \(resources.pairedImage.absoluteString)")
+                                
+                                LivePhoto.saveToLibrary(resources, completion: {
+                                    b in
+                                    if b{
+                                        DispatchQueue.main.async {
+                                            ctrlViewModel.isDownloading = false
+                                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                                            
+                                            //                                                                    if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
+                                            //                                                                        UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
+                                            //                                                                        ctrlViewModel.showTuto = true
+                                            //                                                                    }
+                                            
+                                            let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
+                                            UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
+                                            
+                                            if downloadCount == 1 {
+                                                showRateView()
+                                            }else{
+                                                if !store.isPro()  {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                                                        ctrlViewModel.showGifView.toggle()
+                                                        ctrlViewModel.changeSubType()
+                                                    })
+                                                }
+                                            }
+                                            
+                                            
+                                        }
+                                    }else{
+                                        DispatchQueue.main.async {
+                                            ctrlViewModel.isDownloading = false
+                                            showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                                        }
+                                    }
+                                })
+                            }else{
+                                DispatchQueue.main.async {
+                                    ctrlViewModel.isDownloading = false
+                                    showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                                }
                             }
                             
-                            PHPhotoLibrary.shared().performChanges({
-                                       let creationRequest = PHAssetCreationRequest.forAsset()
-                                       let options = PHAssetResourceCreationOptions()
-                                creationRequest.addResource(with: PHAssetResourceType.pairedVideo, fileURL: livePhoto.1, options: options)
-                                creationRequest.addResource(with: PHAssetResourceType.photo, fileURL: livePhoto.0, options: options)
-                                   }, completionHandler: { (success, error) in
-                                       if error != nil {
-                                           print(error as Any)
-                                       }
-                                       showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                       ctrlViewModel.isDownloading = false
-                                    //   completion(success)
-                                   })
-                            
-                        }
-                        
-//                        Task { @MainActor in
-//                         
-//                            LivePhoto.sharedInstance.assemble(photoURL: urlImage ,videoURL: urlVideo ,progress: {
-//                                _ in
-//                            })
-//
-//                        }
-
-                        
-//                        LivePhoto.generate(from: urlImage, videoURL: urlVideo, progress: {
-//                                                    _ in
-//                                                }, completion: {_,resources in
-//                                                    if let resources{
-//                                                        
-//                                                        print("LIVE RESOURCE video : \(resources.pairedVideo.absoluteString)")
-//                                                        print("LIVE RESOURCE image : \(resources.pairedImage.absoluteString)")
-//                                                        
-//                                                        LivePhoto.saveToLibrary(resources, completion: {
-//                                                            b in
-//                                                            if b{
-//                                                                DispatchQueue.main.async {
-//                                                                    ctrlViewModel.isDownloading = false
-//                                                                    showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-//                                                                    
-//                                                                    if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-//                                                                        UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-//                                                                        ctrlViewModel.showTuto = true
-//                                                                    }
-//                        
-//                                                                    let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-//                                                                    UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-//                                                                    if !store.isPro() && downloadCount == 1 {
-//                                                                        ctrlViewModel.navigateView.toggle()
-//                                                                    }
-//                        
-//                                                                }
-//                                                            }else{
-//                                                                DispatchQueue.main.async {
-//                                                                    ctrlViewModel.isDownloading = false
-//                                                                    showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
-//                                                                }
-//                                                            }
-//                                                        })
-//                                                    }else{
-//                                                        DispatchQueue.main.async {
-//                                                            ctrlViewModel.isDownloading = false
-//                                                            showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
-//                                                        }
-//                                                    }
-//                        
-//                                                })
+                        })
                         
                     }else{
                         ctrlViewModel.isDownloading = false

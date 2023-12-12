@@ -82,11 +82,12 @@ struct EztDynamicIslslandCateView: View {
                                     ScrollView(.horizontal, showsIndicators: false){
                                         HStack(spacing : 8){
                                             Spacer().frame(width: 8)
-                                            ForEach(data.wallpapers, id: \.id){
-                                                wallpaper in
+                                            ForEach(0..<data.wallpapers.count, id: \.self){
+                                                stt in
+                                                let wallpaper = data.wallpapers[stt]
                                                 let string : String = wallpaper.thumbnail?.path.preview ?? wallpaper.path.first?.path.small ?? ""
                                                 NavigationLink(destination: {
-                                                    SPWLOnePageDetailView(wallpaper: wallpaper)
+                                                    SPWLOnePageDetailView(wallpapers: data.wallpapers, index: stt)
                                                         .environmentObject(store)
                                                         .environmentObject(interAd)
                                                         .environmentObject(rewardAd)
@@ -109,14 +110,7 @@ struct EztDynamicIslslandCateView: View {
                                                                 .frame(width: 108, height: 216)
                                                                 .cornerRadius(8)
                                                         )
-//                                                        .overlay(alignment : .topTrailing){
-//                                                            if !store.isPro(){
-//                                                                Image("crown")
-//                                                                    .resizable()
-//                                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                                    .padding(8)
-//                                                            }
-//                                                        }
+
                                                 })
 
                                             }

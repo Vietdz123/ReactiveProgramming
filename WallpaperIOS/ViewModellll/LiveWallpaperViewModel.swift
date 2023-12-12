@@ -10,7 +10,7 @@ import SwiftUI
 class LiveWallpaperViewModel: ObservableObject {
     @Published var liveWallpapers : [LiveWallpaper] = []
     @Published var offsetCount : Int = 0
-    @Published var homeSortedBy : Sorted = .Popular
+    @Published var homeSortedBy : Sorted = .Newest
     @Published var domain : String 
    
     init(){

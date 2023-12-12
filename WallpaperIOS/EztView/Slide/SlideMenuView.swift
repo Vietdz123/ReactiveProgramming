@@ -296,10 +296,10 @@ struct SlideMenuView: View {
                             if store.isNewVeriosn(){
                                 VStack(alignment : .leading ,spacing : 8){
                                     Text("We've got an app version with a better experience for you, update the app to enjoy!")
-                                        .mfont(13, .regular)
+                                        .mfont(13, .regular, line : 3)
                                       .foregroundColor(.white)
                                       .frame(maxWidth: .infinity, alignment: .topLeading)
-                                    
+                                     
                                     Button(action: {
                                         rateApp()
                                     }, label: {

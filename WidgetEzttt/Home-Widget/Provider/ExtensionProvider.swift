@@ -120,6 +120,10 @@ extension HomeProvider {
             image = category?.getRandomImage(images: images) ?? UIImage(named: AssetConstant.imagePlacehodel)!
         }
         
+        if folderType == .makeDecision {
+            image = category?.getRandomImage(images: images) ?? UIImage(named: AssetConstant.imagePlacehodel)!
+        }
+        
         let type = configuration.imageSrc.getFolderType()
         let btnCLModel = configuration.imageSrc.getButtonChecklistModel()
         let routineType = configuration.imageSrc.getRoutineType()
@@ -136,7 +140,7 @@ extension HomeProvider {
         entries.append(firstEntry)
         
         
-        if soundType == .circle && folderType != .makeDecision{
+        if soundType == .circle && folderType != .makeDecision {
             var count: Double = 1
             
             while category?.isFirstImage == false {

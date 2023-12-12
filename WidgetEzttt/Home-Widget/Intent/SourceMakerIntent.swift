@@ -38,6 +38,7 @@ struct SoundMakerIntent: AudioPlaybackIntent {
 
 class SoundPlayer: NSObject {
     static let shared = SoundPlayer()
+    var urlSound: URL?
     var observer: NSKeyValueObservation!
     
     let player: AVPlayer = AVPlayer()
@@ -53,17 +54,23 @@ class SoundPlayer: NSObject {
         }
         
         print("DEBUG: goto play")
-
-        let item = AVPlayerItem(url: url)
-        player.replaceCurrentItem(with: item)
-        observer = item.observe(\.status, options: []) { item, value in
-            switch item.status {
-            case .readyToPlay:
-                print("DEBUG: readyToPlay")
-                self.player.play()
-            default :
-                print("DEBUG: failed to play")
+        
+        if urlSound != url {
+            let item = AVPlayerItem(url: url)
+            urlSound = url
+            player.replaceCurrentItem(with: item)
+            observer = item.observe(\.status, options: []) { item, value in
+                switch item.status {
+                case .readyToPlay:
+                    print("DEBUG: readyToPlay")
+                    self.player.play()
+                default :
+                    print("DEBUG: failed to play")
+                }
             }
+        } else {
+            player.seek(to: .zero)
+            player.play()
         }
     
         

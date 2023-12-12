@@ -104,22 +104,28 @@ extension View{
     }
     
     func showToastWithContent(image : String, color : Color, mess : String){
-        if getRootViewController().view.subviews.contains(where: {
-            view in
-            return view.tag == 1008
-        }){
-            return
-        }
+     
+            if getRootViewController().view.subviews.contains(where: {
+                view in
+                return view.tag == 1008
+            }){
+                return
+            }
+            
+            let rootview = ToastView(image: image, mess: mess, color: color)
+            
+            let toastViewController = UIHostingController(rootView: rootview)
+            let size  = toastViewController.view.intrinsicContentSize
+            toastViewController.view.frame.size = size
+            toastViewController.view.backgroundColor = .clear
+            toastViewController.view.frame.origin = CGPoint(x: ( getRect().width - size.width ) / 2 , y: getRect().height - 150)
+            toastViewController.view.tag = 1008
         
-        let rootview = ToastView(image: image, mess: mess, color: color)
+        print("showToastWithContent")
+            getRootViewController().view.addSubview(toastViewController.view)
+       
         
-        let toastViewController = UIHostingController(rootView: rootview)
-        let size  = toastViewController.view.intrinsicContentSize
-        toastViewController.view.frame.size = size
-        toastViewController.view.backgroundColor = .clear
-        toastViewController.view.frame.origin = CGPoint(x: ( getRect().width - size.width ) / 2 , y: getRect().height - 150)
-        toastViewController.view.tag = 1008
-        getRootViewController().view.addSubview(toastViewController.view)
+        
     }
     
     func shareLinkApp(){
@@ -127,12 +133,16 @@ extension View{
             return
         }
         
+      
+        
         shareLink(url: url)
+        
+        
     }
     
     func shareLink(url: URL) {
-           let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-           UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+          let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+          getRootViewController().present(activityViewController, animated: true, completion: nil)
        }
        
 
@@ -165,7 +175,7 @@ struct ToastView : View{
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.white.opacity(0.8))
-              //  .shadow(color : .white, radius: 2)
+             
         )
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .offset(y : showToast ? 0 : getRect().height + 200)

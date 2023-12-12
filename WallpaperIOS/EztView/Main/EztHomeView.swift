@@ -23,23 +23,17 @@ struct EztHomeView: View {
     @EnvironmentObject var depthVM : DepthEffectViewModel
     @EnvironmentObject var dynamicVM : DynamicIslandViewModel
     
-    @StateObject var widgetViewModel : WidgetMainViewModel = .init()
-    @StateObject var watchFaceViewModel : EztWatchFaceViewModel = .init()
-    @StateObject var soundWidgetVM : WidgetMainViewModel = .init()
+    @StateObject var interactWidgetViewModel : WidgetMainViewModel = .init(type : .ALL, sort : .POPULAR, sortByTop: .TOP_WEEK)
+    @StateObject var soundWidgetVM : WidgetMainViewModel = .init(type : .Sound, sort : .POPULAR, sortByTop: .TOP_WEEK)
+    @StateObject var digitalFriendWidgetVM : WidgetMainViewModel = .init(type : .DigitalFriend, sort : .POPULAR, sortByTop: .TOP_WEEK)
+    
+    @StateObject var watchFaceViewModel : EztWatchFaceViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
     
-    
-    let healthWidgets : [EztWidget] = [
-        EztWidget(id: 67 , thumbnail: [], sound: [], path: [], category_id: 0, is_trend: 0, is_private: 1, order: 0, delay_animation: 0, active: 1, download: 0, rating: 0, daily_rating: 0, set: 0, cost :0, license: "", updated_at: "", created_at: "", category: CategoryWidget(id: 6, name: "Health"), apps: [], tags: []),
-        EztWidget(id: 68 , thumbnail: [], sound: [], path: [], category_id: 0, is_trend: 0, is_private: 1, order: 0, delay_animation: 0, active: 1, download: 0, rating: 0, daily_rating: 0, set: 0, cost :0, license: "", updated_at: "", created_at: "", category: CategoryWidget(id: 6, name: "Health"), apps: [], tags: []),
-        EztWidget(id: 69 , thumbnail: [], sound: [], path: [], category_id: 0, is_trend: 0, is_private: 1, order: 0, delay_animation: 0, active: 1, download: 0, rating: 0, daily_rating: 0, set: 0, cost :0, license: "", updated_at: "", created_at: "", category: CategoryWidget(id: 6, name: "Health"), apps: [], tags: []),
-        EztWidget(id: 70 , thumbnail: [], sound: [], path: [], category_id: 0, is_trend: 0, is_private: 1, order: 0, delay_animation: 0, active: 1, download: 0, rating: 0, daily_rating: 0, set: 0, cost :0, license: "", updated_at: "", created_at: "", category: CategoryWidget(id: 6, name: "Health"), apps: [], tags: []),
-        EztWidget(id: 71 , thumbnail: [], sound: [], path: [], category_id: 0, is_trend: 0, is_private: 1, order: 0, delay_animation: 0, active: 1, download: 0, rating: 0, daily_rating: 0, set: 0, cost :0, license: "", updated_at: "", created_at: "", category: CategoryWidget(id: 6, name: "Health"), apps: [], tags: [])
 
-    ]
     
     var body: some View {
         
@@ -52,14 +46,14 @@ struct EztHomeView: View {
                 
                
                     
-                /*1*/   DepthEffectViewInHome()
+                /*1*/   TopWallpaper()
                 /*2*/   WidgetInHome()
                 /*3*/   WatchFaceViewInHome()
                 /*4*/   BannerSaleHome()
-                /*5*/   TopWallpaper()
+                /*5*/   DepthEffectViewInHome()
                 /*6*/   WidgetSound()
                 /*7*/   ShufflePackInHome()
-                /*8*/   WidgetHEALTH()
+                /*8*/   WidgetDigital()
                 /*9*/   DynamicIslandViewInHome()
                 
                     
@@ -253,7 +247,7 @@ extension EztHomeView{
     func TopWallpaper() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Top Wallpapers".toLocalize())
+                Text("Top Wallpaper".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -482,7 +476,7 @@ extension EztHomeView{
     func WidgetInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Interactive Widgets".toLocalize())
+                Text("Interactive Widget".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -491,7 +485,7 @@ extension EztHomeView{
                 
                 NavigationLink(destination: {
                     WidgetListView()
-                        .environmentObject(widgetViewModel)
+                        .environmentObject(interactWidgetViewModel)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
@@ -511,10 +505,10 @@ extension EztHomeView{
                 
             }.padding(.horizontal, 16)
             ZStack{
-                if widgetViewModel.widgets.isEmpty{
+                if interactWidgetViewModel.widgets.isEmpty{
                     ItemWidgetPlaceHolder()
                 }else{
-                    let itemShow = min(4, widgetViewModel.widgets.count)
+                    let itemShow = min(4, interactWidgetViewModel.widgets.count)
                     
                     ScrollView(.horizontal, showsIndicators: false){
                         
@@ -523,7 +517,7 @@ extension EztHomeView{
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
                                 ForEach(0..<itemShow, id: \.self) { count in
-                                    let widgetObj = widgetViewModel.widgets[count]
+                                    let widgetObj = interactWidgetViewModel.widgets[count]
                                     
                                     
                                     NavigationLink(destination: {
@@ -543,15 +537,15 @@ extension EztHomeView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: 320 / 2.2)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: 320 / 2.2)
             .onAppear(perform: {
-                if widgetViewModel.widgets.isEmpty{
-                    widgetViewModel.getWidgets()
+                if interactWidgetViewModel.widgets.isEmpty{
+                    interactWidgetViewModel.getWidgets()
                 }
                 
             })
@@ -790,7 +784,7 @@ extension EztHomeView{
     func WatchFaceViewInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Watch Face".toLocalize())
+                Text("Best Watch Face".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -898,10 +892,81 @@ extension EztHomeView{
         }.padding(.top, 24)
     }
     
-    func WidgetHEALTH() -> some View{
+//    func WidgetHEALTH() -> some View{
+//        VStack(spacing : 16){
+//            HStack(spacing : 0){
+//                Text("Health Widget".toLocalize())
+//                    .mfont(20, .bold)
+//                    .foregroundColor(.white)
+//                
+//                
+//                Spacer()
+//                
+//                NavigationLink(destination: {
+//                    HealthWidgetListView(widgetList: healthWidgets)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+//                }, label: {
+//                    HStack(spacing : 0){
+//                        Text("See more".toLocalize())
+//                            .mfont(11, .regular)
+//                            .foregroundColor(.white)
+//                        Image("arrow.right")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 18, height: 18, alignment: .center)
+//                    }
+//                })
+//                
+//                
+//                
+//            }.padding(.horizontal, 16)
+//            ZStack{
+//                ScrollView(.horizontal, showsIndicators: false){
+//                    HStack(spacing : 0){
+//                        Spacer().frame(width: 16)
+//                        LazyHStack(spacing : 16,content: {
+//                            ForEach(healthWidgets, id: \.id) { widgetObj  in
+//                                
+//                                NavigationLink(destination: {
+//                                    WidgetDetailView(widget: widgetObj)
+//                                        .environmentObject(store)
+//                                        .environmentObject(store)
+//                                        .environmentObject(interAd)
+//                                }, label: {
+//                                    Image("\(widgetObj.id)")
+//                                        .resizable()
+//                                        .scaledToFill()
+//                                        .frame(width: 320, height: 320 / 2.2)
+//                                        .overlay{
+//                                            RoundedRectangle(cornerRadius: 16)
+//                                                .stroke(Color.white.opacity(0.4), lineWidth : 1)
+//                                        }
+//                                        .clipShape(
+//                                            RoundedRectangle(cornerRadius: 16)
+//                                        )
+//
+//                                })
+//                                
+//                                
+//                            }
+//                        })
+//                     }
+//                }
+//            }
+//            .frame(maxWidth: .infinity)
+//            .frame(height: 320 / 2.2)
+//           
+//            
+//        }.padding(.top, 24)
+//    }
+    
+    
+    func WidgetDigital() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Health Widget".toLocalize())
+                Text("Hot Digital Friend".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -909,7 +974,8 @@ extension EztHomeView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    HealthWidgetListView(widgetList: healthWidgets)
+                    WidgetListView()
+                        .environmentObject(digitalFriendWidgetVM)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
@@ -929,41 +995,48 @@ extension EztHomeView{
                 
             }.padding(.horizontal, 16)
             ZStack{
-                ScrollView(.horizontal, showsIndicators: false){
-                    HStack(spacing : 0){
-                        Spacer().frame(width: 16)
-                        LazyHStack(spacing : 16,content: {
-                            ForEach(healthWidgets, id: \.id) { widgetObj  in
-                                
-                                NavigationLink(destination: {
-                                    WidgetDetailView(widget: widgetObj)
-                                        .environmentObject(store)
-                                        .environmentObject(store)
-                                        .environmentObject(interAd)
-                                }, label: {
-                                    Image("\(widgetObj.id)")
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 320, height: 320 / 2.2)
-                                        .overlay{
-                                            RoundedRectangle(cornerRadius: 16)
-                                                .stroke(Color.white.opacity(0.4), lineWidth : 1)
-                                        }
-                                        .clipShape(
-                                            RoundedRectangle(cornerRadius: 16)
-                                        )
-
-                                })
-                                
-                                
-                            }
-                        })
-                     }
+                if digitalFriendWidgetVM.widgets.isEmpty{
+                    ItemWidgetPlaceHolder()
+                }else{
+                    
+                    let itemCountShow = min(4, digitalFriendWidgetVM.widgets.count)
+                    
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack(spacing : 0){
+                            Spacer().frame(width: 16)
+                            LazyHStack(spacing : 16,content: {
+                                ForEach(0..<itemCountShow, id: \.self) { count in
+                                    let widgetObj = digitalFriendWidgetVM.widgets[count]
+                                    NavigationLink(destination: {
+                                        WidgetDetailView(widget: widgetObj)
+                                            .environmentObject(store)
+                                            .environmentObject(store)
+                                            .environmentObject(interAd)
+                                    }, label: {
+                                        ItemWidgetView(widget: widgetObj)
+                                    })
+                                    
+                                    
+                                }
+                            })
+                        }
+                        
+                        
+                        
+                    }
+                    .frame(height: 320 / 2.2)
+                    
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
-           
+            .frame(height: 320 / 2.2)
+            .onAppear(perform: {
+                if digitalFriendWidgetVM.widgets.isEmpty{
+                    digitalFriendWidgetVM.type = .DigitalFriend
+                    digitalFriendWidgetVM.getWidgets()
+                }
+                
+            })
             
         }.padding(.top, 24)
     }
@@ -971,7 +1044,7 @@ extension EztHomeView{
     func WidgetSound() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Interesting Sound Widgets".toLocalize())
+                Text("Interesting Sound Widget".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -1029,12 +1102,12 @@ extension EztHomeView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: 320 / 2.2)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: 320 / 2.2)
             .onAppear(perform: {
                 if soundWidgetVM.widgets.isEmpty{
                     soundWidgetVM.type = .Sound

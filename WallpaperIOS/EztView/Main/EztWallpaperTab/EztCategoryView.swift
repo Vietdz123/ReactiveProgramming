@@ -187,8 +187,8 @@ struct EztCategoryView: View {
                 
                 LazyVStack(spacing : 0){
                     ForEach(0..<viewModel.categorieWithData.count, id: \.self){
-                        index in
-                        let categoryData  = viewModel.categorieWithData[index]
+                        stt in
+                        let categoryData  = viewModel.categorieWithData[stt]
                         VStack(spacing : 0){
                             HStack(spacing : 0){
                                 Text(categoryData.category.title )
@@ -197,7 +197,7 @@ struct EztCategoryView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                   
                                     .onAppear(perform: {
-                                        if viewModel.checkIfLoadData(i: index){
+                                        if viewModel.checkIfLoadData(i: stt){
                                             viewModel.getCategoryWithData()
                                         }
                                     })
@@ -230,16 +230,17 @@ struct EztCategoryView: View {
                                     ScrollView(.horizontal, showsIndicators: false){
                                         HStack(spacing : 8){
                                             Spacer().frame(width: 8)
-                                            ForEach(categoryData.wallpapers, id: \.id){
-                                                wallpaper in
+                                            ForEach(0..<categoryData.wallpapers.count, id: \.self){
+                                                i in
+                                                let wallpaper = categoryData.wallpapers[i]
                                                 let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
                                                 NavigationLink(destination: {
                                                     
-                                                    WallpaperOnePageDetails(wallpaper: wallpaper)
+                                                    WallpaperOnePageDetails(wallpapers: categoryData.wallpapers, index : i)
                                                         .environmentObject(reward)
                                                         .environmentObject(store)
-                                                      
                                                         .environmentObject(interAd)
+                                                    
                                                 }, label: {
                                                     
                                                     WebImage(url: URL(string: string))
@@ -258,14 +259,7 @@ struct EztCategoryView: View {
                                                         .frame(width: 108, height: 216)
                                                         .cornerRadius(8)
                                                         .clipped()
-//                                                        .overlay(alignment : .topTrailing){
-//                                                            if !store.isPro() && wallpaper.content_type == "private" {
-//                                                                Image("crown")
-//                                                                    .resizable()
-//                                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                                    .padding(8)
-//                                                            }
-//                                                        }
+
                                                 })
                                                 
                                             }
@@ -281,7 +275,7 @@ struct EztCategoryView: View {
                             }.frame(height : 216)
                                 .onAppear(perform : {
                                     if categoryData.wallpapers.isEmpty {
-                                        viewModel.loadDataWhenAppear(index: index)
+                                        viewModel.loadDataWhenAppear(index: stt)
                                     }
                                 })
                             

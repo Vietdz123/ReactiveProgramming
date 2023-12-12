@@ -90,7 +90,7 @@ class WDHomeNetworkManager {
         } else if folderType == .digitalFriend {
             let digitalType = DigitalFriendType.getType(name: data.tags.first?.name ?? DigitalFriendType.changeBackground.nameId)
             category.digitalType = digitalType.nameId
-        }
+        } 
         
         var widgetPath = data.path
         if let sounds = data.sound {

@@ -178,7 +178,8 @@ struct EztShufflePackListCateView: View {
                                                 }
                 
                 
-                                            }.frame(height : 240)
+                                            }
+                                            .frame(height : 240)
                                                 .onAppear(perform : {
                                                     if data.wallpapers.isEmpty {
                                                         wallpaperCatelogVM.loadDataDepthEffectWhenAppear(dataType: 1, index: i, tagID: data.specialTag.id)

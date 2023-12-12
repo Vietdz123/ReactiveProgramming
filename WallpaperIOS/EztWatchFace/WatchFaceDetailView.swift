@@ -61,11 +61,12 @@ struct WatchFaceDetailView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
                     })
-                    
-                    Image("crown")
-                        .resizable()
-                        .frame(width: 20, height: 20, alignment: .center)
-                        .frame(width: 56, height: 24)
+                    if !store.isPro(){
+                        Image("crown")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .frame(width: 56, height: 24)
+                    }
                     
                     Spacer()
              

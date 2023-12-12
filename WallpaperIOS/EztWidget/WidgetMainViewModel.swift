@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-enum FetchWidgetType {
-    case ALL
-    case DigitalFriend
-    case Routine
-    case Sound
-    case Gif
-    case DecisionMaker
+enum FetchWidgetType : String , CaseIterable {
+    case ALL = "Interactive Widget"
+    case DigitalFriend = "Digital Friend"
+    case Routine = "Rountine Monitor"
+    case Sound = "Sound Widget"
+    case Gif = "Gif Widget"
+    case DecisionMaker = "Make Decision" 
     
     
 }
@@ -22,21 +22,26 @@ class WidgetMainViewModel: ObservableObject {
     
     @Published var widgets : [EztWidget] = []
     @Published var currentOffset : Int = 0
-    @Published var type : FetchWidgetType = .ALL
-    @Published var sort : SpSort = .NEW
+    @Published var type : FetchWidgetType //= .ALL
+    @Published var sort : SpSort //= .NEW
+    @Published var sortByTop : SpTopRate
     
-    init(){
-
+    
+    
+    init(type : FetchWidgetType = .ALL, sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK){
+        self.type = type
+        self.sort = sort
+        self.sortByTop = sortByTop
     }
     
     func getWidgets(){
-        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())"
+        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())&all=1" // 
            
            guard let url  = URL(string: urlString) else {
                return
            }
            
-        print("WidgetViewModel url: \(url.absoluteString)")
+        print("WidgetViewModel \(getFetchWidgetType()) url: \(url.absoluteString)")
          
            
            URLSession.shared.dataTask(with: url){
@@ -85,7 +90,12 @@ class WidgetMainViewModel: ObservableObject {
         if sort == .NEW{
             return "&order_by=id+desc"
         }else{
-            return "&order_by=daily_rating+desc,order+asc"
+            if sortByTop == .TOP_WEEK {
+                return "&order_by=daily_rating+desc,order+asc"
+            }else{
+                return "&order_by=monthly_rating+desc,id+desc"
+            }
+            
         }
        
     }

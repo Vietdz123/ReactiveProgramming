@@ -59,33 +59,7 @@ struct ListLiveWLView: View {
                                     .environmentObject(interAd)
                                 
                             }, label: {
-//                                AsyncImage(url: URL(string: string)){
-//                                    phase in
-//                                    if let image = phase.image {
-//                                        image
-//                                            .resizable()
-//                                            .scaledToFill()
-//                                            .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-//                                            .clipped()
-//                                    } else if phase.error != nil {
-//                                        AsyncImage(url: URL(string: string)){
-//                                            phase in
-//                                            if let image = phase.image {
-//                                                image
-//                                                    .resizable()
-//                                                    .scaledToFill()
-//                                                    .frame(width: getRect().width, height: getRect().height)
-//                                                    .clipped()
-//                                            }
-//                                        }
-//                                    } else {
-//                                        placeHolderImage()
-//                                    }
-//
-//
-//                                }
-//                                .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-//                                .cornerRadius(2)
+
                                 WebImage(url: URL(string: string))
                                 
                                    .onSuccess { image, data, cacheType in
@@ -116,23 +90,23 @@ struct ListLiveWLView: View {
                                                     .frame(width: 16, height: 16 )
                                                     .padding(8)
                                                 Spacer()
-                                                if !store.isPro(){
-                                            
-                                                    Image("coin")
-                                                        .resizable()
-                                                        .frame(width: 13, height: 13, alignment: .center)
-                                                    Text("\(wallpaper.cost ?? 0)")
-                                                     //   .coinfont(10, .regular)
-                                                        .foregroundColor(.white)
-                                                    
-                                                .frame(width: 16, height: 16, alignment: .center)
-                                                    .background(
-                                                        Capsule()
-                                                            .fill(Color.black.opacity(0.7))
-                                                    )
-                                                    .padding(8)
-                                            }
-                                               
+//                                                if !store.isPro(){
+//                                            
+//                                                    Image("coin")
+//                                                        .resizable()
+//                                                        .frame(width: 13, height: 13, alignment: .center)
+//                                                    Text("\(wallpaper.cost ?? 0)")
+//                                                     //   .coinfont(10, .regular)
+//                                                        .foregroundColor(.white)
+//                                                    
+//                                                .frame(width: 16, height: 16, alignment: .center)
+//                                                    .background(
+//                                                        Capsule()
+//                                                            .fill(Color.black.opacity(0.7))
+//                                                    )
+//                                                    .padding(8)
+//                                            }
+//                                               
                                                 
                                             }
                                             

@@ -75,7 +75,7 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
     
 
     func presentRewardedVideo(onCommit: @escaping (Bool) -> Void) {
-
+        print("LOAD_ADS presentRewardedVideo")
         self.onComplete = onCommit
         
         guard let rewardedAd = rewardedAd else {
@@ -87,29 +87,28 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
             return
         }
   
-        guard let root = UIApplication.shared.windows.first?.rootViewController else {
-            if self.onComplete != nil {
-                self.onComplete!(false)
-            }
-            return
-        }
+        print("LOAD_ADS presentRewardedVideo 2")
+        
       
+        print("LOAD_ADS presentRewardedVideo 3")
       
         DispatchQueue.main.async {
-            rewardedAd.present(fromRootViewController: root) {
+            rewardedAd.present(fromRootViewController:  self.getRootViewController()) {
                
-                    if self.onComplete != nil {
-                        self.onComplete!(true)
-                      
-                    }
            }
         }
-       
-         
-            
-           
-            
-        
+
+    }
+    
+    func getRootViewController() -> UIViewController{
+        guard let screen = UIApplication.shared.connectedScenes.first   as? UIWindowScene
+        else{
+            return .init()
+        }
+        guard let root = screen.windows.last?.rootViewController else{
+            return .init()
+        }
+        return root
     }
     
     
@@ -130,6 +129,12 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
        /// Tells the delegate that the ad dismissed full screen content.
        func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
        //    print("3. didDimiss ad")
+           
+                if self.onComplete != nil {
+                    self.onComplete!(true)
+                  
+                }
+           
            self.rewardedAd = nil
            if onComplete != nil {
                onComplete  = nil

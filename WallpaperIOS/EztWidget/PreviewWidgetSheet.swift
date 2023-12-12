@@ -52,10 +52,14 @@ struct PreviewWidgetSheet: View {
                             .frame(width: 24, height: 24)
                     })
                     
-                    Image("crown")
-                        .resizable()
-                        .frame(width: 20, height: 20, alignment: .center)
-                        .frame(width: 56, height: 24)
+                    if !storeVM.isPro(){
+                        Image("crown")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .frame(width: 56, height: 24)
+                    }
+                    
+                  
                     
                     Spacer()
                     
@@ -89,6 +93,12 @@ struct PreviewWidgetSheet: View {
                         previewSounds
                     }else if widget.category.id == 5 {
                         previewGif()
+                    }else if widget.category.id == 7 {
+                        previewMakeDecision()
+                    }else {
+                        Text("Please update the app to use this content")
+                            .mfont(15, .regular, line: 2)
+                            .padding(.horizontal, 24)
                     }
                     
                     
@@ -256,8 +266,10 @@ extension PreviewWidgetSheet {
                     .indicator(.activity) // Activity Indicator
                     .transition(.fade(duration: 0.5)) // Fade Transition with duration
                     .scaledToFill()
+                    .animation(.easeInOut, value: currentIndex)
             }
         }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+            .clipped()
             .cornerRadius(16)
             .padding(.vertical, 24)
             .contentShape(Rectangle())
@@ -346,7 +358,7 @@ extension PreviewWidgetSheet {
                         .scaledToFill()
                         .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                         .clipped()
-                    
+                       
                     HStack(spacing : 0){
                         ForEach(0..<days.count, id : \.self){
                             i in
@@ -434,6 +446,7 @@ extension PreviewWidgetSheet {
                     .scaledToFill()
                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .clipped()
+                    .animation(.easeInOut, value: currentIndex)
                     .onChange(of: currentIndex, perform: { _ in
                         if !allowNextImage {
                             return
@@ -441,6 +454,7 @@ extension PreviewWidgetSheet {
                         
                         if currentIndex < count - 1 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                               
                                 currentIndex += 1
                             })
                         }else{
@@ -502,6 +516,7 @@ extension PreviewWidgetSheet {
                     .scaledToFill()
                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .clipped()
+                    .animation(.easeInOut, value: currentIndex)
                     .onAppear(perform: {
                         if currentIndex < count - 1 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
@@ -528,4 +543,47 @@ extension PreviewWidgetSheet {
             .padding(.vertical, 24)
             .contentShape(Rectangle())
     }
+    
+    
+    func previewMakeDecision() -> some View{
+        ZStack{
+            let listImage : [String] = widget.getRectangleUrlString()
+            let count = listImage.count
+            
+            if !listImage.isEmpty{
+              
+                    WebImage(url: URL(string: listImage[currentIndex]))
+                        .onSuccess { image, data, cacheType in
+                        }
+                        .resizable()
+                        .placeholder {
+                            placeHolderImage()
+                            
+                        }
+                        .indicator(.activity) // Activity Indicator
+                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                        .scaledToFill()
+                        .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+                        .clipped()
+                        .animation(.easeInOut, value: currentIndex)
+                        .onTapGesture {
+                            if let url = URL(string: widget.sound?.first?.url.full ?? ""){
+                                SoundPlayer.shared.play(url: url)
+                            }
+                            
+                            currentIndex = Int.random(in: 0...(count - 1 ))
+                            
+                        }
+                
+              
+                  
+            }
+            
+        }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+            .cornerRadius(16)
+            .padding(.vertical, 24)
+            .contentShape(Rectangle())
+    }
+    
+    
 }

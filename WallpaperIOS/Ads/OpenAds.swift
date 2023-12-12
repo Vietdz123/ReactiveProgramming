@@ -52,7 +52,7 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         self.onComplete = onCommit
         if let gOpenAd = self.appOpenAd {
             print("LOAD_ADS tryToPresentAd has open")
-            gOpenAd.present(fromRootViewController: (UIApplication.shared.windows.first?.rootViewController)!)
+            gOpenAd.present(fromRootViewController: getRootViewController())
         } else {
             print("Load_ADS openid \(AdsConfig.openID)")
             print("LOAD_ADS tryToPresentAd no open")
@@ -61,6 +61,17 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         }
     }
     
+    
+    func getRootViewController() -> UIViewController{
+        guard let screen = UIApplication.shared.connectedScenes.first   as? UIWindowScene
+        else{
+            return .init()
+        }
+        guard let root = screen.windows.last?.rootViewController else{
+            return .init()
+        }
+        return root
+    }
     
     
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {

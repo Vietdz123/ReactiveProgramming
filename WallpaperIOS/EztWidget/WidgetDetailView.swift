@@ -74,13 +74,13 @@ struct WidgetDetailView: View {
                 }
             }
         }
-        .onAppear(perform: {
-            if !storeVM.isPro(){
-                interAd.showAd {
-                    
-                }
-            }
-        })
+//        .onAppear(perform: {
+//            if !storeVM.isPro(){
+//                interAd.showAd {
+//                    
+//                }
+//            }
+//        })
     }
 }
 

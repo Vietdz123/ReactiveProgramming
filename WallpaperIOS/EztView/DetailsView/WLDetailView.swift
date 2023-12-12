@@ -23,6 +23,27 @@ class ControllViewModel : ObservableObject {
     @Published var isDownloading : Bool = false
     @Published var showContentPremium : Bool = false
     
+    
+    @Published var showGifView : Bool = false
+    
+    
+    func changeSubType() {
+
+        
+        let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
+      
+        
+        if subTypeSave == 0 {
+                UserDefaults.standard.set(1, forKey: "gift_sub_type")
+        }else if subTypeSave == 1 {
+                UserDefaults.standard.set(2, forKey: "gift_sub_type")
+        }else if subTypeSave == 2{
+                UserDefaults.standard.set(0, forKey: "gift_sub_type")
+        }
+        
+       
+    }
+    
 }
 
 
@@ -43,7 +64,6 @@ struct WLView: View {
         
         
         ZStack{
-            
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
                     EztSubcriptionView()
@@ -101,8 +121,10 @@ struct WLView: View {
                     }
                 })
                 .background(
-                    placeHolderImage()
+                    Image("BGIMG")
+                        .resizable()
                         .ignoresSafeArea()
+                        
                 )
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .edgesIgnoringSafeArea(.all)
@@ -148,7 +170,23 @@ struct WLView: View {
             }
 
         )
+        .overlay{
+            if ctrlViewModel.showGifView{
+                GiftView()
+            }
+        }
 
+    }
+    
+    @ViewBuilder
+    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+        if giftSubType == 0 {
+           GiftSub_1_View(show: $ctrlViewModel.showGifView)
+        }else if giftSubType == 1{
+            GiftSub_2_View(show: $ctrlViewModel.showGifView)
+        }else{
+            GifSub_3_View(show: $ctrlViewModel.showGifView)
+        }
     }
     
     @ViewBuilder
@@ -169,21 +207,38 @@ struct WLView: View {
                 
                 
                 Spacer()
-                ZStack{
-                    if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
-                        Button(action: {
-                            ctrlViewModel.showContentPremium = true
-                        }, label: {
-                            Image("crown")
-                                .resizable()
-                                .frame(width: 18, height: 18, alignment: .center)
-                                .frame(width: 50, height: 44)
-                        })
-                       
+                HStack(spacing : 0){
+                    ZStack{
+                        if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
+                            Button(action: {
+                                ctrlViewModel.showContentPremium = true
+                            }, label: {
+                                Image("crown")
+                                    .resizable()
+                                    .frame(width: 18, height: 18, alignment: .center)
+                                    .frame(width: 50, height: 44)
+                            })
+                           
 
+                        }
+                        
                     }
                     
+                    Button(action: {
+                        ctrlViewModel.showPreview.toggle()
+                        ctrlViewModel.showControll.toggle()
+                    }, label: {
+                        Image("preview")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .padding(.trailing, 16)
+                            .padding(.leading, 8)
+                    })
+                    
                 }
+                
+             
          
                 
                 
@@ -260,31 +315,10 @@ struct WLView: View {
                     .background(
                         Capsule().fill(Color.main)
                     )
-                })
+                }).disabled(ctrlViewModel.isDownloading)
                 .padding(.bottom, 48)
                 
                 
-//                Button(action: {
-//                    withAnimation{
-//                        ctrlViewModel.showControll = false
-//                        ctrlViewModel.showPreview = true
-//                    }
-//                }, label: {
-//                    Image("preview")
-//                        .resizable()
-//                        .foregroundColor(.white)
-//                        .aspectRatio( contentMode: .fit)
-//                        .frame(width: 24, height: 24)
-//                        .frame(width: 48, height: 48)
-//                        .background(
-//                            Circle()
-//                                .fill(Color.mblack_bg.opacity(0.7))
-//                                .frame(width: 48, height: 48)
-//                        )
-//                }) .frame(width: 48, height: 48)
-//                    .containerShape(Circle())
-   //         }
-           
            
             
         }
@@ -371,22 +405,29 @@ struct WLView: View {
                     success in
                     if success{
                         ctrlViewModel.isDownloading = false
-                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
- //                       if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-//                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                                ctrlViewModel.showTutorial = true
-//                            })
-                            
-//                        }
+                       
+                       
                         
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if !store.isPro() && downloadCount == 1 {
-                            ctrlViewModel.navigateView.toggle()
-                        }else{
+          
+                        
+                        if downloadCount == 1 {
                             showRateView()
+                        }else{
+                            if !store.isPro()  {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                                    ctrlViewModel.showGifView.toggle()
+                                    ctrlViewModel.changeSubType()
+                                })
+                               
+                             }
                         }
+                        
+                        DispatchQueue.main.async {
+                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
+                        }
+
                     }else{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "xmark", color: .red, mess: "Download Failure")

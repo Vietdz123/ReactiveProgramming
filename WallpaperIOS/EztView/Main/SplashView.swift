@@ -9,6 +9,8 @@ import SwiftUI
 import NavigationTransitions
 
 import AppTrackingTransparency
+//import UserMessagingPlatform
+
 
 struct SplashView: View {
     
@@ -32,8 +34,6 @@ struct SplashView: View {
     var body: some View {
         NavigationView{
             ZStack{
-                
-                    
                     NavigationLink(destination:
                         OnboardingVerTwoSubView()
                         .navigationBarTitle("", displayMode: .inline)
@@ -46,10 +46,7 @@ struct SplashView: View {
                         EmptyView()
                     })
                
-                
-                
-                
-                
+
                 NavigationLink(destination:
                                 EztMainView()
                     .environmentObject(myStore)
@@ -81,7 +78,10 @@ struct SplashView: View {
             .onChange(of: splash_process, perform: {
                 newValue in
                 if splash_process == 100 {
+              
                     
+                 
+                 
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
                         
                         
@@ -89,6 +89,37 @@ struct SplashView: View {
                             if status == .authorized{
                                 Firebase_log("tracking_authorized")
                             }
+//                            
+//                            DispatchQueue.main.async {
+//                                let parameters = UMPRequestParameters()
+//                           
+//                                  parameters.tagForUnderAgeOfConsent = false
+//                                  let debugSettings = UMPDebugSettings()
+//                        
+//                    
+//                                UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
+//                                   requestConsentError in
+//                                 
+//
+//                                  if let consentError = requestConsentError {
+//                               
+//                                    return print("Error: \(consentError.localizedDescription)")
+//                                  }
+//
+//                                    
+//                                    UMPConsentForm.loadAndPresentIfRequired(from: getRootViewController()) {
+//                                       loadAndPresentError in
+//                                        
+//
+//                                        if let consentError = loadAndPresentError {
+//                                          return print("Error: \(consentError.localizedDescription)")
+//                                        }
+//
+//                                     
+//                                      }
+//                                  
+//                                }
+//                            }
                             
                           })
                         

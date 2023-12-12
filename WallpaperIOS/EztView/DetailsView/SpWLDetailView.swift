@@ -107,7 +107,6 @@ struct SpWLDetailView: View {
                         .ignoresSafeArea()
                 )
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                
                 .edgesIgnoringSafeArea(.all)
                 
                 
@@ -297,9 +296,7 @@ extension SpWLDetailView{
 
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if !store.isPro() && downloadCount == 1 {
-                            ctrlViewModel.navigateView.toggle()
-                        }else{
+                        if downloadCount == 1 {
                             showRateView()
                         }
                     }else{

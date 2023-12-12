@@ -17,7 +17,7 @@ class EztMainViewModel : ObservableObject{
     
     @Published var showMenu : Bool = false
     @Published var currentTab : EztTab = .HOME
-    @Published var showGift : Bool = false
+    //@Published var showGift : Bool = false
     
   
     
@@ -52,25 +52,22 @@ class EztMainViewModel : ObservableObject{
         
     }
     
-    func changeSubType() {
-        
-        
-        
-        
-        
-        let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
-      
-        
-        if subTypeSave == 0 {
-                UserDefaults.standard.set(1, forKey: "gift_sub_type")
-        }else if subTypeSave == 1 {
-                UserDefaults.standard.set(2, forKey: "gift_sub_type")
-        }else if subTypeSave == 2{
-                UserDefaults.standard.set(0, forKey: "gift_sub_type")
-        }
-        
-       
-    }
+//    func changeSubType() {
+//
+//        
+//        let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
+//      
+//        
+//        if subTypeSave == 0 {
+//                UserDefaults.standard.set(1, forKey: "gift_sub_type")
+//        }else if subTypeSave == 1 {
+//                UserDefaults.standard.set(2, forKey: "gift_sub_type")
+//        }else if subTypeSave == 2{
+//                UserDefaults.standard.set(0, forKey: "gift_sub_type")
+//        }
+//        
+//       
+//    }
     
 }
 
@@ -78,12 +75,15 @@ struct EztMainView : View {
     
     @StateObject var mainViewModel : EztMainViewModel = .init()
     @StateObject var exlusiveVM : ExclusiveViewModel = .init()
-    @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .POPULAR)
-   
-    @StateObject var depthVM : DepthEffectViewModel = .init(sort : .POPULAR)
-    @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .POPULAR)
+    
+    @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
+    @StateObject var depthVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
+    @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
+    
     @StateObject var liveVM : LiveWallpaperViewModel = .init()
    
+    
+    @StateObject var foryouVM : HomeViewModel = .init()
     @StateObject var tagViewModel : TagViewModel = .init()
     
 
@@ -111,6 +111,7 @@ struct EztMainView : View {
                         .gesture(DragGesture())
                         .tag(EztTab.HOME)
                     EztWallpaperView()
+                        .environmentObject(foryouVM)
                         .environmentObject(tagViewModel)
                         .environmentObject(liveVM)
                         .environmentObject(store)
@@ -187,11 +188,12 @@ struct EztMainView : View {
                 
                 
             })
-            .overlay{
-                if mainViewModel.showGift{
-                    GiftView()
-                }
-            } .fullScreenCover(isPresented: $mainViewModel.showSubView, onDismiss: {
+//            .overlay{
+//                if mainViewModel.showGift{
+//                    GiftView()
+//                }
+//            }
+            .fullScreenCover(isPresented: $mainViewModel.showSubView, onDismiss: {
                
             }, content: {
                 SubViewRandom()
@@ -200,16 +202,16 @@ struct EztMainView : View {
         
     }
     
-    @ViewBuilder
-    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
-        if giftSubType == 0 {
-           GiftSub_1_View(show: $mainViewModel.showGift)
-        }else if giftSubType == 1{
-            GiftSub_2_View(show: $mainViewModel.showGift)
-        }else{
-            GifSub_3_View(show: $mainViewModel.showGift)
-        }
-    }
+//    @ViewBuilder
+//    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+//        if giftSubType == 0 {
+//           GiftSub_1_View(show: $mainViewModel.showGift)
+//        }else if giftSubType == 1{
+//            GiftSub_2_View(show: $mainViewModel.showGift)
+//        }else{
+//            GifSub_3_View(show: $mainViewModel.showGift)
+//        }
+//    }
     
     
     @ViewBuilder

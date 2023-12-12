@@ -101,6 +101,8 @@ class MyStore: ObservableObject {
     }
     
     func isNewVeriosn() -> Bool {
+        print("Current version: \(UIApplication.version)")
+        print("Firebase version: \(UserDefaults.standard.string(forKey: "current_version"))")
         return UIApplication.version != UserDefaults.standard.string(forKey: "current_version") ?? ""
     }
     
@@ -245,9 +247,9 @@ class MyStore: ObservableObject {
     }
 
     func isPro() -> Bool {
-        //return !purchasedIds.isEmpty
-        return false
-        //return true
+        return !purchasedIds.isEmpty
+       // return false
+      //  return true
     }
     
     func fetchProducts() {

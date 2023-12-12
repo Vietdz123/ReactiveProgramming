@@ -83,6 +83,18 @@ import UIKit
         loadTime = 0
         loadInterstitial()
     }
+     
+     
+     func getRootViewController() -> UIViewController{
+         guard let screen = UIApplication.shared.connectedScenes.first   as? UIWindowScene
+         else{
+             return .init()
+         }
+         guard let root = screen.windows.last?.rootViewController else{
+             return .init()
+         }
+         return root
+     }
 
     func showAd( onCommit: @escaping () -> ()  ){
         let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
@@ -90,15 +102,10 @@ import UIKit
 
         
             if Date().currentTimeMillis() - timeShowPrev > delay {
-                guard let root = UIApplication.shared.windows.first?.rootViewController else {
-                    if onComplete != nil {
-                        onComplete!()
-                    }
-                    return
-                }
+             
                 
                 if interstitial != nil {
-                    interstitial?.present(fromRootViewController: root)
+                    interstitial?.present(fromRootViewController: getRootViewController())
                 }else{
                     loadInterstitial()
                     if onComplete != nil {

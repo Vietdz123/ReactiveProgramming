@@ -264,26 +264,15 @@ extension EztDepthEffectView {
 }
 
 extension View{
-    
-  
-    
     func CategoryPlaceHolder() -> some View{
         ScrollView(.horizontal, showsIndicators: false){
             HStack(spacing : 8){
                 Spacer().frame(width: 8)
                 ForEach(0..<5, id: \.self){
                     id  in
-                  
-
-                   
-                            placeHolderImage()
-                         
-                            .frame(width: 108, height: 216)
-                            .cornerRadius(8)
-                    
-
-
-                    
+                    placeHolderImage()
+                    .frame(width: 108, height: 216)
+                    .cornerRadius(8)
                 }
                 Spacer().frame(width: 16)
             }

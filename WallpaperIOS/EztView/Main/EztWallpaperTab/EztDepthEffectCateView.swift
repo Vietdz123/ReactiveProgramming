@@ -82,11 +82,12 @@ struct EztDepthEffectCateView: View {
                                     ScrollView(.horizontal, showsIndicators: false){
                                         HStack(spacing : 8){
                                             Spacer().frame(width: 8)
-                                            ForEach(data.wallpapers, id: \.id){
-                                                wallpaper in
+                                            ForEach(0..<data.wallpapers.count, id: \.self){
+                                                stt in
+                                                let wallpaper = data.wallpapers[stt]
                                                 let string : String = wallpaper.thumbnail?.path.preview ?? ""
                                                 NavigationLink(destination: {
-                                                    SPWLOnePageDetailView(wallpaper: wallpaper)
+                                                    SPWLOnePageDetailView(wallpapers: data.wallpapers, index : stt)
                                                         .environmentObject(store)
                                                         .environmentObject(interAd)
                                                         .environmentObject(rewardAd)

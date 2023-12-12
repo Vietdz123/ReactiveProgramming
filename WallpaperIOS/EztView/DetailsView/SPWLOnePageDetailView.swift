@@ -11,7 +11,8 @@ import SDWebImageSwiftUI
 struct SPWLOnePageDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    let wallpaper : SpWallpaper
+    let wallpapers : [SpWallpaper]
+    @State var index : Int
     
     @StateObject var ctrlViewModel : ControllViewModel = .init()
     
@@ -45,56 +46,62 @@ struct SPWLOnePageDetailView: View {
                 EmptyView()
             })
             
+
             
-            //            AsyncImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  ))){
-            //                phase in
-            //                if let image = phase.image {
-            //                    image
-            //                        .resizable()
-            //
-            //                        .scaledToFill()
-            //                        .frame(maxWidth : .infinity, maxHeight : .infinity)
-            //                        .clipped()
-            //
-            //
-            //                } else if phase.error != nil {
-            //                    AsyncImage(url: URL(string: wallpaper.path.first?.path.full ?? "")){
-            //                        phase in
-            //                        if let image = phase.image {
-            //                            image
-            //                                .resizable()
-            //                                .scaledToFill()
-            //                                .frame(maxWidth : .infinity, maxHeight : .infinity)
-            //                                .clipped()
-            //
-            //                        }
-            //                    }
-            //
-            //                } else {
-            //                    ResizableLottieView(filename: "placeholder_anim")
-            //                        .frame(width: 200, height: 200)
-            //                }
-            //
-            //
-            //            }.frame(maxWidth : .infinity, maxHeight : .infinity)
-            //                .ignoresSafeArea()
-            //            .overlay(
-            //                ZStack{
-            //                    if wallpaper.specialContentV2ID == 3{
-            //                        Image("dynamic")
-            //                            .resizable()
-            //
-            //                    }
-            //
-            //
-            //
-            //                }
-            //            )
-            
-            
-            
-            
-            
+            TabView(selection: $index, content: {
+                ForEach(0..<wallpapers.count, id: \.self){ i in
+                    let wallpaper = wallpapers[i]
+                    AsyncImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  ))){
+                        phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: getRect().width, height: getRect().height)
+                                .clipped()
+                            
+                        } else if phase.error != nil {
+                            AsyncImage(url: URL(string: wallpaper.path.first?.path.full ?? "")){
+                                phase in
+                                if let image = phase.image {
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: getRect().width, height: getRect().height)
+                                        .clipped()
+                                }
+                            }
+                            
+                        } else {
+                            ResizableLottieView(filename: "placeholder_anim")
+                                .frame(width: 200, height: 200)
+                        }
+                        
+                        
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .overlay(
+                        ZStack{
+                            if wallpapers[index].specialContentV2ID == 3{
+                                Image("dynamic")
+                                    .resizable()
+                                
+                            }
+                            
+                            
+                            
+                        }
+                    )
+
+                }
+            })
+            .background(
+                placeHolderImage()
+                    .ignoresSafeArea()
+            )
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .edgesIgnoringSafeArea(.all)
             
             
             
@@ -114,14 +121,14 @@ struct SPWLOnePageDetailView: View {
             
             
             if showDialogRv {
-                let url  = wallpaper.path.first?.path.small ?? wallpaper.path.first?.path.preview ?? ""
+                let url  = wallpapers[index].path.first?.path.small ?? wallpapers[index].path.first?.path.preview ?? ""
                     WatchRVtoGetWLDialog( urlStr: url, show: $showDialogRv ,onRewarded: {
                         b in
                         showDialogRv = false
                         if b {
                             
-                            downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.path.first?.path.full ?? ""))
-                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpaper.id)
+                            downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].path.first?.path.full ?? ""))
+                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpapers[index].id)
                         }else{
                             showToastWithContent(image: "xmark", color: .red, mess: "Ads not alaivable!")
                         }
@@ -134,44 +141,13 @@ struct SPWLOnePageDetailView: View {
             }
             
         }
-        .background(
-            
-            
-            WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  )))
-            
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
-                .clipped()
-            
-            
-                .overlay(
-                    ZStack{
-                        if wallpaper.specialContentV2ID == 3{
-                            Image("dynamic")
-                                .resizable()
-                            
-                        }
-                        
-                        
-                        
-                    }
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
-            
-            
-            
-            
-        )
-        .navigationBarTitle("", displayMode: .inline)
-        .navigationBarHidden(true)
+
+        .addBackground()
 
         .overlay(
             ZStack{
                 if showContentPremium {
-                    let url  = wallpaper.path.first?.path.small ?? wallpaper.path.first?.path.preview ?? ""
+                    let url  = wallpapers[index].path.first?.path.small ?? wallpapers[index].path.first?.path.preview ?? ""
                     SpecialContentPremiumDialog(show: $showContentPremium, urlStr: url, onClickBuyPro: {
                         showContentPremium = false
                         showSub.toggle()
@@ -184,9 +160,7 @@ struct SPWLOnePageDetailView: View {
             EztSubcriptionView()
                 .environmentObject(store)
         })
-//        .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
-//            TutorialContentView()
-//        })
+
         
         
     }
@@ -251,13 +225,13 @@ extension SPWLOnePageDetailView{
                     b in
                     if b {
                         if store.isPro(){
-                            downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.path.first?.path.full ?? ""))
-                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpaper.id)
+                            downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].path.first?.path.full ?? ""))
+                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpapers[index].id)
                         }else{
                             
                             DispatchQueue.main.async {
                                 withAnimation(.easeInOut){
-                                    if wallpaper.contentType == 1 {
+                                    if wallpapers[index].contentType == 1 {
                                         showBuySubAtScreen.toggle()
                                     }else{
                                         showDialogRv.toggle()
@@ -322,8 +296,8 @@ extension SPWLOnePageDetailView{
             ctrlViewModel.showDialogRV = false
             if rewardSuccess {
                 DispatchQueue.main.async{
-                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.path.first?.path.full ?? ""))
-                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                    downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].path.first?.path.full ?? ""))
+                    ServerHelper.sendImageDataToServer(type: "set", id: wallpapers[index].id)
                 }
             }else{
                 showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
@@ -360,9 +334,7 @@ extension SPWLOnePageDetailView{
                         
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if !store.isPro() && downloadCount == 1 {
-                            ctrlViewModel.navigateView.toggle()
-                        }else{
+                        if downloadCount == 1 {
                             showRateView()
                         }
                     }else{

@@ -58,7 +58,7 @@ struct EztLiveWallpaperView: View {
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                     .overlay(alignment : .top){
-                                        if !store.isPro(){
+                                     
                                             
                                             HStack{
                                                 Image("live")
@@ -66,14 +66,11 @@ struct EztLiveWallpaperView: View {
                                                     .frame(width: 16, height: 16 )
                                                     .padding(8)
                                                 Spacer()
-                                                Image("crown")
-                                                    .resizable()
-                                                    .frame(width: 16, height: 16, alignment: .center)
-                                                    .padding(8)
+                                               
                                             }
                                             
                                            
-                                        }
+                                       
                                     }
                             })
                             

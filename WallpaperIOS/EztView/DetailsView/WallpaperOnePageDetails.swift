@@ -18,7 +18,12 @@ struct WallpaperOnePageDetails: View {
     @AppStorage("current_coin", store: .standard) var currentCoin : Int = 0
     @AppStorage("exclusive_cost", store: .standard) var exclusiveCost : Int = 4
     @Environment(\.dismiss) var dismiss
-    let wallpaper : Wallpaper
+    let wallpapers : [Wallpaper]
+    
+    
+    @State var index : Int
+    
+    
     var body: some View {
         ZStack(alignment: .top){
             
@@ -28,48 +33,64 @@ struct WallpaperOnePageDetails: View {
                 EmptyView()
             })
             
-//            AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
-//                phase in
-//                if let image = phase.image {
-//                    image
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(maxWidth: .infinity, maxHeight : .infinity)
-//                       // .frame(width: getRect().width, height: getRect().height)
-//                        .clipped()
-//
-//                } else if phase.error != nil {
-//                    AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
-//                        phase in
-//                        if let image = phase.image {
-//                            image
-//                                .resizable()
-//                                .scaledToFill()
-//                                .frame(maxWidth: .infinity, maxHeight : .infinity)
-//                                //.frame(width: getRect().width, height: getRect().height)
-//                                .clipped()
-//                        }
-//                    }
-//                    
-//                } else {
-//                    ResizableLottieView(filename: "placeholder_anim")
-//                        .frame(width: 80, height: 80)
-//                }
-//
-//
-//            }
+            TabView(selection: $index, content: {
+                ForEach(0..<wallpapers.count, id: \.self){ i in
+                    let wallpaper = wallpapers[i]
+                    AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+                        phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: getRect().width, height: getRect().height)
+                                .clipped()
+                            
+                        } else if phase.error != nil {
+                            AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
+                                phase in
+                                if let image = phase.image {
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: getRect().width, height: getRect().height)
+                                        .clipped()
+                                }
+                            }
+                            
+                        } else {
+                            ResizableLottieView(filename: "placeholder_anim")
+                                .frame(width: 200, height: 200)
+                        }
+                        
+                        
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    
+                    .onAppear(perform: {
+                      
+                        if !store.isPro(){
+                            inter.showAd(onCommit: {})
+                        }
+                        
+                    })
+                }
+            })
+            .background(
+                Image("BGIMG")
+                    .resizable()
+                    .ignoresSafeArea()
+            )
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .edgesIgnoringSafeArea(.all)
+            .onTapGesture {
+                withAnimation{
+                    ctrlViewModel.showControll.toggle()
+                }
+            }
             
             
-//            WebImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")))
-//                .resizable()
-//                .scaledToFill()
-//            .frame(maxWidth: .infinity, maxHeight : .infinity)
-//            .ignoresSafeArea()
-//            .clipped()
-//            .onTapGesture {
-//                ctrlViewModel.showControll.toggle()
-//            }
-            
+
             if ctrlViewModel.showControll{
                 ControllView()
             }
@@ -79,16 +100,14 @@ struct WallpaperOnePageDetails: View {
             }
             
             if ctrlViewModel.showDialogRV{
-              //  if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                   DialogGetWL(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
-             //   }
+           
+                   DialogGetWL(urlStr: wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
+
                 
             }
             
             if ctrlViewModel.showDialogBuyCoin{
-                //if let urlStr = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""){
-                 // DialogGetWLByCoin(urlStr: wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
-                //}
+
                 SpecialSubView(onClickClose: {
                     ctrlViewModel.showDialogBuyCoin = false
                 })
@@ -98,67 +117,16 @@ struct WallpaperOnePageDetails: View {
             
         }
         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
-        .background(
-                        WebImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")))
-                            .resizable()
-                            .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight : .infinity)
-                        .ignoresSafeArea()
-                        .clipped()
-        )
-        .navigationBarTitle("", displayMode: .inline)
-            .navigationBarHidden(true)
-//        .overlay(
-//            ZStack(alignment: .bottom){
-//                if ctrlViewModel.showInfo {
-//               
-//                        Color.black.opacity(0.5).ignoresSafeArea()
-//                            .onTapGesture {
-//                                ctrlViewModel.showInfo = false
-//                            }
-//                        
-//                        VStack(spacing : 8){
-//                            Text("Tag: \(getTag(wl:wallpaper))")
-//                                .frame(maxWidth: .infinity, alignment: .leading)
-//                            
-//                            Text("Author: \(wallpaper.author ?? "Unknow")")
-//                                .foregroundColor(.white)
-//                                .mfont(16, .regular)
-//                                .frame(maxWidth: .infinity, alignment: .leading)
-//                            Text("Liscense: \(wallpaper.license ?? "Unknow")")
-//                                .foregroundColor(.white)
-//                                .mfont(16, .regular)
-//                                .frame(maxWidth: .infinity, alignment: .leading)
-//                        }.padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-//                            .overlay(
-//                                Button(action: {
-//                                    ctrlViewModel.showInfo = false
-//                                    
-//                                }, label: {
-//                                    Image(systemName: "xmark")
-//                                        .resizable()
-//                                        .foregroundColor(.white)
-//                                        .aspectRatio(contentMode: .fit)
-//                                        .frame(width : 14, height: 14)
-//                                        .padding(12)
-//                                    
-//                                }), alignment: .topTrailing
-//                            )
-//                            .background(
-//                                Color.mblack_bg
-//                                    .opacity(0.9)
-//                            )
-//                            .cornerRadius(16)
-//                            .padding()
-//                    }
-//                
-//            }
-//        
-//        )
+        .addBackground()
+        .overlay{
+            if ctrlViewModel.showGifView{
+                GiftView()
+            }
+        }
         .overlay(
             ZStack{
                 if ctrlViewModel.showContentPremium {
-                    let url  = (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: "")
+                    let url  = (wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: "")
                         SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
                             ctrlViewModel.showContentPremium = false
                             ctrlViewModel.showDialogBuyCoin = true
@@ -167,10 +135,21 @@ struct WallpaperOnePageDetails: View {
             }
 
         )
-//         .sheet(isPresented: $ctrlViewModel.showTutorial, content: {
-//             TutorialContentView()
-//         })
+
     }
+    
+    
+    @ViewBuilder
+    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+        if giftSubType == 0 {
+           GiftSub_1_View(show: $ctrlViewModel.showGifView)
+        }else if giftSubType == 1{
+            GiftSub_2_View(show: $ctrlViewModel.showGifView)
+        }else{
+            GifSub_3_View(show: $ctrlViewModel.showGifView)
+        }
+    }
+    
     @ViewBuilder
     func ControllView() -> some View{
         VStack(spacing : 0){
@@ -190,46 +169,39 @@ struct WallpaperOnePageDetails: View {
                 
                 Spacer()
 
-                ZStack{
-                    if !store.isPro() && wallpaper.content_type == "private" {
-                       
-                        Button(action: {
-                            ctrlViewModel.showContentPremium = true
-                        }, label: {
-                            Image("crown")
-                                .resizable()
-                                .frame(width: 18, height: 18, alignment: .center)
-                                .frame(width: 34, height: 40)
-                        })
+               
+                    HStack(spacing : 0){
+                        ZStack{
+                            if !store.isPro() && wallpapers[index].content_type == "private" {
+                                Button(action: {
+                                    ctrlViewModel.showContentPremium = true
+                                }, label: {
+                                    Image("crown")
+                                        .resizable()
+                                        .frame(width: 18, height: 18, alignment: .center)
+                                        .frame(width: 50, height: 44)
+                                })
+                               
 
+                            }
+                            
+                        }
+                        
+                        Button(action: {
+                            ctrlViewModel.showPreview.toggle()
+                            ctrlViewModel.showControll.toggle()
+                        }, label: {
+                            Image("preview")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+                                .padding(.trailing, 16)
+                                .padding(.leading, 8)
+                        })
+                        
                     }
-                    
-                    
-                  
-                }
                 
-//                
-//                Button(action: {
-//                    ctrlViewModel.showInfo.toggle()
-//                }, label: {
-//                    Image( "info")
-//                        .resizable()
-//                        .aspectRatio( contentMode: .fit)
-//                        .frame(width: 24, height: 24)
-//                        .frame(width: 40, height: 40)
-//                        .contentShape(Rectangle())
-//                }).padding(.leading, 8)
-//                
-//                Button(action: {
-//                    ctrlViewModel.showTutorial.toggle()
-//                }, label: {
-//                    Image( "help")
-//                        .resizable()
-//                        .aspectRatio( contentMode: .fit)
-//                        .frame(width: 24, height: 24)
-//                        .frame(width: 40, height: 40)
-//                        .contentShape(Rectangle())
-//                }).padding(.trailing, 12)
+
 //              
                 
             }
@@ -243,26 +215,8 @@ struct WallpaperOnePageDetails: View {
             
             Spacer()
             
-            HStack{
-                Button(action: {
-                   
-                  
-                    
-                    
-                }, label: {
-                    Image(  "heart")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio( contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .frame(width: 48, height: 48)
-                        .background(
-                            Circle()
-                                .fill(Color.mblack_bg.opacity(0.7))
-                                .frame(width: 48, height: 48)
-                        )
-                        .containerShape(Circle())
-                }) .frame(width: 48, height: 48)
+           
+        
                   
                 
                 
@@ -271,16 +225,16 @@ struct WallpaperOnePageDetails: View {
                         b in
                         if b{
                             if store.isPro()   {
-                                downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-                                ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                                downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                                ServerHelper.sendImageDataToServer(type: "set", id: wallpapers[index].id)
                                 
                             }else{
                            
-                                if wallpaper.content_type == "free" {
+                                if wallpapers[index].content_type == "free" {
                                     
                                     if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
-                                        downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-                                        ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                                        downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                                        ServerHelper.sendImageDataToServer(type: "set", id: wallpapers[index].id)
                                     }else{
                                         
                                         DispatchQueue.main.async {
@@ -324,41 +278,19 @@ struct WallpaperOnePageDetails: View {
                                 }.offset(x : -36)
                                 , alignment: .leading
                             )
-                    }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
+                    }.frame(width : 240, height: 48)
                     
                         .contentShape(Rectangle())
                         .background(
                             Capsule().fill(Color.main)
                         )
-                }).padding(.horizontal, 16)
+                })
+                .disabled(ctrlViewModel.isDownloading)
+                .padding(.bottom, 48)
                 
                 
-                Button(action: {
-                    withAnimation{
-                        ctrlViewModel.showControll = false
-                        ctrlViewModel.showPreview = true
-                    }
-                }, label: {
-                    Image("preview")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio( contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .frame(width: 48, height: 48)
-                        .background(
-                            Circle()
-                                .fill(Color.mblack_bg.opacity(0.7))
-                                .frame(width: 48, height: 48)
-                        )
-                }) .frame(width: 48, height: 48)
-                    .containerShape(Circle())
-            }
-            .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
-            .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .padding(.bottom, 40)
+             
+        
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         
@@ -416,8 +348,8 @@ struct WallpaperOnePageDetails: View {
             ctrlViewModel.showDialogRV = false
             if rewardSuccess {
                 DispatchQueue.main.async{
-                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
+                    downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
+                    ServerHelper.sendImageDataToServer(type: "set", id: wallpapers[index].id)
                 }
                 
             }else{
@@ -478,8 +410,16 @@ struct WallpaperOnePageDetails: View {
                         
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if !store.isPro() && downloadCount == 1 {
-                            ctrlViewModel.navigateView.toggle()
+                        
+                        if downloadCount == 1 {
+                            showRateView()
+                        }else{
+                            if !store.isPro()  {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                                    ctrlViewModel.showGifView.toggle()
+                                    ctrlViewModel.changeSubType()
+                                })
+                             }
                         }
                         
                     }else{

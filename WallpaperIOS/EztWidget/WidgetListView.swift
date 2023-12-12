@@ -28,7 +28,7 @@ struct WidgetListView: View {
                     .frame(width: 24, height: 24)
                     .containerShape(Rectangle())
             })
-            Text("Widget".toLocalize())
+                Text(viewModel.type.rawValue)
                 .foregroundColor(.white)
                 .mfont(22, .bold)
                 .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -38,7 +38,7 @@ struct WidgetListView: View {
             .frame(height: 44)
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
-            if viewModel.type != .ALL {
+            if viewModel.type != .ALL && viewModel.sortByTop != .TOP_WEEK {
                 HStack(spacing : 12){
                     ForEach(SpSort.allCases, id: \.rawValue){
                         sort in
@@ -129,6 +129,7 @@ struct WidgetListView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+
     }
 }
 

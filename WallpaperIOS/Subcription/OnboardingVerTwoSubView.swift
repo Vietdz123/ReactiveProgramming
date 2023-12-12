@@ -58,7 +58,7 @@ struct OnboardingVerTwoSubView: View {
                     .tag(4)
                 Screen_5()
                     .tag(5)
-                Color.black
+                Screen_6()
                     .tag(6)
                 Screen_7()
                     .tag(7)
@@ -366,9 +366,10 @@ extension OnboardingVerTwoSubView{
         }else if page == 4 {
             return "Shuffle Packs"
         }else if page == 5 {
-            return "Widgets"
-        }else if page == 6{
             return "Watch Faces"
+          
+        }else if page == 6{
+            return "Widgets"
         }else{
             return ""
         }
@@ -384,9 +385,10 @@ extension OnboardingVerTwoSubView{
         }else if page == 4 {
             return "Automatically change exciting wallpapers"
         }else if page == 5 {
-            return "An exclusive experience like never before"
-        }else if page == 6 {
             return "Trendy and stylish"
+         
+        }else if page == 6 {
+            return "An exclusive experience like never before"
         }else{
             return ""
         }
@@ -409,6 +411,11 @@ extension OnboardingVerTwoSubView{
     }
     
     func Screen_5() -> some View{
+        VideoOnboarding(video_name: "watchface")
+        
+    }
+    
+    func Screen_6() -> some View{
         VideoOnboarding(video_name: "video5")
         
     }
@@ -423,11 +430,17 @@ extension OnboardingVerTwoSubView{
     
     
     func Screen_8() -> some View{
-        Image("considerr")
+        
+        Image("BGIMG")
             .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
             .gesture(DragGesture())
+        
+       
+        
+          
+            
+       
     }
     
     func Page_8() -> some View{
@@ -435,7 +448,7 @@ extension OnboardingVerTwoSubView{
             Text("Wait a Moment".toLocalize())
                 .mfont(24, .bold)
                 .foregroundColor(.main)
-                .padding(.top, 100  )
+                .padding(.top, getSafeArea().top + 32  )
                 .frame(maxWidth: .infinity, alignment : .leading)
                 .padding(.horizontal, 40)
             Text("Consider the following before you".toLocalize())
@@ -461,9 +474,7 @@ extension OnboardingVerTwoSubView{
                             .resizable()
                             .frame(width: 24, height: 24)
                         
-                        //
-                        //TextTypingAnimView(text: opt, color: .white, fontSize: 17, weight: .bold)
-                        
+                   
                         Text(opt.toLocalize())
                             .mfont(17, .bold, line : 3)
                             .foregroundColor(.white)
@@ -483,10 +494,11 @@ extension OnboardingVerTwoSubView{
                     .foregroundColor(.white)
                     .padding(.top, 56)
                 
-              //  Text("Then \(yearlyFreeTrialProduct.displayPrice)/year. No Payment Now")
+            
               Text(  String(format: NSLocalizedString("Then %@/year. No Payment Now", comment: ""), "\(yearlyFreeTrialProduct.displayPrice)"))
                     .mfont(13, .regular)
                     .foregroundColor(.white)
+                    
             }
             
             
@@ -500,13 +512,31 @@ extension OnboardingVerTwoSubView{
             
         }
         .frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .top)
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0))
         .background(
-            LinearGradient(colors: [Color("black_bg").opacity(0.2),
-                                    Color("black_bg").opacity(0.6),
-                                    Color("black_bg").opacity(0.8),
-                                    Color("black_bg"),
-                                    Color("black_bg")], startPoint: .top, endPoint: .bottom)
-        ).padding(.bottom, 24)
+            ZStack{
+                LinearGradient(colors: [Color("black_bg").opacity(0.2),
+                                        Color("black_bg").opacity(0.6),
+                                        Color("black_bg").opacity(0.8),
+                                        Color("black_bg"),
+                                        Color("black_bg")], startPoint: .top, endPoint: .bottom)
+                Image("considerr")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.top, getSafeArea().top)
+                  
+            }
+              
+               
+                 
+                   
+                
+           
+               
+           
+        )
+        
         
     }
     

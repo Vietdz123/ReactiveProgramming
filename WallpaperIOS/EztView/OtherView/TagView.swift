@@ -44,47 +44,8 @@ struct TagView: View {
             }.frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 44)
                 .padding(.horizontal, 20)
-            
-            HStack{
-                
-                Menu{
-                    ForEach(Sorted.allCases, id: \.rawValue){
-                        sort in
-                        Button(sort.rawValue, action: {
-                            viewModel.sortedBy = sort
-                            viewModel.currentOffset = 0
-                            viewModel.wallpapers.removeAll()
-                            viewModel.getWallpapers()
-                        })
-                    }
-                }label: {
-                    HStack{
-                        Text("\(viewModel.sortedBy.rawValue)")
-                            .mfont(12, .regular)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .padding(.leading, 16)
-                        Spacer()
-                        Image("downnn")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16,  height: 16, alignment: .center)
-                            .padding(.trailing, 16)
-                        
-                    }.frame(width: 200, height: 24)
-                        .background(
-                            Capsule()
-                                .fill(Color.white.opacity(0.2))
-                        )
-                }
-                
-                
-                
-                Spacer()
-                
-            } .padding(16)
-            
-            
+                .padding(.bottom, 16)
+
             ScrollView(.vertical, showsIndicators: false){
                 LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8  ){
                     

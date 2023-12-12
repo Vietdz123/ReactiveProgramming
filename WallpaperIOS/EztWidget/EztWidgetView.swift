@@ -35,19 +35,22 @@ enum HealthDisplayType : String, CaseIterable{
 struct EztWidgetView: View {
     
     @StateObject var ctrlVM : EztWidgetViewModel  = .init()
-    @StateObject var newWidgetVM : WidgetMainViewModel = .init()
-    @StateObject var popularWidgetVM : WidgetMainViewModel = .init()
-    @StateObject var digitalWidgetVM : WidgetMainViewModel = .init()
-    @StateObject var rountineWidgetVM : WidgetMainViewModel = .init()
-    @StateObject var soundWidgetVM : WidgetMainViewModel = .init()
     
-    @StateObject var gifWidgetVM : WidgetMainViewModel = .init()
-    @StateObject var makeDecisionWidgetVM : WidgetMainViewModel = .init()
+    
+    @StateObject var newWidgetVM : WidgetMainViewModel = .init(type : .ALL, sort: .NEW)
+    @StateObject var popularWidgetVM : WidgetMainViewModel = .init(type : .ALL, sort: .POPULAR, sortByTop: .TOP_MONTH)
+    @StateObject var digitalWidgetVM : WidgetMainViewModel = .init(type : .DigitalFriend, sort: .NEW, sortByTop: .TOP_MONTH)
+    @StateObject var rountineWidgetVM : WidgetMainViewModel = .init(type : .Routine,sort: .NEW, sortByTop: .TOP_MONTH)
+    @StateObject var soundWidgetVM : WidgetMainViewModel = .init(type : .Sound, sort: .NEW, sortByTop: .TOP_MONTH)
+    @StateObject var gifWidgetVM : WidgetMainViewModel = .init(type : .Gif, sort: .NEW, sortByTop: .TOP_MONTH)
+    @StateObject var makeDecisionWidgetVM : WidgetMainViewModel = .init(type : .DecisionMaker, sort: .NEW, sortByTop: .TOP_MONTH)
     
     
     @EnvironmentObject var storeVM : MyStore
     @EnvironmentObject  var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    let widgetHeight : CGFloat = 320 / 2.2
     
     
     var body: some View {
@@ -56,12 +59,14 @@ struct EztWidgetView: View {
                 
                 WidgetNEW()
                 WidgetPOPULAR()
-                WidgetHEALTH()
                 WidgetDIGITAL()
-                WidgetROUNTINE()
+                WidgetHEALTH()
                 WidgetSound()
                 WidgetGIF()
                 WidgetMakeDicision()
+                WidgetROUNTINE()
+             
+               
                 Spacer()
                     .frame( height: 152)
                 
@@ -154,12 +159,12 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if newWidgetVM.widgets.isEmpty{
                     newWidgetVM.getWidgets()
@@ -233,15 +238,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if popularWidgetVM.widgets.isEmpty{
-                    popularWidgetVM.sort = .POPULAR
+                   // popularWidgetVM.sort = .POPULAR
                     popularWidgetVM.getWidgets()
                 }
                 
@@ -296,7 +301,7 @@ extension EztWidgetView{
                                     Image("\(widgetObj.id)")
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: 320, height: 320 / 2.2)
+                                        .frame(width: 320, height: widgetHeight)
                                         .overlay{
                                             RoundedRectangle(cornerRadius: 16)
                                                 .stroke(Color.white.opacity(0.4), lineWidth : 1)
@@ -314,7 +319,7 @@ extension EztWidgetView{
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
            
             
         }.padding(.top, 24)
@@ -370,14 +375,6 @@ extension EztWidgetView{
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
-//                                            .overlay(alignment : .topTrailing){
-//                                                if !storeVM.isPro(){
-//                                                    Image("crown")
-//                                                        .resizable()
-//                                                        .frame(width: 16, height: 16, alignment: .center)
-//                                                        .padding(8)
-//                                                }
-//                                            }
                                     })
                                     
                                     
@@ -388,15 +385,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if digitalWidgetVM.widgets.isEmpty{
-                    digitalWidgetVM.type = .DigitalFriend
+                   // digitalWidgetVM.type = .DigitalFriend
                     digitalWidgetVM.getWidgets()
                 }
                 
@@ -457,14 +454,7 @@ extension EztWidgetView{
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
-//                                            .overlay(alignment : .topTrailing){
-//                                                if !storeVM.isPro(){
-//                                                    Image("crown")
-//                                                        .resizable()
-//                                                        .frame(width: 16, height: 16, alignment: .center)
-//                                                        .padding(8)
-//                                                }
-//                                            }
+
                                     })
                                     
                                     
@@ -475,15 +465,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if rountineWidgetVM.widgets.isEmpty{
-                    rountineWidgetVM.type = .Routine
+                  //  rountineWidgetVM.type = .Routine
                     rountineWidgetVM.getWidgets()
                 }
                 
@@ -544,14 +534,7 @@ extension EztWidgetView{
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
-//                                            .overlay(alignment : .topTrailing){
-//                                                if !storeVM.isPro(){
-//                                                    Image("crown")
-//                                                        .resizable()
-//                                                        .frame(width: 16, height: 16, alignment: .center)
-//                                                        .padding(8)
-//                                                }
-//                                            }
+
                                     })
                                     
                                     
@@ -562,15 +545,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if soundWidgetVM.widgets.isEmpty{
-                    soundWidgetVM.type = .Sound
+                //    soundWidgetVM.type = .Sound
                     soundWidgetVM.getWidgets()
                 }
                 
@@ -630,14 +613,6 @@ extension EztWidgetView{
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
-//                                            .overlay(alignment : .topTrailing){
-//                                                if !storeVM.isPro(){
-//                                                    Image("crown")
-//                                                        .resizable()
-//                                                        .frame(width: 16, height: 16, alignment: .center)
-//                                                        .padding(8)
-//                                                }
-//                                            }
                                     })
                                     
                                     
@@ -648,15 +623,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if gifWidgetVM.widgets.isEmpty{
-                    gifWidgetVM.type = .Gif
+                  //  gifWidgetVM.type = .Gif
                     gifWidgetVM.getWidgets()
                 }
                 
@@ -727,15 +702,15 @@ extension EztWidgetView{
                         
                         
                     }
-                    .frame(height: 160)
+                    .frame(height: widgetHeight)
                     
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 160)
+            .frame(height: widgetHeight)
             .onAppear(perform: {
                 if makeDecisionWidgetVM.widgets.isEmpty{
-                    makeDecisionWidgetVM.type = .DecisionMaker
+                  //  makeDecisionWidgetVM.type = .DecisionMaker
                     makeDecisionWidgetVM.getWidgets()
                 }
                 

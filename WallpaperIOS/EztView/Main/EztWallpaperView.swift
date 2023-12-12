@@ -29,7 +29,7 @@ struct EztWallpaperView: View {
     @StateObject var ctrlVM : EztWallpaperViewModel = .init()
     
     @EnvironmentObject var tagViewModel : TagViewModel 
-    @StateObject var foryouVM : HomeViewModel = .init()
+    @EnvironmentObject var foryouVM : HomeViewModel 
     @StateObject var catalogVM : WallpaperCatalogViewModel = .init()
    
     
