@@ -32,7 +32,14 @@ struct ShuffleDetailView: View {
     var body: some View {
         
         ZStack{
-            
+            NavigationLink(
+                destination:
+                        TutorialShuffleView()
+                    ,
+                isActive: $showTuto,
+                label: {
+                    EmptyView()
+                })
      
                 TabView(selection: $currentIndex){
                     ForEach(0..<wallpaper.path.count, id: \.self) {
@@ -139,6 +146,7 @@ struct ShuffleDetailView: View {
                 EztSubcriptionView()
                     .environmentObject(store)
             })
+          
             .onAppear(perform: {
                 if !store.isPro(){
                     interAd.showAd {
@@ -262,7 +270,7 @@ extension ShuffleDetailView{
             
             ZStack{
                 HStack(spacing : 8){
-                    ForEach(0..<wallpaper.path.count, content: {
+                    ForEach(0..<wallpaper.path.count, id: \.self, content: {
                         i in
                         Circle()
                             .foregroundColor(.gray)

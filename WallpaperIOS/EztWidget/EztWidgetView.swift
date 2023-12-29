@@ -118,7 +118,7 @@ extension EztWidgetView{
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -195,7 +195,7 @@ extension EztWidgetView{
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -272,7 +272,7 @@ extension EztWidgetView{
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -336,14 +336,13 @@ extension EztWidgetView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(digitalWidgetVM)
+                    ConditionalWidgetView(widgetType: .DigitalFriend)
                         .environmentObject(storeVM)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -414,14 +413,13 @@ extension EztWidgetView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(rountineWidgetVM)
+                    ConditionalWidgetView(widgetType: .Routine)
                         .environmentObject(storeVM)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -494,14 +492,13 @@ extension EztWidgetView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(soundWidgetVM)
+                    ConditionalWidgetView(widgetType: .Sound)
                         .environmentObject(storeVM)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -573,14 +570,13 @@ extension EztWidgetView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(gifWidgetVM)
+                    ConditionalWidgetView(widgetType: .Gif)
                         .environmentObject(storeVM)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -651,14 +647,13 @@ extension EztWidgetView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(makeDecisionWidgetVM)
+                    ConditionalWidgetView(widgetType: .DecisionMaker)
                         .environmentObject(storeVM)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

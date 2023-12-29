@@ -16,17 +16,16 @@ enum WallpaperTab : String, CaseIterable{
     case Category = "Category"
     case ShufflePack = "Shuffle Pack"
     case DepthEffect = "Depth Effect"
+    case WatchFace = "Watch Face"
+    case PosterContact = "Post Contact"
     case DynamicIsland = "Dynamic Island"
     case Live = "Live Wallpapers"
 }
 
-class EztWallpaperViewModel : ObservableObject{
-    @Published var currentTab : WallpaperTab = .ForYou
-}
 
 struct EztWallpaperView: View {
     
-    @StateObject var ctrlVM : EztWallpaperViewModel = .init()
+    //@StateObject var ctrlVM : EztWallpaperViewModel = .init()
     
     @EnvironmentObject var tagViewModel : TagViewModel 
     @EnvironmentObject var foryouVM : HomeViewModel 
@@ -42,6 +41,9 @@ struct EztWallpaperView: View {
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
     
+    @Binding var currentTab : WallpaperTab
+    
+    
     @Namespace var anim
     var body: some View {
         VStack(spacing : 0){
@@ -49,7 +51,7 @@ struct EztWallpaperView: View {
                 .padding(.top, 16)
                 .padding(.bottom, 16)
             
-            TabView(selection: $ctrlVM.currentTab,
+            TabView(selection: $currentTab,
                     content:  {
                 EztForYouView()
                     .environmentObject(foryouVM)
@@ -77,8 +79,23 @@ struct EztWallpaperView: View {
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .environmentObject(catalogVM)
-                   
                     .tag(WallpaperTab.DepthEffect)
+                
+                
+                EztWatchFaceView()
+                    .environmentObject(rewardAd)
+                    .environmentObject(interAd)
+                    .environmentObject(store)
+                    .environmentObject(catalogVM)
+                    .tag(WallpaperTab.WatchFace)
+                
+                EztPosterContactView()
+                    .environmentObject(rewardAd)
+                    .environmentObject(interAd)
+                    .environmentObject(store)
+                    .environmentObject(catalogVM)
+                    .tag(WallpaperTab.PosterContact)
+                
                 EztDynamicIsland()
                     .environmentObject(rewardAd)
                     .environmentObject(interAd)
@@ -114,7 +131,7 @@ extension EztWallpaperView{
                         tab in
                         
                         Text(tab.rawValue.toLocalize())
-                            .mfont(13,ctrlVM.currentTab == tab ? .bold : .regular)
+                            .mfont(13, currentTab == tab ? .bold : .regular)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -127,7 +144,7 @@ extension EztWallpaperView{
                                             Color.white.opacity(0.1)
                                         )
                                     
-                                    if ctrlVM.currentTab == tab{
+                                    if currentTab == tab{
                                         
                                         Capsule()
                                             .fill(
@@ -152,7 +169,7 @@ extension EztWallpaperView{
                             .contentShape(Rectangle())
                             .onTapGesture{
                                 withAnimation{
-                                    ctrlVM.currentTab = tab
+                                    currentTab = tab
                                 }
                                
                               
@@ -163,7 +180,7 @@ extension EztWallpaperView{
                     
                     
                 }.padding(.leading, 16)
-            }.onChange(of: ctrlVM.currentTab, perform: {
+            }.onChange(of: currentTab, perform: {
                 tab in
                 withAnimation{
                     reader.scrollTo(tab)

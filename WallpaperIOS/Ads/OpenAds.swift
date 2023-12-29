@@ -67,7 +67,7 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
         else{
             return .init()
         }
-        guard let root = screen.windows.last?.rootViewController else{
+        guard let root = screen.windows.first?.rootViewController else{
             return .init()
         }
         return root

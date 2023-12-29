@@ -168,10 +168,8 @@ struct PreviewWidgetSheet: View {
                         WDHomeNetworkManager.shared.downloadFileCoreData(data: widget, completion: {
                             DispatchQueue.main.async{
                                 showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
-                                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
-                                
                                 ServerHelper.sendDataWidget(widget_id: widget.id)
-                                
+                                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
                                 if show == false{
                                     UserDefaults.standard.set(true, forKey: "wg_show_when_download")
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
@@ -430,7 +428,7 @@ extension PreviewWidgetSheet {
         ZStack{
             let listImage : [String] = widget.getRectangleUrlString()
             let count = listImage.count
-            
+            let delay : Double = Double(widget.delay_animation ) / 1000.0
             if !listImage.isEmpty{
                 
                 WebImage(url: URL(string: listImage[currentIndex]))
@@ -447,19 +445,20 @@ extension PreviewWidgetSheet {
                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .clipped()
                     .animation(.easeInOut, value: currentIndex)
+                   
                     .onChange(of: currentIndex, perform: { _ in
                         if !allowNextImage {
                             return
                         }
                         
                         if currentIndex < count - 1 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
                                
                                 currentIndex += 1
                             })
                         }else{
                             allowNextImage = false
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
                                 currentIndex = 0
                             })
                         }
@@ -500,7 +499,7 @@ extension PreviewWidgetSheet {
         ZStack{
             let listImage : [String] = widget.getRectangleUrlString()
             let count = listImage.count
-            
+            let delayAnimation : Double = Double(widget.delay_animation ) / 1000.0
             if !listImage.isEmpty{
                 
                 WebImage(url: URL(string: listImage[currentIndex]))
@@ -518,6 +517,9 @@ extension PreviewWidgetSheet {
                     .clipped()
                     .animation(.easeInOut, value: currentIndex)
                     .onAppear(perform: {
+                        print("delay k phai la 0 thi may la con cho: \(delayAnimation)")
+                    })
+                    .onAppear(perform: {
                         if currentIndex < count - 1 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
                                 currentIndex += 1
@@ -526,11 +528,11 @@ extension PreviewWidgetSheet {
                     })
                     .onChange(of: currentIndex, perform: { _ in
                         if currentIndex < count - 1 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
                                 currentIndex += 1
                             })
                         }else{
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
                                 currentIndex = 0
                             })
                         }

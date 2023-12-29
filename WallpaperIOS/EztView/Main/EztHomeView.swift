@@ -17,15 +17,18 @@ import Lottie
 struct EztHomeView: View {
     
     @Binding var currentTab : EztTab
-    
+    @Binding var wallpaperTab : WallpaperTab
     @EnvironmentObject var exclusiveVM : ExclusiveViewModel
     @EnvironmentObject var shuffleVM : ShufflePackViewModel
     @EnvironmentObject var depthVM : DepthEffectViewModel
     @EnvironmentObject var dynamicVM : DynamicIslandViewModel
     
+    @StateObject var posterContactVM : PosterContactViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
+    
     @StateObject var interactWidgetViewModel : WidgetMainViewModel = .init(type : .ALL, sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var soundWidgetVM : WidgetMainViewModel = .init(type : .Sound, sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var digitalFriendWidgetVM : WidgetMainViewModel = .init(type : .DigitalFriend, sort : .POPULAR, sortByTop: .TOP_WEEK)
+   
     
     @StateObject var watchFaceViewModel : EztWatchFaceViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     
@@ -33,7 +36,10 @@ struct EztHomeView: View {
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
     
-
+    
+    
+   
+ 
     
     var body: some View {
         
@@ -51,10 +57,10 @@ struct EztHomeView: View {
                 /*3*/   WatchFaceViewInHome()
                 /*4*/   BannerSaleHome()
                 /*5*/   DepthEffectViewInHome()
-                /*6*/   WidgetSound()
+                /*6*/   WidgetDigital()
                 /*7*/   ShufflePackInHome()
-                /*8*/   WidgetDigital()
-                /*9*/   DynamicIslandViewInHome()
+                /*8*/   WidgetSound()
+                /*9*/   PosterContactInHome()
                 
                     
                    
@@ -73,6 +79,10 @@ struct EztHomeView: View {
                 
             }
             .addBackground()
+            .onViewDidLoad {
+                interAd.loadInterstitial()
+                rewardAd.loadRewardedAd()
+            }
        
         
       
@@ -263,7 +273,7 @@ extension EztHomeView{
                        
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -368,16 +378,21 @@ extension EztHomeView{
                 
                 
                 
-                NavigationLink(destination: {
-                    ShufflePackView()
-                        .environmentObject(shuffleVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                NavigationLink(destination: {
+//                    ShufflePackView()
+//                        .environmentObject(shuffleVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+                
+                Button(action: {
+                    
+                    currentTab = .WALLPAPER
+                    wallpaperTab = .ShufflePack
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -483,15 +498,25 @@ extension EztHomeView{
                 
                 Spacer()
                 
-                NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(interactWidgetViewModel)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                NavigationLink(destination: {
+//                    WidgetListView()
+//                        .environmentObject(interactWidgetViewModel)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+//                }, label: {
+                
+                Button(action: {
+                    withAnimation(.linear){
+                        currentTab = .WIDGET
+                    }
+                   
                 }, label: {
+                    
+                
+                
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -567,16 +592,22 @@ extension EztHomeView{
                 
                 Spacer()
                 
-                NavigationLink(destination: {
-                    DepthEffectView()
-                        .environmentObject(depthVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                NavigationLink(destination: {
+//                    DepthEffectView()
+//                        .environmentObject(depthVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+                
+                Button(action: {
+                    
+                    currentTab = .WALLPAPER
+                    wallpaperTab = .DepthEffect
+                    
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -664,25 +695,31 @@ extension EztHomeView{
         }.padding(.top, 24)
     }
     
-    func DynamicIslandViewInHome() -> some View{
+    func PosterContactInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Dynamic Island".toLocalize())
+                Text("Poster Contact".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
                 
                 Spacer()
-                NavigationLink(destination: {
-                    DynamicView()
-                        .environmentObject(dynamicVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                NavigationLink(destination: {
+//                    PosterContactView()
+//                        .environmentObject(posterContactVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+                
+                Button(action: {
+                    
+                    currentTab = .WALLPAPER
+                    wallpaperTab = .PosterContact
+                    
                     
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -697,19 +734,19 @@ extension EztHomeView{
                 
                 
                 
-                if dynamicVM.wallpapers.isEmpty{
+                if posterContactVM.wallpapers.isEmpty{
                     PlaceHolderListLoad()
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
                             NavigationLink(destination: {
                                 SpWLDetailView(index: 0)
-                                    .environmentObject(dynamicVM as SpViewModel)
+                                    .environmentObject(posterContactVM as SpViewModel)
                                     .environmentObject(store)
                                     .environmentObject(rewardAd)
                                     .environmentObject(interAd)
                             }, label: {
-                                WebImage(url: URL(string: dynamicVM.wallpapers.first?.path.first?.path.small ?? ""))
+                                WebImage(url: URL(string: posterContactVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -717,11 +754,7 @@ extension EztHomeView{
                                     .scaledToFill()
                                     .frame(width: 160, height: 320)
                                     .clipped()
-                                    .overlay(
-                                        Image("dynamic")
-                                            .resizable()
-                                            .frame(width: 160, height: 320)
-                                    )
+                              
                                     .cornerRadius(8)
                             })
                             
@@ -730,13 +763,13 @@ extension EztHomeView{
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<15, content: {
                                     i in
-                                    let wallpaper = dynamicVM.wallpapers[i]
+                                    let wallpaper = posterContactVM.wallpapers[i]
                                     
-                                    let string = wallpaper.path.first?.path.small ?? ""
+                                    let string = wallpaper.thumbnail?.path.small ?? ""
                                     
                                     NavigationLink(destination: {
                                         SpWLDetailView(index: i)
-                                            .environmentObject(dynamicVM as SpViewModel)
+                                            .environmentObject(posterContactVM as SpViewModel)
                                             .environmentObject(store)
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
@@ -749,11 +782,7 @@ extension EztHomeView{
                                             .scaledToFill()
                                             .frame(width: 78, height: 156)
                                             .clipped()
-                                            .overlay(
-                                                Image("dynamic")
-                                                    .resizable()
-                                                    .frame(width: 78, height: 156)
-                                            )
+                                       
                                             .cornerRadius(8)
                                     })
                                     
@@ -793,12 +822,13 @@ extension EztHomeView{
                 
                // NavigationLink(destination: {
                 Button(action: {
-                    withAnimation(.linear){
-                        currentTab = .WATCHFACE
-                    }
+                    
+                    currentTab = .WALLPAPER
+                    wallpaperTab = .WatchFace
+                    
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -807,18 +837,12 @@ extension EztHomeView{
                             .frame(width: 18, height: 18, alignment: .center)
                     }
                 })
-                
-                
-                
             }.padding(.horizontal, 16)
             ZStack{
-
                 if watchFaceViewModel.wallpapers.isEmpty{
                   
                 }else{
-                    
                     let itemshow = min(6, watchFaceViewModel.wallpapers.count)
-                    
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 12){
                             ForEach(0..<itemshow, id: \.self){
@@ -832,8 +856,6 @@ extension EztHomeView{
                                         .environmentObject(rewardAd)
                                         .environmentObject(interAd)
                                 }, label: {
-                                    
-
                                     ZStack{
                                         Color.black
                                         WebImage(url: URL(string: string))
@@ -848,7 +870,6 @@ extension EztHomeView{
                                             RoundedRectangle(cornerRadius: 30)
                                                     .inset(by: 1.5)
                                                     .stroke(.white.opacity(0.3), lineWidth: 3)
-
                                         )
                                         .overlay(alignment: .topTrailing, content: {
                                             VStack(alignment: .trailing, spacing : 0){
@@ -869,9 +890,6 @@ extension EztHomeView{
                                             }.padding(.top, 20)
                                                 .padding(.trailing , 20)
                                         })
-
-                                    
-                                    
                                 })
 
                             }
@@ -892,76 +910,7 @@ extension EztHomeView{
         }.padding(.top, 24)
     }
     
-//    func WidgetHEALTH() -> some View{
-//        VStack(spacing : 16){
-//            HStack(spacing : 0){
-//                Text("Health Widget".toLocalize())
-//                    .mfont(20, .bold)
-//                    .foregroundColor(.white)
-//                
-//                
-//                Spacer()
-//                
-//                NavigationLink(destination: {
-//                    HealthWidgetListView(widgetList: healthWidgets)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See more".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
-//                
-//                
-//                
-//            }.padding(.horizontal, 16)
-//            ZStack{
-//                ScrollView(.horizontal, showsIndicators: false){
-//                    HStack(spacing : 0){
-//                        Spacer().frame(width: 16)
-//                        LazyHStack(spacing : 16,content: {
-//                            ForEach(healthWidgets, id: \.id) { widgetObj  in
-//                                
-//                                NavigationLink(destination: {
-//                                    WidgetDetailView(widget: widgetObj)
-//                                        .environmentObject(store)
-//                                        .environmentObject(store)
-//                                        .environmentObject(interAd)
-//                                }, label: {
-//                                    Image("\(widgetObj.id)")
-//                                        .resizable()
-//                                        .scaledToFill()
-//                                        .frame(width: 320, height: 320 / 2.2)
-//                                        .overlay{
-//                                            RoundedRectangle(cornerRadius: 16)
-//                                                .stroke(Color.white.opacity(0.4), lineWidth : 1)
-//                                        }
-//                                        .clipShape(
-//                                            RoundedRectangle(cornerRadius: 16)
-//                                        )
-//
-//                                })
-//                                
-//                                
-//                            }
-//                        })
-//                     }
-//                }
-//            }
-//            .frame(maxWidth: .infinity)
-//            .frame(height: 320 / 2.2)
-//           
-//            
-//        }.padding(.top, 24)
-//    }
-    
+
     
     func WidgetDigital() -> some View{
         VStack(spacing : 16){
@@ -974,14 +923,14 @@ extension EztHomeView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(digitalFriendWidgetVM)
+
+                    ConditionalWidgetView(widgetType: .DigitalFriend)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")
@@ -1052,14 +1001,13 @@ extension EztHomeView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    WidgetListView()
-                        .environmentObject(soundWidgetVM)
+                    ConditionalWidgetView(widgetType: .Sound)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

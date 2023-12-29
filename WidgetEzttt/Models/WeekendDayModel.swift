@@ -26,7 +26,7 @@ enum WeekendDay: Int {
         case .wednesday:
             return "Wed"
         case .thursday:
-            return "thur"
+            return "Thur"
         case .friday:
             return "Fri"
         case .saturday:

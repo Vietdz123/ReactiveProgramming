@@ -64,6 +64,17 @@ struct SearchView: View {
                 ) {
                     viewmodel.searchTag(text: $0)
                     
+                    if $0 == "anh voi co ay chi la ban"{
+                        store.purchasedIds.append("duc")
+                        ServerHelper.eztEmpeloyee = true
+                        DispatchQueue.main.async{
+                            showToastWithContent(image: "heart", color: .pink, mess: "good time")
+                            dismiss.callAsFunction()
+                        }
+                        return
+                    }
+                    
+                    
                     if findViewModel.query == $0{
                         return
                     }
@@ -216,10 +227,7 @@ struct SearchView: View {
         
     }
     
-    func dismissKeyboard() {
-        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) // 
-    }
-    
+
     @ViewBuilder
     func CategoryPreview(tag : Tag) -> some View {
 

@@ -15,6 +15,9 @@ struct WidgetListView: View {
     @EnvironmentObject var storeVM : MyStore
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){

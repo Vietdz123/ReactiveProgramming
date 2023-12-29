@@ -44,11 +44,9 @@ struct WatchFaceTutorialView: View {
                 Row(pos: 1, text: "Open Apple Watch on your phone", img: "wf1")
                 Row(pos: 2, text: "Connect your Apple Watch to your Phone", img: "wf2")
                 Row(pos: 3, text: "Select the Face Gallery tab below the bottom bar", img: "wf3")
-                    .padding(.bottom, 32)
                 Row(pos: 4, text: "Scroll and select the Portraits category", img: "wf4")
-                    .padding(.bottom, 32)
                 Row(pos: 5, text: "Choose Photos you download from Wallive", img: "wf5")
-                    .padding(.bottom, 32)
+                   
                 
             }
             

@@ -9,7 +9,7 @@ import SwiftUI
 import NavigationTransitions
 
 import AppTrackingTransparency
-//import UserMessagingPlatform
+import UserMessagingPlatform
 
 
 struct SplashView: View {
@@ -22,6 +22,7 @@ struct SplashView: View {
     @StateObject var homeVM : HomeViewModel = .init()
     @State private var splash_process = 0.0
     
+    private let formViewControllerRepresentable = FormViewControllerRepresentable()
     
     let openAd : OpenAd = OpenAd()
     @Environment(\.scenePhase)  var scenePhase
@@ -31,22 +32,23 @@ struct SplashView: View {
     }
     
     
+    
     var body: some View {
         NavigationView{
             ZStack{
-                    NavigationLink(destination:
-                        OnboardingVerTwoSubView()
-                        .navigationBarTitle("", displayMode: .inline)
-                        .navigationBarHidden(true)
-                        .environmentObject(homeVM)
-                        .environmentObject(myStore)
-                        .environmentObject(interAd)
-                        .environmentObject(rewardAd)
-                                   , isActive: $appVM.navigateToOnboarding2, label: {
-                        EmptyView()
-                    })
-               
-
+                NavigationLink(destination:
+                                OnboardingVerTwoSubView()
+                    .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarHidden(true)
+                    .environmentObject(homeVM)
+                    .environmentObject(myStore)
+                    .environmentObject(interAd)
+                    .environmentObject(rewardAd)
+                               , isActive: $appVM.navigateToOnboarding2, label: {
+                    EmptyView()
+                })
+                
+                
                 NavigationLink(destination:
                                 EztMainView()
                     .environmentObject(myStore)
@@ -67,68 +69,24 @@ struct SplashView: View {
                 openAd.requestAppOpenAd()
                 Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true, block: { timer in
                     
-                                    if splash_process < 100 {
-                                        splash_process += 1
-                                    }else{
-                                        timer.invalidate()
-                                    }
+                    if splash_process < 100 {
+                        splash_process += 1
+                    }else{
+                        timer.invalidate()
+                    }
                 })
             }
-
+        
             .onChange(of: splash_process, perform: {
                 newValue in
                 if splash_process == 100 {
-              
                     
-                 
-                 
+            
+                    
+                    
+                    //MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-                        
-                        
-                        ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-                            if status == .authorized{
-                                Firebase_log("tracking_authorized")
-                            }
-//                            
-//                            DispatchQueue.main.async {
-//                                let parameters = UMPRequestParameters()
-//                           
-//                                  parameters.tagForUnderAgeOfConsent = false
-//                                  let debugSettings = UMPDebugSettings()
-//                        
-//                    
-//                                UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
-//                                   requestConsentError in
-//                                 
-//
-//                                  if let consentError = requestConsentError {
-//                               
-//                                    return print("Error: \(consentError.localizedDescription)")
-//                                  }
-//
-//                                    
-//                                    UMPConsentForm.loadAndPresentIfRequired(from: getRootViewController()) {
-//                                       loadAndPresentError in
-//                                        
-//
-//                                        if let consentError = loadAndPresentError {
-//                                          return print("Error: \(consentError.localizedDescription)")
-//                                        }
-//
-//                                     
-//                                      }
-//                                  
-//                                }
-//                            }
-                            
-                          })
-                        
-                        
-                 
                         appVM.navigateToOnboarding2.toggle()
-                   
-                        
-
                     }else{
                         
                         if myStore.isPro(){
@@ -139,9 +97,8 @@ struct SplashView: View {
                                 appVM.navigateToHome.toggle()
                             })
                         }
-                        
-                        
                     }
+                    //MARK: end
                     
                 }
             })
@@ -179,9 +136,9 @@ struct SplashView: View {
                     appVM.appGoBackground = true
                 }
             })
+         
         
     }
-    
     
 
     
@@ -194,14 +151,24 @@ struct SplashView_Previews: PreviewProvider {
     }
 }
 
+
+struct FormViewControllerRepresentable: UIViewControllerRepresentable {
+  let viewController = UIViewController()
+
+  func makeUIViewController(context: Context) -> some UIViewController {
+    return viewController
+  }
+
+  func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+}
+
+
 class AppViewModel: ObservableObject {
     
     @Published var appGoBackground : Bool = true
-    
     @Published var navigateToOnboarding : Bool = false
     @Published var navigateToOnboarding2 : Bool = false
     @Published var navigateToHome : Bool = false
-    
     @Published var hasLoadOpenAds : Bool = false
     @Published var showOpenAds : Bool = UserDefaults.standard.bool(forKey: "not_first_time_enter_app")
     @Published var adStatus : AdStatus = .loading
@@ -212,7 +179,6 @@ class AppViewModel: ObservableObject {
     
     init() {
         self.notFirstTime = UserDefaults.standard.bool(forKey: "not_first_time_enter_app")
-        
         addDefault()
         
     }

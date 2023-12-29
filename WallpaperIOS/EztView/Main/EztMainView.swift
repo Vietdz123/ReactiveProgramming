@@ -17,9 +17,11 @@ class EztMainViewModel : ObservableObject{
     
     @Published var showMenu : Bool = false
     @Published var currentTab : EztTab = .HOME
+    @Published var currentWallpaperTab : WallpaperTab = .ForYou
     //@Published var showGift : Bool = false
     
   
+    @Published var firstAppear : Bool = true
     
     @Published var showSubView : Bool = false
     @Published var allowShowSubView : Bool = true
@@ -99,7 +101,7 @@ struct EztMainView : View {
                 TopBar()
                 TabView(selection: $mainViewModel.currentTab,
                         content:  {
-                    EztHomeView(currentTab: $mainViewModel.currentTab)
+                    EztHomeView(currentTab: $mainViewModel.currentTab, wallpaperTab: $mainViewModel.currentWallpaperTab)
                         .environmentObject(exlusiveVM)
                         .environmentObject(shuffleVM)
                         .environmentObject(depthVM)
@@ -110,7 +112,7 @@ struct EztMainView : View {
                         .environmentObject(interAd)
                         .gesture(DragGesture())
                         .tag(EztTab.HOME)
-                    EztWallpaperView()
+                    EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab)
                         .environmentObject(foryouVM)
                         .environmentObject(tagViewModel)
                         .environmentObject(liveVM)
@@ -120,20 +122,17 @@ struct EztMainView : View {
                         .gesture(DragGesture())
                         .tag(EztTab.WALLPAPER)
                     EztWidgetView()
-                             .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
-                
-                        .gesture(DragGesture())
-                        .tag(EztTab.WIDGET)
-                    
-                    EztWatchFaceView()
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
-                        .tag(EztTab.WATCHFACE)
+                        .gesture(DragGesture())
+                        .tag(EztTab.WIDGET)
+                    GenArtMainView()
+                        .environmentObject(store)
+                        .environmentObject(rewardAd)
+                        .environmentObject(interAd)
+                        .tag(EztTab.GENERATION)
                 })
-        
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .overlay(
                     BottomBar(), alignment: .bottom
@@ -145,7 +144,6 @@ struct EztMainView : View {
                     showMenu:  $mainViewModel.showMenu
                 )
                 .environmentObject(store)
-            
                 .environmentObject(rewardAd)
                 .environmentObject(interAd)
                 
@@ -156,6 +154,22 @@ struct EztMainView : View {
         .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(true)
             .onAppear(perform: {
+                
+                if mainViewModel.firstAppear {
+                    mainViewModel.firstAppear = false
+                    let notFirstTimeInMain = UserDefaults.standard.bool(forKey: "not_1st_time_in_main")
+                    if !notFirstTimeInMain {
+                        UserDefaults.standard.set(true, forKey: "not_1st_time_in_main")
+                    }else{
+                        mainViewModel.currentTab = .WALLPAPER
+                        mainViewModel.currentWallpaperTab = .Category
+                    }
+                }
+                
+//                mainViewModel.currentTab = .WALLPAPER
+//                mainViewModel.currentWallpaperTab = .Category
+                
+                
                 if  mainViewModel.showMenu{
                     mainViewModel.showMenu = false
                 }

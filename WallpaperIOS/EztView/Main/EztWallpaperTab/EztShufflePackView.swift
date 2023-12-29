@@ -123,7 +123,7 @@ extension EztShufflePackView{
                         .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

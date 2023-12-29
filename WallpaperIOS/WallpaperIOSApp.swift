@@ -42,8 +42,7 @@ class AppDelegate : NSObject, UIApplicationDelegate {
                 //  self.fcmRegTokenMessage.text  = "Remote FCM registration token: \(token)"
             }
         }
-        
-        requestGDPR()
+     
         
         return true
     }
@@ -53,33 +52,7 @@ class AppDelegate : NSObject, UIApplicationDelegate {
         Messaging.messaging().setAPNSToken(deviceToken, type: .unknown)
     }
     
-    func requestGDPR() {
-        print("GDPR requestGDPR")
-        let parameters = UMPRequestParameters()
-        parameters.tagForUnderAgeOfConsent = false
-        let debugSettings = UMPDebugSettings()
-        debugSettings.geography = .EEA
-        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
-          [weak self] requestConsentError in
-          guard let self else { return }
-
-          if let consentError = requestConsentError {
-            // Consent gathering failed.
-            return print("Error: \(consentError.localizedDescription)")
-          }
-
-//          UMPConsentForm.loadAndPresentIfRequired(from: getRe) {
-//            [weak self] loadAndPresentError in
-//            guard let self else { return }
-//
-//            if let consentError = loadAndPresentError {
-//              return print("Error: \(consentError.localizedDescription)")
-//            }
-//
-//           
-//          }
-        }
-    }
+    
   
 }
 

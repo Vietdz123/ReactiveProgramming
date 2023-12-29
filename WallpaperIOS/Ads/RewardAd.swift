@@ -29,9 +29,9 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
     
     override init() {
         super.init()
-        if self.rewardedAd == nil {
-            loadRewardedAd()
-        }
+       // if self.rewardedAd == nil {
+           // loadRewardedAd()
+       // }
 
     }
  
@@ -105,7 +105,7 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
         else{
             return .init()
         }
-        guard let root = screen.windows.last?.rootViewController else{
+        guard let root = screen.windows.first?.rootViewController else{
             return .init()
         }
         return root

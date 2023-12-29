@@ -30,7 +30,7 @@ import UIKit
      private var loadTime : Int = 0
     override init() {
         super.init()
-        loadInterstitial()
+    //    loadInterstitial()
 
     }
 
@@ -90,7 +90,7 @@ import UIKit
          else{
              return .init()
          }
-         guard let root = screen.windows.last?.rootViewController else{
+         guard let root = screen.windows.first?.rootViewController else{
              return .init()
          }
          return root

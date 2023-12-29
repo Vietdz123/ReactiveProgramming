@@ -175,7 +175,7 @@ struct WLView: View {
                 GiftView()
             }
         }
-
+      
     }
     
     @ViewBuilder

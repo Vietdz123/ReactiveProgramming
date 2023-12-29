@@ -18,7 +18,7 @@ struct SpecialSubView: View {
     
     let vip_op : [String] = [    "Unlimited Premium Wallpapers",
                                  "Unlimited Premium Widgets",
-                                 "No ADs."]
+                                 "Unlimited AI-Generate"]
     @EnvironmentObject var store : MyStore
     @State var showSubView : Bool = true
     @State var giftOpen : Bool = false

@@ -9,6 +9,22 @@ import SwiftUI
 
 extension View{
     
+    func dismissKeyboard() {
+        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true) //
+    }
+    
+    
+    var eztGradientHori : LinearGradient {
+        LinearGradient(
+            stops: [
+                Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+    }
     
     @ViewBuilder
     func EZProgressView() -> some View{
@@ -169,6 +185,8 @@ struct ToastView : View{
             Text(mess)
                 .mfont(16, .regular)
                 .foregroundColor(.black)
+                .frame(maxWidth: .infinity)
+                .minimumScaleFactor(0.5)
             
         }
         .padding(EdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24))

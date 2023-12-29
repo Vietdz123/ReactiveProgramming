@@ -12,9 +12,9 @@ struct ListLiveWLView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel : LiveWallpaperViewModel
     @EnvironmentObject var reward : RewardAd
-   
+    
     @EnvironmentObject var store : MyStore
-   
+    
     @EnvironmentObject var interAd : InterstitialAdLoader
     
     @Namespace var anim
@@ -54,70 +54,54 @@ struct ListLiveWLView: View {
                                     .navigationBarHidden(true)
                                     .environmentObject(viewModel)
                                     .environmentObject(store)
-                                   
+                                
                                     .environmentObject(reward)
                                     .environmentObject(interAd)
                                 
                             }, label: {
-
+                                
                                 WebImage(url: URL(string: string))
                                 
-                                   .onSuccess { image, data, cacheType in
-                                       // Success
-                                       // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-                                   }
-                                   .resizable()
-                                   .placeholder {
-                                       placeHolderImage()
-                                           .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-                                   }
-                                   .indicator(.activity) // Activity Indicator
-                                   .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                                   .scaledToFill()
-                                   
-                                 
-                                   
-                                .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
-                                .cornerRadius(2)
-                                .overlay(
-                                 
-                                       
+                                    .onSuccess { image, data, cacheType in
+                                        // Success
+                                        // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
+                                    }
+                                    .resizable()
+                                    .placeholder {
+                                        placeHolderImage()
+                                            .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
+                                    }
+                                    .indicator(.activity) // Activity Indicator
+                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                    .scaledToFill()
+                                
+                                
+                                
+                                    .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
+                                    .cornerRadius(2)
+                                    .overlay(
+                                        
+                                        
+                                        
+                                        HStack(spacing : 0){
                                             
-                                            HStack(spacing : 0){
-                                               
-                                                Image("live")
-                                                    .resizable()
-                                                    .frame(width: 16, height: 16 )
-                                                    .padding(8)
-                                                Spacer()
-//                                                if !store.isPro(){
-//                                            
-//                                                    Image("coin")
-//                                                        .resizable()
-//                                                        .frame(width: 13, height: 13, alignment: .center)
-//                                                    Text("\(wallpaper.cost ?? 0)")
-//                                                     //   .coinfont(10, .regular)
-//                                                        .foregroundColor(.white)
-//                                                    
-//                                                .frame(width: 16, height: 16, alignment: .center)
-//                                                    .background(
-//                                                        Capsule()
-//                                                            .fill(Color.black.opacity(0.7))
-//                                                    )
-//                                                    .padding(8)
-//                                            }
-//                                               
-                                                
-                                            }
+                                            Image("live")
+                                                .resizable()
+                                                .frame(width: 16, height: 16 )
+                                                .padding(8)
+                                            Spacer()
                                             
                                             
-                                            
-                                            
-                                     
-                                    
-                                    
-                                    , alignment: .top
-                                )
+                                        }
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        , alignment: .top
+                                    )
                             })
                             
                             

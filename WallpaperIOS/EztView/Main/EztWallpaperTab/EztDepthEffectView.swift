@@ -11,7 +11,6 @@ import SDWebImageSwiftUI
 struct EztDepthEffectView: View {
     @StateObject var newestVM : DepthEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    
     @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
@@ -106,7 +105,7 @@ extension EztDepthEffectView {
                    
                 }, label: {
                     HStack(spacing : 0){
-                        Text("See more".toLocalize())
+                        Text("See All".toLocalize())
                             .mfont(11, .regular)
                             .foregroundColor(.white)
                         Image("arrow.right")

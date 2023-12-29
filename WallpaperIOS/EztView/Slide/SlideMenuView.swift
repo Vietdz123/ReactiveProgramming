@@ -18,6 +18,9 @@ struct SlideMenuView: View {
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     
+    
+    @State var showNotificationOpt : Bool = false
+    
     var body: some View {
         ZStack{
             
@@ -28,88 +31,109 @@ struct SlideMenuView: View {
                 VStack(spacing : 0){
                     
                     
-                    HStack(spacing : 0){
-                        
-                        Image("logo")
-                            .resizable()
-                            .frame(width: 48, height: 48)
-                            .padding(16)
-                        
-                        Text(AppConfig.APP_NAME)
-                            .mfont(20, .bold)
-                            .foregroundColor(.main)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.3)){
-                                    runAnim.toggle()
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-                                    self.showMenu = false
-                                })
-                            }
-                    }.frame(maxWidth: .infinity)
-                        .frame(height: 80)
+//                    HStack(spacing : 0){
+//                        
+//                        Image("logo")
+//                            .resizable()
+//                            .frame(width: 48, height: 48)
+//                            .padding(16)
+//                        
+//                        Text(AppConfig.APP_NAME)
+//                            .mfont(20, .bold)
+//                            .foregroundColor(.main)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                            .contentShape(Rectangle())
+//                            .onTapGesture {
+//                                withAnimation(.easeInOut(duration: 0.3)){
+//                                    runAnim.toggle()
+//                                }
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+//                                    self.showMenu = false
+//                                })
+//                            }
+//                    }.frame(maxWidth: .infinity)
+//                        .frame(height: 80)
+//                    
+//                    Divider().background(.white.opacity(0.1))
                     
-                    Divider().background(.white.opacity(0.1))
+                    
+                    ZStack{
+                        if !store.isPro(){
+                            NavigationLink(destination: {
+                                EztSubcriptionView()
+                                    .environmentObject(store)
+                                    .navigationBarTitle("", displayMode: .inline)
+                                    .navigationBarHidden(true)
+                            }, label: {
+                                Image("slide_banner_v")
+                                    .resizable()
+                                    .scaledToFit()
+                            })
+                        }else{
+                            Image("slide_banner_vip")
+                                .resizable()
+                                .scaledToFit()
+                        }
+                        
+                    } .frame(maxWidth: .infinity)
+                
+                    
+
+                    
+                        
+                    
+                    Text("Settings")
+                        .mfont(20, .bold)
+                      .foregroundColor(.white)
+                      .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment : .leading)
+                      .padding(.leading, 16)
+                      .padding(.top, 8)
+                      .padding(.bottom, 16)
+                      .onAppear(perform: {
+                          NotificationHelper.share.requestNotificationPermission(onComplete: {
+                              status in
+                              if !status {
+                                  showNotificationOpt = true
+                              }
+                          })
+                      })
                     
                     ScrollView(.vertical, showsIndicators: false){
                         VStack(spacing : 0){
-                            if !store.isPro(){
-                                NavigationLink(destination: {
-                                    EztSubcriptionView()
-                                        .environmentObject(store)
-                                        .navigationBarTitle("", displayMode: .inline)
-                                        .navigationBarHidden(true)
-                                }, label: {
-                                    HStack{
-                                        ResizableLottieView(filename: "star")
-                                            .frame(width: 24, height: 24)
-                                            .padding(16)
-                                        
-                                        Text("Unlock all Features")
-                                            .mfont(17, .bold, line : 1)
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        Image("off")
-                                            .resizable()
-                                            .frame(width: 44, height: 24)
-                                            .padding(.trailing, 20)
-                                        
-                                    }.frame(maxWidth: .infinity, alignment: .leading)
-                                        .frame(height: 56)
-                                })
-                                
-                                NavigationLink(destination: {
-                                    EztSubcriptionView()
-                                        .environmentObject(store)
-                                        .navigationBarTitle("", displayMode: .inline)
-                                        .navigationBarHidden(true)
-                                }, label: {
-                                    HStack{
-                                        Image("removeads")
-                                            .resizable()
-                                            .frame(width: 24, height: 24)
-                                            .padding(16)
-                                        
-                                        Text("Remove Ads")
-                                            .mfont(17, .bold)
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        Image("off")
-                                            .resizable()
-                                            .frame(width: 44, height: 24)
-                                            .padding(.trailing, 20)
-                                        
-                                    }.frame(maxWidth: .infinity, alignment: .leading)
-                                        .frame(height: 56)
-                                })
-                                
+
+                            if showNotificationOpt {
+                                Button(action: {
+                                    if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+                                        UIApplication.shared.open(appSettings)
+                                    }
+                                   }, label: {
+                                       HStack{
+                                           Image("slide_noti")
+                                               .resizable()
+                                               .frame(width: 24, height: 24)
+                                               .padding(16)
+                                           
+                                           Text("Notification")
+                                               .mfont(17, .regular)
+                                               .foregroundColor(.white)
+                                           
+                                           Spacer()
+                                           
+                                           ZStack{
+                                               Image("uncheck")
+                                                   .resizable()
+                                                   
+                                           }
+                                           .frame(width: 44, height: 24)
+                                           .padding(.trailing, 16)
+                                           
+                                       }.frame(maxWidth: .infinity, alignment: .leading)
+                                           .frame(height: 56)
+                                       
+                                   })
                             }
-
-                            Divider().background(.white.opacity(0.1))
+                         
                             
-
                             
                          Button(action: {
                               shareLinkApp()
@@ -223,6 +247,26 @@ struct SlideMenuView: View {
                                         .padding(16)
                                     
                                     Text("How to Add Widget")
+                                        .mfont(17, .regular)
+                                        .foregroundColor(.white)
+                                    
+                                    
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(height: 56)
+                                
+                            })
+                            
+                            
+                            NavigationLink(destination: {
+                              PosterContactTutoView()
+                            }, label: {
+                                HStack{
+                                    Image("slide_tutorial")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                        .padding(16)
+                                    
+                                    Text("How to Add Poster Contact")
                                         .mfont(17, .regular)
                                         .foregroundColor(.white)
                                     

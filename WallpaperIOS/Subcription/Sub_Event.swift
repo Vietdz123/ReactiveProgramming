@@ -130,7 +130,7 @@ struct Sub_Event: View {
                             )
                             .padding(.horizontal, 48)
                     }).disabled(store.isPurchasing)
-                    .padding(.top, 11)
+                            .padding(.top, 32)
                     
                     }
                 

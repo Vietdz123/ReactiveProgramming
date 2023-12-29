@@ -264,7 +264,7 @@ extension EztSubcriptionView{
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                Text("No ADs.".toLocalize())
+                Text("Unlimited AI-Generate".toLocalize())
                     .mfont(17, .bold)
                     .foregroundColor(.white)
                     .padding(.leading,  16)

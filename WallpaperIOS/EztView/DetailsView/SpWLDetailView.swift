@@ -30,6 +30,8 @@ struct SpWLDetailView: View {
     @State var showContentPremium : Bool = false
     @State var showSub : Bool = false
     @State var showDialogRv : Bool = false
+    @State var showTuto : Bool = false
+    
     var body: some View {
         
         
@@ -84,7 +86,6 @@ struct SpWLDetailView: View {
                                 if viewModel.wallpapers[index].specialContentV2ID == 3{
                                     Image("dynamic")
                                         .resizable()
-                                    
                                 }
                                 
                                 
@@ -158,6 +159,9 @@ struct SpWLDetailView: View {
             }
             
         )
+        .fullScreenCover(isPresented: $showTuto , content: {
+            PosterContactTutoView()
+        })
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
                 .environmentObject(store)
@@ -266,11 +270,12 @@ extension SpWLDetailView{
                 .background(
                     Capsule().fill(Color.main)
                 )
-            }).padding(.horizontal, 16)
-                .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .padding(.bottom, 48)
+            })
+//            .padding(.horizontal, 16)
+//                .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
+//                .frame(maxWidth: .infinity)
+//                .frame(height: 48)
+                .padding(.bottom, 48 - ( viewModel.wallpapers[index].specialContentV2ID == 6 ? 64 : 0 ))
         }
         
     }
@@ -294,9 +299,11 @@ extension SpWLDetailView{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
 
+                      showTuto1stTime()
+                        
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if downloadCount == 1 {
+                        if downloadCount == 2 {
                             showRateView()
                         }
                     }else{
@@ -313,4 +320,20 @@ extension SpWLDetailView{
         
         
     }
+    
+    func showTuto1stTime() {
+        if viewModel.wallpapers[index].specialContentV2ID == 6 {
+            let show = UserDefaults.standard.bool(forKey: "showTuto_poster_contact_1st")
+            if show == false{
+                UserDefaults.standard.set(true, forKey: "showTuto_poster_contact_1st")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                    showTuto.toggle()
+                })
+            }
+        }
+      
+        
+    }
+    
+  
 }

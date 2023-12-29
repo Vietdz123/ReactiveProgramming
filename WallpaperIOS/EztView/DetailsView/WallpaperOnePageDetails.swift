@@ -95,9 +95,7 @@ struct WallpaperOnePageDetails: View {
                 ControllView()
             }
             
-            if ctrlViewModel.showPreview {
-                Preview()
-            }
+           
             
             if ctrlViewModel.showDialogRV{
            
@@ -112,6 +110,10 @@ struct WallpaperOnePageDetails: View {
                     ctrlViewModel.showDialogBuyCoin = false
                 })
                
+            }
+            
+            if ctrlViewModel.showPreview {
+                Preview()
             }
            
             
@@ -304,7 +306,7 @@ struct WallpaperOnePageDetails: View {
             Image("preview_lock")
                 .resizable()
                 .scaledToFill()
-               
+              
                 .onTapGesture {
                     withAnimation{
                         ctrlViewModel.showPreview = false
@@ -321,6 +323,7 @@ struct WallpaperOnePageDetails: View {
             Image("preview_home")
                 .resizable()
                 .scaledToFill()
+            
                 .onTapGesture {
                     withAnimation{
                         ctrlViewModel.showPreview = false
@@ -335,8 +338,11 @@ struct WallpaperOnePageDetails: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        
+        .background{
+            Color.clear
+        }
         .ignoresSafeArea()
-        .clipped()
         
        
     }
@@ -364,27 +370,7 @@ struct WallpaperOnePageDetails: View {
             .environmentObject(store)
     }
     
-//    @ViewBuilder
-//    func DialogGetWLByCoin(urlStr : String) -> some View{
-//        BuyWithCoinDialog(urlStr: urlStr, coin: exclusiveCost,show: $ctrlViewModel.showDialogBuyCoin, onBuyWithCoin: {
-//            ctrlViewModel.showDialogBuyCoin.toggle()
-//            if currentCoin >= exclusiveCost{
-//                currentCoin = currentCoin - exclusiveCost
-//                DispatchQueue.main.async{
-//                    downloadImageToGallery(title: "image\(wallpaper.id)", urlStr: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
-//                 
-//                    ServerHelper.sendImageDataToServer(type: "set", id: wallpaper.id)
-//                }
-//            }else{
-//                showToastWithContent(image: "xmark", color: .red, mess: "Not enough coins!")
-//            }
-//        }, onBuyPro: {
-//            ctrlViewModel.showDialogBuyCoin.toggle()
-//            ctrlViewModel.navigateView.toggle()
-//        }).environmentObject(store)
-//            .environmentObject(reward)
-//    }
-    
+
     
     func downloadImageToGallery(title : String, urlStr : String){
         DispatchQueue.main.async {
@@ -401,12 +387,7 @@ struct WallpaperOnePageDetails: View {
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
                         
-//                        if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-//                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                                ctrlViewModel.showTutorial = true
-//                            })
-//                        }
+
                         
                         let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
                         UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")

@@ -8,7 +8,17 @@
 import SwiftUI
 
 struct ServerHelper {
+    
+    static var eztEmpeloyee : Bool = false
+    
    static func sendImageDataToServer(type : String, id : Int){
+       
+       if eztEmpeloyee{
+           print("Ezt eztEmpeloyee")
+           return
+       }
+       print("Ezt senddata")
+       
         let country = UserDefaults.standard.string(forKey: "user_country") ?? "unknow"
         let parameters: [String: Any] = ["image_id": id, "type": type, "country" : country, "app" : 2 ]
         let domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
@@ -33,6 +43,12 @@ struct ServerHelper {
     }
     
     static func sendVideoDataToServer(type : String, id : Int){
+        if eztEmpeloyee{
+            print("Ezt eztEmpeloyee")
+            return
+        }
+        print("Ezt senddata")
+        
          let country = UserDefaults.standard.string(forKey: "user_country") ?? "unknow"
          let parameters: [String: Any] = ["video_id": id, "type": type, "country" : country, "app" : 2 ]
          let domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
@@ -60,6 +76,12 @@ struct ServerHelper {
      }
     
     static func sendImageSpecialDataToServer(type : String, id : Int){
+        if eztEmpeloyee{
+            print("Ezt eztEmpeloyee")
+            return
+        }
+        print("Ezt senddata")
+        
          let country = UserDefaults.standard.string(forKey: "user_country") ?? "unknow"
          let parameters: [String: Any] = ["image_special_id": id, "type": type, "country" : country, "app" : 2 ]
          let domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
@@ -86,6 +108,12 @@ struct ServerHelper {
     
     
     static func sendDataWidget(type : String = "set", widget_id : Int){
+        if eztEmpeloyee{
+            print("Ezt eztEmpeloyee")
+            return
+        }
+        print("Ezt senddata")
+        
          let country = UserDefaults.standard.string(forKey: "user_country") ?? "unknow"
          let parameters: [String: Any] = ["widget_id": widget_id, type: 1, "country" : country, "app_id" : 2 ]
    

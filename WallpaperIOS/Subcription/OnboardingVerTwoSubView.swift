@@ -9,6 +9,9 @@ import SwiftUI
 import AVKit
 import StoreKit
 
+import GoogleMobileAds
+import UserMessagingPlatform
+import AppTrackingTransparency
 
 struct OnboardingVerTwoSubView: View {
     @State var currentPage : Int =  1
@@ -29,10 +32,7 @@ struct OnboardingVerTwoSubView: View {
         "One-time-only offer for new user. The first 3-day is on us."
     ]
     
-    
-    
-    
-    
+    private let formViewControllerRepresentable = FormViewControllerRepresentable()
     
     var body: some View {
         ZStack{
@@ -93,16 +93,21 @@ struct OnboardingVerTwoSubView: View {
                                 UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                                 
                                 if currentPage == 7{
-                                    withAnimation(.linear){
-                                        currentPage = 8
+                                    
+                                    //MARK: A/B test co hoac k co man sub o day
+                                    let usingConsiderScreen =  UserDefaults.standard.bool(forKey:  "using_consider_screen_in_app")
+                                    
+                                    if usingConsiderScreen {
+                                        withAnimation(.linear){
+                                            currentPage = 8
+                                        }
+                                    }else{
+                                        withAnimation{
+                                            navigateToHome.toggle()
+                                        }
                                     }
-                                    //                                    showXmark = false
-                                    //                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                                    //                                        withAnimation(.easeInOut){
-                                    //                                            showXmark = true
-                                    //                                        }
-                                    //
-                                    //                                    })
+                                    
+                                    
                                     
                                     
                                 }else{
@@ -133,9 +138,75 @@ struct OnboardingVerTwoSubView: View {
                 )
             
         }
+        //        .background {
+        //            // Add the ViewControllerRepresentable to the background so it
+        //            // doesn't influence the placement of other views in the view hierarchy.
+        //            formViewControllerRepresentable
+        //                .frame(width: .zero, height: .zero)
+        //        }
+        .onAppear(perform: {
+            
+            //
+            ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                if status == .authorized{
+                    Firebase_log("tracking_authorized")
+                }
+                
+                // Create a UMPRequestParameters object.
+                let parameters = UMPRequestParameters()
+                // Set tag for under age of consent. false means users are not under age
+                // of consent.
+                let debugSettings = UMPDebugSettings()
+                debugSettings.testDeviceIdentifiers = ["2CCEC876-0E47-4237-865A-78C8D7B08814"]
+                debugSettings.geography = .EEA
+                parameters.debugSettings = debugSettings
+                parameters.tagForUnderAgeOfConsent = false
+                
+                // Request an update for the consent information.
+                UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
+                    requestConsentError in
+                    
+                    if let consentError = requestConsentError {
+                        // Consent gathering failed.
+                        return print("Error: \(consentError.localizedDescription)")
+                    }
+                    
+                    UMPConsentForm.loadAndPresentIfRequired(from: rootView()) { (loadAndPresentError) in
+                        
+                        if let consentError = loadAndPresentError {
+                            return print("Error: \(consentError.localizedDescription)")
+                        }
+                        
+                        
+                        print("chay vao day khong")
+                        GADMobileAds.sharedInstance().start()
+                        rewardAd.loadRewardedAd()
+                        interAd.loadInterstitial()
+                        
+                        
+                    }
+                }
+            })
+            
+            
+            
+            
+            
+        })
         
         
-        
+    }
+    
+    
+    func rootView() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first   as? UIWindowScene
+        else{
+            return .init()
+        }
+        guard let root = screen.windows.first?.rootViewController else{
+            return .init()
+        }
+        return root
     }
 }
 
@@ -178,17 +249,17 @@ extension OnboardingVerTwoSubView{
                     
                     
                 }else if currentPage == 7 {
-                 //   if store.usingOnboardingSub2(){
-                        Page_7_View_2(currentProduct: $currentProduct, navigateToHome : $navigateToHome)
-                            .environmentObject(store)
-//                    }else{
-//                            Page_6(currentProduct: $currentProduct)
-//                            .environmentObject(store)
-//                    }
+                    //   if store.usingOnboardingSub2(){
+                    Page_7_View_2(currentProduct: $currentProduct, navigateToHome : $navigateToHome)
+                        .environmentObject(store)
+                    //                    }else{
+                    //                            Page_6(currentProduct: $currentProduct)
+                    //                            .environmentObject(store)
+                    //                    }
                     
-
                     
-                
+                    
+                    
                     
                     
                 }else{
@@ -351,7 +422,7 @@ extension OnboardingVerTwoSubView{
                     store.isPurchasing = false
                 }
             }
-            }
+        }
         )
     }
     
@@ -367,7 +438,7 @@ extension OnboardingVerTwoSubView{
             return "Shuffle Packs"
         }else if page == 5 {
             return "Watch Faces"
-          
+            
         }else if page == 6{
             return "Widgets"
         }else{
@@ -386,7 +457,7 @@ extension OnboardingVerTwoSubView{
             return "Automatically change exciting wallpapers"
         }else if page == 5 {
             return "Trendy and stylish"
-         
+            
         }else if page == 6 {
             return "An exclusive experience like never before"
         }else{
@@ -436,11 +507,11 @@ extension OnboardingVerTwoSubView{
             .ignoresSafeArea()
             .gesture(DragGesture())
         
-       
         
-          
-            
-       
+        
+        
+        
+        
     }
     
     func Page_8() -> some View{
@@ -474,7 +545,7 @@ extension OnboardingVerTwoSubView{
                             .resizable()
                             .frame(width: 24, height: 24)
                         
-                   
+                        
                         Text(opt.toLocalize())
                             .mfont(17, .bold, line : 3)
                             .foregroundColor(.white)
@@ -494,11 +565,11 @@ extension OnboardingVerTwoSubView{
                     .foregroundColor(.white)
                     .padding(.top, 56)
                 
-            
-              Text(  String(format: NSLocalizedString("Then %@/year. No Payment Now", comment: ""), "\(yearlyFreeTrialProduct.displayPrice)"))
+                
+                Text(  String(format: NSLocalizedString("Then %@/year. No Payment Now", comment: ""), "\(yearlyFreeTrialProduct.displayPrice)"))
                     .mfont(13, .regular)
                     .foregroundColor(.white)
-                    
+                
             }
             
             
@@ -525,16 +596,16 @@ extension OnboardingVerTwoSubView{
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.top, getSafeArea().top)
-                  
-            }
-              
-               
-                 
-                   
                 
-           
-               
-           
+            }
+            
+            
+            
+            
+            
+            
+            
+            
         )
         
         
@@ -562,7 +633,7 @@ struct VideoOnboarding : View{
                 avPlayer = AVPlayer(url: url)
                 avPlayer!.play()
             }
-          
+            
         })
         .onDisappear(perform: {
             if avPlayer != nil{
@@ -619,7 +690,7 @@ struct Page_6: View {
     let list_2 : [String] = [
         "Unlimited Premium Wallpapers",
         "Unlimited Premium Widgets",
-        "No ADs."
+        "Unlimited AI-Generate"
         
     ]
     
@@ -659,7 +730,7 @@ struct Page_6: View {
                             .foregroundColor(.white)
                         
                     }.frame(maxWidth: .infinity, alignment : .leading)
-                        
+                    
                         .padding(.leading, 43)
                         .padding(.trailing, 24)
                     
@@ -715,7 +786,7 @@ struct Page_6: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                          //      Text("\(weekProduct.displayPrice)/week.")
+                                //      Text("\(weekProduct.displayPrice)/week.")
                                 Text( String(format: NSLocalizedString("%@/week", comment: ""), weekProduct.displayPrice) )
                                     .mfont(13, .regular)
                                     .lineLimit(1)
@@ -830,7 +901,7 @@ struct Page_6: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.white)
                                 
-                               // Text("\(decimaPriceToStr(price: month24Product.price , chia: 4))\(removeDigits(string: month24Product.displayPrice ))/week.")
+                                // Text("\(decimaPriceToStr(price: month24Product.price , chia: 4))\(removeDigits(string: month24Product.displayPrice ))/week.")
                                 Text( String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: month24Product.price, chia: 4, displayPrice: month24Product.displayPrice) ) )
                                     .mfont(13, .regular)
                                     .multilineTextAlignment(.center)
@@ -888,19 +959,19 @@ struct Page_6: View {
                     ZStack{
                         if currentProduct == 1 {
                             Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(weekProduct.displayPrice)") )
-                         //   Text("Just \(weekProduct.displayPrice) per week, cancel any time.")
+                            //   Text("Just \(weekProduct.displayPrice) per week, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }else if currentProduct == 2 {
-                          //  Text("Just \(yearTrialProduct.displayPrice) per year, cancel any time.")
+                            //  Text("Just \(yearTrialProduct.displayPrice) per year, cancel any time.")
                             Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(yearTrialProduct.displayPrice)") )
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }else if currentProduct == 3 {
                             Text( String(format: NSLocalizedString("Just %@ per year, cancel any time.", comment: ""), "\(month24Product.displayPrice)") )
-                          //  Text("Just \(month24Product.displayPrice) per month, cancel any time.")
+                            //  Text("Just \(month24Product.displayPrice) per month, cancel any time.")
                                 .mfont(11, .regular)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
@@ -942,13 +1013,13 @@ struct Page_7_View_2 : View {
     let list_2 : [String] = [
         "Unlimited Premium Wallpapers",
         "Unlimited Premium Widgets",
-        "No ADs."
+        "Unlimited AI-Generate"
         
     ]
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-         
+            
             
             VStack(spacing : 0){
                 Spacer()
@@ -958,27 +1029,27 @@ struct Page_7_View_2 : View {
                     .frame(width: 62, height: 48)
                 Text("Wallive Premium".toLocalize())
                     .mfont(24, .bold)
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
-                  .padding(.top, 16)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color(red: 1, green: 0.87, blue: 0.19))
+                    .padding(.top, 16)
                 
                 Text("Give your Phone A Cool Makeover".toLocalize())
                     .mfont(17, .bold, line: 2)
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(.white)
-                  .padding(.top, 4)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .padding(.top, 4)
                 
                 ZStack{
-                 //   Color.white.opacity(0.2)
+                    //   Color.white.opacity(0.2)
                     ResizableLottieView(filename: "userrate")
                         .frame(maxWidth: .infinity, maxHeight : .infinity)
-                           
+                    
                 }.frame(maxWidth: .infinity)
                     .frame(height: getRect().width * 144 / 375)
                     .padding(.vertical, 16)
-                    
+                
                 VStack(spacing : 8){
-               
+                    
                     
                     
                     ForEach(list_2, id: \.self){
@@ -996,7 +1067,7 @@ struct Page_7_View_2 : View {
                                 .foregroundColor(.white)
                             
                         }.frame(maxWidth: .infinity, alignment : .leading)
-                            
+                        
                             .padding(.leading, 43)
                             .padding(.trailing, 24)
                         
@@ -1007,10 +1078,10 @@ struct Page_7_View_2 : View {
                 
                 
                 if let weekProduct = store.weekProductNotSale,
-                    let yearProductOrigin = store.yearlyOriginalProduct , let yearProductFreeTrial = store.yearlyFreeTrialProduct
+                   let yearProductOrigin = store.yearlyOriginalProduct , let yearProductFreeTrial = store.yearlyFreeTrialProduct
                 {
                     
-                  
+                    
                     Opt_Year(product: yearProductOrigin)
                         .padding(.top, 16)
                     Opt_Week(product: weekProduct)
@@ -1018,9 +1089,9 @@ struct Page_7_View_2 : View {
                     
                     Text("Auto-renewable, cancel anytime.")
                         .mfont(11, .regular)
-                      .multilineTextAlignment(.center)
-                      .foregroundColor(.white)
-                      .padding(.top, 16)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .padding(.top, 16)
                     
                     
                     Button(action: {
@@ -1031,8 +1102,8 @@ struct Page_7_View_2 : View {
                         HStack(spacing : 0){
                             Text("Use free trial")
                                 .mfont(17, .regular)
-                              .foregroundColor(.white)
-                              .padding(.leading, 24)
+                                .foregroundColor(.white)
+                                .padding(.leading, 24)
                             Spacer()
                             
                             Image("off")
@@ -1041,9 +1112,9 @@ struct Page_7_View_2 : View {
                                 .frame(width: 44, height: 24)
                                 .padding(.trailing, 16)
                             
-                       
-                          
-                                
+                            
+                            
+                            
                             
                         }
                         .frame(height: 48)
@@ -1051,16 +1122,16 @@ struct Page_7_View_2 : View {
                             Capsule()
                                 .fill(Color.white.opacity(0.2))
                                 .overlay(
-                                  Capsule()
-                                    .inset(by: 0.5)
-                                    .stroke(.white.opacity(0.2), lineWidth: 1)
+                                    Capsule()
+                                        .inset(by: 0.5)
+                                        .stroke(.white.opacity(0.2), lineWidth: 1)
                                 )
-                          )
-                          .padding(.horizontal, 28)
-                          .padding(.top, 16)
+                        )
+                        .padding(.horizontal, 28)
+                        .padding(.top, 16)
                     })
                     
-            
+                    
                     
                 }
                 
@@ -1071,7 +1142,7 @@ struct Page_7_View_2 : View {
         }.addBackground()
         
         
-            
+        
     }
     func purchasesss(product : Product, string : String) {
         store.isPurchasing = true
@@ -1093,7 +1164,7 @@ struct Page_7_View_2 : View {
                     store.isPurchasing = false
                 }
             }
-            }
+        }
         )
     }
     
@@ -1139,7 +1210,7 @@ struct Page_7_View_2 : View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
-                       // Text("\(product.displayPrice)/week")
+                        // Text("\(product.displayPrice)/week")
                         Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
                             .mfont(12, .regular)
                             .foregroundColor(.white)
@@ -1148,7 +1219,7 @@ struct Page_7_View_2 : View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                   // Text("\(product.displayPrice)/week")
+                    // Text("\(product.displayPrice)/week")
                     Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
                         .mfont(12, .regular)
                         .foregroundColor(.white)
@@ -1212,7 +1283,7 @@ struct Page_7_View_2 : View {
                                     )
                                 )
                         )
-                     
+                    
                     
                 }
                 
@@ -1230,7 +1301,7 @@ struct Page_7_View_2 : View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text(String(format: NSLocalizedString("%@/year", comment: ""), product.displayPrice ))
-                      
+                        
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -1238,7 +1309,7 @@ struct Page_7_View_2 : View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     Text(String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice) ))
-               //     Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
+                    //     Text("\(decimaPriceToStr(price: product.price ,chia: 51))\(removeDigits(string: product.displayPrice))/week")
                         .mfont(12, .regular)
                         .foregroundColor(.white)
                         .padding(.trailing, 16)
@@ -1299,6 +1370,6 @@ struct Page_7_View_2 : View {
     
 }
 #Preview {
-   SplashView()
+    SplashView()
     
 }

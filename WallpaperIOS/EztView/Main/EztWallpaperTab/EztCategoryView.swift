@@ -107,7 +107,7 @@ struct EztCategoryView: View {
                                                 Capsule()
                                                     .fill(Color(red: 1, green: 0.87, blue: 0.19))
                                             )
-                                    }).padding(.top, 12)
+                                    }).padding(.top, 4)
 
 
                                     HStack(spacing : 4){
@@ -208,7 +208,7 @@ struct EztCategoryView: View {
                                     viewModel.navigate.toggle()
                                 }, label: {
                                     HStack(spacing : 0){
-                                        Text("See more")
+                                        Text("See All")
                                             .mfont(11, .regular)
                                             .foregroundColor(.white)
                                         Image("arrow.right")

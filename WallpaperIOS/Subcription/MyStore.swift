@@ -121,6 +121,11 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(using_new_sub_screen_for_onb,   forKey: "using_new_usb_in_onb")
                     
                     
+                    //MARK: A/B test có màn consider hay không
+                    let usingConsiderScreen = self.remoteConfig.configValue(forKey: "using_consider_screen").boolValue
+                    UserDefaults.standard.set(usingConsiderScreen, forKey: "using_consider_screen_in_app")
+                    
+                    
                     //MARK ADS ID
                     let bannerID = self.remoteConfig.configValue(forKey: "id_banner_ads").stringValue ?? AdsConfig.def_bannerID
                     let rewardID = self.remoteConfig.configValue(forKey: "id_reward_ads").stringValue ?? AdsConfig.def_rewardID
@@ -248,8 +253,7 @@ class MyStore: ObservableObject {
 
     func isPro() -> Bool {
         return !purchasedIds.isEmpty
-       // return false
-      //  return true
+       
     }
     
     func fetchProducts() {
