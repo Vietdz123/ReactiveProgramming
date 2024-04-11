@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import GoogleMobileAds
 
 struct SPWLOnePageDetailView: View {
     @Environment(\.dismiss) var dismiss
@@ -51,14 +52,53 @@ struct SPWLOnePageDetailView: View {
             TabView(selection: $index, content: {
                 ForEach(0..<wallpapers.count, id: \.self){ i in
                     let wallpaper = wallpapers[i]
-                    AsyncImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ( wallpaper.path.first?.path.preview ?? ""  ))){
+                    let urlStr = wallpaper.specialContentV2ID == 6 ? wallpaper.thumbnail?.path.full : wallpaper.path.first?.path.preview
+                    AsyncImage(url: URL(string: urlStr ?? ""  )){
                         phase in
                         if let image = phase.image {
                             image
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: getRect().width, height: getRect().height)
+                                .opacity( (wallpaper.specialContentV2ID == 2 && ctrlViewModel.actionSelected == .LOCK) ? 0.0 : 1.0)
                                 .clipped()
+                                .overlay{
+                                    if ctrlViewModel.actionSelected == .LOCK && wallpapers[index].specialContentV2ID == 2 {
+
+                                        AsyncImage(url: URL(string:  wallpapers[index].thumbnail?.path.preview ?? ""  )){
+                                            phase in
+                                            if let image = phase.image {
+                                                image
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: getRect().width, height: getRect().height)
+                                                    .clipped()
+                                                    
+                                                
+                                            } else if phase.error != nil {
+                                                AsyncImage(url: URL(string: wallpapers[index].thumbnail?.path.preview ?? "")){
+                                                    phase in
+                                                    if let image = phase.image {
+                                                        image
+                                                            .resizable()
+                                                            .scaledToFill()
+                                                            .frame(width: getRect().width, height: getRect().height)
+                                                            .clipped()
+                                                    }
+                                                }
+                                                
+                                            } else {
+                                                ResizableLottieView(filename: "placeholder_anim")
+                                                    .frame(width: 200, height: 200)
+                                            }
+                                            
+                                            
+                                        }
+                                     
+                                     
+                                        
+                                    }
+                                }
                             
                         } else if phase.error != nil {
                             AsyncImage(url: URL(string: wallpaper.path.first?.path.full ?? "")){
@@ -81,18 +121,7 @@ struct SPWLOnePageDetailView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.all)
-                    .overlay(
-                        ZStack{
-                            if wallpapers[index].specialContentV2ID == 3{
-                                Image("dynamic")
-                                    .resizable()
-                                
-                            }
-                            
-                            
-                            
-                        }
-                    )
+              
 
                 }
             })
@@ -103,6 +132,8 @@ struct SPWLOnePageDetailView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .edgesIgnoringSafeArea(.all)
             
+            
+            Preview()
             
             
             if ctrlViewModel.showControll{
@@ -170,6 +201,37 @@ extension SPWLOnePageDetailView{
     
     
     
+    @ViewBuilder
+    func Preview() -> some View{
+    
+        ZStack(alignment: .top){
+            if ctrlViewModel.actionSelected == .HOME {
+                VStack(spacing : 0){
+                    Image("home_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .opacity( wallpapers[index].specialContentV2ID == 6 ? 0 : 1.0)
+                        .padding(.top, 44)
+                    Spacer()
+                }
+                
+
+            }else if ctrlViewModel.actionSelected == .LOCK{
+                VStack(spacing : 0){
+                    Image("lock_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .opacity(wallpapers[index].specialContentV2ID == 2 || wallpapers[index].specialContentV2ID == 6 ? 0 : 1.0)
+                        .padding(.top, 28)
+                    Spacer()
+                }
+
+                  
+            }
+        }
+        
+    }
+    
     
     
     @ViewBuilder
@@ -192,7 +254,7 @@ extension SPWLOnePageDetailView{
                 Spacer()
                 
                 
-                if !store.isPro(){
+                if !store.isPro() && wallpapers[index].contentType == 1 {
                     Button(action: {
                         showContentPremium.toggle()
                     }, label: {
@@ -203,12 +265,7 @@ extension SPWLOnePageDetailView{
                     })
                     
                 }
-                
-                
- 
-                
-                
-                
+
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44  )
@@ -217,72 +274,85 @@ extension SPWLOnePageDetailView{
             Spacer()
             
             
-            
-            
-            Button(action: {
+            HStack(alignment: .bottom, spacing:  0, content: {
                 
-                getPhotoPermission(status: {
-                    b in
-                    if b {
-                        if store.isPro(){
-                            downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].path.first?.path.full ?? ""))
-                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpapers[index].id)
-                        }else{
-                            
-                            DispatchQueue.main.async {
-                                withAnimation(.easeInOut){
-                                    if wallpapers[index].contentType == 1 {
-                                        showBuySubAtScreen.toggle()
-                                    }else{
-                                        showDialogRv.toggle()
-                                    }
-                                    
-                                    
-                                  
-                                }
-                            }
-                            
-                            
-                        }
+                VStack(spacing : 6){
+                    ForEach(DetailWallpaperAction.allCases, id : \.rawValue){
+                        action in
+                        Image(action.rawValue)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .frame(width: 32, height: 44)
+                            .opacity(ctrlViewModel.actionSelected == action ? 1.0 : 0.4)
+                            .contentShape(Rectangle())
+                            .onTapGesture(perform: {
+                                ctrlViewModel.actionSelected = action
+                            })
                     }
-                })
-                
-                
-                
-                
-                
-                
-                
-            }, label: {
-                HStack{
                     
-                    
-                    Text("Save")
-                        .mfont(16, .bold)
-                        .foregroundColor(.mblack_fg)
-                        .overlay(
-                            ZStack{
-                                if ctrlViewModel.isDownloading{
-                                    EZProgressView()
-                                }
-                            }.offset(x : -36)
-                            , alignment: .leading
-                        )
                 }
-                .frame(width: 240, height: 48)
-                .contentShape(Rectangle())
-                .background(
-                    Capsule().fill(Color.main)
-                )
-            }).padding(.horizontal, 16)
+                .background(Color.black.opacity(0.4))
+                .clipShape(Capsule())
+                .padding(.leading, 16)
+                
+                Spacer()
+                
+                Button(action: {
+                    
+                    getPhotoPermission(status: {
+                        b in
+                        if b {
+                            if store.isPro(){
+                                downloadImageToGallery(title: "image\(wallpapers[index].id)", urlStr: (wallpapers[index].path.first?.path.full ?? ""))
+                                ServerHelper.sendImageSpecialDataToServer(type: "download", id: wallpapers[index].id)
+                            }else{
+                                
+                                DispatchQueue.main.async {
+                                    withAnimation(.easeInOut){
+                                        if wallpapers[index].contentType == 1 {
+                                            showBuySubAtScreen.toggle()
+                                        }else{
+                                            showDialogRv.toggle()
+                                        }
+                                        
+                                        
+                                      
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
+                    })
+                    
+                    
+                    
+                    
+                    
+                }, label: {
+                    Image("detail_download")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .frame(width: 56, height: 56)
+                        .background(Circle().fill(Color.main))
+
+                }).disabled(ctrlViewModel.isDownloading)
+                    .padding(.trailing, 16)
+            }).padding(.bottom, 24)
+            
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
+                }
+            }.frame(height: GADAdSizeBanner.size.height)
             
             
             
             
-                .padding(EdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32))
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .padding(.bottom, 48)
+        
+            
+            
+            
         }
         
     }

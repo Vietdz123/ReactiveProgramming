@@ -179,17 +179,11 @@ struct EztForYouView: View {
                             
                             
                             WebImage(url: URL(string: tag.images[0].previewSmallURL ))
-                            
-                                .onSuccess { image, data, cacheType in
-                                    
-                                }
                                 .resizable()
                                 .placeholder {
                                     placeHolderImage()
                                         .frame( width: 80,height: 160)
                                 }
-                                .indicator(.activity) // Activity Indicator
-                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                 .scaledToFill()
                                 .frame( width: 80,height: 160)
                                 .cornerRadius(4)
@@ -204,8 +198,6 @@ struct EztForYouView: View {
                                     placeHolderImage()
                                         .frame( width: 80,height: 160)
                                 }
-                                .indicator(.activity) // Activity Indicator
-                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                 .scaledToFill()
                                 .frame( width: 80,height: 160)
                                 .cornerRadius(4)

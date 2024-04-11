@@ -64,7 +64,7 @@ struct SearchView: View {
                 ) {
                     viewmodel.searchTag(text: $0)
                     
-                    if $0 == "anh voi co ay chi la ban"{
+                    if $0 == "keeps me awake"{
                         store.purchasedIds.append("duc")
                         ServerHelper.eztEmpeloyee = true
                         DispatchQueue.main.async{
@@ -156,8 +156,6 @@ struct SearchView: View {
                                        placeHolderImage()
                                            .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
                                    }
-                                   .indicator(.activity) // Activity Indicator
-                                   .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                    .scaledToFill()
                                 .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
                                 .cornerRadius(2)
@@ -193,6 +191,7 @@ struct SearchView: View {
                         }
                         
                     }
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                     .padding(.horizontal, 16)
                 }
                 
@@ -245,8 +244,6 @@ struct SearchView: View {
                placeHolderImage()
                    .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
            }
-           .indicator(.activity) // Activity Indicator
-           .transition(.fade(duration: 0.5)) // Fade Transition with duration
            .scaledToFill()
         .frame(width:width , height: width * 2)
        

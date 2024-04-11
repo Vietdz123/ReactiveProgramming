@@ -109,6 +109,15 @@
       }
     },
     {
+      "identity" : "ios_sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adjust/ios_sdk",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3ebb6fe16fa67d5307bdafc93005d006bfa5fb74"
+      }
+    },
+    {
       "identity" : "kituracontracts",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Kitura/KituraContracts.git",

@@ -146,6 +146,13 @@ struct EztDynamicIslslandCateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+            }
     }
 }
 

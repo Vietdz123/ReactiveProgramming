@@ -77,22 +77,31 @@ struct PosterContactView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .edgesIgnoringSafeArea(.bottom)
+            .addBackground()
             .overlay(
                 ZStack{
                     if store.allowShowBanner(){
-                        BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        BannerAdViewMain( adStatus: $adStatus)
                             
                     }
                 }
                 
                 , alignment: .bottom
             )
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+            }
+            
     }
 }
 

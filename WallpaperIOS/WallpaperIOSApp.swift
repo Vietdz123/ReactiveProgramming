@@ -12,13 +12,22 @@ import FirebaseMessaging
 import FirebaseRemoteConfig
 import AVFoundation
 import UserMessagingPlatform
+import Adjust
+
+
 class AppDelegate : NSObject, UIApplicationDelegate {
-    let FLURRY_API : String = "QZVMFBWBYKFV6QZPY5HM"
+ 
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         print("MYSTORE--- FirebaseApp.configure() init")
         FirebaseApp.configure()
 
+        let yourAppToken = "112iadqgoq74"
+        let environment = ADJEnvironmentProduction //ADJEnvironmentSandbox //
+        let adjustConfig = ADJConfig(
+            appToken: yourAppToken,
+            environment: environment)
+        Adjust.appDidLaunch(adjustConfig)
         
         let audioSession = AVAudioSession.sharedInstance()
         do {

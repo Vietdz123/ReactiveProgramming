@@ -439,6 +439,56 @@
           "referenceName" : "YearOriginal",
           "subscriptionGroupID" : "5CA6DDB4",
           "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "9AF3BB28",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ezt.wl.year_9",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "YearOriginal copy",
+          "subscriptionGroupID" : "5CA6DDB4",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "56AF7499",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ezt.wl.year_7",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly_Sale copy",
+          "subscriptionGroupID" : "5CA6DDB4",
+          "type" : "RecurringSubscription"
         }
       ]
     }

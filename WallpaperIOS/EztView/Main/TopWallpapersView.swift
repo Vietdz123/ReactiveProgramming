@@ -14,6 +14,8 @@ struct TopWallpapersView: View {
     @EnvironmentObject var store : MyStore
     
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    @State var adStatus : AdStatus = .loading
     var body: some View {
         VStack(spacing : 0){
             
@@ -66,14 +68,6 @@ struct TopWallpapersView: View {
                                .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                             .cornerRadius(8)
                             .clipped()
-//                            .overlay(alignment : .topTrailing){
-//                                if !store.isPro() && wallpaper.content_type  == "private" {
-//                                    Image("crown")
-//                                        .resizable()
-//                                        .frame(width: 16, height: 16, alignment: .center)
-//                                        .padding(8)
-//                                }
-//                            }
                         })
                         .cornerRadius(2)
                         .onAppear(perform: {
@@ -85,6 +79,7 @@ struct TopWallpapersView: View {
                     }
                     
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
                 
                 
@@ -98,6 +93,18 @@ struct TopWallpapersView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .addBackground()
             .edgesIgnoringSafeArea(.bottom)
+            .overlay(
+                ZStack{
+                    if store.allowShowBanner() {
+                        BannerAdViewMain(adStatus: $adStatus)
+                    }
+                }, alignment: .bottom
+            )
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
     }
 }
 

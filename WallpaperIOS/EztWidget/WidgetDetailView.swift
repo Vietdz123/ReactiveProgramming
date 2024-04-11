@@ -15,6 +15,11 @@ struct WidgetDetailView: View {
     @EnvironmentObject var storeVM : MyStore
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    
+ 
+    
+    
     var body: some View {
         ZStack(alignment: .bottom){
             VStack(spacing : 0){
@@ -49,14 +54,20 @@ struct WidgetDetailView: View {
             PreviewWidgetSheet( widget: widget,clickClose: {
                 presentaionMode.wrappedValue.dismiss()
             }).environmentObject(storeVM)
+                .environmentObject(reward)
             
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .addBackground()
+        .onAppear(perform: {
+            if !storeVM.isPro(){
+                interAd.showAd {
+                    
+                }
+            }
+        })
         .onViewDidLoad {
-            
-            
             if widget.category_id == 3 {
                 
                 for urlStr in widget.getButtonCheckUrlString(){
@@ -64,8 +75,7 @@ struct WidgetDetailView: View {
                         _,_,_,_,_,_ in
                     })
                 }
-                
-               
+
             }else{
                 for urlStr in widget.getRectangleUrlString(){
                     SDWebImageManager.shared.loadImage(with: URL(string: urlStr), progress: nil, completed: {
@@ -74,13 +84,7 @@ struct WidgetDetailView: View {
                 }
             }
         }
-//        .onAppear(perform: {
-//            if !storeVM.isPro(){
-//                interAd.showAd {
-//                    
-//                }
-//            }
-//        })
+
     }
 }
 

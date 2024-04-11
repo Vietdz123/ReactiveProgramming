@@ -18,9 +18,9 @@ class EztMainViewModel : ObservableObject{
     @Published var showMenu : Bool = false
     @Published var currentTab : EztTab = .HOME
     @Published var currentWallpaperTab : WallpaperTab = .ForYou
-    //@Published var showGift : Bool = false
+    @Published var showGift : Bool = false
     
-  
+    @Published var adStatus : AdStatus = .loading
     @Published var firstAppear : Bool = true
     
     @Published var showSubView : Bool = false
@@ -54,22 +54,10 @@ class EztMainViewModel : ObservableObject{
         
     }
     
-//    func changeSubType() {
-//
-//        
-//        let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
-//      
-//        
-//        if subTypeSave == 0 {
-//                UserDefaults.standard.set(1, forKey: "gift_sub_type")
-//        }else if subTypeSave == 1 {
-//                UserDefaults.standard.set(2, forKey: "gift_sub_type")
-//        }else if subTypeSave == 2{
-//                UserDefaults.standard.set(0, forKey: "gift_sub_type")
-//        }
-//        
-//       
-//    }
+    
+    
+   
+
     
 }
 
@@ -81,14 +69,15 @@ struct EztMainView : View {
     @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var depthVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
-    
-    @StateObject var liveVM : LiveWallpaperViewModel = .init()
+  //  @StateObject var liveVM : LiveWallpaperViewModel = .init()
    
     
     @StateObject var foryouVM : HomeViewModel = .init()
     @StateObject var tagViewModel : TagViewModel = .init()
     
-
+    @StateObject var catalogVM : WallpaperCatalogViewModel = .init()
+    
+    
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
@@ -102,20 +91,23 @@ struct EztMainView : View {
                 TabView(selection: $mainViewModel.currentTab,
                         content:  {
                     EztHomeView(currentTab: $mainViewModel.currentTab, wallpaperTab: $mainViewModel.currentWallpaperTab)
+                        .environmentObject(catalogVM)
                         .environmentObject(exlusiveVM)
                         .environmentObject(shuffleVM)
                         .environmentObject(depthVM)
                         .environmentObject(dynamicVM)
-                        .environmentObject(liveVM)
+                        
+                      //  .environmentObject(liveVM)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
                         .gesture(DragGesture())
                         .tag(EztTab.HOME)
-                    EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab)
+                    EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab, showGift : $mainViewModel.showGift)
+                        .environmentObject(catalogVM)
                         .environmentObject(foryouVM)
                         .environmentObject(tagViewModel)
-                        .environmentObject(liveVM)
+                     //   .environmentObject(liveVM)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
@@ -155,6 +147,17 @@ struct EztMainView : View {
             .navigationBarHidden(true)
             .onAppear(perform: {
                 
+                UserDefaults.standard.setValue(true, forKey: "user_go_main")
+                
+                if !store.isPro(){
+                    interAd.loadInterstitial()
+                    rewardAd.loadRewardedAd()
+                    NativeAdsViewModel.shared.loadAds()
+                }
+                
+                
+                
+                
                 if mainViewModel.firstAppear {
                     mainViewModel.firstAppear = false
                     let notFirstTimeInMain = UserDefaults.standard.bool(forKey: "not_1st_time_in_main")
@@ -162,24 +165,38 @@ struct EztMainView : View {
                         UserDefaults.standard.set(true, forKey: "not_1st_time_in_main")
                     }else{
                         mainViewModel.currentTab = .WALLPAPER
-                        mainViewModel.currentWallpaperTab = .Category
+                        
+                        var timeCountEnterApp : Int = UserDefaults.standard.integer(forKey: "timecount_enter_app")
+                        
+                        if !UserDefaults.standard.bool(forKey: "lan_hai_vao_app"){
+                            UserDefaults.standard.set(true, forKey: "lan_hai_vao_app")
+                            timeCountEnterApp = timeCountEnterApp + Int.random(in: 0...1)
+                        }
+                        
+                        if timeCountEnterApp % 2 == 0 {
+                            mainViewModel.currentWallpaperTab = .Category
+                        }else{
+                            mainViewModel.currentWallpaperTab = .Special
+                        }
+                        UserDefaults.standard.set(timeCountEnterApp + 1, forKey: "timecount_enter_app")
+                        
+                        
+                        if mainViewModel.allowShowSubView && !store.isPro() {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                mainViewModel.allowShowSubView = false
+                                mainViewModel.showSubView = true
+                            })
+                        }
+                        
                     }
                 }
                 
-//                mainViewModel.currentTab = .WALLPAPER
-//                mainViewModel.currentWallpaperTab = .Category
-                
-                
+
                 if  mainViewModel.showMenu{
                     mainViewModel.showMenu = false
                 }
 
-                    if mainViewModel.allowShowSubView && !store.isPro() {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                            mainViewModel.allowShowSubView = false
-                            mainViewModel.showSubView = true
-                        })
-                    }
+                   
                 
             
                 
@@ -202,47 +219,49 @@ struct EztMainView : View {
                 
                 
             })
-//            .overlay{
-//                if mainViewModel.showGift{
-//                    GiftView()
-//                }
-//            }
-            .fullScreenCover(isPresented: $mainViewModel.showSubView, onDismiss: {
-               
-            }, content: {
-                SubViewRandom()
-                    .environmentObject(store)
-            })
+//
+//            .fullScreenCover(isPresented: $mainViewModel.showSubView, onDismiss: {
+//               
+//            }, content: {
+//                SubViewRandom()
+//                    .environmentObject(store)
+//            })
+            .overlay{
+                if mainViewModel.showGift{
+                    GiftView()
+                        .environmentObject(store)
+                }
+            }
         
     }
     
-//    @ViewBuilder
-//    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
-//        if giftSubType == 0 {
-//           GiftSub_1_View(show: $mainViewModel.showGift)
-//        }else if giftSubType == 1{
-//            GiftSub_2_View(show: $mainViewModel.showGift)
-//        }else{
-//            GifSub_3_View(show: $mainViewModel.showGift)
-//        }
-//    }
-    
     
     @ViewBuilder
-    func SubViewRandom() -> some View {
-        if mainViewModel.subType == 0 {
-            if store.isHasEvent(){
-                Sub_Event()
-            }else{
-                Sub_1_View()
-            }
-            
-        }else if mainViewModel.subType == 1 {
-            Sub_2_View()
+    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+        if giftSubType == 0 {
+           GiftSub_1_View(show: $mainViewModel.showGift)
+        }else if giftSubType == 1{
+            GiftSub_2_View(show: $mainViewModel.showGift)
         }else{
-            Sub_3_View()
+            GifSub_3_View(show: $mainViewModel.showGift)
         }
     }
+
+    
+//    @ViewBuilder
+//    func SubViewRandom() -> some View {
+//        if mainViewModel.subType == 0 {
+//            if store.isHasEvent(){
+//                Sub_Event()
+//            }else{
+//                Sub_1_View()
+//            }
+//        }else if mainViewModel.subType == 1 {
+//            Sub_2_View()
+//        }else{
+//            Sub_3_View()
+//        }
+//    }
 }
 
 extension EztMainView{
@@ -291,75 +310,12 @@ extension EztMainView{
     
     @ViewBuilder
     func BottomBar() -> some View{
-        VStack(spacing : 12){
-//            if !store.isPro(){
-//                Button(action: {
-//                    mainViewModel.showGift.toggle()
-//                    mainViewModel.changeSubType()
-//                }, label: {
-//                    
-//                
-//                
-//                HStack(spacing : 0){
-//                    HStack(spacing : 0){
-//                        ResizableLottieView(filename: "giftbox")
-//                            .frame(width: 86, height: 86)
-//                            .offset(y : 4)
-//                        // .padding(.leading, 12)
-//                        //  .padding(.trailing, 12)
-//                        
-//                        Text("Last chance for your gift...".toLocalize())
-//                            .mfont(15, .bold, line: 1)
-//                            .foregroundColor(.white)
-//                            .multilineTextAlignment(.leading)
-//                            
-//                            
-//                        Spacer()
-//                      
-//                         
-//                   
-//                            Text("Open".toLocalize())
-//                                .mfont(13, .bold)
-//                                .multilineTextAlignment(.center)
-//                                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-//                                .frame(width: 64, height: 28)
-//                                .background(
-//                                    Capsule()
-//                                        .fill(.white)
-//                                    
-//                                )
-//                                .padding(.trailing, 12)
-//                      
-//                        
-//                        
-//                        
-//                    }.frame(maxWidth: .infinity)
-//                        .frame(height: 48)
-//                        .background(
-//                            Capsule()
-//                                .fill(
-//                                    LinearGradient(
-//                                        stops: [
-//                                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-//                                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-//                                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-//                                        ],
-//                                        startPoint: UnitPoint(x: 0, y: 1.38),
-//                                        endPoint: UnitPoint(x: 1, y: -0.22)
-//                                    )
-//                                )
-//                                .frame(height: 48)
-//                            
-//                        )
-//                        .padding(.horizontal, 12)
-//                }
-//                .frame(height: 68, alignment: .bottom)
-//                .clipped()
-//               
-//                
-//                })
-//                
-//            }
+        VStack(spacing : 2){
+            if store.allowShowBanner(){
+                BannerAdViewMain( adStatus: $mainViewModel.adStatus)
+                    .frame(width: 320, height: 50)
+                
+            }
             
            
            
@@ -458,14 +414,80 @@ extension EztMainView{
         }
         .frame(maxWidth: .infinity)
     //    .background(.white.opacity(0.001))
-       // .frame(height: store.isPro() ? 72 : 152, alignment : .bottom)
-        .frame(height: 72 , alignment : .bottom)
+     //   .frame(height: store.isPro() ? 72 : ( 72 + 2 + 50 ), alignment : .bottom)
+      //  .frame(height: 72 , alignment : .bottom)
         
     }
     
     
 }
 
-
-
-
+//
+//Button(action: {
+//    mainViewModel.showGift.toggle()
+//    mainViewModel.changeSubType()
+//}, label: {
+//    
+//
+//
+//HStack(spacing : 0){
+//    HStack(spacing : 0){
+//        ResizableLottieView(filename: "giftbox")
+//            .frame(width: 86, height: 86)
+//            .offset(y : 4)
+//        // .padding(.leading, 12)
+//        //  .padding(.trailing, 12)
+//        
+//        Text("Last chance for your gift...".toLocalize())
+//            .mfont(15, .bold, line: 1)
+//            .foregroundColor(.white)
+//            .multilineTextAlignment(.leading)
+//            
+//            
+//        Spacer()
+//      
+//         
+//   
+//            Text("Open".toLocalize())
+//                .mfont(13, .bold)
+//                .multilineTextAlignment(.center)
+//                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+//                .frame(width: 64, height: 28)
+//                .background(
+//                    Capsule()
+//                        .fill(.white)
+//                    
+//                )
+//                .padding(.trailing, 12)
+//      
+//        
+//        
+//        
+//    }.frame(maxWidth: .infinity)
+//        .frame(height: 48)
+//        .background(
+//            Capsule()
+//                .fill(
+//                    LinearGradient(
+//                        stops: [
+//                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+//                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+//                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+//                        ],
+//                        startPoint: UnitPoint(x: 0, y: 1.38),
+//                        endPoint: UnitPoint(x: 1, y: -0.22)
+//                    )
+//                )
+//                .frame(height: 48)
+//            
+//        )
+//        .padding(.horizontal, 12)
+//}
+//.frame(height: 68, alignment: .bottom)
+//.clipped()
+//
+//
+//})
+//
+//
+//

@@ -62,8 +62,8 @@ struct GenArtMainView: View {
                 PromptGenArtOpt()
                 ImageGenArtOpt()
                 PosterContactWallpaper()
-                Spacer().frame(height: 80)
-            }
+               
+            }.padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             NavigationLink(
                 destination: GenArtLimitView()
                     .environmentObject(store)
@@ -86,13 +86,7 @@ struct GenArtMainView: View {
         .onViewDidLoad {
             GenArtConfig.getForbiddenResponse()
         }
-//        .overlay{
-//            if showLimitDialog {
-//                RemoveLimitView(show: $showLimitDialog, onClickBuySub: {
-//                    showSubView.toggle()
-//                })
-//            }
-//        }
+
     }
 }
 
@@ -180,8 +174,7 @@ extension GenArtMainView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    PosterContactView()
-                        .environmentObject(posterContactVM)
+                    EztPosterContactView()
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
@@ -202,13 +195,9 @@ extension GenArtMainView{
                 
             }.padding(.horizontal, 16)
             ZStack{
-                
-                
-                
                 if posterContactVM.wallpapers.isEmpty{
                 
                 }else{
-                    
                     ScrollView(.horizontal, showsIndicators: false){
                         LazyHStack(spacing : 12){
                             Spacer()
@@ -238,21 +227,11 @@ extension GenArtMainView{
                             }
                         }
                     }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 280)
-            
-            
-            
-            
         }.padding(.top, 24)
     }
 }

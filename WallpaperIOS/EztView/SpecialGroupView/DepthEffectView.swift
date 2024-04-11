@@ -63,26 +63,10 @@ struct DepthEffectView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                  
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
-//                                    .overlay(
-//                                        
-//                                        ZStack{
-//                                            if !store.isPro(){
-//                                                Image("crown")
-//                                                    .resizable()
-//                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                    .padding(8)
-//                                            }
-//                                        }
-//                                        
-//                                     
-//                                               
-//                                        
-//                                        , alignment: .topTrailing
-//                                    )
+
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -92,22 +76,29 @@ struct DepthEffectView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .edgesIgnoringSafeArea(.bottom)
+            .addBackground()
             .overlay(
                 ZStack{
                     if store.allowShowBanner(){
-                        BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        BannerAdViewMain( adStatus: $adStatus)
                             
                     }
                 }
                 
                 , alignment: .bottom
             )
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
+           
     }
 }
 

@@ -34,14 +34,7 @@ extension View{
             .frame(width: AppConfig.width_1, height:  AppConfig.height_1)
             .cornerRadius(8)
             .clipped()
-//            .overlay(alignment : .topTrailing){
-//                if !isPro{
-//                    Image("crown")
-//                        .resizable()
-//                        .frame(width: 16, height: 16, alignment: .center)
-//                        .padding(8)
-//                }
-//            }
+
 
     }
     
@@ -65,17 +58,7 @@ extension View{
                     .frame(width: AppConfig.width_1, height:  AppConfig.height_1)
                     .cornerRadius(8)
             )
-//            .overlay(alignment : .topTrailing){
-//                if !isPro{
-//                    Image("crown")
-//                        .resizable()
-//                        .frame(width: 16, height: 16, alignment: .center)
-//                        .padding(8)
-//                }
-//            }
-//            .onAppear(perform: {
-//                print("ItemDynamictWL")
-//            })
+
     }
     
     @ViewBuilder
@@ -130,25 +113,10 @@ extension View{
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.2), lineWidth : 1)
                 )
-//                .overlay(
-//                    
-//                    ZStack{
-//                        if !isPro{
-//                            Image("crown")
-//                                .resizable()
-//                                .frame(width: 16, height: 16, alignment: .center)
-//                                .padding(8)
-//                        }
-//                    }
-//                    
-//                    , alignment: .topTrailing
-//                    
-//                )
+
                 .padding(.trailing, 24)
         }.frame(width: 160, height: 240)
-//            .onAppear(perform: {
-//                print("ItemShuffleWL")
-//            })
+
     }
     
     
@@ -206,62 +174,61 @@ extension View{
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.2), lineWidth : 1)
                 )
-//                .overlay(
-//                    
-//                    ZStack{
-//                        if !isPro{
-//                            Image("crown")
-//                                .resizable()
-//                                .frame(width: 16, height: 16, alignment: .center)
-//                                .padding(8)
-//                        }
-//                    }
-//                    
-//                    , alignment: .topTrailing
-//                    
-//                )
                 .padding(.trailing, sizeHeight * 0.1)
         }.frame(width: sizeWidth, height: sizeHeight)
-//            .onAppear(perform: {
-//                print("ItemShuffleWL FixSize")
-//            })
+
     }
     
     
     @ViewBuilder
     func ItemWidgetView(widget : EztWidget) -> some View{
-        LottieView {
-            await LottieAnimation.loadedFrom(url:  URL(string: widget.getURLStringLottie().first ?? "")! )
-        } .looping()
-            .resizable()
-            .scaledToFill()
-            .frame(width: 320, height: 320 / 2.2)
-            .overlay{
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white.opacity(0.4), lineWidth : 1)
+        ZStack{
+            if let url = URL(string: widget.getURLStringLottie().first ?? ""){
+                LottieView {
+                    await LottieAnimation.loadedFrom(url:  URL(string: widget.getURLStringLottie().first ?? "")! )
+                } .looping()
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 320, height: 320 / 2.2)
+                    .overlay{
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.white.opacity(0.4), lineWidth : 1)
+                    }
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 16)
+                    )
             }
-            .clipShape(
-                RoundedRectangle(cornerRadius: 16)
-            )
+        } .frame(width: 320, height: 320 / 2.2)
+        
+        
     }
     
     @ViewBuilder
     func ItemWidgetViewFull(widget : EztWidget) -> some View{
-        LottieView {
-            await LottieAnimation.loadedFrom(url:  URL(string: widget.getURLStringLottie().first ?? "")! )
-        }
-            .looping()
-            .resizable()
-            .scaledToFill()
-            .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
-            .overlay{
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white.opacity(0.4), lineWidth : 1)
+        ZStack{
+            if let url = URL(string: widget.getURLStringLottie().first ?? ""){
+                LottieView {
+                    await LottieAnimation.loadedFrom(url: url )
+                }
+                    .looping()
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+                    .overlay{
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.white.opacity(0.4), lineWidth : 1)
+                    }
+                
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 16)
+                    )
+            }else{
+                Text("\(widget.id)")
+                    .mfont(20, .bold)
+                    .foregroundColor(.white)
             }
-        
-            .clipShape(
-                RoundedRectangle(cornerRadius: 16)
-            )
+        }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+      
     }
     
     @ViewBuilder
@@ -282,7 +249,23 @@ extension View{
         .frame(height: 160)
     }
     
-    
+    func PlaceHolderListLoadHori() -> some View{
+        ScrollView(.horizontal, showsIndicators: false){
+                LazyHStack(spacing: 12, content: {
+                    ForEach(0..<5, content: {
+                        i in
+                        placeHolderImage()
+                            .frame(width: 128, height: 280)
+                            .clipped()
+                            .cornerRadius(8)
+                    })
+                })
+
+        }
+        .disabled(true)
+        .frame(height: 280)
+        .padding(.horizontal, 16)
+    }
     
     func PlaceHolderListLoad() -> some View{
         ScrollView(.horizontal, showsIndicators: false){

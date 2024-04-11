@@ -72,6 +72,9 @@ struct ResultPromptGenArtView: View {
                         ZStack{
                             WebImage(url: URL(string: eztValueCurrent.url))
                                 .resizable()
+                                .placeholder {
+                                    placeHolderImage()
+                                }
                                 .scaledToFit()
                                 .cornerRadius(16)
                                 .overlay(

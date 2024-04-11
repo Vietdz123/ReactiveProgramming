@@ -40,7 +40,7 @@ struct Sub_Event: View {
                 Spacer()
                 
             
-                    if let product = store.yearlv2Sale50Product{
+                    if let product = store.getYearSale50UsingProduct(){
                         
                    
                         Text( String(format: NSLocalizedString("ONLY %@/Week", comment: ""),  getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice) ) )

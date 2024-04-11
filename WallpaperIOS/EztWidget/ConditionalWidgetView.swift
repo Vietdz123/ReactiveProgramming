@@ -21,6 +21,8 @@ struct ConditionalWidgetView: View {
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     
+    @State var adStatus : AdStatus = .loading
+    
     var body: some View {
         VStack(spacing: 0, content: {
             HStack(spacing : 0){
@@ -57,11 +59,34 @@ struct ConditionalWidgetView: View {
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .addBackground()
+        .overlay(alignment: .bottom, content: {
+            if storeVM.allowShowBanner(){
+                BannerAdViewMain(adStatus: $adStatus)
+            }
+        })
         .refreshable {
-           
+            newestVM.currentOffset = 0
+            popularVM.currentOffset = 0
+            newestVM.type = widgetType
+            popularVM.type = widgetType
+            if newestVM.widgets.isEmpty{
+                newestVM.getWidgets()
+            }
+            
+            if popularVM.widgets.isEmpty{
+                popularVM.getWidgets()
+            }
            
         }
         .onAppear(perform: {
+            
+                if !storeVM.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+           
+            
             newestVM.type = widgetType
             popularVM.type = widgetType
             if newestVM.widgets.isEmpty{
@@ -190,6 +215,7 @@ extension ConditionalWidgetView {
                     }
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
               
             

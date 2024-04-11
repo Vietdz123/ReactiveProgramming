@@ -179,12 +179,17 @@
 		89770BE92B26FF6A005C353E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 89770BE82B26FF6A005C353E /* FirebaseAnalytics */; };
 		89770BEB2B26FF6A005C353E /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 89770BEA2B26FF6A005C353E /* FirebaseRemoteConfig */; };
 		89770BED2B26FFD8005C353E /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 89770BEC2B26FFD8005C353E /* FirebaseMessaging */; };
+		89777FC02B57BB1100D85E2B /* LightingEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89777FBF2B57BB1100D85E2B /* LightingEffectView.swift */; };
+		8977C7502BBFD8DF00C738AE /* Adjust in Frameworks */ = {isa = PBXBuildFile; productRef = 8977C74F2BBFD8DF00C738AE /* Adjust */; };
 		8978B2B52B35256D00675968 /* loading_gen_art.json in Resources */ = {isa = PBXBuildFile; fileRef = 8978B2B42B35256D00675968 /* loading_gen_art.json */; };
 		8978B2B72B35348700675968 /* ResultPromptGenArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8978B2B62B35348700675968 /* ResultPromptGenArtView.swift */; };
 		897939DD2AEB54A70034E008 /* WidgetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897939DC2AEB54A70034E008 /* WidgetDetailView.swift */; };
 		897939DF2AEBBEE20034E008 /* video5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 897939DE2AEBBEE20034E008 /* video5.mp4 */; };
+		897B55C52B47B48D003BA4B6 /* EztLightingEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B55C42B47B48D003BA4B6 /* EztLightingEffectView.swift */; };
 		897B93E32B1995E7001D403F /* HealthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B93E22B1995E7001D403F /* HealthHelper.swift */; };
 		897B93E42B1995F4001D403F /* HealthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897B93E22B1995E7001D403F /* HealthHelper.swift */; };
+		897D3E8C2B999A0400A8A91E /* NativeAdsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897D3E8B2B999A0400A8A91E /* NativeAdsController.swift */; };
+		897D3E8E2B99A16F00A8A91E /* intro 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 897D3E8D2B99A16F00A8A91E /* intro 2.mp4 */; };
 		897E2C7E2B30219300CB474E /* CropViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E2C7D2B30219300CB474E /* CropViewHelper.swift */; };
 		897E2C802B3021BA00CB474E /* ImageGenArtHanlderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E2C7F2B3021BA00CB474E /* ImageGenArtHanlderView.swift */; };
 		897E2C832B302ECD00CB474E /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897E2C822B302ECD00CB474E /* FileHelper.swift */; };
@@ -197,6 +202,11 @@
 		898060C22AF38A1C0048ABE1 /* italic.ttf in Sources */ = {isa = PBXBuildFile; fileRef = 04B1F8D82A1C76EE006F22E8 /* italic.ttf */; };
 		898060C32AF38A1C0048ABE1 /* bold.ttf in Sources */ = {isa = PBXBuildFile; fileRef = 04B1F8D62A1C76E3006F22E8 /* bold.ttf */; };
 		898060C52AF38A310048ABE1 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049187EA29F9134300917B30 /* FontHelper.swift */; };
+		898124D42B9824C200412465 /* GADNativeAdViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898124D32B9824C200412465 /* GADNativeAdViewCustom.swift */; };
+		898124D62B98251800412465 /* GADNativeMediaViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898124D52B98251800412465 /* GADNativeMediaViewCustom.swift */; };
+		898124D82B98252500412465 /* NativeAdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898124D72B98252500412465 /* NativeAdViewModel.swift */; };
+		898124DA2B98252A00412465 /* NativeAdCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898124D92B98252A00412465 /* NativeAdCardView.swift */; };
+		898124DC2B98252F00412465 /* NativeAdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898124DB2B98252F00412465 /* NativeAdBannerView.swift */; };
 		8984ADAF2B10807E0005E3A3 /* EztWatchFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8984ADAE2B10807E0005E3A3 /* EztWatchFaceView.swift */; };
 		8984ADB12B10808C0005E3A3 /* EztWatchFaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8984ADB02B10808C0005E3A3 /* EztWatchFaceViewModel.swift */; };
 		8984ADB32B10845F0005E3A3 /* WatchFaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8984ADB22B10845F0005E3A3 /* WatchFaceDetailView.swift */; };
@@ -230,10 +240,13 @@
 		8994BB8F2AEA4D51003D45A8 /* WidgetEztttExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8994BB7E2AEA4D4F003D45A8 /* WidgetEztttExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8994BBD22AEA5198003D45A8 /* MView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994BBD02AEA5198003D45A8 /* MView.swift */; };
 		8994BBD92AEA5D7D003D45A8 /* jsontest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8994BBD82AEA5D7D003D45A8 /* jsontest.json */; };
+		8994C6402B832F0300B404B7 /* DialogWatchRewardAdsForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994C63F2B832F0300B404B7 /* DialogWatchRewardAdsForWidget.swift */; };
+		8996E3BB2B906F030009EE4B /* intro 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8996E3BA2B906F030009EE4B /* intro 6.mp4 */; };
 		899D6EE42AB9A89C003C3B4A /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899D6EE32AB9A89C003C3B4A /* TagModel.swift */; };
 		899F405F2B1ED98300FD3B37 /* EztShufflePackListCateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F405E2B1ED98300FD3B37 /* EztShufflePackListCateView.swift */; };
 		899F40612B1EE06B00FD3B37 /* EztDepthEffectCateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F40602B1EE06B00FD3B37 /* EztDepthEffectCateView.swift */; };
 		899F40632B1EE0FA00FD3B37 /* EztDynamicIslslandCateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F40622B1EE0FA00FD3B37 /* EztDynamicIslslandCateView.swift */; };
+		89A8089C2B95BA8D00029310 /* EztSpecialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A8089B2B95BA8D00029310 /* EztSpecialView.swift */; };
 		89BF4E8A2B2FE857006F5718 /* GenArtMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E892B2FE857006F5718 /* GenArtMainView.swift */; };
 		89BF4E8C2B2FF48C006F5718 /* EztPosterContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E8B2B2FF48C006F5718 /* EztPosterContact.swift */; };
 		89BF4E8E2B2FF5BC006F5718 /* ImageGenArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E8D2B2FF5BC006F5718 /* ImageGenArtView.swift */; };
@@ -424,11 +437,15 @@
 		89762A1E2ADCF72300DAA578 /* TrapezoidShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrapezoidShape.swift; sourceTree = "<group>"; };
 		89762C672AC2BC2000610881 /* TextTypingAnimView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTypingAnimView.swift; sourceTree = "<group>"; };
 		89770BE52B26B82A005C353E /* watchface.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = watchface.mp4; sourceTree = "<group>"; };
+		89777FBF2B57BB1100D85E2B /* LightingEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingEffectView.swift; sourceTree = "<group>"; };
 		8978B2B42B35256D00675968 /* loading_gen_art.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading_gen_art.json; sourceTree = "<group>"; };
 		8978B2B62B35348700675968 /* ResultPromptGenArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultPromptGenArtView.swift; sourceTree = "<group>"; };
 		897939DC2AEB54A70034E008 /* WidgetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDetailView.swift; sourceTree = "<group>"; };
 		897939DE2AEBBEE20034E008 /* video5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video5.mp4; sourceTree = "<group>"; };
+		897B55C42B47B48D003BA4B6 /* EztLightingEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztLightingEffectView.swift; sourceTree = "<group>"; };
 		897B93E22B1995E7001D403F /* HealthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthHelper.swift; sourceTree = "<group>"; };
+		897D3E8B2B999A0400A8A91E /* NativeAdsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAdsController.swift; sourceTree = "<group>"; };
+		897D3E8D2B99A16F00A8A91E /* intro 2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "intro 2.mp4"; sourceTree = "<group>"; };
 		897E2C7D2B30219300CB474E /* CropViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropViewHelper.swift; sourceTree = "<group>"; };
 		897E2C7F2B3021BA00CB474E /* ImageGenArtHanlderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGenArtHanlderView.swift; sourceTree = "<group>"; };
 		897E2C822B302ECD00CB474E /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
@@ -436,6 +453,11 @@
 		897E2C872B303F9E00CB474E /* GenArtConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenArtConfig.swift; sourceTree = "<group>"; };
 		897E2C8A2B303FC700CB474E /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		897E2C912B30401800CB474E /* JWTHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
+		898124D32B9824C200412465 /* GADNativeAdViewCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GADNativeAdViewCustom.swift; sourceTree = "<group>"; };
+		898124D52B98251800412465 /* GADNativeMediaViewCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GADNativeMediaViewCustom.swift; sourceTree = "<group>"; };
+		898124D72B98252500412465 /* NativeAdViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAdViewModel.swift; sourceTree = "<group>"; };
+		898124D92B98252A00412465 /* NativeAdCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAdCardView.swift; sourceTree = "<group>"; };
+		898124DB2B98252F00412465 /* NativeAdBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAdBannerView.swift; sourceTree = "<group>"; };
 		8984ADAE2B10807E0005E3A3 /* EztWatchFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztWatchFaceView.swift; sourceTree = "<group>"; };
 		8984ADB02B10808C0005E3A3 /* EztWatchFaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztWatchFaceViewModel.swift; sourceTree = "<group>"; };
 		8984ADB22B10845F0005E3A3 /* WatchFaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchFaceDetailView.swift; sourceTree = "<group>"; };
@@ -472,10 +494,13 @@
 		8994BBD02AEA5198003D45A8 /* MView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MView.swift; sourceTree = "<group>"; };
 		8994BBD72AEA5395003D45A8 /* WidgetEztttExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WidgetEztttExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		8994BBD82AEA5D7D003D45A8 /* jsontest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jsontest.json; sourceTree = "<group>"; };
+		8994C63F2B832F0300B404B7 /* DialogWatchRewardAdsForWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogWatchRewardAdsForWidget.swift; sourceTree = "<group>"; };
+		8996E3BA2B906F030009EE4B /* intro 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "intro 6.mp4"; sourceTree = "<group>"; };
 		899D6EE32AB9A89C003C3B4A /* TagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
 		899F405E2B1ED98300FD3B37 /* EztShufflePackListCateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztShufflePackListCateView.swift; sourceTree = "<group>"; };
 		899F40602B1EE06B00FD3B37 /* EztDepthEffectCateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztDepthEffectCateView.swift; sourceTree = "<group>"; };
 		899F40622B1EE0FA00FD3B37 /* EztDynamicIslslandCateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztDynamicIslslandCateView.swift; sourceTree = "<group>"; };
+		89A8089B2B95BA8D00029310 /* EztSpecialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztSpecialView.swift; sourceTree = "<group>"; };
 		89BF4E892B2FE857006F5718 /* GenArtMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenArtMainView.swift; sourceTree = "<group>"; };
 		89BF4E8B2B2FF48C006F5718 /* EztPosterContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztPosterContact.swift; sourceTree = "<group>"; };
 		89BF4E8D2B2FF5BC006F5718 /* ImageGenArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGenArtView.swift; sourceTree = "<group>"; };
@@ -502,6 +527,7 @@
 				0491B5572A1F0C260002EB08 /* GoogleMobileAds in Frameworks */,
 				89770BE92B26FF6A005C353E /* FirebaseAnalytics in Frameworks */,
 				89770BEB2B26FF6A005C353E /* FirebaseRemoteConfig in Frameworks */,
+				8977C7502BBFD8DF00C738AE /* Adjust in Frameworks */,
 				049D99202A14BD3C009DAA07 /* Lottie in Frameworks */,
 				04924C222A6682960088D51D /* SDWebImageSwiftUI in Frameworks */,
 				0490BF522A283C0C009DF873 /* NavigationTransitions in Frameworks */,
@@ -534,6 +560,7 @@
 				893BF0572B317ED3003F0FFF /* PosterContactView.swift */,
 				89BF8C0E2B3BD8BB00E6AD70 /* WatchFaceView.swift */,
 				04C1262D2A862FDB002ED9BC /* ShuffleTutoView.swift */,
+				89777FBF2B57BB1100D85E2B /* LightingEffectView.swift */,
 			);
 			path = SpecialGroupView;
 			sourceTree = "<group>";
@@ -588,6 +615,7 @@
 		0495230729F7C6CB004538DD /* WallpaperIOS */ = {
 			isa = PBXGroup;
 			children = (
+				0495230C29F7C6CD004538DD /* Assets.xcassets */,
 				89BF4E882B2FE823006F5718 /* AIGenArt */,
 				049CCA342A11C5D8003621E9 /* Subcription */,
 				894ADF3A2B1D7FB600A3FC83 /* EztLiveWallpaper */,
@@ -604,7 +632,6 @@
 				049187E929F9133300917B30 /* Helper */,
 				0495231B29F7C706004538DD /* Model */,
 				0495230829F7C6CB004538DD /* WallpaperIOSApp.swift */,
-				0495230C29F7C6CD004538DD /* Assets.xcassets */,
 				0495230E29F7C6CD004538DD /* Preview Content */,
 			);
 			path = WallpaperIOS;
@@ -683,6 +710,8 @@
 		04A1D54F2A1DAE9800853047 /* Ads */ = {
 			isa = PBXGroup;
 			children = (
+				897D3E8B2B999A0400A8A91E /* NativeAdsController.swift */,
+				898124D22B9824B400412465 /* NativeAds */,
 				0491B5582A1F0D5B0002EB08 /* RewardAd.swift */,
 				041C7E192A2093D400FB2A61 /* OpenAds.swift */,
 				04AF804F2A25910A0024AF64 /* InterAds.swift */,
@@ -706,6 +735,8 @@
 		04A90CAF2AAEBD39007ED3E2 /* Raw */ = {
 			isa = PBXGroup;
 			children = (
+				897D3E8D2B99A16F00A8A91E /* intro 2.mp4 */,
+				8996E3BA2B906F030009EE4B /* intro 6.mp4 */,
 				89770BE52B26B82A005C353E /* watchface.mp4 */,
 				894ADF412B1D8DFA00A3FC83 /* shuffle_packs.mp4 */,
 				894ADF3F2B1D8DF400A3FC83 /* depth_effect.mp4 */,
@@ -917,6 +948,7 @@
 				8972387C2AE8C1080065C27D /* TopWallpapersView.swift */,
 				89702E8F2ADD236200883729 /* EztWallpaperView.swift */,
 				894ADF382B1D7AA700A3FC83 /* EztWallpaperTab */,
+				89A8089B2B95BA8D00029310 /* EztSpecialView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -944,6 +976,7 @@
 				89702E982ADD406A00883729 /* EztDynamicIsland.swift */,
 				899F40622B1EE0FA00FD3B37 /* EztDynamicIslslandCateView.swift */,
 				890BFC3A2ADE739A00C28F6C /* EztLiveWallpaperView.swift */,
+				897B55C42B47B48D003BA4B6 /* EztLightingEffectView.swift */,
 			);
 			path = EztWallpaperTab;
 			sourceTree = "<group>";
@@ -978,6 +1011,7 @@
 				897939DC2AEB54A70034E008 /* WidgetDetailView.swift */,
 				898677482AF0ED7500E25E1D /* WidgetListView.swift */,
 				898B7ED82B395C5F00DC9607 /* ConditionalWidgetView.swift */,
+				8994C63F2B832F0300B404B7 /* DialogWatchRewardAdsForWidget.swift */,
 			);
 			path = EztWidget;
 			sourceTree = "<group>";
@@ -1006,6 +1040,18 @@
 				897E2C8A2B303FC700CB474E /* Model.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		898124D22B9824B400412465 /* NativeAds */ = {
+			isa = PBXGroup;
+			children = (
+				898124D32B9824C200412465 /* GADNativeAdViewCustom.swift */,
+				898124D52B98251800412465 /* GADNativeMediaViewCustom.swift */,
+				898124D72B98252500412465 /* NativeAdViewModel.swift */,
+				898124D92B98252A00412465 /* NativeAdCardView.swift */,
+				898124DB2B98252F00412465 /* NativeAdBannerView.swift */,
+			);
+			path = NativeAds;
 			sourceTree = "<group>";
 		};
 		898B7EDA2B39661300DC9607 /* MultipleLineTextField */ = {
@@ -1138,6 +1184,7 @@
 				89770BEA2B26FF6A005C353E /* FirebaseRemoteConfig */,
 				89770BEC2B26FFD8005C353E /* FirebaseMessaging */,
 				897E2C8F2B30400400CB474E /* SwiftJWT */,
+				8977C74F2BBFD8DF00C738AE /* Adjust */,
 			);
 			productName = WallpaperIOS;
 			productReference = 0495230529F7C6CB004538DD /* WallpaperIOS.app */;
@@ -1205,6 +1252,7 @@
 				04924C202A6682960088D51D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				89770BE72B26FF6A005C353E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				897E2C8E2B30400400CB474E /* XCRemoteSwiftPackageReference "Swift-JWT" */,
+				8977C74E2BBFD8DF00C738AE /* XCRemoteSwiftPackageReference "ios_sdk" */,
 			);
 			productRefGroup = 0495230629F7C6CB004538DD /* Products */;
 			projectDirPath = "";
@@ -1227,6 +1275,7 @@
 				8986774B2AF0FC3F00E25E1D /* video4v2.mp4 in Resources */,
 				894ADF422B1D8DFA00A3FC83 /* shuffle_packs.mp4 in Resources */,
 				897334FD2AF488EB008E5290 /* preview_wg.json in Resources */,
+				8996E3BB2B906F030009EE4B /* intro 6.mp4 in Resources */,
 				8986774D2AF0FC4700E25E1D /* video1.mp4 in Resources */,
 				049EFA552A89CEE70050369D /* preview_shuffle.mp4 in Resources */,
 				8994BBD92AEA5D7D003D45A8 /* jsontest.json in Resources */,
@@ -1241,6 +1290,7 @@
 				894ADF3E2B1D8DAD00A3FC83 /* live.mp4 in Resources */,
 				894ADF402B1D8DF400A3FC83 /* depth_effect.mp4 in Resources */,
 				04C1262C2A8622E6002ED9BC /* shuffle_tuto.mp4 in Resources */,
+				897D3E8E2B99A16F00A8A91E /* intro 2.mp4 in Resources */,
 				04BD2BA82A9F25F700D213AE /* video_sub_speacial.mp4 in Resources */,
 				0490B0C82A38677A006D361B /* giftbox.json in Resources */,
 				8989DF0F2AE2368B00FCE6EE /* w_loading.json in Resources */,
@@ -1281,11 +1331,13 @@
 				04B2ADE12A4948430083D8A8 /* OnboardingSubView.swift in Sources */,
 				8978B2B72B35348700675968 /* ResultPromptGenArtView.swift in Sources */,
 				89E224422ABC44B10061E1C8 /* OnboardingVerTwoSubView.swift in Sources */,
+				898124D42B9824C200412465 /* GADNativeAdViewCustom.swift in Sources */,
 				04BF84C32A303C670091BD31 /* ListLiveWLView.swift in Sources */,
 				898B7EDC2B39662D00DC9607 /* MultilineTextField.swift in Sources */,
 				04069BFA2A41916F003B13D5 /* ServerHelper.swift in Sources */,
 				897E2C922B30401800CB474E /* JWTHelper.swift in Sources */,
 				898677492AF0ED7500E25E1D /* WidgetListView.swift in Sources */,
+				897D3E8C2B999A0400A8A91E /* NativeAdsController.swift in Sources */,
 				04926CDF2A04977A0042FA70 /* AppConfig.swift in Sources */,
 				893A531B2B1828F10079DFF1 /* DataController.swift in Sources */,
 				040FC55E2A78BD6700CD1DE1 /* DepthEffectView.swift in Sources */,
@@ -1312,6 +1364,7 @@
 				893A53AB2B1834DD0079DFF1 /* ItemHome+CoreDataClass.swift in Sources */,
 				893A53362B18297B0079DFF1 /* HomeNetworkManager.swift in Sources */,
 				89702E8E2ADD230A00883729 /* EztHomeView.swift in Sources */,
+				898124DA2B98252A00412465 /* NativeAdCardView.swift in Sources */,
 				049CCA382A11CB0E003621E9 /* MyStore.swift in Sources */,
 				897B93E42B1995F4001D403F /* HealthHelper.swift in Sources */,
 				04184B112A03ACED00ADB328 /* LiveWallpaperViewModel.swift in Sources */,
@@ -1319,8 +1372,10 @@
 				893A534F2B182A880079DFF1 /* ImageDataViewModel.swift in Sources */,
 				897E2C882B303F9E00CB474E /* GenArtConfig.swift in Sources */,
 				8994BB752AEA00D3003D45A8 /* WidgetTutorialView.swift in Sources */,
+				898124D62B98251800412465 /* GADNativeMediaViewCustom.swift in Sources */,
 				8984ADB32B10845F0005E3A3 /* WatchFaceDetailView.swift in Sources */,
 				04B1528A2A2DC4A6000185FB /* FirebaseHelper.swift in Sources */,
+				89777FC02B57BB1100D85E2B /* LightingEffectView.swift in Sources */,
 				181C68482A37730100638CA7 /* DateHelper.swift in Sources */,
 				89762C682AC2BC2000610881 /* TextTypingAnimView.swift in Sources */,
 				89702E992ADD406A00883729 /* EztDynamicIsland.swift in Sources */,
@@ -1355,6 +1410,7 @@
 				049D99232A14BD65009DAA07 /* ResizableLottieView.swift in Sources */,
 				0496724829FA637800E915D2 /* TestView.swift in Sources */,
 				89743E512AE766A400A68558 /* EztSubcriptionView.swift in Sources */,
+				898124DC2B98252F00412465 /* NativeAdBannerView.swift in Sources */,
 				0495232329F7D407004538DD /* ScrollOffsetModifier.swift in Sources */,
 				893A53A92B1834DD0079DFF1 /* CategoryHome+CoreDataProperties.swift in Sources */,
 				8994BB772AEA04E5003D45A8 /* PreviewWidgetSheet.swift in Sources */,
@@ -1372,11 +1428,13 @@
 				899F405F2B1ED98300FD3B37 /* EztShufflePackListCateView.swift in Sources */,
 				8915F49E2B3AB57300ABD53A /* GenArtLimitView.swift in Sources */,
 				897E2C8B2B303FC700CB474E /* Model.swift in Sources */,
+				897B55C52B47B48D003BA4B6 /* EztLightingEffectView.swift in Sources */,
 				8988A5322AE61D2900D5F04D /* GifSub_3_View.swift in Sources */,
 				04B3BFBB29FBA8860080952B /* CategoryViewModel.swift in Sources */,
 				89BF4E8C2B2FF48C006F5718 /* EztPosterContact.swift in Sources */,
 				893A531D2B1828F10079DFF1 /* ItemExtension.swift in Sources */,
 				89BF4E902B2FF5C9006F5718 /* PromptGenArtView.swift in Sources */,
+				898124D82B98252500412465 /* NativeAdViewModel.swift in Sources */,
 				89BF4E8E2B2FF5BC006F5718 /* ImageGenArtView.swift in Sources */,
 				899F40612B1EE06B00FD3B37 /* EztDepthEffectCateView.swift in Sources */,
 				8984ADB12B10808C0005E3A3 /* EztWatchFaceViewModel.swift in Sources */,
@@ -1393,6 +1451,7 @@
 				8984ADAF2B10807E0005E3A3 /* EztWatchFaceView.swift in Sources */,
 				04B1F8DD2A1C9DD1006F22E8 /* ColorHelper.swift in Sources */,
 				89BF8C0F2B3BD8BB00E6AD70 /* WatchFaceView.swift in Sources */,
+				89A8089C2B95BA8D00029310 /* EztSpecialView.swift in Sources */,
 				8988A5382AE62DB500D5F04D /* EztForYouView.swift in Sources */,
 				898CB3252AF8847500CBC5B8 /* LocalizeHepler.swift in Sources */,
 				041C7E1A2A2093D400FB2A61 /* OpenAds.swift in Sources */,
@@ -1406,6 +1465,7 @@
 				049187E629F8FF4300917B30 /* MyExtension.swift in Sources */,
 				893A53212B1828F10079DFF1 /* CategoryExtension.swift in Sources */,
 				049D37B72A1B1AD100AF5BD5 /* VideoListView.swift in Sources */,
+				8994C6402B832F0300B404B7 /* DialogWatchRewardAdsForWidget.swift in Sources */,
 				04184B052A03447000ADB328 /* SearchViewModel.swift in Sources */,
 				897939DD2AEB54A70034E008 /* WidgetDetailView.swift in Sources */,
 				0495231D29F7C712004538DD /* Enum.swift in Sources */,
@@ -1610,7 +1670,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -1633,7 +1693,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1656,7 +1716,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -1679,7 +1739,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1846,6 +1906,14 @@
 				minimumVersion = 10.19.0;
 			};
 		};
+		8977C74E2BBFD8DF00C738AE /* XCRemoteSwiftPackageReference "ios_sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adjust/ios_sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		897E2C8E2B30400400CB474E /* XCRemoteSwiftPackageReference "Swift-JWT" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Kitura/Swift-JWT";
@@ -1896,6 +1964,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 89770BE72B26FF6A005C353E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		8977C74F2BBFD8DF00C738AE /* Adjust */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8977C74E2BBFD8DF00C738AE /* XCRemoteSwiftPackageReference "ios_sdk" */;
+			productName = Adjust;
 		};
 		897E2C8F2B30400400CB474E /* SwiftJWT */ = {
 			isa = XCSwiftPackageProductDependency;

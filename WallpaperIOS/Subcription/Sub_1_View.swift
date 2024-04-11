@@ -59,7 +59,7 @@ struct Sub_1_View: View {
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
             
-            if let product =  store.yearlv2Sale50Product {
+            if let product =  store.getYearSale50UsingProduct() {
                 
                 
                 

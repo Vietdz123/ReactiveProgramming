@@ -10,11 +10,13 @@ import SDWebImageSwiftUI
 
 struct PreviewWidgetSheet: View {
     
+   
+    
     let widget : EztWidget
     @State var showTuto : Bool = false
     @State var showUpdate : Bool = false
     @State var showSubView : Bool = false
-    
+    @State var showSubOrigin : Bool = false
     @State var urlPreviewList : [String] = []
     @State var currentIndex : Int = 0
     @State var allowNextImage : Bool = true
@@ -22,7 +24,8 @@ struct PreviewWidgetSheet: View {
     @AppStorage("wg_tuto", store: .standard) var showTapJson : Bool = false
     
     @EnvironmentObject var storeVM : MyStore
-    
+    @EnvironmentObject  var reward : RewardAd
+    @State var showDialogReward : Bool = false
     @State var days : [WeekendDayModel] = [
         WeekendDayModel(day: .sunday),
         WeekendDayModel(day: .monday),
@@ -43,7 +46,7 @@ struct PreviewWidgetSheet: View {
             VStack(spacing : 0){
                 HStack(spacing : 0){
                     Button(action: {
-                      
+                        
                         shareLinkApp()
                     }, label: {
                         Image("share2")
@@ -52,14 +55,14 @@ struct PreviewWidgetSheet: View {
                             .frame(width: 24, height: 24)
                     })
                     
-                    if !storeVM.isPro(){
+                    if !storeVM.isPro()  && widget.is_private == 1  {
                         Image("crown")
                             .resizable()
                             .frame(width: 20, height: 20, alignment: .center)
                             .frame(width: 56, height: 24)
                     }
                     
-                  
+                    
                     
                     Spacer()
                     
@@ -105,7 +108,7 @@ struct PreviewWidgetSheet: View {
                     
                 }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .cornerRadius(16)
-                    .padding(.vertical, 24)
+                  
                     .overlay{
                         if !showTapJson{
                             ZStack{
@@ -131,65 +134,73 @@ struct PreviewWidgetSheet: View {
                         
                         
                     }
-                
-                
+                    .padding(.vertical, 24)
+                 if  !storeVM.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
+                    
+              
+              
+                        NativeAdsCoordinator()
+                         .frame(maxWidth : .infinity)
+                         .frame( height: 84)
+                         .background(Color.white.opacity(0.03))
+                         .cornerRadius(12)
+                            .padding(.horizontal,  16)
+                            .padding(.top, 16)
+                            .padding(.bottom, 40)
+                        
+                    
+                }
+               
                 
                 Button(action: {
-                            if #available(iOS 17, *) {
-                                            if storeVM.isPro(){
-                    if widget.category.id == 6 {
-                        HealthHelper().requestHealthKitAuthorization(onGrandted: {
-                            // showToastWithContent(image: "checkmark", color: .green, mess: "Permission Grandted!")
-                            print("Permission Grandted!")
-                            
-                        }, onDecline: {
-                            print("Permission Decline!")
-                            //  showToastWithContent(image: "xmark", color: .red, mess: "Permission Decline!")
-                        })
-                        var healthE : HealthEnum
-                        switch widget.id {
-                        case 67 :
-                            healthE = .sleepTime
-                        case 68 :
-                            healthE = .waterTrack
-                        case 69 :
-                            healthE = .steps
-                        case 70 :
-                            healthE = .energyBurn
-                        case 71 :
-                            healthE = .distance
-                        default:
-                            healthE = .steps
-                        }
-                        
-                        CoreDataService.shared.saveHealthItem(name: healthE.rawValue)
-                    }else{
-                        
-                        WDHomeNetworkManager.shared.downloadFileCoreData(data: widget, completion: {
-                            DispatchQueue.main.async{
-                                showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
-                                ServerHelper.sendDataWidget(widget_id: widget.id)
-                                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
-                                if show == false{
-                                    UserDefaults.standard.set(true, forKey: "wg_show_when_download")
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                        showTuto.toggle()
-                                    })
+                    if #available(iOS 17, *) {
+                        if storeVM.isPro(){
+                            if widget.category.id == 6 {
+                                HealthHelper().requestHealthKitAuthorization(onGrandted: {
+                                  
+                                    print("Permission Grandted!")
+                                    
+                                }, onDecline: {
+                                    print("Permission Decline!")
+                                  
+                                })
+                                var healthE : HealthEnum
+                                switch widget.id {
+                                case 67 :
+                                    healthE = .sleepTime
+                                case 68 :
+                                    healthE = .waterTrack
+                                case 69 :
+                                    healthE = .steps
+                                case 70 :
+                                    healthE = .energyBurn
+                                case 71 :
+                                    healthE = .distance
+                                default:
+                                    healthE = .steps
                                 }
                                 
+                                CoreDataService.shared.saveHealthItem(name: healthE.rawValue)
+                            }else{
+                                
+                                downloadWidget()
+                              
                             }
-                        })
+                            
+                            
+                        }else{
+                            if widget.is_private == 1 {
+                                showSubView.toggle()
+                            }else{
+                                showDialogReward.toggle()
+                            }
+                           
+                        }
+                        
+                        
+                    } else {
+                        showUpdate.toggle()
                     }
-                    
-                    
-                                            }else{
-                                                showSubView.toggle()
-                                            }
-                    
-                    
-                                        } else {
-                                            showUpdate.toggle()
-                                        }
                     
                     
                     
@@ -207,6 +218,7 @@ struct PreviewWidgetSheet: View {
                 })
                 .padding(.bottom, 40)
                 
+                
             }
             .padding(EdgeInsets(top: 24, leading: 0, bottom: 0, trailing: 0))
             .background(Color(red: 0.13, green: 0.14, blue: 0.13).opacity(0.7))
@@ -215,7 +227,6 @@ struct PreviewWidgetSheet: View {
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-        
         .edgesIgnoringSafeArea(.all)
         .overlay{
             if showUpdate{
@@ -229,8 +240,27 @@ struct PreviewWidgetSheet: View {
                 })
             }
         }
+        .overlay{
+            if showDialogReward{
+                DialogWatchRewardAdsForWidget(urlStr: widget.thumbnail?.first?.url.full ?? "", show: $showDialogReward, onRewarded: {
+                    b in
+                    showDialogReward = false
+                    if b{
+                        downloadWidget()
+                    }else{
+                        showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
+                    }
+                }, clickBuyPro: {
+                    showDialogReward = false
+                    showSubOrigin = true
+                })
+            }
+        }
         .fullScreenCover(isPresented: $showTuto, content: {
             WidgetTutorialView()
+        })
+        .fullScreenCover(isPresented: $showSubOrigin, content: {
+            EztSubcriptionView()
         })
         .onAppear(perform: {
             print("HUYYYYY ga non: \(widget.set)")
@@ -249,6 +279,24 @@ struct PreviewWidgetSheet: View {
 //MARK: VIEW
 extension PreviewWidgetSheet {
     
+    
+    func downloadWidget()  {
+        WDHomeNetworkManager.shared.downloadFileCoreData(data: widget, completion: {
+            DispatchQueue.main.async{
+                showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
+                ServerHelper.sendDataWidget(widget_id: widget.id)
+                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
+                if show == false{
+                    UserDefaults.standard.set(true, forKey: "wg_show_when_download")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                        showTuto.toggle()
+                    })
+                }
+                
+            }
+        })
+    }
+    
     //MARK: - DIGITAL FRIEND
     var previewDigitalFriend : some View{
         ZStack{
@@ -261,8 +309,6 @@ extension PreviewWidgetSheet {
                         placeHolderImage()
                         
                     }
-                    .indicator(.activity) // Activity Indicator
-                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                     .scaledToFill()
                     .animation(.easeInOut, value: currentIndex)
             }
@@ -304,8 +350,7 @@ extension PreviewWidgetSheet {
                             placeHolderImage()
                             
                         }
-                        .indicator(.activity) // Activity Indicator
-                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                    
                         .scaledToFill()
                         .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     
@@ -351,12 +396,11 @@ extension PreviewWidgetSheet {
                             placeHolderImage()
                             
                         }
-                        .indicator(.activity) // Activity Indicator
-                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                    
                         .scaledToFill()
                         .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                         .clipped()
-                       
+                    
                     HStack(spacing : 0){
                         ForEach(0..<days.count, id : \.self){
                             i in
@@ -378,7 +422,7 @@ extension PreviewWidgetSheet {
                                     
                                 }, label: {
                                     WebImage(url: URL(string: days[i].isChecked ? listBtnCheck[ days[i].index ] : btnUnCheckURL ))
-                                  //  WebImage(url: URL(string: "" ))
+                                    //  WebImage(url: URL(string: "" ))
                                         .onSuccess { image, data, cacheType in
                                         }
                                         .resizable()
@@ -417,9 +461,9 @@ extension PreviewWidgetSheet {
             .cornerRadius(16)
             .padding(.vertical, 24)
             .contentShape(Rectangle())
-//            .onTapGesture {
-//                HealthHelper().saveSleepDataToHealthKit()
-//            }
+        //            .onTapGesture {
+        //                HealthHelper().saveSleepDataToHealthKit()
+        //            }
         
         
     }
@@ -439,13 +483,11 @@ extension PreviewWidgetSheet {
                         placeHolderImage()
                         
                     }
-                    .indicator(.activity) // Activity Indicator
-                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                     .scaledToFill()
                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .clipped()
                     .animation(.easeInOut, value: currentIndex)
-                   
+                
                     .onChange(of: currentIndex, perform: { _ in
                         if !allowNextImage {
                             return
@@ -453,7 +495,7 @@ extension PreviewWidgetSheet {
                         
                         if currentIndex < count - 1 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
-                               
+                                
                                 currentIndex += 1
                             })
                         }else{
@@ -472,18 +514,18 @@ extension PreviewWidgetSheet {
                         
                         allowNextImage = true
                         if currentIndex < count - 1 {
-                                currentIndex += 1
-                                if let url = URL(string: widget.sound?.first?.url.full ?? ""){
-                                    SoundPlayer.shared.play(url: url)
-                                }
+                            currentIndex += 1
+                            if let url = URL(string: widget.sound?.first?.url.full ?? ""){
+                                SoundPlayer.shared.play(url: url)
+                            }
                         }
                         
-
                         
                         
-                       
+                        
+                        
                     }
-
+                
             }
         }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
             .cornerRadius(16)
@@ -494,32 +536,29 @@ extension PreviewWidgetSheet {
     
     
     
-  
+    
     func previewGif() -> some View{
         ZStack{
             let listImage : [String] = widget.getRectangleUrlString()
             let count = listImage.count
             let delayAnimation : Double = Double(widget.delay_animation ) / 1000.0
             if !listImage.isEmpty{
-                
+                if currentIndex < listImage.count  {
+                    
+               
                 WebImage(url: URL(string: listImage[currentIndex]))
-                    .onSuccess { image, data, cacheType in
-                    }
                     .resizable()
                     .placeholder {
                         placeHolderImage()
                         
                     }
-                    .indicator(.activity) // Activity Indicator
-                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                     .scaledToFill()
                     .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
                     .clipped()
                     .animation(.easeInOut, value: currentIndex)
+
                     .onAppear(perform: {
-                        print("delay k phai la 0 thi may la con cho: \(delayAnimation)")
-                    })
-                    .onAppear(perform: {
+                        currentIndex = 0
                         if currentIndex < count - 1 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
                                 currentIndex += 1
@@ -527,7 +566,7 @@ extension PreviewWidgetSheet {
                         }
                     })
                     .onChange(of: currentIndex, perform: { _ in
-                        if currentIndex < count - 1 {
+                        if currentIndex < count - 2 {
                             DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
                                 currentIndex += 1
                             })
@@ -539,7 +578,7 @@ extension PreviewWidgetSheet {
                         
                     })
             }
-            
+            }
         }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
             .cornerRadius(16)
             .padding(.vertical, 24)
@@ -553,32 +592,28 @@ extension PreviewWidgetSheet {
             let count = listImage.count
             
             if !listImage.isEmpty{
-              
-                    WebImage(url: URL(string: listImage[currentIndex]))
-                        .onSuccess { image, data, cacheType in
-                        }
-                        .resizable()
-                        .placeholder {
-                            placeHolderImage()
-                            
-                        }
-                        .indicator(.activity) // Activity Indicator
-                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                        .scaledToFill()
-                        .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
-                        .clipped()
-                        .animation(.easeInOut, value: currentIndex)
-                        .onTapGesture {
-                            if let url = URL(string: widget.sound?.first?.url.full ?? ""){
-                                SoundPlayer.shared.play(url: url)
-                            }
-                            
-                            currentIndex = Int.random(in: 0...(count - 1 ))
-                            
-                        }
                 
-              
-                  
+                WebImage(url: URL(string: listImage[currentIndex]))
+                    .resizable()
+                    .placeholder {
+                        placeHolderImage()
+                        
+                    }
+                    .scaledToFill()
+                    .frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )
+                    .clipped()
+                    .animation(.easeInOut, value: currentIndex)
+                    .onTapGesture {
+                        if let url = URL(string: widget.sound?.first?.url.full ?? ""){
+                            SoundPlayer.shared.play(url: url)
+                        }
+                        
+                        currentIndex = Int.random(in: 0...(count - 1 ))
+                        
+                    }
+                
+                
+                
             }
             
         }.frame(width: getRect().width - 32, height: ( getRect().width - 32 ) / 2.2 )

@@ -12,7 +12,7 @@ struct WatchRVtoGetWLDialog: View {
     let urlStr : String
     @Binding var show : Bool
     let width : CGFloat = UIScreen.main.bounds.width - 56
-    let height : CGFloat =  UIScreen.main.bounds.width * 1.2
+    let height : CGFloat =  UIScreen.main.bounds.width * 1.6
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
     var onRewarded :  (Bool) -> ()

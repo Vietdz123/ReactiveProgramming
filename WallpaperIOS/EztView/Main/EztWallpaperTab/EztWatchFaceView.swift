@@ -15,24 +15,67 @@ struct EztWatchFaceView: View {
     @EnvironmentObject var store : MyStore
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
+    
+    @Environment(\.presentationMode) var presentationMode
+    @State var adStatus : AdStatus = .loading
     var body: some View {
         
-        
-        
-        
-        
-        ScrollView(.vertical, showsIndicators: false){
-            LazyVStack(spacing : 0){
-                NewestWatchFace()
-                PopularWatchFace().padding(.top, 24)
+        VStack(spacing : 0){
+            HStack(spacing : 0){
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Image("back")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .foregroundColor(.white)
+                        .frame(width: 24, height: 24)
+                        .containerShape(Rectangle())
+                })
+                Text("Watch Faces")
+                    .foregroundColor(.white)
+                    .mfont(22, .bold)
+                    .frame(maxWidth: .infinity).padding(.trailing, 18)
+                
+            }.frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: 44)
+                .padding(.horizontal, 20)
+            
+            ScrollView(.vertical, showsIndicators: false){
+                LazyVStack(spacing : 0){
+                    NewestWatchFace()
+                    PopularWatchFace().padding(.top, 24)
+                }
+                
             }
+            .refreshable {
+                
+            }
+            .frame(maxWidth : .infinity, maxHeight : .infinity)
             
-        }
-        .refreshable {
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .edgesIgnoringSafeArea(.bottom)
+                .addBackground()
+                .overlay(
+                    ZStack{
+                        if store.allowShowBanner(){
+                            BannerAdViewMain( adStatus: $adStatus)
+                                
+                        }
+                    }
+                    
+                    , alignment: .bottom
+                )
+                .onAppear{
+                    if !store.isPro(){
+                        interAd.showAd(onCommit: {})
+                    }
+                }
             
-        }
-        .frame(maxWidth : .infinity, maxHeight : .infinity)
-        .addBackground()
+        
+        
+      
+        
     }
 }
 
@@ -231,6 +274,7 @@ extension EztWatchFaceView{
                     }
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
             
             

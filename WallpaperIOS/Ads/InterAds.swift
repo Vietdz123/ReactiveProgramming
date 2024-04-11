@@ -99,7 +99,13 @@ import UIKit
     func showAd( onCommit: @escaping () -> ()  ){
         let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
         self.onComplete = onCommit
-
+        
+        
+        //MARK: FOR TEST
+//                            if onComplete != nil {
+//                                onComplete!()
+//                            }
+        //MARK: END TEST
         
             if Date().currentTimeMillis() - timeShowPrev > delay {
              

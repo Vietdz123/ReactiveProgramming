@@ -62,12 +62,27 @@ struct BannerViewController: UIViewControllerRepresentable  {
         let viewController = UIViewController()
         let view = GADBannerView(adSize: adSize)
         view.delegate = context.coordinator
-        view.adUnitID = AdsConfig.bannerID
+     
+        view.adUnitID = self.adUnitID
         print("LOAD_ BANNER ADS")
         view.rootViewController = viewController
-        view.load(GADRequest())
+     
+        
+        let request = GADRequest()
+                   
+        if UserDefaults.standard.bool(forKey: "using_banner_collapsible") {
+        print("using_banner_collapsible")
+            let extras = GADExtras()
+            extras.additionalParameters = ["collapsible" : "bottom"]
+            request.register(extras)
+        }
+        view.load(request)
+        
+        
+        
         viewController.view.addSubview(view)
-        viewController.view.frame = CGRect(origin: .zero, size: adSize.size)
+        view.frame = .init(x: 0, y: 0, width: adSize.size.width, height: adSize.size.height)
+        viewController.view.frame = CGRect(origin: .zero, size: adSize.size )
         return viewController
     }
     
@@ -99,19 +114,20 @@ struct BannerViewController: UIViewControllerRepresentable  {
     }
 }
 
-struct BannerAdView: View {
+
+struct BannerAdViewMain: View {
     
-    
-    let adFormat: AdFormat
+    // "ca-app-pub-3940256099942544/8388050270"
+ 
     @Binding var adStatus: AdStatus
     
-    
+    var size = UserDefaults.standard.bool(forKey: "using_banner_collapsible") ? GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width - 32) : GADAdSizeBanner
     
     var body: some View {
         HStack {
-            BannerViewController(adUnitID: AdsConfig.bannerID, adSize: adFormat.adSize, adStatus: $adStatus)
-                .frame(width: adFormat.size.width, height: adStatus == .success ?  adFormat.size.height : 0.0  )
-        }
+            BannerViewController(adUnitID: AdsConfig.bannerID, adSize: size, adStatus: $adStatus)
+                .frame(width: size.size.width, height: adStatus == .success ? size.size.height : 0.0  )
+        }.frame(maxWidth: .infinity, alignment: .center)
 
           
     }
@@ -119,4 +135,3 @@ struct BannerAdView: View {
  
     
 }
-

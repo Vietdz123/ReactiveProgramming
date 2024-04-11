@@ -8,7 +8,15 @@
 import SwiftUI
 import PhotosUI
 import SDWebImageSwiftUI
+import GoogleMobileAds
 
+
+
+enum DetailWallpaperAction : String, CaseIterable{
+    case NONE = "detail_none"
+    case LOCK = "detail_lock"
+    case HOME = "detail_home"
+}
 
 class ControllViewModel : ObservableObject {
     @Published var showControll : Bool = true
@@ -25,6 +33,10 @@ class ControllViewModel : ObservableObject {
     
     
     @Published var showGifView : Bool = false
+    
+    
+    @Published var adStatus : AdStatus = .loading
+    @Published var actionSelected : DetailWallpaperAction = .LOCK
     
     
     func changeSubType() {
@@ -133,15 +145,17 @@ struct WLView: View {
                         ctrlViewModel.showControll.toggle()
                     }
                 }
-                
+               
+             
+                    Preview()
+              
+               
                 
                 if ctrlViewModel.showControll{
                     ControllView()
                 }
                 
-                if ctrlViewModel.showPreview {
-                    Preview()
-                }
+               
                 
                 if ctrlViewModel.showDialogRV{
                     DialogGetWL(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
@@ -207,7 +221,7 @@ struct WLView: View {
                 
                 
                 Spacer()
-                HStack(spacing : 0){
+              
                     ZStack{
                         if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
                             Button(action: {
@@ -223,32 +237,37 @@ struct WLView: View {
                         }
                         
                     }
-                    
-                    Button(action: {
-                        ctrlViewModel.showPreview.toggle()
-                        ctrlViewModel.showControll.toggle()
-                    }, label: {
-                        Image("preview")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                            .padding(.trailing, 16)
-                            .padding(.leading, 8)
-                    })
-                    
-                }
-                
-             
-         
-                
-                
+
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44  )
-            
+           
             
             Spacer()
          
+            HStack(alignment: .bottom, spacing:  0, content: {
+                
+                VStack(spacing : 6){
+                    ForEach(DetailWallpaperAction.allCases, id : \.rawValue){
+                        action in
+                        Image(action.rawValue)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .frame(width: 32, height: 44)
+                            .opacity(ctrlViewModel.actionSelected == action ? 1.0 : 0.4)
+                            .contentShape(Rectangle())
+                            .onTapGesture(perform: {
+                                ctrlViewModel.actionSelected = action
+                            })
+                    }
+                    
+                }
+                .background(Color.black.opacity(0.4))
+                .clipShape(Capsule())
+                .padding(.leading, 16)
+                
+                Spacer()
+                
                 Button(action: {
                     
                     getPhotoPermission(status: {
@@ -296,27 +315,23 @@ struct WLView: View {
                     
                     
                 }, label: {
-                    HStack{
-                        
-                        Text("Save")
-                            .mfont(16, .bold)
-                            .foregroundColor(.mblack_fg)
-                            .overlay(
-                                ZStack{
-                                    if ctrlViewModel.isDownloading{
-                                        EZProgressView()
-                                    }
-                                }.offset(x : -36)
-                                , alignment: .leading
-                            )
-                    }
-                    .frame(width: 240 ,height: 48)
-                    .contentShape(Rectangle())
-                    .background(
-                        Capsule().fill(Color.main)
-                    )
+                    Image("detail_download")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .frame(width: 56, height: 56)
+                        .background(Circle().fill(Color.main))
+
                 }).disabled(ctrlViewModel.isDownloading)
-                .padding(.bottom, 48)
+                    .padding(.trailing, 16)
+            }).padding(.bottom, 24)
+            
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
+                }
+            }.frame(height: GADAdSizeBanner.size.height)
+            
+               
                 
                 
            
@@ -327,45 +342,34 @@ struct WLView: View {
     
     @ViewBuilder
     func Preview() -> some View{
-        TabView(selection: $ctrlViewModel.isHome){
-            
-            Image("dynamic")
-                .resizable()
-                .scaledToFill()
-            
-                .onTapGesture {
-                    withAnimation{
-                        ctrlViewModel.showPreview = false
-                        
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                        withAnimation{
-                            ctrlViewModel.showControll = true
-                        }
-                    })
-                }.tag(true)
-            
-            
-            Image("preview_home")
-                .resizable()
-                .scaledToFill()
-                .onTapGesture {
-                    withAnimation{
-                        ctrlViewModel.showPreview = false
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                        withAnimation{
-                            ctrlViewModel.showControll = true
-                        }
-                    })
-                }.tag(false)
-            
+    
+        ZStack(alignment: .top){
+            if ctrlViewModel.actionSelected == .HOME {
+                
+                VStack{
+                    Image("home_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, 44)
+                       
+                    
+                    Spacer()
+                }
+               
+
+            }else if ctrlViewModel.actionSelected == .LOCK{
+                VStack{
+                    Image("lock_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, 28)
+                    Spacer()
+                }
+                
+                  
+            }
         }
-        .tabViewStyle(.page(indexDisplayMode: .always))
-        .background{
-            Color.clear
-        }
-        .ignoresSafeArea()
+        
     }
     
     @ViewBuilder

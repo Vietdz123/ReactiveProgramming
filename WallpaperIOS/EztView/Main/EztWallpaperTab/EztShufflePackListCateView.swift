@@ -129,8 +129,7 @@ struct EztShufflePackListCateView: View {
                                                                                placeHolderImage()
                                                                                    .frame(width: 110, height: 220)
                                                                            }
-                                                                           .indicator(.activity) // Activity Indicator
-                                                                           .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                                                        
                                                                            .scaledToFill()
                                                                             .frame(width: 110, height: 220)
                                                                             .cornerRadius(8)
@@ -153,8 +152,7 @@ struct EztShufflePackListCateView: View {
                                                                                placeHolderImage()
                                                                                    .frame(width: 120, height: 240)
                                                                            }
-                                                                           .indicator(.activity) // Activity Indicator
-                                                                           .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                                                                          
                                                                            .scaledToFill()
                                                                             .frame(width: 120, height: 240)
                                                                             .cornerRadius(8)
@@ -194,6 +192,7 @@ struct EztShufflePackListCateView: View {
                 
                                     }
                                 }
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             }
             
             
@@ -202,6 +201,13 @@ struct EztShufflePackListCateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+            }
     }
 }
 

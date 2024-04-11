@@ -170,8 +170,6 @@ struct CategoryPageView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                    .indicator(.activity) // Activity Indicator
-                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
@@ -201,6 +199,7 @@ struct CategoryPageView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             }.refreshable {
                 
                 viewModel.currentOffset = 0
@@ -208,6 +207,10 @@ struct CategoryPageView: View {
                 viewModel.getWallpapers()
             }
             .onAppear(perform: {
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+                
                 if ( viewModel.category?.title ?? "" ) != currentCategoryName {
                     viewModel.categorySort = .NEW
                     viewModel.wallpapers = []
@@ -222,17 +225,17 @@ struct CategoryPageView: View {
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .edgesIgnoringSafeArea(.bottom)
         .overlay(
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
-                    
+                    BannerAdViewMain(adStatus: $adStatus)
                 }
             }
             
             , alignment: .bottom
         )
-        .edgesIgnoringSafeArea(.bottom)
+      
         
         .addBackground()
     }

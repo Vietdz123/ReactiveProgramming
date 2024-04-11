@@ -23,10 +23,12 @@ struct EztHomeView: View {
     @EnvironmentObject var depthVM : DepthEffectViewModel
     @EnvironmentObject var dynamicVM : DynamicIslandViewModel
     
+    
+    @StateObject var lightningVM : LightingEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var posterContactVM : PosterContactViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     
-    @StateObject var interactWidgetViewModel : WidgetMainViewModel = .init(type : .ALL, sort : .POPULAR, sortByTop: .TOP_WEEK)
-    @StateObject var soundWidgetVM : WidgetMainViewModel = .init(type : .Sound, sort : .POPULAR, sortByTop: .TOP_WEEK)
+    @StateObject var interactWidgetViewModel : WidgetMainViewModel = .init(type : .ALL, sort : .NEW, sortByTop: .TOP_WEEK)
+    @StateObject var gifWidgetVM : WidgetMainViewModel = .init(type : .Gif, sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var digitalFriendWidgetVM : WidgetMainViewModel = .init(type : .DigitalFriend, sort : .POPULAR, sortByTop: .TOP_WEEK)
    
     
@@ -35,7 +37,7 @@ struct EztHomeView: View {
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
-    
+    @EnvironmentObject var catalogVM : WallpaperCatalogViewModel 
     
     
    
@@ -57,10 +59,11 @@ struct EztHomeView: View {
                 /*3*/   WatchFaceViewInHome()
                 /*4*/   BannerSaleHome()
                 /*5*/   DepthEffectViewInHome()
-                /*6*/   WidgetDigital()
-                /*7*/   ShufflePackInHome()
-                /*8*/   WidgetSound()
-                /*9*/   PosterContactInHome()
+                /*6*/   LightningEffectInHome()
+                /*7*/   WidgetDigital()
+                /*8*/   ShufflePackInHome()
+                /*9*/   WidgetGifInHome()
+                /*10*/   PosterContactInHome()
                 
                     
                    
@@ -79,10 +82,7 @@ struct EztHomeView: View {
                 
             }
             .addBackground()
-            .onViewDidLoad {
-                interAd.loadInterstitial()
-                rewardAd.loadRewardedAd()
-            }
+           
        
         
       
@@ -97,7 +97,7 @@ extension EztHomeView{
     func BannerSaleHome() -> some View{
         ZStack{
             if !store.isPro(){
-                if let product = store.yearlv2Sale50Product{
+                if let product = store.getYearSale50UsingProduct(){
                     VStack(spacing : 0){
                         Text("Unlock all Features".toLocalize())
                             .mfont(17, .bold)
@@ -377,18 +377,14 @@ extension EztHomeView{
                 Spacer()
                 
                 
-                
-//                NavigationLink(destination: {
-//                    ShufflePackView()
-//                        .environmentObject(shuffleVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-                
-                Button(action: {
+
+                NavigationLink(destination: {
                     
-                    currentTab = .WALLPAPER
-                    wallpaperTab = .ShufflePack
+                    EztShufflePackView()
+                        .environmentObject(catalogVM)
+                        .environmentObject(store)
+                        .environmentObject(interAd)
+                        .environmentObject(rewardAd)
                     
                 }, label: {
                     HStack(spacing : 0){
@@ -548,7 +544,7 @@ extension EztHomeView{
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
                                             .environmentObject(store)
-                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
@@ -592,19 +588,18 @@ extension EztHomeView{
                 
                 Spacer()
                 
-//                NavigationLink(destination: {
-//                    DepthEffectView()
-//                        .environmentObject(depthVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
+               // Button(action: {
+                    
+                  //  currentTab = .WALLPAPER
+                //    wallpaperTab = .DepthEffect
+                 
                 
-                Button(action: {
-                    
-                    currentTab = .WALLPAPER
-                    wallpaperTab = .DepthEffect
-                    
-                    
+                NavigationLink(destination: {
+                    EztDepthEffectView()
+                    .environmentObject(catalogVM)
+                    .environmentObject(store)
+                    .environmentObject(interAd)
+                    .environmentObject(rewardAd)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See All".toLocalize())
@@ -704,19 +699,14 @@ extension EztHomeView{
                 
                 
                 Spacer()
-//                NavigationLink(destination: {
-//                    PosterContactView()
-//                        .environmentObject(posterContactVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
+
                 
-                Button(action: {
-                    
-                    currentTab = .WALLPAPER
-                    wallpaperTab = .PosterContact
-                    
-                    
+                NavigationLink(destination: {
+            
+                   EztPosterContactView()
+                        .environmentObject(store)
+                        .environmentObject(rewardAd)
+                        .environmentObject(interAd)
                 }, label: {
                     HStack(spacing : 0){
                         Text("See All".toLocalize())
@@ -735,33 +725,11 @@ extension EztHomeView{
                 
                 
                 if posterContactVM.wallpapers.isEmpty{
-                    PlaceHolderListLoad()
+                    PlaceHolderListLoadHori()
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
-                        HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                    .environmentObject(posterContactVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
-                            }, label: {
-                                WebImage(url: URL(string: posterContactVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
-                                    .resizable()
-                                    .placeholder {
-                                        placeHolderImage()
-                                    }
-                                    .scaledToFill()
-                                    .frame(width: 160, height: 320)
-                                    .clipped()
-                              
-                                    .cornerRadius(8)
-                            })
-                            
-                            
-                            
-                            LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
-                                ForEach(1..<15, content: {
+                            LazyHStack(spacing: 12, content: {
+                                ForEach(0..<7, content: {
                                     i in
                                     let wallpaper = posterContactVM.wallpapers[i]
                                     
@@ -780,7 +748,7 @@ extension EztHomeView{
                                                 placeHolderImage()
                                             }
                                             .scaledToFill()
-                                            .frame(width: 78, height: 156)
+                                            .frame(width: 128, height: 280)
                                             .clipped()
                                        
                                             .cornerRadius(8)
@@ -792,16 +760,107 @@ extension EztHomeView{
                                     
                                 })
                             })
-                        }
-                        
-                        
+
                     }
-                    .frame(height: 320)
+                    .frame(height: 280)
                     .padding(.horizontal, 16)
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 320)
+            .frame(height: 280)
+            
+            
+            
+            
+        }.padding(.top, 24)
+    }
+    
+    
+    func LightningEffectInHome() -> some View{
+        VStack(spacing : 16){
+            HStack(spacing : 0){
+                Text("Lighting Effects".toLocalize())
+                    .mfont(20, .bold)
+                    .foregroundColor(.white)
+                
+                
+                Spacer()
+
+                
+                NavigationLink(destination: {
+            
+                    EztLightingEffectView()
+                        .environmentObject(store)
+                        .environmentObject(rewardAd)
+                        .environmentObject(interAd)
+                    
+                }, label: {
+                    HStack(spacing : 0){
+                        Text("See All".toLocalize())
+                            .mfont(11, .regular)
+                            .foregroundColor(.white)
+                        Image("arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 18, height: 18, alignment: .center)
+                    }
+                })
+                
+            }.padding(.horizontal, 16)
+            ZStack{
+                
+                
+                
+                if lightningVM.wallpapers.isEmpty{
+                    PlaceHolderListLoadHori()
+                }else{
+                    ScrollView(.horizontal, showsIndicators: false){
+                            LazyHStack( spacing: 12, content: {
+                                ForEach(0..<7, content: {
+                                    i in
+                                    let wallpaper = lightningVM.wallpapers[i]
+                                    let string = wallpaper.path.first?.path.preview  ?? ""
+                                    
+                                    NavigationLink(destination: {
+                                        SpWLDetailView(index: i)
+                                            .environmentObject(lightningVM as SpViewModel)
+                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
+                                            .environmentObject(interAd)
+                                    }, label: {
+                                        WebImage(url: URL(string: string))
+                                            .resizable()
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
+                                            .scaledToFill()
+                                            .frame(width: 128, height: 280)
+                                            .clipped()
+                                       
+                                            .cornerRadius(8)
+                                            .overlay(
+                                                Image("dynamic")
+                                                    .resizable()
+                                                    .cornerRadius(8)
+                                            )
+                                    })
+                                    
+                                    
+                                    
+                                    
+                                    
+                                })
+                            })
+                        
+                        
+                        
+                    }
+                    .frame(height: 280)
+                    .padding(.horizontal, 16)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 280)
             
             
             
@@ -820,11 +879,12 @@ extension EztHomeView{
                 
                 Spacer()
                 
-               // NavigationLink(destination: {
-                Button(action: {
-                    
-                    currentTab = .WALLPAPER
-                    wallpaperTab = .WatchFace
+                NavigationLink(destination: {
+            
+                   EztWatchFaceView()
+                        .environmentObject(store)
+                        .environmentObject(rewardAd)
+                        .environmentObject(interAd)
                     
                 }, label: {
                     HStack(spacing : 0){
@@ -959,7 +1019,7 @@ extension EztHomeView{
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
                                             .environmentObject(store)
-                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
@@ -990,10 +1050,10 @@ extension EztHomeView{
         }.padding(.top, 24)
     }
     
-    func WidgetSound() -> some View{
+    func WidgetGifInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){
-                Text("Interesting Sound Widget".toLocalize())
+                Text("Interesting Gif Widget".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                 
@@ -1001,7 +1061,7 @@ extension EztHomeView{
                 Spacer()
                 
                 NavigationLink(destination: {
-                    ConditionalWidgetView(widgetType: .Sound)
+                    ConditionalWidgetView(widgetType: .Gif)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)
@@ -1021,22 +1081,22 @@ extension EztHomeView{
                 
             }.padding(.horizontal, 16)
             ZStack{
-                if soundWidgetVM.widgets.isEmpty{
+                if gifWidgetVM.widgets.isEmpty{
                     ItemWidgetPlaceHolder()
                 }else{
                     
-                    let itemCountShow = min(4, soundWidgetVM.widgets.count)
+                    let itemCountShow = min(4, gifWidgetVM.widgets.count)
                     
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 0){
                             Spacer().frame(width: 16)
                             LazyHStack(spacing : 16,content: {
                                 ForEach(0..<itemCountShow, id: \.self) { count in
-                                    let widgetObj = soundWidgetVM.widgets[count]
+                                    let widgetObj = gifWidgetVM.widgets[count]
                                     NavigationLink(destination: {
                                         WidgetDetailView(widget: widgetObj)
                                             .environmentObject(store)
-                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
                                         ItemWidgetView(widget: widgetObj)
@@ -1057,9 +1117,9 @@ extension EztHomeView{
             .frame(maxWidth: .infinity)
             .frame(height: 320 / 2.2)
             .onAppear(perform: {
-                if soundWidgetVM.widgets.isEmpty{
-                    soundWidgetVM.type = .Sound
-                    soundWidgetVM.getWidgets()
+                if gifWidgetVM.widgets.isEmpty{
+                    gifWidgetVM.type = .Gif
+                    gifWidgetVM.getWidgets()
                 }
                 
             })

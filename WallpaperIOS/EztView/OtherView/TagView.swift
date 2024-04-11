@@ -76,8 +76,6 @@ struct TagView: View {
                                     placeHolderImage()
                                         .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 }
-                                .indicator(.activity) // Activity Indicator
-                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
@@ -116,6 +114,7 @@ struct TagView: View {
                     }
                     
                 }.padding( 16)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 
             }.refreshable {
                 viewModel.randomOffset = Int.random(in: 0...viewModel.maxCount)
@@ -132,15 +131,17 @@ struct TagView: View {
             
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .addBackground()
+            .edgesIgnoringSafeArea(.bottom)
             .overlay(
                 ZStack{
                     if store.allowShowBanner() {
-                        BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        BannerAdViewMain(adStatus: $adStatus)
                     }
                 }, alignment: .bottom
             )
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
+            
+           
             .onAppear(perform: {
                 if currentTagName != viewModel.tag{
                     viewModel.sortedBy = .Newest
@@ -149,6 +150,9 @@ struct TagView: View {
                     viewModel.getWallpapers()
                 }
                 
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
                 
             })
         

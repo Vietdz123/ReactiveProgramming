@@ -109,14 +109,6 @@ struct EztDepthEffectCateView: View {
                                                         .frame(width: 108, height: 216)
                                                         .cornerRadius(8)
                                                         .clipped()
-//                                                        .overlay(alignment : .topTrailing){
-//                                                            if !store.isPro(){
-//                                                                Image("crown")
-//                                                                    .resizable()
-//                                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                                    .padding(8)
-//                                                            }
-//                                                        }
                                                 })
 
                                             }
@@ -152,6 +144,13 @@ struct EztDepthEffectCateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+            }
     }
 }
 

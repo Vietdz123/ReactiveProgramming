@@ -56,7 +56,7 @@ struct GiftSub_1_View: View {
             GeometryReader{ proxy in
                 
                 let size = proxy.size
-                if let product = storeVM.yearlv2Sale50Product {
+                if let product = storeVM.getYearSale50UsingProduct() {
                     VStack(spacing : 0){
                         Spacer()
                         HStack(spacing : 0){

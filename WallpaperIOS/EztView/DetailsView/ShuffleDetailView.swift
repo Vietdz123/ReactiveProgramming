@@ -8,6 +8,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
 import PhotosUI
+import GoogleMobileAds
 
 struct ShuffleDetailView: View {
     
@@ -29,6 +30,9 @@ struct ShuffleDetailView: View {
     @State var showSub : Bool = false
     @State var showTuto : Bool = false
     @State var showDialogRv : Bool = false
+    @State var adStatus : AdStatus = .loading
+    
+    
     var body: some View {
         
         ZStack{
@@ -247,25 +251,32 @@ extension ShuffleDetailView{
                 })
                
             }, label: {
-                HStack{
-                    Text("Save Packs")
-                        .mfont(16, .bold)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                        .overlay(
-                            ZStack{
-                                if isDownloading{
-                                    EZProgressView()
-                                }
-                            }.offset(x : -36)
-                            , alignment: .leading
-                        )
-                }.frame(width: 240, height: 48)
-                    .contentShape(Rectangle())
-                    .background(
-                        Capsule()
-                            .foregroundColor(.main)
-                    )
+                Image("detail_download")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+                    .frame(width: 56, height: 56)
+                    .background(Color.main)
+                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                
+//                HStack{
+//                    Text("Save Packs")
+//                        .mfont(16, .bold)
+//                        .multilineTextAlignment(.center)
+//                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+//                        .overlay(
+//                            ZStack{
+//                                if isDownloading{
+//                                    EZProgressView()
+//                                }
+//                            }.offset(x : -36)
+//                            , alignment: .leading
+//                        )
+//                }.frame(width: 240, height: 48)
+//                    .contentShape(Rectangle())
+//                    .background(
+//                        Capsule()
+//                            .foregroundColor(.main)
+//                    )
             })
             
             ZStack{
@@ -286,7 +297,17 @@ extension ShuffleDetailView{
                             )
                     })
                 }
-            }.frame(height: 48)
+            }.frame(height: 36)
+              
+            
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            }.frame(height: GADAdSizeBanner.size.height)
+            
+            
+            
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
     

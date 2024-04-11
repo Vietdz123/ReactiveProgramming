@@ -11,7 +11,9 @@ import Foundation
 
 struct APIHelper {
 
-    static let TOP_WALLPAPER = "api/v1/data?&order_by=daily_rating+desc,updated_at+desc&types[]=private&app=2&screen=exclusive&only_app=1"
+    
+    //MARK: tat ca content lay tu Hoa`
+    static let TOP_WALLPAPER = "api/v1/data?&order_by=daily_rating+desc,updated_at+desc&app=2&screen=exclusive&only_app=1" // &types[]=private
     
     static let LIVE_WALLPAPER = "api/v1/videos?"
     

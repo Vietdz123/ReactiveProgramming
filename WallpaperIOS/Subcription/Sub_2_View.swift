@@ -52,7 +52,7 @@ struct Sub_2_View: View {
                 
             Spacer()
        
-            if let product =  store.yearlv2Sale50Product {
+            if let product =  store.getYearSale50UsingProduct() {
                 
            
             

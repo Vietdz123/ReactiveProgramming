@@ -68,8 +68,6 @@ struct DynamicView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                    .indicator(.activity) // Activity Indicator
-                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
@@ -78,20 +76,7 @@ struct DynamicView: View {
                                             .resizable()
                                             .cornerRadius(8)
                                     )
-//                                    .overlay(
-//                                      
-//                                        
-//                                        ZStack{
-//                                            if !store.isPro(){
-//                                                Image("crown")
-//                                                    .resizable()
-//                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                    .padding(8)
-//                                            }
-//                                        }
-//                                       
-//                                        , alignment: .topTrailing
-//                                    )
+
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -101,22 +86,29 @@ struct DynamicView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .edgesIgnoringSafeArea(.bottom)
+            .addBackground()
             .overlay(
                 ZStack{
                     if store.allowShowBanner(){
-                        BannerAdView(adFormat: .adaptiveBanner, adStatus: $adStatus)
+                        BannerAdViewMain( adStatus: $adStatus)
                             
                     }
                 }
                 
                 , alignment: .bottom
             )
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
+            
     }
 }
 

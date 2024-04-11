@@ -35,14 +35,13 @@ class WidgetMainViewModel: ObservableObject {
     }
     
     func getWidgets(){
-        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())&all=1" // 
+        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(15)&offset=\(currentOffset)\(getSortParamStr())&all=1" //
            
            guard let url  = URL(string: urlString) else {
                return
            }
            
         print("WidgetViewModel \(getFetchWidgetType()) url: \(url.absoluteString)")
-         
            
            URLSession.shared.dataTask(with: url){
                data, _ ,err  in
@@ -53,15 +52,16 @@ class WidgetMainViewModel: ObservableObject {
                print("WidgetViewModel has data")
                let itemsCurrentLoad = try? JSONDecoder().decode(EztWidgetHomeResponse.self, from: data)
                
+               
                DispatchQueue.main.async {
                    self.widgets.append(contentsOf: itemsCurrentLoad?.data.data  ?? [])
                    self.currentOffset = self.currentOffset + AppConfig.limit
                    print("WidgetViewModel widgets count: \(self.widgets.count)")
 
                }
-               
            }.resume()
     }
+    
     
     func shouldLoadData(id : Int) -> Bool {
         return id == widgets.count - 5
@@ -71,7 +71,8 @@ class WidgetMainViewModel: ObservableObject {
     func getFetchWidgetType() -> String {
         switch type {
         case .ALL:
-            return ""
+            return "&where_in[]=category_id+2,3,4,5,7"
+          //  return ""
         case .DigitalFriend:
             return "&where=category_id+2"
         case .Routine:
@@ -83,8 +84,8 @@ class WidgetMainViewModel: ObservableObject {
         case .DecisionMaker:
             return "&where=category_id+7"
         }
-       
     }
+    
     
     func getSortParamStr() -> String {
         if sort == .NEW{
@@ -95,9 +96,7 @@ class WidgetMainViewModel: ObservableObject {
             }else{
                 return "&order_by=monthly_rating+desc,id+desc"
             }
-            
         }
-       
     }
 }
 

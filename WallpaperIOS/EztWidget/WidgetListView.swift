@@ -15,7 +15,7 @@ struct WidgetListView: View {
     @EnvironmentObject var storeVM : MyStore
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
-    
+    @State var adStatus : AdStatus = .loading
     
     
     var body: some View {
@@ -120,7 +120,7 @@ struct WidgetListView: View {
                         })
                         
                     }
-                })
+                }).padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             }
             .refreshable {
                 
@@ -132,6 +132,18 @@ struct WidgetListView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .overlay(alignment: .bottom, content: {
+                if storeVM.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            })
+            .onAppear{
+                if !storeVM.isPro(){
+                    interAd.showAd {
+                        
+                    }
+                }
+            }
 
     }
 }
@@ -200,7 +212,7 @@ struct HealthWidgetListView: View {
                         })
                         
                     }
-                })
+                })  .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             }
             .refreshable {
                 

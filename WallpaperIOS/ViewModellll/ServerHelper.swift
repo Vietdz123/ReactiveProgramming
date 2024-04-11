@@ -11,7 +11,9 @@ struct ServerHelper {
     
     static var eztEmpeloyee : Bool = false
     
-   static func sendImageDataToServer(type : String, id : Int){
+    
+    //MARK: for wallpaper thường
+   static func sendImageDataToServer(type : String = "set", id : Int){
        
        if eztEmpeloyee{
            print("Ezt eztEmpeloyee")
@@ -41,8 +43,8 @@ struct ServerHelper {
             _, _, _ in
         }).resume()
     }
-    
-    static func sendVideoDataToServer(type : String, id : Int){
+    //MARK: for live wallpaper
+    static func sendVideoDataToServer(type : String  = "set" , id : Int){
         if eztEmpeloyee{
             print("Ezt eztEmpeloyee")
             return
@@ -74,8 +76,8 @@ struct ServerHelper {
 
          }).resume()
      }
-    
-    static func sendImageSpecialDataToServer(type : String, id : Int){
+    //MARK: for specail wallpaper == depth effect, dynamic ....
+    static func sendImageSpecialDataToServer(type : String = "download", id : Int){
         if eztEmpeloyee{
             print("Ezt eztEmpeloyee")
             return

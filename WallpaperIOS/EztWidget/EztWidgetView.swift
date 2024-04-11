@@ -60,9 +60,9 @@ struct EztWidgetView: View {
                 WidgetNEW()
                 WidgetPOPULAR()
                 WidgetDIGITAL()
-                WidgetHEALTH()
-                WidgetSound()
                 WidgetGIF()
+                WidgetSound()
+                WidgetHEALTH()
                 WidgetMakeDicision()
                 WidgetROUNTINE()
              
@@ -80,11 +80,17 @@ struct EztWidgetView: View {
             popularWidgetVM.currentOffset = 0
             digitalWidgetVM.currentOffset = 0
             rountineWidgetVM.currentOffset = 0
+            soundWidgetVM.currentOffset = 0
+            gifWidgetVM.currentOffset = 0
+            makeDecisionWidgetVM.currentOffset = 0
             
             newWidgetVM.widgets.removeAll()
             popularWidgetVM.widgets.removeAll()
             digitalWidgetVM.widgets.removeAll()
             rountineWidgetVM.widgets.removeAll()
+            soundWidgetVM.widgets.removeAll()
+            gifWidgetVM.widgets.removeAll()
+            makeDecisionWidgetVM.widgets.removeAll()
             
             newWidgetVM.getWidgets()
             popularWidgetVM.getWidgets()

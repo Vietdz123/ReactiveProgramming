@@ -48,7 +48,7 @@ struct ImageGenArtHanlderView: View {
                           .frame(width: 24, height: 24)
                           .frame(width: 56, height: 44)
                   }).zIndex(1)
-              })
+              }) .zIndex(100)
             
             Spacer()
             generateView()
@@ -81,6 +81,7 @@ struct ImageGenArtHanlderView: View {
                             )
                 )
             })
+            .zIndex(100)
             .padding(.bottom, 48)
             
             if let eztValueRes, let uiimageCropped{

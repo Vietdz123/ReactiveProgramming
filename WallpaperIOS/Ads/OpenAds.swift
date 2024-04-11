@@ -75,6 +75,7 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
     
     
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("LOAD_ADS OPEN didFailToPresentFullScreenContentWithError")
         if onComplete != nil{
             onComplete!(true)
         }
@@ -83,11 +84,12 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
     }
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        appOpenAd = nil
-        requestAppOpenAd()
+        print("LOAD_ADS OPEN adDidDismissFullScreenContent")
         if onComplete != nil{
             onComplete!(false)
         }
+        appOpenAd = nil
+        requestAppOpenAd()
     }
 
 }

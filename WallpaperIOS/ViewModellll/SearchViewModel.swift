@@ -24,7 +24,6 @@ class SearchViewModel: ObservableObject {
     }
     
     func getTags(){
-
         guard let url  = URL(string: "\(domain)api/v2/popular-tags?fields=id,title,multi_background&with=images+id,preview_small_path&order_by=sort+asc&offset=\(tagCurrentOfffset)&limit=\(AppConfig.limit)") else {
             return
         }

@@ -71,8 +71,6 @@ struct ListLiveWLView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.imgWidth, height: AppConfig.imgHeight)
                                     }
-                                    .indicator(.activity) // Activity Indicator
-                                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                     .scaledToFill()
                                 
                                 
@@ -114,6 +112,7 @@ struct ListLiveWLView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             

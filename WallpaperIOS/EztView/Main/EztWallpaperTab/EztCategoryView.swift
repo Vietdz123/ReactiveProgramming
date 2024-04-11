@@ -52,13 +52,11 @@ struct EztCategoryView: View {
 
                                 }
                                 .resizable()
-                                .indicator(.activity) // Activity Indicator
-                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                 .scaledToFill()
                                 .frame(width: size.width, height: size.height)
 
 
-                            if let productEv =  store.yearlv2Sale50Product {
+                            if let productEv =  store.getYearSale50UsingProduct() {
 
                                 VStack(spacing : 0){
 
@@ -244,7 +242,6 @@ struct EztCategoryView: View {
                                                 }, label: {
                                                     
                                                     WebImage(url: URL(string: string))
-                                                    
                                                         .onSuccess { image, data, cacheType in
                                                             
                                                         }
@@ -285,6 +282,7 @@ struct EztCategoryView: View {
                         
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 
                 Spacer()
                     .frame(height : 112)

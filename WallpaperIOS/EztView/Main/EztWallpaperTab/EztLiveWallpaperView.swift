@@ -36,7 +36,6 @@ struct EztLiveWallpaperView: View {
                                                                     .navigationBarHidden(true)
                                                                     .environmentObject(viewModel)
                                                                     .environmentObject(store)
-                                                                   
                                                                     .environmentObject(reward)
                                                                     .environmentObject(interAd)
                             }, label: {
@@ -84,6 +83,7 @@ struct EztLiveWallpaperView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             .refreshable {

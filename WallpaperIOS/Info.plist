@@ -19,6 +19,8 @@
 	<string>ca-app-pub-5782595411387549~2808613009</string>
 	<key>GADIsAdManagerApp</key>
 	<true/>
+	<key>GADNativeAdValidatorEnabled</key>
+	<string>false</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

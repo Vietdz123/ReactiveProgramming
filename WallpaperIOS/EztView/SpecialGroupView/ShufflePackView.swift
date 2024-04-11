@@ -47,7 +47,6 @@ struct ShufflePackView: View {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let shuffle = viewModel.wallpapers[i]
-
                             NavigationLink(destination: {
                               ShuffleDetailView(wallpaper: shuffle)
                                     .environmentObject(store)
@@ -59,22 +58,28 @@ struct ShufflePackView: View {
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
                                     viewModel.getWallpapers()
-                                    
                                 }
                             })
-                            
                         }
                     }
-                } .padding(16)
-              
-            } 
-            
-            
-            
+                } 
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
+                .padding(16)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .overlay(alignment: .bottom){
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            }
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
     }
 }
 

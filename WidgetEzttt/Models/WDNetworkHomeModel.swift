@@ -85,6 +85,6 @@ struct EztApp: Codable {
 struct EzTags: Codable {
     let id: Int
     let name: String
-    let laravel_through_key: Int
+   
 }
 

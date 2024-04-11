@@ -22,7 +22,7 @@ struct EztSpecialPageView: View {
     @EnvironmentObject var interVM : InterstitialAdLoader
     @EnvironmentObject var rewardVM : RewardAd
     @EnvironmentObject var storeVM : MyStore
-    
+    @State var adStatus : AdStatus = .loading
     
     var body: some View {
         VStack(spacing : 0){
@@ -156,36 +156,40 @@ struct EztSpecialPageView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(.horizontal, 16)
             }.refreshable {
-              
                 viewModel.currentOffset = 0
                 viewModel.wallpapers.removeAll()
                 viewModel.getWallpapers()
             }
             .onAppear(perform: {
-             
-                
                 if  viewModel.type == 0 || viewModel.tagId == 0 && viewModel.wallpapers.isEmpty{
                     viewModel.type = type
                     viewModel.tagId = tagID
                     viewModel.currentTag = currentTag
-                    
                     viewModel.sort = .NEW
                     viewModel.wallpapers = []
                     viewModel.currentOffset = 0
                     viewModel.getWallpapers()
                 }
-                
-                
             })
-            
-            
-        
-        
+           
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .overlay(alignment : .bottom){
+                if storeVM.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            }
+            .onAppear{
+                if !storeVM.isPro(){
+                    interVM.showAd(onCommit: {
+                        
+                    })
+                }
+            }
     }
 }
 

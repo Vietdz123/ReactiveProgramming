@@ -32,37 +32,37 @@ struct SpecialSubView: View {
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
             
-            if showSubView {
+ //           if showSubView {
                 SubView()
-            }else{
-                
-                VStack{
-                    HStack{
-                        Spacer()
-                        
-                        Button(action: {
-                         onClickClose()
-                        }, label: {
-                            Image("close.circle.fill")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .opacity(0.7)
-                        })
-                        
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(16)
-                    Spacer()
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                if giftOpen{
-                    
-                    GiftShowView()
-                    
-                }else{
-                    GiftView()
-                }
-            }
+//            }else{
+//                
+//                VStack{
+//                    HStack{
+//                        Spacer()
+//                        
+//                        Button(action: {
+//                         onClickClose()
+//                        }, label: {
+//                            Image("close.circle.fill")
+//                                .resizable()
+//                                .frame(width: 24, height: 24)
+//                                .opacity(0.7)
+//                        })
+//                        
+//                    }
+//                    .frame(maxWidth: .infinity)
+//                    .padding(16)
+//                    Spacer()
+//                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+//                
+//                if giftOpen{
+//                    
+//                    GiftShowView()
+//                    
+//                }else{
+//                    GiftView()
+//                }
+//            }
             
         }
     }
@@ -83,7 +83,8 @@ extension SpecialSubView{
                 
                 Button(action: {
                     withAnimation(.easeInOut){
-                        showSubView.toggle()
+                      //  showSubView.toggle()
+                        onClickClose()
                     }
                 }, label: {
                     Image("close.circle.fill")
@@ -144,7 +145,7 @@ extension SpecialSubView{
             
             VStack(spacing : 0){
                 
-                if let weekProduct = store.weekProductNotSale, let monthProduct = store.monthProduct, let yearProduct = store.yearlyOriginalProduct{
+                if let weekProduct = store.weekProductNotSale, let monthProduct = store.monthProduct, let yearProduct = store.getYearOriginUsingProduct(){
                     Opt_Year(product: yearProduct)
                     Opt_Month(product: monthProduct).padding(.top, 12)
                     Opt_Week(product: weekProduct).padding(.top, 12).padding(.bottom, 24)
@@ -307,7 +308,7 @@ extension SpecialSubView{
             
             Spacer()
             
-            if let yearSale = store.yearlv2Sale50Product{
+            if let yearSale = store.getYearSale50UsingProduct(){
               //  Text("Less than \(getDisplayPrice(price:yearSale.price, chia: 51, displayPrice:yearSale.displayPrice))/Week")
                 Text(String(format: NSLocalizedString("Less than %@/week", comment: ""), getDisplayPrice(price:yearSale.price, chia: 51, displayPrice:yearSale.displayPrice)))
                     .mfont(24, .bold)

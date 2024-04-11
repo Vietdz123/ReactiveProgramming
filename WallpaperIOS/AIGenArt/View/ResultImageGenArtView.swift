@@ -72,13 +72,19 @@ struct ResultImageGenArtView: View {
             ZStack{
                 WebImage(url: URL(string: eztValueCurrent.url))
                     .resizable()
+                    .placeholder {
+                        placeHolderImage()
+                    }
                     .scaledToFit()
                     .cornerRadius(16)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(eztGradientHori, lineWidth : 3)
                     )
+                  
             }.frame(width: getRect().width - 48, height: getRect().width - 48)
+                        .clipped()
+                     
             
             
             Text("Result")

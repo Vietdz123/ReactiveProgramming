@@ -14,13 +14,13 @@ class LiveWallpaperViewModel: ObservableObject {
     @Published var domain : String 
    
     init(){
-        domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
-     //   domain = "https://devwallpaper.eztechglobal.com/"
+       // domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
+        domain = "https://devwallpaper.eztechglobal.com/"
         getDataByPage()
     }
 
     func getDataByPage() {
-        guard let url  = URL(string: "\(domain)\(APIHelper.LIVE_WALLPAPER)limit=\(AppConfig.limit)&offset=\(offsetCount)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
+        guard let url  = URL(string: "\(domain)\(APIHelper.LIVE_WALLPAPER)&limit=\(AppConfig.limit)&offset=\(offsetCount)\(getSortParamStr())\(AppConfig.forOnlyIOS)") else {
             return
         }
 //        

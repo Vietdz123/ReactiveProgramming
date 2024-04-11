@@ -7,7 +7,6 @@
 
 import SwiftUI
 import NavigationTransitions
-
 import AppTrackingTransparency
 import UserMessagingPlatform
 
@@ -82,7 +81,7 @@ struct SplashView: View {
                 if splash_process == 100 {
                     
             
-                    
+              //      appVM.navigateToOnboarding2.toggle()
                     
                     //MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
@@ -94,7 +93,12 @@ struct SplashView: View {
                         }else{
                             openAd.tryToPresentAd(onCommit: {
                                 _ in
-                                appVM.navigateToHome.toggle()
+                                DispatchQueue.main.async {
+                                    appVM.appGoBackground = false
+                                    appVM.navigateToHome.toggle()
+                                    print("LOAD_ADS appGoBackground \(appVM.appGoBackground)")
+                                }
+                               
                             })
                         }
                     }
@@ -105,8 +109,21 @@ struct SplashView: View {
             .onChange(of: scenePhase, perform: {
                 newPhase in
                 if newPhase == .active {
-                    
+                    print("LOAD_ADS OPEN active")
                     if UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false{
+                        DispatchQueue.main.async {
+                            appVM.appGoBackground = false
+                            print("LOAD_ADS appGoBackground \(appVM.appGoBackground)")
+                        }
+                        return
+                    }
+                    
+                    
+                    if UserDefaults.standard.bool(forKey: "user_go_main") == false{
+                        DispatchQueue.main.async {
+                            appVM.appGoBackground = false
+                            print("LOAD_ADS appGoBackground \(appVM.appGoBackground)")
+                        }
                         return
                     }
                     
@@ -124,16 +141,28 @@ struct SplashView: View {
                     
                     openAd.tryToPresentAd(onCommit: {
                         _ in
-                        appVM.appGoBackground = false
+                        print("LOAD_ADS onCommit")
+                        DispatchQueue.main.async {
+                            appVM.appGoBackground = false
+                            print("LOAD_ADS appGoBackground \(appVM.appGoBackground)")
+                        }
+                      
                     })
                     
                     
                     
                 }else if newPhase == .inactive{
-                    
+                    print("LOAD_ADS OPEN inactive")
+                  //  appVM.appGoBackground = false
                 }else {
+                    print("LOAD_ADS OPEN background")
+                    
+                    
                     UserDefaults.standard.set(true, forKey: "user_exit_app")
                     appVM.appGoBackground = true
+                    
+                    print("LOAD_ADS appGoBackground \(appVM.appGoBackground)")
+                    
                 }
             })
          
@@ -206,7 +235,6 @@ class AppViewModel: ObservableObject {
                 do {
                     try FileManager.default.createDirectory(atPath: dataPath2.path, withIntermediateDirectories: true, attributes: nil)
                 } catch {
-                    
                 }
             }
             let dataPath3 = documentsURL.appendingPathComponent("VideoPreviewDownloaded")

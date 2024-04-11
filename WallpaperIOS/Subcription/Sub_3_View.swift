@@ -93,7 +93,7 @@ struct Sub_3_View: View {
                                stopTimer()
                            }
             
-            if let product =  store.yearlv2Sale50Product {
+            if let product =  store.getYearSale50UsingProduct() {
                 
            
             

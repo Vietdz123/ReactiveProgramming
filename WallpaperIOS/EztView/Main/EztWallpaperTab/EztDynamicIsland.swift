@@ -16,71 +16,115 @@ struct EztDynamicIsland: View {
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
+    
+    @Environment(\.presentationMode) var presentationMode
+    @State var adStatus : AdStatus = .loading
     var body: some View {
-        
-        
-        ScrollView(.vertical, showsIndicators: false){
-            LazyVStack(spacing : 0){
-                
-                NavigationLink(destination: {
-                    EztDynamicIslslandCateView()
-                        .environmentObject(wallpaperCatelogVM)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
-                        .environmentObject(store)
+        VStack(spacing : 0){
+            HStack(spacing : 0){
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    
-                    HStack(spacing : 0){
-                        Text("Dynamic Island Category")
-                          .font(
-                            Font.custom("SVN-Avo", size: 20)
-                              .weight(.bold)
-                          )
-                          .foregroundColor(.white)
-                          .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                          .padding(.leading, 16)
-                        
-                        Spacer()
-                        
-                        Image("a.r")
-                            .resizable()
-                            .renderingMode(.template)
-                            .foregroundColor(.white)
-                            .scaledToFit()
-                            .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                        .frame(width: 20, height: 20)
-                        .padding(.trailing, 16)
-                        
-                    }.frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            Image("dynamic_category")
-                                .resizable()
-                        )
-                    
+                    Image("back")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .foregroundColor(.white)
+                        .frame(width: 24, height: 24)
+                        .containerShape(Rectangle())
                 })
-                .cornerRadius(16)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 24)
+                Text("Dynamic Island")
+                    .foregroundColor(.white)
+                    .mfont(22, .bold)
+                    .frame(maxWidth: .infinity).padding(.trailing, 18)
                 
+            }.frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: 44)
+                .padding(.horizontal, 20)
+            
+            ScrollView(.vertical, showsIndicators: false){
+                LazyVStack(spacing : 0){
+                    
+                    NavigationLink(destination: {
+                        EztDynamicIslslandCateView()
+                            .environmentObject(wallpaperCatelogVM)
+                            .environmentObject(rewardAd)
+                            .environmentObject(interAd)
+                            .environmentObject(store)
+                    }, label: {
+                        
+                        HStack(spacing : 0){
+                            Text("Dynamic Island Category")
+                              .font(
+                                Font.custom("SVN-Avo", size: 20)
+                                  .weight(.bold)
+                              )
+                              .foregroundColor(.white)
+                              .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                              .padding(.leading, 16)
+                            
+                            Spacer()
+                            
+                            Image("a.r")
+                                .resizable()
+                                .renderingMode(.template)
+                                .foregroundColor(.white)
+                                .scaledToFit()
+                                .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                            .frame(width: 20, height: 20)
+                            .padding(.trailing, 16)
+                            
+                        }.frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .background(
+                                Image("dynamic_category")
+                                    .resizable()
+                            )
+                        
+                    })
+                    .cornerRadius(16)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 24)
+                    .padding(.top, 8)
+                    
+                    
+                    Newset().padding(.bottom, 16)
+                    Popular().padding(.bottom, 16)
+                    
+                  
+                    
+                    Spacer()
+                        .frame(height: 152)
+                    
+                }
                 
-                Newset().padding(.bottom, 16)
-                Popular().padding(.bottom, 16)
-                
-              
-                
-                Spacer()
-                    .frame(height: 152)
+               
                 
             }
+            .refreshable {
             
-           
+             
+            }
             
-        }
-        .refreshable {
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .addBackground()
+            .edgesIgnoringSafeArea(.bottom)
+            .overlay(
+                ZStack{
+                    if store.allowShowBanner(){
+                        BannerAdViewMain( adStatus: $adStatus)
+                            
+                    }
+                }
+                
+                , alignment: .bottom
+            )
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
         
-         
-        }
+        
         
 
     }
@@ -252,8 +296,6 @@ extension EztDynamicIsland {
                                     placeHolderImage()
                                         .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 }
-                                .indicator(.activity) // Activity Indicator
-                                .transition(.fade(duration: 0.5)) // Fade Transition with duration
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
@@ -272,6 +314,7 @@ extension EztDynamicIsland {
                     }
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
               
             

@@ -12,7 +12,7 @@ struct SpecialContentPremiumDialog: View {
     
     
     let width : CGFloat = UIScreen.main.bounds.width - 56
-    let height : CGFloat =  UIScreen.main.bounds.width * 1.2
+    let height : CGFloat =  UIScreen.main.bounds.width * 1.6
     
     @Binding var show : Bool
     let urlStr : String
@@ -22,17 +22,10 @@ struct SpecialContentPremiumDialog: View {
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
             WebImage(url: URL(string: urlStr))
-            
-               .onSuccess { image, data, cacheType in
-                   // Success
-                   // Note: Data exist only when queried from disk cache or network. Use `.queryMemoryData` if you really need data
-               }
                .resizable()
                .placeholder {
                    EZProgressView()
                }
-               .indicator(.activity) // Activity Indicator
-               .transition(.fade(duration: 0.5)) // Fade Transition with duration
                .scaledToFill()
                .frame(width: width, height: height)
                .clipped()

@@ -56,7 +56,7 @@ struct GiftSub_2_View: View {
                 
                 let size = proxy.size
                 
-                if let product = storeVM.yearlv2Sale50Product {
+                if let product = storeVM.getYearSale50UsingProduct() {
                     
                     VStack(spacing : 0){
                         Spacer()
@@ -90,7 +90,6 @@ struct GiftSub_2_View: View {
                                         .fill(.white)
                                         .frame(height: 1)
                                 )
-                        
                         }.padding(.top, 8)
                         
                         

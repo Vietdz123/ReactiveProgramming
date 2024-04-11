@@ -11,35 +11,79 @@ import SDWebImageSwiftUI
 struct EztPosterContactView: View {
     @StateObject var newestVM : PosterContactViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : PosterContactViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-
+    @State var adStatus : AdStatus = .loading
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
-        
-        
-        ScrollView(.vertical, showsIndicators: false){
-         
-            LazyVStack(spacing : 0){
+        VStack(spacing : 0){
+            HStack(spacing : 0){
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Image("back")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .foregroundColor(.white)
+                        .frame(width: 24, height: 24)
+                        .containerShape(Rectangle())
+                })
+                Text("Poster Contacts")
+                    .foregroundColor(.white)
+                    .mfont(22, .bold)
+                    .frame(maxWidth: .infinity).padding(.trailing, 18)
+                
+            }.frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: 44)
+                .padding(.horizontal, 20)
+            
+            
+            ScrollView(.vertical, showsIndicators: false){
+             
+                LazyVStack(spacing : 0){
+                    
+                 
+                    
+                    Newset().padding(.bottom, 16)
+                    
+                    Popular().padding(.bottom, 16)
+                    
+                
+                    Spacer()
+                        .frame(height: 152)
+                }
                 
              
                 
-                Newset().padding(.bottom, 16)
-                
-                Popular().padding(.bottom, 16)
-                
-            
-                Spacer()
-                    .frame(height: 152)
+            }
+            .refreshable {
+               
+               
             }
             
-         
-            
         }
-        .refreshable {
-           
-           
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .edgesIgnoringSafeArea(.bottom)
+            .addBackground()
+            .overlay(
+                ZStack{
+                    if store.allowShowBanner(){
+                        BannerAdViewMain( adStatus: $adStatus)
+                            
+                    }
+                }
+                
+                , alignment: .bottom
+            )
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {})
+                }
+            }
+     
         
 
     }
@@ -210,6 +254,7 @@ extension EztPosterContactView {
                     }
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
               
             

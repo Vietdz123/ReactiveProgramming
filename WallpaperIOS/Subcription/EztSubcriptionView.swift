@@ -93,7 +93,7 @@ struct EztSubcriptionView: View {
                         
                         OptForProUser().padding(.top, 24)
                         
-                        if let yearProduct = store.yearlyOriginalProduct, let monthProduct = store.monthProduct, let weekProduct = store.weekProductNotSale{
+                        if let yearProduct = store.getYearOriginUsingProduct(), let monthProduct = store.monthProduct, let weekProduct = store.weekProductNotSale{
                             
                             
                             Opt_Year(product: yearProduct).padding(.top, 32)

@@ -108,6 +108,7 @@ struct ConditionDepthEffectView: View {
                                 WebImage(url: URL(string: string))
                                     .resizable()
                                     .placeholder {
+                                        
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
@@ -140,12 +141,18 @@ struct ConditionDepthEffectView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .overlay(alignment: .bottom){
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            }
             .onAppear(perform: {
                 viewModel.additionalParam = addPram
                 viewModel.allowFetch = true

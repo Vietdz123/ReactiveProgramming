@@ -122,6 +122,7 @@ struct ConditionShufflePackView: View {
                         }
                     }
                 }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 .padding(16)
             }
             
@@ -131,6 +132,11 @@ struct ConditionShufflePackView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
+            .overlay(alignment: .bottom){
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                }
+            }
             .onAppear(perform: {
                 viewModel.additionalParam = urlString
                 viewModel.allowFetch = true

@@ -13,13 +13,15 @@ import SwiftUI
 
 enum WallpaperTab : String, CaseIterable{
     case ForYou = "For You"
+    case Special = "Special"
     case Category = "Category"
-    case ShufflePack = "Shuffle Pack"
-    case DepthEffect = "Depth Effect"
-    case WatchFace = "Watch Face"
-    case PosterContact = "Post Contact"
-    case DynamicIsland = "Dynamic Island"
-    case Live = "Live Wallpapers"
+//    case ShufflePack = "Shuffle Pack"
+//    case DepthEffect = "Depth Effect"
+//    case WatchFace = "Watch Face"
+//    case LightingEffect = "Lighting Effect"
+//    case PosterContact = "Post Contact"
+//    case DynamicIsland = "Dynamic Island"
+//    case Live = "Live Wallpapers"
 }
 
 
@@ -29,11 +31,11 @@ struct EztWallpaperView: View {
     
     @EnvironmentObject var tagViewModel : TagViewModel 
     @EnvironmentObject var foryouVM : HomeViewModel 
-    @StateObject var catalogVM : WallpaperCatalogViewModel = .init()
+    @EnvironmentObject var catalogVM : WallpaperCatalogViewModel 
    
     
    
-    @EnvironmentObject var liveVM : LiveWallpaperViewModel
+ //   @EnvironmentObject var liveVM : LiveWallpaperViewModel
     
     
     
@@ -42,7 +44,7 @@ struct EztWallpaperView: View {
     @EnvironmentObject var store : MyStore
     
     @Binding var currentTab : WallpaperTab
-    
+    @Binding var showGift : Bool
     
     @Namespace var anim
     var body: some View {
@@ -60,56 +62,66 @@ struct EztWallpaperView: View {
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .tag(WallpaperTab.ForYou)
-                
+                EztSpecialView(showGift : $showGift)
+                    .environmentObject(catalogVM)
+                    .environmentObject(rewardAd)
+                    .environmentObject(interAd)
+                    .environmentObject(store)
+                    .tag(WallpaperTab.Special)
                 EztCategoryView()
-                   
                     .environmentObject(rewardAd)
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .tag(WallpaperTab.Category)
-                EztShufflePackView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .environmentObject(catalogVM)
-                    
-                    .tag(WallpaperTab.ShufflePack)
-                EztDepthEffectView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .environmentObject(catalogVM)
-                    .tag(WallpaperTab.DepthEffect)
                 
-                
-                EztWatchFaceView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .environmentObject(catalogVM)
-                    .tag(WallpaperTab.WatchFace)
-                
-                EztPosterContactView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .environmentObject(catalogVM)
-                    .tag(WallpaperTab.PosterContact)
-                
-                EztDynamicIsland()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .environmentObject(catalogVM)
-                  
-                    .tag(WallpaperTab.DynamicIsland)
-                EztLiveWallpaperView()
-                    .environmentObject(liveVM)
-                  
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
-                    .tag(WallpaperTab.Live)
+//                EztShufflePackView()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.ShufflePack)
+//                
+//                EztDepthEffectView()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.DepthEffect)
+//                
+//                EztWatchFaceView()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.WatchFace)
+//                
+//                EztLightingEffectView()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.LightingEffect)
+//                
+//                EztPosterContactView()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.PosterContact)
+//                
+//                EztDynamicIsland()
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .environmentObject(catalogVM)
+//                    .tag(WallpaperTab.DynamicIsland)
+//                
+//                EztLiveWallpaperView()
+//                    .environmentObject(liveVM)
+//                    .environmentObject(rewardAd)
+//                    .environmentObject(interAd)
+//                    .environmentObject(store)
+//                    .tag(WallpaperTab.Category)
             }).tabViewStyle(.page(indexDisplayMode: .never))
                 .background(
                     Color.clear
@@ -124,9 +136,9 @@ struct EztWallpaperView: View {
 
 extension EztWallpaperView{
     func TabControllView() -> some View{
-        ScrollViewReader{ reader in
-            ScrollView(.horizontal, showsIndicators: false){
-                HStack(spacing : 12){
+      
+           
+                HStack(spacing : 16){
                     ForEach(WallpaperTab.allCases, id : \.rawValue){
                         tab in
                         
@@ -134,9 +146,10 @@ extension EztWallpaperView{
                             .mfont(13, currentTab == tab ? .bold : .regular)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
-                            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                          
                             .id(tab)
                             .frame(height : 32)
+                            .frame(maxWidth: .infinity)
                             .background(
                                 ZStack{
                                     Capsule()
@@ -179,15 +192,11 @@ extension EztWallpaperView{
                     }
                     
                     
-                }.padding(.leading, 16)
-            }.onChange(of: currentTab, perform: {
-                tab in
-                withAnimation{
-                    reader.scrollTo(tab)
-                }
-            })
-        }
+                }.padding(.horizontal, 16)
+         
+       
       
         
     }
 }
+
