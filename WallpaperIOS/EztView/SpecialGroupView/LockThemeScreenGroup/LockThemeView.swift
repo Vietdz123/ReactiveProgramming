@@ -1,26 +1,19 @@
 //
-//  DynamicView.swift
+//  LockThemeView.swift
 //  WallpaperIOS
 //
-//  Created by Mac on 01/08/2023.
+//  Created by Duc on 07/05/2024.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
-
-
-struct DynamicView: View {
-    
-    
-    @EnvironmentObject var viewModel : DynamicIslandViewModel
+struct LockThemeView: View {
+    @StateObject var viewModel : LockThemeViewModel = .init()
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    
-    @State var adStatus : AdStatus = .loading
-    
+//    @EnvironmentObject var reward : RewardAd
+//    @EnvironmentObject var store : MyStore
+//    @EnvironmentObject var interAd : InterstitialAdLoader
+//    @State var adStatus : AdStatus = .loading
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -34,7 +27,7 @@ struct DynamicView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Dynamic Island")
+                Text("Lock Screen Themes")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -44,25 +37,22 @@ struct DynamicView: View {
                 .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false){
-                LazyVGrid(columns: [GridItem.init(spacing: 8),GridItem.init()], spacing: 8 ){
+                LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
                     
                     if !viewModel.wallpapers.isEmpty {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let  wallpaper = viewModel.wallpapers[i]
-                            let string : String = wallpaper.path.first?.path.small ?? ""
+                            let string : String = wallpaper.thumbnail.first?.url.preview ?? ""
                             
                             NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                   
-                                    .environmentObject(reward)
+//                                SpWLDetailView(index: i)
+//                                    .environmentObject(viewModel as SpViewModel)
+//                                    .environmentObject(store)
+//                                    .environmentObject(interAd)
+//                                    .environmentObject(reward)
                             }, label: {
                                 WebImage(url: URL(string: string))
-                                    .onSuccess { image, data, cacheType in
-                                    }
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -71,11 +61,8 @@ struct DynamicView: View {
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
-                                    .overlay(
-                                        Image("dynamic")
-                                            .resizable()
-                                            .cornerRadius(8)
-                                    )
+                                  
+                                 //   .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                             })
                             .onAppear(perform: {
@@ -93,27 +80,26 @@ struct DynamicView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
-            .overlay(
-                ZStack{
-                    if store.allowShowBanner(){
-                        BannerAdViewMain( adStatus: $adStatus)
-                            
-                    }
-                }
-                
-                , alignment: .bottom
-            )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
-            
+//            .overlay(
+//                ZStack{
+//                    if store.allowShowBanner(){
+//                        BannerAdViewMain(adStatus: $adStatus)
+//                            
+//                    }
+//                }
+//                
+//                , alignment: .bottom
+//            )
+//            .onAppear{
+//                if !store.isPro(){
+//                    interAd.showAd(onCommit: {
+//                        
+//                    })
+//                }
+//            }
     }
 }
 
-struct DynamicView_Previews: PreviewProvider {
-    static var previews: some View {
-        DynamicView()
-    }
+#Preview {
+    LockThemeView()
 }

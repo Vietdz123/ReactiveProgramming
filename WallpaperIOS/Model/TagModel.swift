@@ -41,8 +41,8 @@ struct TagModel: Codable {
 struct Tag: Codable {
     let id: Int
     let title: String
-    let multiBackground: MultiBackground
-    let previewSmallURL: String
+    let multiBackground: MultiBackground?
+    let previewSmallURL: String?
     let images: [ImageTag]
 
     enum CodingKeys: String, CodingKey {

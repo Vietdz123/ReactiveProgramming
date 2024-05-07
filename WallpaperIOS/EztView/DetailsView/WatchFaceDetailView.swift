@@ -23,6 +23,9 @@ struct WatchFaceDetailView: View {
     @StateObject var ctrlViewModel : ControllViewModel = .init()
     @State var showTuto : Bool = false
     @State var showDialogReward : Bool = false
+    
+    @State var adStatus : AdStatus = .loading
+    
     var body: some View {
         
         
@@ -122,7 +125,7 @@ struct WatchFaceDetailView: View {
                                     
                                     
                                 }.padding(.trailing, 8)
-                                    .padding(.bottom, 72)
+                                    .padding(.top, 76)
                             }
                             .padding(.leading, 14)
                             .padding(.trailing, 21)
@@ -135,21 +138,24 @@ struct WatchFaceDetailView: View {
                    
                 }.frame(width: 163, height: 276)
                     .padding(.vertical, 24)
-             
-                if !store.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
-                   
-              
-                        
-                        NativeAdsCoordinator()
-                         .frame(maxWidth : .infinity)
-                         .frame( height: 84)
-                         .background(Color.white.opacity(0.03))
-                         .cornerRadius(12)
-                            .padding(.horizontal,  16)
-                            .padding(.vertical, 40)
-                        
-                   
-                }
+//             
+//                if !store.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
+//                   
+//              
+//                        
+//                        NativeAdsCoordinator()
+//                         .frame(maxWidth : .infinity)
+//                         .frame( height: 84)
+//                         .background(Color.white.opacity(0.03))
+//                         .cornerRadius(12)
+//                            .padding(.horizontal,  16)
+//                            .padding(.vertical, 40)
+//                        
+//                   
+//                }
+                
+                
+               
             
                 
                 Button(action: {
@@ -184,9 +190,12 @@ struct WatchFaceDetailView: View {
                             .fill(Color.main)
                       )
                 })
-                .padding(.bottom, 40)
+                .padding(.bottom, store.allowShowBanner() ? 24 : 40)
                 
-              
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                        .padding(.bottom, getSafeArea().bottom)
+                }
                 
                 
             }.padding(EdgeInsets(top: 24, leading: 0, bottom: 0, trailing: 0))

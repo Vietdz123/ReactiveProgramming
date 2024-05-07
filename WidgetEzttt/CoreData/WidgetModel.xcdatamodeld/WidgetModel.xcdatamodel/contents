@@ -20,20 +20,25 @@
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemHome"/>
     </entity>
     <entity name="CategoryLock" representedClassName="CategoryLock" syncable="YES" codeGenerationType="class">
+        <attribute name="alignment" optional="YES" attributeType="String"/>
+        <attribute name="backgroundStyle" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="delayAnimation" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="familyType" optional="YES" attributeType="String"/>
+        <attribute name="familyLockType" optional="YES" attributeType="String"/>
+        <attribute name="fontName" optional="YES" attributeType="String"/>
         <attribute name="fontSize" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="fontType" optional="YES" attributeType="String"/>
+        <attribute name="groupSizeType" optional="YES" attributeType="String"/>
         <attribute name="hasSound" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isCustomCountdown" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isFirstImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lockType" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="numberImagesRect" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="numberImagesSquare" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="soundType" optional="YES" attributeType="String"/>
-        <attribute name="textAlignment" optional="YES" attributeType="String"/>
         <attribute name="textColor" optional="YES" attributeType="String"/>
+        <attribute name="timeDestination" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="titleQuote" optional="YES" attributeType="String"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemHome"/>
     </entity>
     <entity name="HealthItem" representedClassName="HealthItem" syncable="YES" codeGenerationType="class">

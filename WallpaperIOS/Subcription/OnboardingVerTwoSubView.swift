@@ -64,8 +64,9 @@ struct OnboardingVerTwoSubView: View {
                     .tag(7)
                 Screen_8()
                     .tag(8)
-//                Screen_9()
-//                    .tag(9)
+                Screen_9()
+                    .tag(9)
+
                 
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -89,7 +90,7 @@ struct OnboardingVerTwoSubView: View {
                 )
                 .overlay(
                     ZStack{
-                        if currentPage == 8  && showXmark {
+                        if currentPage == 9  && showXmark {
                             Button(action: {
                                 
                                 UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
@@ -198,7 +199,7 @@ extension OnboardingVerTwoSubView{
         VStack(spacing : 0){
             
             ZStack{
-                if currentPage < 8 {
+                if currentPage < 9 {
                     
                     VStack(spacing : 0){
                         
@@ -229,7 +230,7 @@ extension OnboardingVerTwoSubView{
                     .padding(.bottom, 24)
                     
                     
-                }else if currentPage == 8 {
+                }else if currentPage == 9 {
        
                     Page_8_View_2(currentProduct: $currentProduct, navigateToHome : $navigateToHome)
                         .environmentObject(store)
@@ -248,11 +249,11 @@ extension OnboardingVerTwoSubView{
             
             Button(action: {
                 
-                if currentPage < 8 {
+                if currentPage < 9 {
                     withAnimation(.linear){
                         currentPage += 1
                     }
-                }else if currentPage == 8 {
+                }else if currentPage == 9 {
                     UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
                     Firebase_log("Click_Buy_Sub_In_Onb")
                     
@@ -291,8 +292,8 @@ extension OnboardingVerTwoSubView{
                 HStack{
                     
                     
-                    Text( currentPage == 9 ? "Start 3-DAY Free Trial".toLocalize() : "Continue".toLocalize())
-                        .mfont(16, .bold, line: 2)
+                    Text(currentPage == 9 ? "START NOW" : "Continue")
+                        .mfont(currentPage == 9 ?  20 : 16, .bold, line: 2)
                         .foregroundColor(.black)
                     
                     
@@ -332,7 +333,7 @@ extension OnboardingVerTwoSubView{
                     if currentPage >= 8 {
                         HStack(spacing : 4){
                             Button(action: {
-                                if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                if let url = URL(string: "https://docs.google.com/document/d/1EY8f5f5Z_-5QfqAeG2oYdUxlu-1sBc-mgfco2qdRMaU") {
                                     UIApplication.shared.open(url)
                                 }
                             }, label: {
@@ -409,17 +410,18 @@ extension OnboardingVerTwoSubView{
         if page == 1 {
             return "100000+"
         }else if page == 2 {
-            return "Lighting Effects"
+            return "Live Wallpapers"
         }else if page == 3 {
-            return "Depth Effect"
+            return "Lighting Effects"
         }else if page == 4 {
-            return "Shuffle Packs"
+            return "Depth Effect"
         }else if page == 5 {
+            return "Shuffle Packs"
+        }else if page == 6 {
             return "Watch Faces"
-            
-        }else if page == 6{
-            return "Widgets"
         }else if page == 7{
+            return "Widgets"
+        }else if page == 8{
             return "Ai Generator Art"
         }else{
             return ""
@@ -430,17 +432,19 @@ extension OnboardingVerTwoSubView{
         if page == 1 {
             return "4K Wallpapers"
         }else if page == 2 {
-            return "Unique and Exclusive"
+            return "Vivid every detail"
         }else if page == 3 {
-            return "Amazing 3D effects"
+            return "Unique and Exclusive"
         }else if page == 4 {
-            return "Automatically change exciting wallpapers"
+            return "Amazing 3D effects"
         }else if page == 5 {
+            return "Automatically change exciting wallpapers"
+        }else if page == 6 {
             return "Trendy and stylish"
             
-        }else if page == 6 {
-            return "An exclusive experience like never before"
         }else if page == 7 {
+            return "An exclusive experience like never before"
+        }else if page == 8 {
             return "Unprecedented experience"
         }else{
             return ""
@@ -454,149 +458,42 @@ extension OnboardingVerTwoSubView{
     }
     
     func Screen_2() -> some View{
+        VideoOnboarding(video_name: "live")
+    }
+    
+    func Screen_3() -> some View{
         VideoOnboarding(video_name: "intro 2")
     }
-    func Screen_3() -> some View{
+    func Screen_4() -> some View{
         VideoOnboarding(video_name: "depth_effect")
     }
-    func Screen_4() -> some View{
+    func Screen_5() -> some View{
         VideoOnboarding(video_name: "shuffle_packs")
     }
     
-    func Screen_5() -> some View{
+    func Screen_6() -> some View{
         VideoOnboarding(video_name: "watchface")
         
     }
     
-    func Screen_6() -> some View{
+    func Screen_7() -> some View{
         VideoOnboarding(video_name: "video5")
         
     }
     
-    func Screen_7() -> some View{
+    func Screen_8() -> some View{
         VideoOnboarding(video_name: "intro 6")
         
     }
     
-    func Screen_8() -> some View{
+    func Screen_9() -> some View{
         
         VideoOnboarding(video_name: "bg")
         
         
     }
     
-    
-//    
-//    func Screen_9() -> some View{
-//        
-//        Image("BGIMG")
-//            .resizable()
-//            .ignoresSafeArea()
-//            .gesture(DragGesture())
-//        
-//        
-//        
-//        
-//        
-//        
-//    }
-//    
-//    func Page_9() -> some View{
-//        VStack(spacing : 0){
-//            Text("Wait a Moment".toLocalize())
-//                .mfont(24, .bold)
-//                .foregroundColor(.main)
-//                .padding(.top, getSafeArea().top + 32  )
-//                .frame(maxWidth: .infinity, alignment : .leading)
-//                .padding(.horizontal, 40)
-//            Text("Consider the following before you".toLocalize())
-//                .mfont(17, .regular)
-//                .foregroundColor(.white)
-//            
-//                .frame(maxWidth: .infinity, alignment : .leading)
-//                .padding(.horizontal, 40)
-//            Text("make the final decistion".toLocalize())
-//                .mfont(17, .regular)
-//                .foregroundColor(.white)
-//            
-//                .frame(maxWidth: .infinity, alignment : .leading)
-//                .padding(.horizontal, 40)
-//            
-//            Spacer()
-//            
-//            
-//            VStack(spacing : 16){
-//                ForEach(list_1, id: \.self){ opt in
-//                    HStack(spacing : 16){
-//                        Image("check")
-//                            .resizable()
-//                            .frame(width: 24, height: 24)
-//                        
-//                        
-//                        Text(opt.toLocalize())
-//                            .mfont(17, .bold, line : 3)
-//                            .foregroundColor(.white)
-//                        
-//                        
-//                    }.frame(maxWidth: .infinity, alignment: .leading)
-//                    
-//                    
-//                        .padding(.horizontal, 40)
-//                }
-//            }
-//            
-//            if let yearlyFreeTrialProduct = store.yearlyFreeTrialProduct {
-//                Text("Try 3 days for free".toLocalize())
-//                    .mfont(17, .bold)
-//                    .multilineTextAlignment(.center)
-//                    .foregroundColor(.white)
-//                    .padding(.top, 56)
-//                
-//                
-//                Text(  String(format: NSLocalizedString("Then %@/year. No Payment Now", comment: ""), "\(yearlyFreeTrialProduct.displayPrice)"))
-//                    .mfont(13, .regular)
-//                    .foregroundColor(.white)
-//                
-//            }
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//        }
-//        .frame(maxWidth: .infinity, maxHeight : .infinity, alignment : .top)
-//        .padding(EdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0))
-//        .background(
-//            ZStack{
-//                LinearGradient(colors: [Color("black_bg").opacity(0.2),
-//                                        Color("black_bg").opacity(0.6),
-//                                        Color("black_bg").opacity(0.8),
-//                                        Color("black_bg"),
-//                                        Color("black_bg")], startPoint: .top, endPoint: .bottom)
-//                Image("considerr")
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                    .padding(.top, getSafeArea().top)
-//                
-//            }
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//        )
-//        
-//        
-//    }
+
     
 }
 
@@ -683,7 +580,8 @@ struct Page_8_View_2 : View {
     let list_2 : [String] = [
         "Unlimited Premium Wallpapers",
         "Unlimited Premium Widgets",
-        "Unlimited AI-Generate"
+        "Unlimited AI-Generate",
+        "Ad-free experience"
         
     ]
     
@@ -711,40 +609,43 @@ struct Page_8_View_2 : View {
                 
                 ZStack{
                     //   Color.white.opacity(0.2)
-                    ResizableLottieView(filename: "userrate")
+                    ResizableLottieView(filename: "sub2")
                         .frame(maxWidth: .infinity, maxHeight : .infinity)
                     
                 }.frame(maxWidth: .infinity)
                     .frame(height: getRect().width * 144 / 375)
-                    .padding(.vertical, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
+                
+
                 
                 VStack(spacing : 8){
-                    
-                    
-                    
-                    ForEach(list_2, id: \.self){
-                        opt in
-                        
-                        HStack(spacing : 23){
-                            Image("star_1")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 12, height: 12)
-                                .frame(width: 32, height: 32)
-                            
-                            Text(opt.toLocalize())
-                                .mfont(17, .bold, line: 2)
-                                .foregroundColor(.white)
-                            
-                        }.frame(maxWidth: .infinity, alignment : .leading)
-                        
-                            .padding(.leading, 43)
-                            .padding(.trailing, 24)
-                        
-                    }
-                    
-                    
-                }
+
+                                 ForEach(list_2, id: \.self){
+                                     opt in
+                                     
+                                     HStack(spacing : 16){
+                                         Image("star_1")
+                                             .resizable()
+                                             .aspectRatio(contentMode: .fit)
+                                             .frame(width: 12, height: 12)
+                                             .frame(width: 32, height: 32)
+                                         
+                                         Text(opt.toLocalize())
+                                             .mfont(17, .bold, line: 2)
+                                             .foregroundColor(.white)
+                                         
+                                     }.frame(maxWidth: .infinity, alignment : .leading)
+                                     
+                                         .padding(.leading, 43)
+                                         .padding(.trailing, 24)
+                                     
+                                 }
+                                 
+                                 
+                }.padding(.bottom, 4)
+
+                
                 
                 
                 if let weekProduct = store.weekProductNotSale,
@@ -756,29 +657,7 @@ struct Page_8_View_2 : View {
                         .padding(.top, 16)
                     Opt_Week(product: weekProduct)
                         .padding(.top, 16)
-                    
-                 
-//                    if UserDefaults.standard.bool(forKey: "using_btn_for_freetrial"){
-//                        Button(action: {
-//                            Firebase_log("Click_Buy_Sub_In_Onb")
-//                            purchasesss(product: yearProductFreeTrial, string: "Onb2_Year_FreeTrial")
-//                        }, label: {
-// 
-//                            
-//                            HStack(spacing : 4){
-//                                Text("or Use free trial")
-//                                    .mfont(15, .regular)
-//                                    .foregroundColor(.white)
-//                                
-//                                Image("arrow.right")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(width: 16, height: 16, alignment: .center)
-//                            }.padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
-//                            
-//                        }) .padding(.top, 20)
-//                    }
-                    
+
                     Text("Auto-renewable, cancel anytime.")
                         .mfont(11, .regular)
                         .multilineTextAlignment(.center)
@@ -903,7 +782,7 @@ struct Page_8_View_2 : View {
                 }
             }
             .background(
-                BG_opt(opacity: currentProduct == 1 ? 0.4 : 0.2)
+                BG_opt(opacity: currentProduct == 1 ? 0.7 : 0.2)
             )
             .overlay{
                 if currentProduct == 1 {
@@ -987,7 +866,7 @@ struct Page_8_View_2 : View {
                 }
             }
             .background(
-                BG_opt(opacity: currentProduct == 2 ? 0.4 : 0.2)
+                BG_opt(opacity: currentProduct == 2 ? 0.7 : 0.2)
             )
             .overlay{
                 if currentProduct == 2{
@@ -997,16 +876,16 @@ struct Page_8_View_2 : View {
                 }
             }
             .overlay(alignment: .topTrailing){
-                Text("SAVE 90%".toLocalize())
+                Text("SPECIAL OFFER".toLocalize())
                     .mfont(10, .bold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                    .frame(width: 64, height: 16)
+                    .frame(width: 87, height: 22)
                     .background(
                         Capsule()
                             .fill(Color.main)
                     )
-                    .offset(x: -8, y : -8)
+                    .offset(x: -8, y : -11)
             }
             .padding(.horizontal, 27)
         

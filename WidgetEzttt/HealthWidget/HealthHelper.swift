@@ -37,6 +37,9 @@ enum HealthEnum: String, CaseIterable {
 }
 
 
+
+
+
 class HealthHelper{
     let healthStore = HKHealthStore()
     
@@ -46,12 +49,9 @@ class HealthHelper{
         
         let writeTypes = Set(
             [
-            //HKObjectType.workoutType(),
-                //            HKObjectType.quantityType(forIdentifier: .stepCount)!,
-                              HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-                              HKObjectType.quantityType(forIdentifier: .dietaryWater)!
-                           
-                         ])
+               HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+               HKObjectType.quantityType(forIdentifier: .dietaryWater)!
+            ])
       
         let readTypes: Set<HKObjectType> = Set([
             //HKObjectType.workoutType(),

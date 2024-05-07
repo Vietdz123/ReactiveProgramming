@@ -283,6 +283,7 @@ extension SpWLDetailView{
                         }, label: {
                             Image("crown")
                                 .resizable()
+                                .scaledToFit()
                                 .frame(width: 20, height: 20, alignment: .center)
                                 .frame(width: 60, height: 44)
                         })
@@ -415,51 +416,7 @@ extension SpWLDetailView{
             }.frame(height: GADAdSizeBanner.size.height)
                 .offset(y : viewModel.wallpapers[index].specialContentV2ID == 6 ?  16 : 0)
             
-            
-            
-//            Button(action: {
-//                getPhotoPermission(status: {
-//                    b in
-//                    if b {
-//                        if store.isPro(){
-//                            downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].path.first?.path.full ?? ""))
-//                            ServerHelper.sendImageSpecialDataToServer(type: "download", id: viewModel.wallpapers[index].id)
-//                        }else{
-//                                DispatchQueue.main.async {
-//                                    withAnimation(.easeInOut){
-//                                        if viewModel.wallpapers[index].contentType == 1 {
-//                                            showBuySubAtScreen.toggle()
-//                                        }else{
-//                                            showDialogRv.toggle()
-//                                        }
-//                                    }
-//                                }
-//                        }
-//                    }
-//                })
-//            }, label: {
-//                HStack{
-//                    Text("Save")
-//                        .mfont(16, .bold)
-//                        .foregroundColor(.mblack_fg)
-//                        .overlay(
-//                            ZStack{
-//                                if ctrlViewModel.isDownloading{
-//                                    EZProgressView()
-//                                }
-//                            }.offset(x : -36)
-//                            , alignment: .leading
-//                        )
-//                }
-//                .frame(width: 240, height: 48)
-//                .contentShape(Rectangle())
-//                .background(
-//                    Capsule().fill(Color.main)
-//                )
-//            })
-//            .padding(.bottom, 48 - ( viewModel.wallpapers[index].specialContentV2ID == 6 ? 64 : 0 ))
-            
-            
+ 
             
         }
         

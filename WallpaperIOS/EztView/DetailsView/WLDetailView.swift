@@ -308,12 +308,6 @@ struct WLView: View {
                         }
                     })
                     
-                    
-                    
-                    
-                    
-                    
-                    
                 }, label: {
                     Image("detail_download")
                         .resizable()

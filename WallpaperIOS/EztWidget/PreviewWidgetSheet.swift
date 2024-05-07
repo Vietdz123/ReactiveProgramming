@@ -20,7 +20,7 @@ struct PreviewWidgetSheet: View {
     @State var urlPreviewList : [String] = []
     @State var currentIndex : Int = 0
     @State var allowNextImage : Bool = true
-    
+    @State var adStatus : AdStatus = .loading
     @AppStorage("wg_tuto", store: .standard) var showTapJson : Bool = false
     
     @EnvironmentObject var storeVM : MyStore
@@ -135,21 +135,21 @@ struct PreviewWidgetSheet: View {
                         
                     }
                     .padding(.vertical, 24)
-                 if  !storeVM.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
-                    
-              
-              
-                        NativeAdsCoordinator()
-                         .frame(maxWidth : .infinity)
-                         .frame( height: 84)
-                         .background(Color.white.opacity(0.03))
-                         .cornerRadius(12)
-                            .padding(.horizontal,  16)
-                            .padding(.top, 16)
-                            .padding(.bottom, 40)
-                        
-                    
-                }
+//                 if  !storeVM.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
+//                    
+//              
+//              
+//                        NativeAdsCoordinator()
+//                         .frame(maxWidth : .infinity)
+//                         .frame( height: 84)
+//                         .background(Color.white.opacity(0.03))
+//                         .cornerRadius(12)
+//                            .padding(.horizontal,  16)
+//                            .padding(.top, 16)
+//                            .padding(.bottom, 40)
+//                        
+//                    
+//                }
                
                 
                 Button(action: {
@@ -216,7 +216,14 @@ struct PreviewWidgetSheet: View {
                                 .fill(Color.main)
                         )
                 })
-                .padding(.bottom, 40)
+                .padding(.bottom, storeVM.allowShowBanner() ? 24 : 40)
+                
+                
+                if storeVM.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                        .padding(.bottom, getSafeArea().bottom)
+                }
+                
                 
                 
             }

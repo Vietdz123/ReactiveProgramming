@@ -1,16 +1,16 @@
 //
-//  PosterContactView.swift
+//  DeathEffectView.swift
 //  WallpaperIOS
 //
-//  Created by Duc on 19/12/2023.
+//  Created by Mac on 01/08/2023.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct PosterContactView: View {
+struct DepthEffectView: View {
     
-    @EnvironmentObject var viewModel : PosterContactViewModel
+    @EnvironmentObject var viewModel : DepthEffectViewModel
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
@@ -32,7 +32,7 @@ struct PosterContactView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Poster Contact")
+                Text("Depth Effect")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -63,10 +63,10 @@ struct PosterContactView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                  
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                             })
                             .onAppear(perform: {
@@ -96,12 +96,10 @@ struct PosterContactView: View {
             )
             .onAppear{
                 if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
+                    interAd.showAd(onCommit: {})
                 }
             }
-            
+           
     }
 }
 

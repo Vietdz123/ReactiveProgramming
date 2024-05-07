@@ -156,7 +156,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
                                     })
                                 }
                             })
@@ -233,7 +233,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
                                     })
                                     
                                     
@@ -379,7 +379,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
                                     })
                                     
                                     
@@ -457,7 +457,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
 
                                     })
                                     
@@ -536,7 +536,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
 
                                     })
                                     
@@ -614,7 +614,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
                                     })
                                     
                                     
@@ -691,7 +691,7 @@ extension EztWidgetView{
                                             .environmentObject(rewardAd)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widgetObj)
+                                        ItemWidgetView(widget: widgetObj, isPro: storeVM.isPro())
 
                                     })
                                     

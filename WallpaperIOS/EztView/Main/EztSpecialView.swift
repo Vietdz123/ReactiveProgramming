@@ -53,7 +53,7 @@ class SpecialCategoryViewModel : ObservableObject {
                 UserDefaults.standard.set(1, forKey: "gift_sub_type")
         }else if subTypeSave == 1 {
                 UserDefaults.standard.set(2, forKey: "gift_sub_type")
-        }else if subTypeSave == 2{
+        }else if subTypeSave == 2 {
                 UserDefaults.standard.set(0, forKey: "gift_sub_type")
         }
 
@@ -111,19 +111,21 @@ struct EztSpecialView: View {
     @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
     @StateObject var watchFaceViewModel : EztWatchFaceViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
     
-  //  @StateObject var liveWlVM : LiveWallpaperViewModel = .init()
+    @StateObject var liveWlVM : LiveWallpaperViewModel = .init(sort: .NEW, sortByTop: .TOP_WEEK)
     
     @Binding var showGift : Bool
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             if !viewModel.categoryList.isEmpty{
                 LazyVStack(spacing : 0){
+                   
+                 //   LiveWallpaperInHome()
+                    
+                    
                 ForEach(0..<3, id: \.self){
                     index in
                     let category = viewModel.categoryList[index]
                     ViewFromId(id: category.id)
-                        
-                    
                 }
                 if !store.isPro(){
                     
@@ -152,7 +154,7 @@ struct EztSpecialView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 24)
                 }
-                ForEach(3..<6, id: \.self){
+                ForEach(3..<7, id: \.self){
                     index in
                     let category = viewModel.categoryList[index]
                     ViewFromId(id: category.id)
@@ -198,8 +200,10 @@ extension EztSpecialView{
             case 7 :
                 //Lighting Effects
                 LightningEffectInHome()
+            case 8 :
+                LiveWallpaperInHome()
             default:
-                Text("Default")
+            EmptyView()
             }
         }
     
@@ -266,7 +270,7 @@ extension EztSpecialView{
                                                     .inset(by: 1.5)
                                                     .stroke(.white.opacity(0.3), lineWidth: 3)
                                         )
-                                        .overlay(alignment: .topTrailing, content: {
+                                        .overlay(alignment: .bottomTrailing, content: {
                                             VStack(alignment: .trailing, spacing : 0){
                                                 Text("TUE 16")
                                                 .mfont(11, .bold, line: 1)
@@ -282,8 +286,18 @@ extension EztSpecialView{
                                                   .offset(y : -8)
                                                 
                                                 
-                                            }.padding(.top, 20)
+                                            }.padding(.bottom, 12)
                                                 .padding(.trailing , 20)
+                                        })
+                                        .overlay(alignment: .topTrailing, content: {
+                                            if !store.isPro()  && wallpaper.contentType == 1 {
+                                                Image("crown")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 16, height: 16)
+                                                    .padding(.top, 16)
+                                                    .padding(.trailing, 18)
+                                            }
                                         })
                                 })
 
@@ -481,6 +495,7 @@ extension EztSpecialView{
                                     .frame(width: 160, height: 320)
                                     .clipped()
                                     .cornerRadius(8)
+                                    .showCrownIfNeeded(!store.isPro() && depthVM.wallpapers.first?.contentType == 1)
                             })
                             
                             
@@ -504,6 +519,7 @@ extension EztSpecialView{
                                             .frame(width: 78, height: 156)
                                             .clipped()
                                             .cornerRadius(8)
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
                                     
                                     
@@ -596,6 +612,7 @@ extension EztSpecialView{
                                             .resizable()
                                             .cornerRadius(8)
                                     )
+                                    .showCrownIfNeeded(!store.isPro() && dynamicVM.wallpapers.first?.contentType == 1)
                             })
                             
                             
@@ -624,6 +641,7 @@ extension EztSpecialView{
                                                     .resizable()
                                                     .cornerRadius(8)
                                             )
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
                                     
                                     
@@ -712,6 +730,8 @@ extension EztSpecialView{
                                             .clipped()
                                        
                                             .cornerRadius(8)
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                        
                                     })
                                     
                                     
@@ -794,13 +814,108 @@ extension EztSpecialView{
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()
-                                       
                                             .cornerRadius(8)
                                             .overlay(
                                                 Image("dynamic")
                                                     .resizable()
                                                     .cornerRadius(8)
                                             )
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                    })
+                                })
+                            })
+                        
+                        
+                        
+                    }
+                    .frame(height: 280)
+                    .padding(.horizontal, 16)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 280)
+            
+            
+            
+            
+        }.padding(.top, 24)
+    }
+    
+  //  MARK: LiveWallpaper
+    func LiveWallpaperInHome() -> some View{
+        VStack(spacing : 16){
+            HStack(spacing : 0){
+                Text("Live Wallpaper".toLocalize())
+                    .mfont(20, .bold)
+                    .foregroundColor(.white)
+                
+                
+                Spacer()
+
+                
+                NavigationLink(destination: {
+                    EztLiveWallpaperView()
+                        .environmentObject(liveWlVM)
+                        .environmentObject(store)
+                        .environmentObject(rewardAd)
+                        .environmentObject(interAd)
+                }, label: {
+                    HStack(spacing : 0){
+                        Text("See All".toLocalize())
+                            .mfont(11, .regular)
+                            .foregroundColor(.white)
+                        Image("arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 18, height: 18, alignment: .center)
+                    }
+                })
+                
+            }.padding(.horizontal, 16)
+            ZStack{
+                
+                
+                
+                if liveWlVM.wallpapers.isEmpty{
+                    PlaceHolderListLoadHori()
+                }else{
+                    ScrollView(.horizontal, showsIndicators: false){
+                            LazyHStack( spacing: 12, content: {
+                                ForEach(0..<7, content: {
+                                    i in
+                                    let wallpaper = liveWlVM.wallpapers[i]
+                                    let string = wallpaper.thumbnail.first?.path.preview ?? ""
+                                    
+                                    NavigationLink(destination: {
+                                        LiveWLView(currentIndex : i)
+                                            .navigationBarTitle("", displayMode: .inline)
+                                            .navigationBarHidden(true)
+                                            .environmentObject(liveWlVM)
+                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
+                                            .environmentObject(interAd)
+                                    }, label: {
+                                        WebImage(url: URL(string: string))
+                                            .resizable()
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
+                                            .scaledToFill()
+                                            .frame(width: 128, height: 280)
+                                            .clipped()
+                                            .cornerRadius(8)
+                                            .overlay(alignment : .top){
+                                                    HStack{
+                                                        Image("live")
+                                                            .resizable()
+                                                            .frame(width: 16, height: 16 )
+                                                            .padding(8)
+                                                        Spacer()
+                                                       
+                                                    }
+                                            }
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                          
                                     })
                                     
                                     
@@ -825,100 +940,6 @@ extension EztSpecialView{
             
         }.padding(.top, 24)
     }
-    
-    //MARK: LiveWallpaper
-//    func LiveWallpaperInHome() -> some View{
-//        VStack(spacing : 16){
-//            HStack(spacing : 0){
-//                Text("Live Wallpaper".toLocalize())
-//                    .mfont(20, .bold)
-//                    .foregroundColor(.white)
-//                
-//                
-//                Spacer()
-//
-//                
-//                NavigationLink(destination: {
-//                    EztLiveWallpaperView()
-//                        .environmentObject(liveWlVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
-//                
-//            }.padding(.horizontal, 16)
-//            ZStack{
-//                
-//                
-//                
-//                if liveWlVM.liveWallpapers.isEmpty{
-//                    PlaceHolderListLoadHori()
-//                }else{
-//                    ScrollView(.horizontal, showsIndicators: false){
-//                            LazyHStack( spacing: 12, content: {
-//                                ForEach(0..<7, content: {
-//                                    i in
-//                                    let wallpaper = liveWlVM.liveWallpapers[i]
-//                                    let string = wallpaper.image_variations.preview_small.url
-//                                    
-//                                    NavigationLink(destination: {
-//                                        LiveWLView(currentIndex : i)
-//                                            .navigationBarTitle("", displayMode: .inline)
-//                                            .navigationBarHidden(true)
-//                                            .environmentObject(liveWlVM)
-//                                            .environmentObject(store)
-//                                            .environmentObject(rewardAd)
-//                                            .environmentObject(interAd)
-//                                    }, label: {
-//                                        WebImage(url: URL(string: string))
-//                                            .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                            }
-//                                            .scaledToFill()
-//                                            .frame(width: 128, height: 280)
-//                                            .clipped()
-//                                       
-//                                            .cornerRadius(8)
-//                                            .overlay(
-//                                                Image("dynamic")
-//                                                    .resizable()
-//                                                    .cornerRadius(8)
-//                                            )
-//                                    })
-//                                    
-//                                    
-//                                    
-//                                    
-//                                    
-//                                })
-//                            })
-//                        
-//                        
-//                        
-//                    }
-//                    .frame(height: 280)
-//                    .padding(.horizontal, 16)
-//                }
-//            }
-//            .frame(maxWidth: .infinity)
-//            .frame(height: 280)
-//            
-//            
-//            
-//            
-//        }.padding(.top, 24)
-//    }
     
    
 }

@@ -30,32 +30,7 @@ struct SlideMenuView: View {
             HStack(spacing : 0){
                 VStack(spacing : 0){
                     
-                    
-//                    HStack(spacing : 0){
-//                        
-//                        Image("logo")
-//                            .resizable()
-//                            .frame(width: 48, height: 48)
-//                            .padding(16)
-//                        
-//                        Text(AppConfig.APP_NAME)
-//                            .mfont(20, .bold)
-//                            .foregroundColor(.main)
-//                            .frame(maxWidth: .infinity, alignment: .leading)
-//                            .contentShape(Rectangle())
-//                            .onTapGesture {
-//                                withAnimation(.easeInOut(duration: 0.3)){
-//                                    runAnim.toggle()
-//                                }
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-//                                    self.showMenu = false
-//                                })
-//                            }
-//                    }.frame(maxWidth: .infinity)
-//                        .frame(height: 80)
-//                    
-//                    Divider().background(.white.opacity(0.1))
-                    
+
                     
                     ZStack{
                         if !store.isPro(){

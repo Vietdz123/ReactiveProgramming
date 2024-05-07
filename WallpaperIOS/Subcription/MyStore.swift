@@ -106,11 +106,13 @@ class MyStore: ObservableObject {
     }
     
     func getYearOriginUsingProduct() -> Product?{
-        return usingNewPrice ? yearlyOriginalNewProduct : yearlyOriginalProduct
+       // return usingNewPrice ? yearlyOriginalNewProduct : yearlyOriginalProduct
+        return yearlyOriginalNewProduct
     }
     
     func getYearSale50UsingProduct() -> Product?{
-        return usingNewPrice ? yearlv2Sale50NewProduct : yearlv2Sale50Product
+      //  return usingNewPrice ? yearlv2Sale50NewProduct : yearlv2Sale50Product
+        return yearlv2Sale50NewProduct
     }
     
     

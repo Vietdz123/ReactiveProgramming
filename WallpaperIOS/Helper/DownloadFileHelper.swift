@@ -100,7 +100,7 @@ class DownloadFileHelper {
         }
         
         let folderVideo  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("VideoDownloaded")
-        let filePath = folderVideo.appendingPathComponent("\(fileName).mov")
+        let filePath = folderVideo.appendingPathComponent("\(fileName).mp4")
         if FileManager.default.fileExists(atPath: filePath.path){
             onCompleted( filePath )
             return

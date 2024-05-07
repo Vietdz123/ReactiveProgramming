@@ -17,6 +17,54 @@ struct DataClass: Codable {
     let data: [SpWallpaper]
 }
 
+
+
+
+struct SpLiveResponse: Codable {
+    let data: LiveDataClass
+}
+
+// MARK: - DataClass
+struct LiveDataClass: Codable {
+    let data: [SpLiveWallpaper]
+}
+
+
+// MARK: - SpLiveWallpaper
+struct SpLiveWallpaper: Codable {
+    let id, userID, cost, contentType: Int
+    let path: [VideoPath]
+    let thumbnail: [PathElement]
+    let specialContentV2ID: Int
+    let license: String?
+    let active, dailyRating, downloaded, favorites: Int?
+    let setCount, isTrend: Int?
+    let createdAt, updatedAt: String?
+    let specialContent: SpecialContent?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case userID = "user_id"
+        case cost
+        case contentType = "content_type"
+        case path, thumbnail
+        case specialContentV2ID = "special_content_v2_id"
+        case license, active
+        case dailyRating = "daily_rating"
+        case downloaded, favorites
+        case setCount = "set_count"
+        case isTrend = "is_trend"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case specialContent = "special_content"
+    }
+}
+
+
+struct VideoPath : Codable{
+    let url : PathURLL
+}
+
 // MARK: - Datum
 struct SpWallpaper: Codable {
     let id, userID, cost, contentType: Int
@@ -27,7 +75,7 @@ struct SpWallpaper: Codable {
     let active, dailyRating, downloaded, favorites: Int
     let setCount, isTrend: Int
     let createdAt, updatedAt: String
-    let specialContent: SpecialContent
+    let specialContent: SpecialContent?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -51,10 +99,12 @@ struct SpWallpaper: Codable {
 struct PathElement: Codable {
     let fileName: String
     let path: PathPath
+  
 
     enum CodingKeys: String, CodingKey {
         case fileName = "file_name"
         case path
+       
     }
 }
 
@@ -65,6 +115,16 @@ struct PathPath: Codable {
     enum CodingKeys: String, CodingKey {
         case full, preview, small
         case extraSmall = "extra_small"
+    }
+}
+
+// MARK: - PathPath
+struct PathURLL: Codable {
+    let full, large, medium, small: String
+
+    enum CodingKeys: String, CodingKey {
+        case full, large, medium ,small
+        
     }
 }
 

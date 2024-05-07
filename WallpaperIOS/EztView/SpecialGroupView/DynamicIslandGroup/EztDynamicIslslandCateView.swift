@@ -1,5 +1,5 @@
 //
-//  EztDepthEffectCateView.swift
+//  EztDynamicIslslandCateView.swift
 //  WallpaperIOS
 //
 //  Created by Duc on 05/12/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
-struct EztDepthEffectCateView: View {
+struct EztDynamicIslslandCateView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
@@ -28,7 +28,7 @@ struct EztDepthEffectCateView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Depth Effect")
+                Text("Dynamic Island")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -39,9 +39,9 @@ struct EztDepthEffectCateView: View {
             
             ScrollView(.vertical, showsIndicators: false){
                 LazyVStack(spacing : 16){
-                    ForEach(0..<wallpaperCatelogVM.depthEffectTags.count, id: \.self){
+                    ForEach(0..<wallpaperCatelogVM.dynamicTags.count, id: \.self){
                         i in
-                        let data = wallpaperCatelogVM.depthEffectTags[i]
+                        let data = wallpaperCatelogVM.dynamicTags[i]
                         
                         
                         VStack(spacing : 0){
@@ -50,15 +50,15 @@ struct EztDepthEffectCateView: View {
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                   
+                                  
 
                                 Spacer()
-                               NavigationLink(destination: {
-                                   EztSpecialPageView(currentTag: data.specialTag.title, type: 2, tagID: data.specialTag.id)
-                                       .environmentObject(rewardAd)
-                                       .environmentObject(interAd)
-                                       .environmentObject(store)
-                                }, label: {
+                                NavigationLink(destination: {
+                                    EztSpecialPageView(currentTag: data.specialTag.title, type: 3, tagID: data.specialTag.id)
+                                        .environmentObject(rewardAd)
+                                        .environmentObject(interAd)
+                                        .environmentObject(store)
+                                 }, label: {
                                     HStack(spacing : 0){
                                         Text("See All".toLocalize())
                                             .mfont(11, .regular)
@@ -85,30 +85,33 @@ struct EztDepthEffectCateView: View {
                                             ForEach(0..<data.wallpapers.count, id: \.self){
                                                 stt in
                                                 let wallpaper = data.wallpapers[stt]
-                                                let string : String = wallpaper.thumbnail?.path.preview ?? ""
+                                                let string : String = wallpaper.thumbnail?.path.preview ?? wallpaper.path.first?.path.small ?? ""
                                                 NavigationLink(destination: {
-                                                    SPWLOnePageDetailView(wallpapers: data.wallpapers, index : stt)
+                                                    SPWLOnePageDetailView(wallpapers: data.wallpapers, index: stt)
                                                         .environmentObject(store)
                                                         .environmentObject(interAd)
                                                         .environmentObject(rewardAd)
                                                 }, label: {
 
                                                     WebImage(url: URL(string: string))
-
-                                                        .onSuccess { image, data, cacheType in
-
-                                                        }
                                                         .resizable()
                                                         .placeholder {
                                                             placeHolderImage()
                                                                 .frame(width: 108, height: 216)
 
                                                         }
-
                                                         .scaledToFill()
                                                         .frame(width: 108, height: 216)
                                                         .cornerRadius(8)
                                                         .clipped()
+                                                        .overlay(
+                                                            Image("dynamic")
+                                                                .resizable()
+                                                                .frame(width: 108, height: 216)
+                                                                .cornerRadius(8)
+                                                        )
+                                                        .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+
                                                 })
 
                                             }
@@ -124,13 +127,13 @@ struct EztDepthEffectCateView: View {
                             }.frame(height : 216)
                                 .onAppear(perform : {
                                     if data.wallpapers.isEmpty {
-                                        wallpaperCatelogVM.loadDataDepthEffectWhenAppear(dataType: 2,index: i, tagID: data.specialTag.id)
+                                        wallpaperCatelogVM.loadDataDepthEffectWhenAppear(dataType: 3,index: i, tagID: data.specialTag.id)
                                     }
                                 })
                             
                             
                         }
-                      
+                        .padding(.bottom, 16)
                         
                         
                         
@@ -155,5 +158,5 @@ struct EztDepthEffectCateView: View {
 }
 
 #Preview {
-    EztDepthEffectCateView()
+    EztDynamicIslslandCateView()
 }

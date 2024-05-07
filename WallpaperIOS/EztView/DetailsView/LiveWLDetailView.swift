@@ -9,6 +9,7 @@ import SwiftUI
 import Photos
 import PhotosUI
 import AVKit
+import GoogleMobileAds
 
 struct LiveWLView: View {
     let generator = UINotificationFeedbackGenerator()
@@ -23,6 +24,7 @@ struct LiveWLView: View {
     @State var firsttimeliveWL : Bool = false
     
     @State var currentIndex : Int = 0
+    @State var adStatus : AdStatus = .loading
     @StateObject var ctrlViewModel : VideoControllViewModel = .init()
     
     @AppStorage("remoteCf_live_using_coin", store: .standard) var remoteCf_live_using_coin : Bool = false
@@ -44,23 +46,23 @@ struct LiveWLView: View {
                     EmptyView()
                 })
                 
-                if !viewModel.liveWallpapers.isEmpty{
+                if !viewModel.wallpapers.isEmpty{
                     TabView(selection: $currentIndex){
-                        ForEach(0..<viewModel.liveWallpapers.count, id: \.self){
+                        ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
-                            let livewallpaper = viewModel.liveWallpapers[i]
+                            let livewallpaper = viewModel.wallpapers[i]
                             ReelsPlayer( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
                                 .frame(width: size.width)
                                 .rotationEffect(.init(degrees: -90))
                                 .ignoresSafeArea(.all)
                                 .tag(i)
                                 .onAppear(perform: {
-                                    print("LIVE WL url :\(livewallpaper.video_variations.adapted.url)")
+                                 
                                     
                                     generator.notificationOccurred(.success)
                                     
                                     if viewModel.shouldLoadData(id: i){
-                                        viewModel.getDataByPage()
+                                        viewModel.getWallpapers()
                                     }
                                     
                                     if !store.isPro(){
@@ -81,179 +83,17 @@ struct LiveWLView: View {
                         ctrlViewModel.showControll.toggle()
                     }
                     
+                    
+                    Preview()
+                    
                     if ctrlViewModel.showControll{
-                        VStack(spacing : 0){
-                            HStack(spacing : 0){
-                                
-                                Button(action: {
-                                    presentationMode.wrappedValue.dismiss()
-                                }, label: {
-                                    Image("back")
-                                        .resizable()
-                                        .frame(width: 24, height: 24, alignment: .center)
-                                        .frame(width: 64, height: 24)
-                                        .foregroundColor(.white)
-                                        .contentShape(Rectangle())
-                                })
-                                
-                                Spacer()
-                                
-                                HStack(spacing : 0){
-                                    //                                    ZStack{
-                                    //                                        if !store.isPro() && viewModel.wallpapers[currentIndex].content_type == "private" {
-                                    //                                            Button(action: {
-                                    //                                                ctrlViewModel.showContentPremium = true
-                                    //                                            }, label: {
-                                    //                                                Image("crown")
-                                    //                                                    .resizable()
-                                    //                                                    .frame(width: 18, height: 18, alignment: .center)
-                                    //                                                    .frame(width: 50, height: 44)
-                                    //                                            })
-                                    //
-                                    //
-                                    //                                        }
-                                    //
-                                    //                                    }
-                                    //
-                                    Button(action: {
-                                        ctrlViewModel.showPreview.toggle()
-                                        ctrlViewModel.showControll.toggle()
-                                    }, label: {
-                                        Image("preview")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 24, height: 24)
-                                            .padding(.trailing, 16)
-                                            .padding(.leading, 8)
-                                    })
-                                    
-                                }
-                                
-                                
-                                
-                                
-                                
-                                
-                            }.frame(maxWidth: .infinity)
-                                .frame(height: 44)
-                                .padding(.top, getSafeArea().top)
-                            Spacer()
-                            
-                            
-                            
-                            
-                            
-                            Button(action: {
-                                
-                                
-                                
-                                getPhotoPermission(status: {
-                                    b in
-                                    if b {
-                                        if store.isPro()  {
-                                            downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                                                    urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                                                    urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                                            ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                            
-                                            
-                                        }else{
-                                            
-                                            if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
-                                                downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                                                        urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                                                        urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                                                ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
-                                            }else{
-                                                
-                                                
-                                                DispatchQueue.main.async {
-                                                    withAnimation{
-                                                        ctrlViewModel.showDialogDownload.toggle()
-                                                    }
-                                                }
-                                            }
-                                            
-                                        }
-                                        
-                                    }
-                                })
-                                //
-                                
-                                
-                                
-                            }, label: {
-                                HStack{
-                                    
-                                    
-                                    Text("Save")
-                                        .mfont(16, .bold)
-                                        .foregroundColor(.mblack_fg)
-                                        .overlay(
-                                            ZStack{
-                                                if ctrlViewModel.isDownloading{
-                                                    EZProgressView()
-                                                }
-                                            }.offset(x : -36)
-                                            , alignment: .leading
-                                        )
-                                }
-                                
-                                .frame(maxWidth: .infinity)
-                                
-                                .frame(width: 240 , height: 48)
-                                .contentShape(Rectangle())
-                                .background(
-                                    Capsule().fill(Color.main)
-                                )
-                            }) .padding(.bottom, 48)
-                            
-                            
-                            
-                            
-                            
-                        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                        ControllView()
                         
                         
                     }
                     
                     
-                    if ctrlViewModel.showPreview{
-                        TabView(selection: $ctrlViewModel.isHome){
-                            
-                            Image("lock_preview_hour")
-                                .resizable()
-                                .scaledToFill()
-                            
-                                .onTapGesture {
-                                    withAnimation{
-                                        ctrlViewModel.showPreview = false
-                                        
-                                        
-                                    }
-                                    
-                                }.tag(true)
-                            
-                            
-                            Image("preview_home")
-                                .resizable()
-                                .scaledToFill()
-                                .onTapGesture {
-                                    withAnimation{
-                                        ctrlViewModel.showPreview = false
-                                        
-                                        
-                                    }
-                                    
-                                }.tag(false)
-                            
-                        }
-                        .tabViewStyle(.page(indexDisplayMode: .always))
-                        .background{
-                            Color.clear
-                        }
-                        .ignoresSafeArea()
-                    }
+                
                     
                     if firsttimeliveWL {
                         
@@ -305,10 +145,21 @@ struct LiveWLView: View {
             TutorialContentView()
             
         })
+        .overlay(
+            ZStack{
+                if ctrlViewModel.showContentPremium {
+                    let url  = viewModel.wallpapers[currentIndex].thumbnail.first?.path.preview ?? ""
+                        SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
+                            ctrlViewModel.showContentPremium = false
+                            ctrlViewModel.showSpeciaSub = true
+                        })
+                }
+            }
+            
+        )
         .overlay{
             if ctrlViewModel.showDialogDownload{
-                
-                Dialog(liveWL: viewModel.liveWallpapers[currentIndex])
+                Dialog(liveWL: viewModel.wallpapers[currentIndex])
                 
             }
             
@@ -318,9 +169,192 @@ struct LiveWLView: View {
                 GiftView()
             }
         }
+        .overlay{
+            if ctrlViewModel.showSpeciaSub {
+                SpecialSubView(onClickClose: {
+                    ctrlViewModel.showSpeciaSub = false
+                })
+            }
+        }
         
         
         
+        
+    }
+    
+    
+    
+    @ViewBuilder
+    func ControllView() -> some View{
+        VStack(spacing : 0){
+            HStack(spacing : 0){
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Image("back")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .foregroundColor(.white)
+                        .frame(width: 24, height: 24)
+                        .frame(width: 64, height: 44)
+                        .contentShape(Rectangle())
+                })
+                
+                
+                Spacer()
+                
+                ZStack{
+                    if !store.isPro() && viewModel.wallpapers[currentIndex].contentType == 1 {
+                                                Button(action: {
+                                                    ctrlViewModel.showContentPremium = true
+                                                }, label: {
+                                                    Image("crown")
+                                                        .resizable()
+                                                        .frame(width: 18, height: 18, alignment: .center)
+                                                        .frame(width: 50, height: 44)
+                                                })
+                    
+                    
+                                            }
+                    
+                }
+                
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 44  )
+            
+            
+            Spacer()
+            
+            HStack(alignment: .bottom, spacing:  0, content: {
+                
+                VStack(spacing : 6){
+                    ForEach([DetailWallpaperAction.NONE, DetailWallpaperAction.LOCK], id : \.rawValue){
+                        action in
+                        Image(action.rawValue)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .frame(width: 32, height: 44)
+                            .opacity(ctrlViewModel.actionSelected == action ? 1.0 : 0.4)
+                            .contentShape(Rectangle())
+                            .onTapGesture(perform: {
+                                ctrlViewModel.actionSelected = action
+                            })
+                    }
+                    
+                }
+                .background(Color.black.opacity(0.4))
+                .clipShape(Capsule())
+                .padding(.leading, 16)
+                
+                Spacer()
+                
+                Button(action: {
+                    
+                    
+                    getPhotoPermission(status: {
+                        b in
+                        if b {
+                            if store.isPro()  {
+                                downloadVideoToGallery( title : "video\(  viewModel.wallpapers[currentIndex].id)" ,
+                                                        urlVideoStr:  viewModel.wallpapers[currentIndex].path.first?.url.full ?? ""
+                                                    )
+                                ServerHelper.sendVideoSpecialDataToServer(id: viewModel.wallpapers[currentIndex].id)
+                                
+                                
+                            }else{
+                                
+                                if  UserDefaults.standard.bool(forKey: "allow_download_free") == true {
+                                    downloadVideoToGallery( title : "video\(  viewModel.wallpapers[currentIndex].id)" ,urlVideoStr:  viewModel.wallpapers[currentIndex].path.first?.url.full ?? "")
+                                    ServerHelper.sendVideoSpecialDataToServer( id: viewModel.wallpapers[currentIndex].id)
+                                }else{
+                                    if viewModel.wallpapers[currentIndex].contentType == 1 {
+                                        DispatchQueue.main.async {
+                                            ctrlViewModel.showSpeciaSub = true
+                                        }
+                                    }else{
+                                        DispatchQueue.main.async {
+                                            withAnimation{
+                                                ctrlViewModel.showDialogDownload.toggle()
+                                            }
+                                        }
+                                    }
+                                    
+                                   
+                                }
+                                
+                            }
+                            
+                        }
+                    })
+                    
+                    
+                    
+                }, label: {
+                    ZStack{
+                        Circle().fill(Color.main)
+                        if ctrlViewModel.isDownloading{
+                        ProgressView()
+                            .frame(width: 32, height: 32, alignment: .center)
+                            .colorScheme(.light)
+                        }else{
+                            Image("detail_download")
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                        }
+                    }.frame(width: 56, height: 56)
+                       
+                    
+                }).disabled(ctrlViewModel.isDownloading)
+                    .padding(.trailing, 16)
+            }).padding(.bottom, 24)
+            
+                        ZStack{
+                            if store.allowShowBanner(){
+                                BannerAdViewMain(adStatus: $adStatus)
+                            }
+                        }.frame(height: GADAdSizeBanner.size.height)
+            
+            
+            
+            
+            
+            
+        }
+        .padding(.top, getSafeArea().top)
+        .padding(.bottom, getSafeArea().bottom)
+        
+    }
+    
+    @ViewBuilder
+    func Preview() -> some View{
+        
+        ZStack(alignment: .top){
+            if ctrlViewModel.actionSelected == .HOME {
+                
+                VStack{
+                    Image("home_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, 44 + getSafeArea().top)
+                    
+                    
+                    Spacer()
+                }
+                
+                
+            }else if ctrlViewModel.actionSelected == .LOCK{
+                VStack{
+                    Image("lock_sc")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, 28 + getSafeArea().top )
+                    Spacer()
+                }
+                
+                
+            }
+        }
         
     }
     
@@ -336,7 +370,7 @@ struct LiveWLView: View {
     }
     
     @ViewBuilder
-    func Dialog(liveWL : LiveWallpaper) -> some View{
+    func Dialog(liveWL : SpLiveWallpaper) -> some View{
         
         if remoteCf_live_using_coin {
             
@@ -345,13 +379,12 @@ struct LiveWLView: View {
             })
             
         }else{
-            WatchRVtoGetWLDialog(urlStr: liveWL.image_variations.preview_small.url, show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
+            WatchRVtoGetWLDialog(urlStr: liveWL.thumbnail.first?.path.preview ?? "", show:  $ctrlViewModel.showDialogDownload, onRewarded: { b in
                 if b{
                     ctrlViewModel.showDialogDownload.toggle()
-                    downloadVideoToGallery( title : "video\(  viewModel.liveWallpapers[currentIndex].id)" ,
-                                            urlVideoStr:  viewModel.liveWallpapers[currentIndex].video_variations.adapted.url,
-                                            urlImageStr: viewModel.liveWallpapers[currentIndex].image_variations.adapted.url.replacingOccurrences(of: "\"", with: ""))
-                    ServerHelper.sendVideoDataToServer(type: "set", id: viewModel.liveWallpapers[currentIndex].id)
+                    downloadVideoToGallery( title : "video\(  viewModel.wallpapers[currentIndex].id)" ,
+                                            urlVideoStr:  viewModel.wallpapers[currentIndex].path.first?.url.full ?? "")
+                    ServerHelper.sendVideoSpecialDataToServer(id:  viewModel.wallpapers[currentIndex].id)
                 }else{
                     DispatchQueue.main.async {
                         showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
@@ -371,89 +404,33 @@ struct LiveWLView: View {
     }
     
     
-    func downloadVideoToGallery(title : String, urlVideoStr : String, urlImageStr : String){
-        
-        print("LIVE URL SERVER video ", urlVideoStr)
-        print("LIVE URL SERVER image ", urlImageStr)
-        
-        DispatchQueue.main.async {
-            ctrlViewModel.isDownloading = true
-        }
-        
-        DownloadFileHelper.downloadFromUrlToSanbox(fileName: title, urlImage: URL(string: urlImageStr), onCompleted: {
-            urlImage in
-            if let urlImage {
-                print("LIVE URL IMAGE in Sanbox: ", urlImage.absoluteString)
-                DownloadFileHelper.saveVideoLiveToLibSanbox(fileName: title, videoURL: URL(string: urlVideoStr), onCompleted: {
-                    urlVideo in
-                    if let urlVideo{
-                        print("LIVE URL VIDEO in Sanbox: ", urlVideo.absoluteString)
-                        
-                        
-                        
-                        
-                        LivePhoto.generate(from: urlImage, videoURL: urlVideo, progress: {
-                            _ in
-                        }, completion: {_,resources in
-                            if let resources{
-                                
-                                print("LIVE RESOURCE video : \(resources.pairedVideo.absoluteString)")
-                                print("LIVE RESOURCE image : \(resources.pairedImage.absoluteString)")
-                                
-                                LivePhoto.saveToLibrary(resources, completion: {
-                                    b in
-                                    if b{
-                                        DispatchQueue.main.async {
-                                            ctrlViewModel.isDownloading = false
-                                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                                            
-                                            //                                                                    if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-                                            //                                                                        UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-                                            //                                                                        ctrlViewModel.showTuto = true
-                                            //                                                                    }
-                                            
-                                            let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                                            UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                                            
-                                            if downloadCount == 1 {
-                                                showRateView()
-                                            }else{
-                                                if !store.isPro()  {
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                                                        ctrlViewModel.showGifView.toggle()
-                                                        ctrlViewModel.changeSubType()
-                                                    })
-                                                }
-                                            }
-                                            
-                                            
-                                        }
-                                    }else{
-                                        DispatchQueue.main.async {
-                                            ctrlViewModel.isDownloading = false
-                                            showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
-                                        }
-                                    }
-                                })
-                            }else{
-                                DispatchQueue.main.async {
-                                    ctrlViewModel.isDownloading = false
-                                    showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
-                                }
-                            }
-                            
-                        })
-                        
-                    }else{
+    func downloadVideoToGallery(title : String, urlVideoStr : String){
+        ctrlViewModel.isDownloading = true
+        DownloadFileHelper.saveVideoLiveToLibSanbox(fileName: title, videoURL: URL(string: urlVideoStr), onCompleted: {
+            urlVideo in
+            if let urlVideo{
+                print("LivePhoto path \(urlVideo.path)")
+                LivePhotoUtil.convertVideo(urlVideo.path, complete: {
+                    success, msg in
+                    DispatchQueue.main.async {
                         ctrlViewModel.isDownloading = false
-                        showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
+                        if success{
+                            showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
+                            print("LivePhoto convert success")
+                        }else{
+                            showToastWithContent(image: "xmark", color: .green, mess: "Failure")
+                            print("LivePhoto convert success")
+                        }
                     }
+                    
+                    
                 })
-            }else{
-                ctrlViewModel.isDownloading = true
-                showToastWithContent(image: "xmark", color: .red, mess:"Download Failure")
             }
+            
+            
+            
         })
     }
+    
     
 }

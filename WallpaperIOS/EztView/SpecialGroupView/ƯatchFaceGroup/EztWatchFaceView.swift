@@ -122,8 +122,8 @@ extension EztWatchFaceView{
             ZStack{
                 if !newestVM.wallpapers.isEmpty{
                     ScrollView(.horizontal, showsIndicators: false){
-                        HStack(spacing : 8){
-                            Spacer().frame(width: 8)
+                        HStack(spacing : 12){
+                            Spacer().frame(width: 12)
                             ForEach(newestVM.wallpapers.indices, id: \.self){
                                 index in
                                 
@@ -151,24 +151,34 @@ extension EztWatchFaceView{
                                             .stroke(.white.opacity(0.3), lineWidth: 3)
                                         
                                     )
-                                    .overlay(alignment: .topTrailing, content: {
+                                    .overlay(alignment: .bottomTrailing, content: {
                                         VStack(alignment: .trailing, spacing : 0){
                                             Text("TUE 16")
-                                                .mfont(11, .bold, line: 1)
-                                                .multilineTextAlignment(.trailing)
-                                                .foregroundColor(.white)
-                                                .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                            .mfont(11, .bold, line: 1)
+                                              .multilineTextAlignment(.trailing)
+                                              .foregroundColor(.white)
+                                              .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
                                             
                                             Text("10:09")
                                                 .mfont(32, .regular, line: 1)
-                                                .multilineTextAlignment(.trailing)
-                                                .foregroundColor(.white)
-                                                .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                                                .offset(y : -8)
+                                              .multilineTextAlignment(.trailing)
+                                              .foregroundColor(.white)
+                                              .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                              .offset(y : -8)
                                             
                                             
-                                        }.padding(.top, 20)
+                                        }.padding(.bottom, 12)
                                             .padding(.trailing , 20)
+                                    })
+                                    .overlay(alignment: .topTrailing, content: {
+                                        if !store.isPro()  && wallpaper.contentType == 1 {
+                                            Image("crown")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 16, height: 16)
+                                                .padding(.top, 16)
+                                                .padding(.trailing, 18)
+                                        }
                                     })
                                 })
                                 
@@ -209,7 +219,7 @@ extension EztWatchFaceView{
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
             
-            LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
+            LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 16 ){
                 if !popularVM.wallpapers.isEmpty {
                     ForEach(0..<popularVM.wallpapers.count, id: \.self){
                         i in
@@ -245,24 +255,34 @@ extension EztWatchFaceView{
                                     .stroke(.white.opacity(0.3), lineWidth: 3)
                                 
                             )
-                            .overlay(alignment: .topTrailing, content: {
+                            .overlay(alignment: .bottomTrailing, content: {
                                 VStack(alignment: .trailing, spacing : 0){
                                     Text("TUE 16")
-                                        .mfont(11, .bold, line: 1)
-                                        .multilineTextAlignment(.trailing)
-                                        .foregroundColor(.white)
-                                        .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                    .mfont(11, .bold, line: 1)
+                                      .multilineTextAlignment(.trailing)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
                                     
                                     Text("10:09")
                                         .mfont(32, .regular, line: 1)
-                                        .multilineTextAlignment(.trailing)
-                                        .foregroundColor(.white)
-                                        .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                                        .offset(y : -8)
+                                      .multilineTextAlignment(.trailing)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                      .offset(y : -8)
                                     
                                     
-                                }.padding(.top, 28)
-                                    .padding(.trailing , 24)
+                                }.padding(.bottom, 12)
+                                    .padding(.trailing , 22)
+                            })
+                            .overlay(alignment: .topTrailing, content: {
+                                if !store.isPro()  && wallpaper.contentType == 1 {
+                                    Image("crown")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 16, height: 16)
+                                        .padding(.top, 20)
+                                        .padding(.trailing, 22)
+                                }
                             })
                             
                         })

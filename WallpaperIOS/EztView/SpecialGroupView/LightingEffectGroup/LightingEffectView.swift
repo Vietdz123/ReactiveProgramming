@@ -1,22 +1,20 @@
 //
-//  DeathEffectView.swift
+//  LightningEffectView.swift
 //  WallpaperIOS
 //
-//  Created by Mac on 01/08/2023.
+//  Created by Duc on 17/01/2024.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct DepthEffectView: View {
+struct LightingEffectView: View {
     
-    @EnvironmentObject var viewModel : DepthEffectViewModel
+    @EnvironmentObject var viewModel : LightingEffectViewModel
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
- 
     @EnvironmentObject var interAd : InterstitialAdLoader
-    
     @State var adStatus : AdStatus = .loading
     
     var body: some View {
@@ -32,7 +30,7 @@ struct DepthEffectView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Depth Effect")
+                Text("Lighting Effect")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -48,7 +46,7 @@ struct DepthEffectView: View {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let  wallpaper = viewModel.wallpapers[i]
-                            let string : String = wallpaper.thumbnail?.path.small ?? ""
+                            let string : String = wallpaper.path.first?.path.preview ?? ""
                             
                             NavigationLink(destination: {
                                 SpWLDetailView(index: i)
@@ -66,6 +64,12 @@ struct DepthEffectView: View {
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
+                                    .overlay(
+                                        Image("dynamic")
+                                            .resizable()
+                                            .cornerRadius(8)
+                                    )
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                             })
                             .onAppear(perform: {
@@ -86,7 +90,7 @@ struct DepthEffectView: View {
             .overlay(
                 ZStack{
                     if store.allowShowBanner(){
-                        BannerAdViewMain( adStatus: $adStatus)
+                        BannerAdViewMain(adStatus: $adStatus)
                             
                     }
                 }
@@ -95,10 +99,13 @@ struct DepthEffectView: View {
             )
             .onAppear{
                 if !store.isPro(){
-                    interAd.showAd(onCommit: {})
+                    interAd.showAd(onCommit: {
+                        
+                    })
                 }
             }
-           
+            
     }
 }
+
 

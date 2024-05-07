@@ -11,6 +11,19 @@ import Lottie
 
 extension View{
     @ViewBuilder
+    func showCrownIfNeeded(_ show : Bool) -> some View{
+        self.overlay(alignment: .topTrailing){
+            if show {
+                Image("crown")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16, height: 16, alignment: .center)
+                    .padding(8)
+            }
+        }
+    }
+    
+    @ViewBuilder
     func ItemWL(wallpaper : Wallpaper, isPro : Bool) -> some View{
         
     }
@@ -34,6 +47,15 @@ extension View{
             .frame(width: AppConfig.width_1, height:  AppConfig.height_1)
             .cornerRadius(8)
             .clipped()
+            .overlay(alignment: .topTrailing){
+                if !isPro && wallpaper.contentType == 1 {
+                    Image("crown")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16, alignment: .center)
+                        .padding(8)
+                }
+            }
 
 
     }
@@ -58,6 +80,15 @@ extension View{
                     .frame(width: AppConfig.width_1, height:  AppConfig.height_1)
                     .cornerRadius(8)
             )
+            .overlay(alignment: .topTrailing){
+                if !isPro && wallpaper.contentType == 1 {
+                    Image("crown")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16, alignment: .center)
+                        .padding(8)
+                }
+            }
 
     }
     
@@ -109,6 +140,15 @@ extension View{
                 .frame(width: 120, height: 240)
                 .cornerRadius(8)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 4, y: 2)
+                .overlay(alignment: .topTrailing){
+                    if !isPro && wallpaper.contentType == 1 {
+                        Image("crown")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16, alignment: .center)
+                            .padding(8)
+                    }
+                }
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.2), lineWidth : 1)
@@ -170,18 +210,29 @@ extension View{
                 .frame(width: sizeHeight / 2, height: sizeHeight)
                 .cornerRadius(8)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 4, y: 2)
+                .overlay(alignment: .topTrailing){
+                    if !isPro && wallpaper.contentType == 1 {
+                        Image("crown")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16, height: 16, alignment: .center)
+                            .padding(8)
+                    }
+                }
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.2), lineWidth : 1)
                 )
                 .padding(.trailing, sizeHeight * 0.1)
-        }.frame(width: sizeWidth, height: sizeHeight)
+        }
+        .frame(width: sizeWidth, height: sizeHeight)
+      
 
     }
     
     
     @ViewBuilder
-    func ItemWidgetView(widget : EztWidget) -> some View{
+    func ItemWidgetView(widget : EztWidget, isPro : Bool) -> some View{
         ZStack{
             if let url = URL(string: widget.getURLStringLottie().first ?? ""){
                 LottieView {
@@ -194,6 +245,15 @@ extension View{
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(Color.white.opacity(0.4), lineWidth : 1)
                     }
+                    .overlay(alignment: .topTrailing){
+                        if widget.is_private == 1 && !isPro{
+                            Image("crown")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                                .padding(16)
+                        }
+                    }
                     .clipShape(
                         RoundedRectangle(cornerRadius: 16)
                     )
@@ -204,7 +264,7 @@ extension View{
     }
     
     @ViewBuilder
-    func ItemWidgetViewFull(widget : EztWidget) -> some View{
+    func ItemWidgetViewFull(widget : EztWidget, isPro : Bool) -> some View{
         ZStack{
             if let url = URL(string: widget.getURLStringLottie().first ?? ""){
                 LottieView {
@@ -218,7 +278,15 @@ extension View{
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(Color.white.opacity(0.4), lineWidth : 1)
                     }
-                
+                    .overlay(alignment: .topTrailing){
+                        if widget.is_private == 1 && !isPro{
+                            Image("crown")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                                .padding(16)
+                        }
+                    }
                     .clipShape(
                         RoundedRectangle(cornerRadius: 16)
                     )

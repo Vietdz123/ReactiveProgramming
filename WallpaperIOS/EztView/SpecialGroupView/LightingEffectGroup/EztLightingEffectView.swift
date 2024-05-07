@@ -1,24 +1,24 @@
 //
-//  EztPosterContact.swift
+//  EztLightingEffectView.swift
 //  WallpaperIOS
 //
-//  Created by Duc on 18/12/2023.
+//  Created by Duc on 05/01/2024.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct EztPosterContactView: View {
-    @StateObject var newestVM : PosterContactViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
-    @StateObject var popularVM : PosterContactViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    @State var adStatus : AdStatus = .loading
+struct EztLightingEffectView: View {
+    @StateObject var newestVM : LightingEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
+    @StateObject var popularVM : LightingEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
+   // @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
-    
+    @State var adStatus : AdStatus = .loading
     @Environment(\.presentationMode) var presentationMode
-    
     var body: some View {
+        
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
@@ -31,7 +31,7 @@ struct EztPosterContactView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Poster Contacts")
+                Text("Lighting Effects")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -40,12 +40,12 @@ struct EztPosterContactView: View {
                 .frame(height: 44)
                 .padding(.horizontal, 20)
             
-            
             ScrollView(.vertical, showsIndicators: false){
              
                 LazyVStack(spacing : 0){
                     
-                 
+            
+                    
                     
                     Newset().padding(.bottom, 16)
                     
@@ -63,9 +63,8 @@ struct EztPosterContactView: View {
                
                
             }
-            
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
             .addBackground()
             .overlay(
@@ -83,13 +82,15 @@ struct EztPosterContactView: View {
                     interAd.showAd(onCommit: {})
                 }
             }
-     
+        
+        
+       
         
 
     }
 }
 
-extension EztPosterContactView {
+extension EztLightingEffectView {
     func Newset() -> some View{
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -101,7 +102,7 @@ extension EztPosterContactView {
 
                 Spacer()
                NavigationLink(destination: {
-                 PosterContactView()
+                   LightingEffectView()
                        .environmentObject(newestVM)
                        .environmentObject(store)
                        .environmentObject(rewardAd)
@@ -127,7 +128,7 @@ extension EztPosterContactView {
             
             
             ZStack{
-                if !newestVM.wallpapers.isEmpty {
+                if !newestVM.wallpapers.isEmpty{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
                             NavigationLink(destination: {
@@ -138,7 +139,7 @@ extension EztPosterContactView {
                                     .environmentObject(interAd)
                             }, label: {
                                 
-                                WebImage(url: URL(string: newestVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
+                                WebImage(url: URL(string:  newestVM.wallpapers.first?.path.first?.path.full ?? ""))
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -147,36 +148,51 @@ extension EztPosterContactView {
                                     .frame(width: 160, height: 320)
                                     .clipped()
                                     .cornerRadius(8)
+                                    .overlay(
+                                        Image("dynamic")
+                                            .resizable()
+                                            .cornerRadius(8)
+                                    )
+                                    .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
-                            if newestVM.wallpapers.count >= 15 {
-                                LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
-                                    ForEach(1..<15, content: {
-                                        i in
-                                        let wallpaper = newestVM.wallpapers[i]
-                                        NavigationLink(destination: {
-                                            SpWLDetailView(index: i)
-                                                .environmentObject(newestVM as SpViewModel)
-                                                .environmentObject(store)
-                                                .environmentObject(rewardAd)
-                                                .environmentObject(interAd)
-                                        }, label: {
-                                            WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
-                                                .resizable()
-                                                .placeholder {
-                                                    placeHolderImage()
-                                                }
-                                                .scaledToFill()
-                                                .frame(width: 78, height: 156)
-                                                .clipped()
-                                                .cornerRadius(8)
-                                        })
-
-                                        
-                                    })
-                                })
-                            }
                             
-                              
+                            let minItem = min(newestVM.wallpapers.count, 15)
+                            
+                            LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
+                                ForEach(1..<minItem, content: {
+                                    i in
+                                    let wallpaper = newestVM.wallpapers[i]
+                                    NavigationLink(destination: {
+                                        SpWLDetailView(index: i)
+                                            .environmentObject(newestVM as SpViewModel)
+                                            .environmentObject(store)
+                                            .environmentObject(rewardAd)
+                                            .environmentObject(interAd)
+                                    }, label: {
+                                        WebImage(url: URL(string: wallpaper.path.first?.path.full ?? ""))
+                                            .resizable()
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
+                                            .scaledToFill()
+                                            .frame(width: 78, height: 156)
+                                            .clipped()
+                                            .cornerRadius(8)
+                                            .overlay(
+                                                Image("dynamic")
+                                                    .resizable()
+                                                    .cornerRadius(8)
+                                            )
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                    })
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                })
+                            })
                         }
                         
                         
@@ -225,7 +241,7 @@ extension EztPosterContactView {
                     ForEach(0..<popularVM.wallpapers.count, id: \.self){
                         i in
                         let  wallpaper = popularVM.wallpapers[i]
-                        let string : String = wallpaper.thumbnail?.path.preview ?? ""
+                        let string : String = wallpaper.path.first?.path.full ?? ""
                         
                         NavigationLink(destination: {
                             SpWLDetailView(index: i)
@@ -244,6 +260,12 @@ extension EztPosterContactView {
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
+                                .overlay(
+                                    Image("dynamic")
+                                        .resizable()
+                                        .cornerRadius(8)
+                                )
+                                .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                         })
                         .onAppear(perform: {
@@ -265,3 +287,7 @@ extension EztPosterContactView {
     
 }
 
+
+#Preview {
+    EztMainView()
+}

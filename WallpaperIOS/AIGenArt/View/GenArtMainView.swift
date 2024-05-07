@@ -204,7 +204,8 @@ extension GenArtMainView{
                                 .frame(width: 4)
                             ForEach(posterContactVM.wallpapers.indices, id: \.self){
                                 i in
-                                let string = posterContactVM.wallpapers[i].thumbnail?.path.preview ?? ""
+                                let wallpaper = posterContactVM.wallpapers[i]
+                                let string = wallpaper.thumbnail?.path.preview ?? ""
                                 NavigationLink(destination: {
                                     SpWLDetailView(index: i)
                                         .environmentObject(posterContactVM as SpViewModel)
@@ -221,6 +222,7 @@ extension GenArtMainView{
                                         .frame(width: 128, height: 280)
                                         .clipped()
                                         .cornerRadius(8)
+                                        .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                 })
                                 
                                 

@@ -42,6 +42,7 @@ struct BannerViewController: UIViewControllerRepresentable  {
     
     let adUnitID: String
     let adSize: GADAdSize
+    static var latestTimeShowCollapse: Double = 0
     @Binding var adStatus: AdStatus
    
     
@@ -61,21 +62,25 @@ struct BannerViewController: UIViewControllerRepresentable  {
       
         let viewController = UIViewController()
         let view = GADBannerView(adSize: adSize)
+        let request = GADRequest()
         view.delegate = context.coordinator
-     
-        view.adUnitID = self.adUnitID
+
+        view.adUnitID = AdsConfig.bannerID
+        if Date.now.timeIntervalSince1970 - BannerViewController.latestTimeShowCollapse > 30 {
+                view.adUnitID = AdsConfig.bannerCollapID
+                BannerViewController.latestTimeShowCollapse = Date.now.timeIntervalSince1970
+                let extras = GADExtras()
+                extras.additionalParameters = ["collapsible" : "bottom"]
+                request.register(extras)
+            
+        }
         print("LOAD_ BANNER ADS")
         view.rootViewController = viewController
      
         
-        let request = GADRequest()
+       
                    
-        if UserDefaults.standard.bool(forKey: "using_banner_collapsible") {
-        print("using_banner_collapsible")
-            let extras = GADExtras()
-            extras.additionalParameters = ["collapsible" : "bottom"]
-            request.register(extras)
-        }
+
         view.load(request)
         
         
@@ -117,15 +122,16 @@ struct BannerViewController: UIViewControllerRepresentable  {
 
 struct BannerAdViewMain: View {
     
-    // "ca-app-pub-3940256099942544/8388050270"
- 
+    // 
+  //  BannerViewController(adUnitID: "ca-app-pub-3940256099942544/8388050270", adSize: size, adStatus: $adStatus)
     @Binding var adStatus: AdStatus
     
-    var size = UserDefaults.standard.bool(forKey: "using_banner_collapsible") ? GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width - 32) : GADAdSizeBanner
+    var size = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width - 32)
     
     var body: some View {
         HStack {
             BannerViewController(adUnitID: AdsConfig.bannerID, adSize: size, adStatus: $adStatus)
+           
                 .frame(width: size.size.width, height: adStatus == .success ? size.size.height : 0.0  )
         }.frame(maxWidth: .infinity, alignment: .center)
 

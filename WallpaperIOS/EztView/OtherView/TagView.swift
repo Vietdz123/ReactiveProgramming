@@ -52,11 +52,8 @@ struct TagView: View {
                     
                     ForEach(0..<viewModel.wallpapers.count, id: \.self){
                         i in
-                        
-                        
                         let  wallpaper = viewModel.wallpapers[i]
                         let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                        
                         NavigationLink(destination: {
                             WLView( index: i)
                                 .environmentObject(viewModel  as CommandViewModel)
@@ -87,8 +84,6 @@ struct TagView: View {
                                             Image("coin")
                                                 .resizable()
                                                 .frame(width: 13.33, height: 13.33, alignment: .center)
-                                            
-                                            
                                                 .frame(width: 16, height: 16, alignment: .center)
                                                 .background(
                                                     Capsule()

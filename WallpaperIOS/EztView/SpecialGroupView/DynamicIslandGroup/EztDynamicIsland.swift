@@ -193,6 +193,7 @@ extension EztDynamicIsland {
                                             .frame(width: 160, height: 320)
                                     )
                                     .cornerRadius(8)
+                                    .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
                             
                             
@@ -225,6 +226,7 @@ extension EztDynamicIsland {
                                                     .frame(width: 78, height: 156)
                                             )
                                             .cornerRadius(8)
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
                                     
                                     
@@ -304,6 +306,7 @@ extension EztDynamicIsland {
                                         .resizable()
                                         .cornerRadius(8)
                                 )
+                                .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                         })
                         .onAppear(perform: {

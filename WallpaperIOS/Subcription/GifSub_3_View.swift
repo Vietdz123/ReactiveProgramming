@@ -164,7 +164,7 @@ struct GifSub_3_View: View {
                             Button(action: {
                                 
                                 
-                                if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                                if let url = URL(string: "https://docs.google.com/document/d/1EY8f5f5Z_-5QfqAeG2oYdUxlu-1sBc-mgfco2qdRMaU") {
                                     UIApplication.shared.open(url)
                                 }
                                 

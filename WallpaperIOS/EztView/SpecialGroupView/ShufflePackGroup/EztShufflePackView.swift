@@ -238,7 +238,7 @@ extension EztShufflePackView{
                                                 RoundedRectangle(cornerRadius: 8)
                                                     .stroke(Color.white.opacity(0.2), lineWidth : 1)
                                             )
-
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                             .padding(.trailing, 24)
                                     }.frame(width: 160, height: 240)
                                 })

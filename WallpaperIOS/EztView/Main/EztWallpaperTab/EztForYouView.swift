@@ -72,6 +72,7 @@ struct EztForYouView: View {
                                         .clipped()
                                         .frame(width: size.width, height: size.height, alignment: .center)
                                         .cornerRadius(8)
+                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
 
                                 })
                                

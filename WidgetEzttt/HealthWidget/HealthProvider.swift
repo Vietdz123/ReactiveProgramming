@@ -19,7 +19,6 @@ struct HealthProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: HealthConfigurationAppIntent, in context: Context) async -> HealthEntry {
-      
         HealthEntry(date: Date(),  healthType: .placeHolder, value: "0")
     }
     

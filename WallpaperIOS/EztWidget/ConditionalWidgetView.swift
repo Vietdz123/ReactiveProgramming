@@ -143,7 +143,7 @@ extension ConditionalWidgetView {
                                             .environmentObject(reward)
                                             .environmentObject(interAd)
                                     }, label: {
-                                        ItemWidgetView(widget: widget)
+                                        ItemWidgetView(widget: widget, isPro: storeVM.isPro())
                                     })
 
                                 }
@@ -204,7 +204,7 @@ extension ConditionalWidgetView {
                                 .environmentObject(reward)
                                 .environmentObject(interAd)
                         }, label: {
-                            ItemWidgetViewFull(widget: widget)
+                            ItemWidgetViewFull(widget: widget, isPro: storeVM.isPro())
 
                         })
                         .onAppear(perform: {

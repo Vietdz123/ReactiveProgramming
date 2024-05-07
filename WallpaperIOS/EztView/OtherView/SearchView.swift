@@ -233,7 +233,7 @@ struct SearchView: View {
         let urlStr = tag.previewSmallURL
         
 
-        WebImage(url: URL(string: urlStr))
+        WebImage(url: URL(string: urlStr ?? ""))
         
            .onSuccess { image, data, cacheType in
                // Success

@@ -205,12 +205,12 @@ struct EztMainView : View {
                     UserDefaults.standard.setValue(true, forKey: "getPermissionNotification")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 15.0, execute: {
                         NotificationHelper.share.requestNotificationPermission(onComplete: {
-                            b in
-                            if b {
-                                DispatchQueue.main.async {
-                                    showToastWithContent(image: "checkmark", color: .green, mess: "Thanks for permisson!")
-                                }
-                            }
+                            _ in
+//                            if b {
+//                                DispatchQueue.main.async {
+//                                    showToastWithContent(image: "checkmark", color: .green, mess: "Thanks for permisson!")
+//                                }
+//                            }
                         })
                         
                     })

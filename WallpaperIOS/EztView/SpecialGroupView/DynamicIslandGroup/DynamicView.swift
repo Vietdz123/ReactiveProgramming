@@ -1,16 +1,18 @@
 //
-//  LightningEffectView.swift
+//  DynamicView.swift
 //  WallpaperIOS
 //
-//  Created by Duc on 17/01/2024.
+//  Created by Mac on 01/08/2023.
 //
 
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct LightingEffectView: View {
+
+struct DynamicView: View {
     
-    @EnvironmentObject var viewModel : LightingEffectViewModel
+    
+    @EnvironmentObject var viewModel : DynamicIslandViewModel
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
@@ -23,6 +25,7 @@ struct LightingEffectView: View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
+                   
                     self.presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image("back")
@@ -32,7 +35,7 @@ struct LightingEffectView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
-                Text("Lighting Effect")
+                Text("Dynamic Island")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
@@ -42,22 +45,25 @@ struct LightingEffectView: View {
                 .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false){
-                LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
+                LazyVGrid(columns: [GridItem.init(spacing: 8),GridItem.init()], spacing: 8 ){
                     
                     if !viewModel.wallpapers.isEmpty {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let  wallpaper = viewModel.wallpapers[i]
-                            let string : String = wallpaper.path.first?.path.preview ?? ""
+                            let string : String = wallpaper.path.first?.path.small ?? ""
                             
                             NavigationLink(destination: {
                                 SpWLDetailView(index: i)
                                     .environmentObject(viewModel as SpViewModel)
                                     .environmentObject(store)
                                     .environmentObject(interAd)
+                                   
                                     .environmentObject(reward)
                             }, label: {
                                 WebImage(url: URL(string: string))
+                                    .onSuccess { image, data, cacheType in
+                                    }
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -71,6 +77,7 @@ struct LightingEffectView: View {
                                             .resizable()
                                             .cornerRadius(8)
                                     )
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                             })
                             .onAppear(perform: {
@@ -91,7 +98,7 @@ struct LightingEffectView: View {
             .overlay(
                 ZStack{
                     if store.allowShowBanner(){
-                        BannerAdViewMain(adStatus: $adStatus)
+                        BannerAdViewMain( adStatus: $adStatus)
                             
                     }
                 }
@@ -100,13 +107,15 @@ struct LightingEffectView: View {
             )
             .onAppear{
                 if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
+                    interAd.showAd(onCommit: {})
                 }
             }
             
     }
 }
 
-
+struct DynamicView_Previews: PreviewProvider {
+    static var previews: some View {
+        DynamicView()
+    }
+}

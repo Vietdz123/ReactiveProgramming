@@ -73,55 +73,7 @@ struct EztWallpaperView: View {
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .tag(WallpaperTab.Category)
-                
-//                EztShufflePackView()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.ShufflePack)
-//                
-//                EztDepthEffectView()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.DepthEffect)
-//                
-//                EztWatchFaceView()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.WatchFace)
-//                
-//                EztLightingEffectView()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.LightingEffect)
-//                
-//                EztPosterContactView()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.PosterContact)
-//                
-//                EztDynamicIsland()
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .environmentObject(catalogVM)
-//                    .tag(WallpaperTab.DynamicIsland)
-//                
-//                EztLiveWallpaperView()
-//                    .environmentObject(liveVM)
-//                    .environmentObject(rewardAd)
-//                    .environmentObject(interAd)
-//                    .environmentObject(store)
-//                    .tag(WallpaperTab.Category)
+
             }).tabViewStyle(.page(indexDisplayMode: .never))
                 .background(
                     Color.clear

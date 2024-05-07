@@ -81,9 +81,9 @@ struct SplashView: View {
                 if splash_process == 100 {
                     
             
-              //      appVM.navigateToOnboarding2.toggle()
-                    
-                    //MARK: start
+                //   appVM.navigateToOnboarding2.toggle()
+            
+                //    MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
                         appVM.navigateToOnboarding2.toggle()
                     }else{
@@ -102,7 +102,7 @@ struct SplashView: View {
                             })
                         }
                     }
-                    //MARK: end
+                //    MARK: end
                     
                 }
             })

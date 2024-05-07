@@ -191,6 +191,7 @@ extension EztDepthEffectView {
                                     .frame(width: 160, height: 320)
                                     .clipped()
                                     .cornerRadius(8)
+                                    .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
                             
                             
@@ -214,6 +215,7 @@ extension EztDepthEffectView {
                                             .frame(width: 78, height: 156)
                                             .clipped()
                                             .cornerRadius(8)
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
                                     
                                     
@@ -290,6 +292,7 @@ extension EztDepthEffectView {
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
+                                .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
 
                         })
                         .onAppear(perform: {

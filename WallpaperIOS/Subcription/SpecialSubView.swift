@@ -18,7 +18,9 @@ struct SpecialSubView: View {
     
     let vip_op : [String] = [    "Unlimited Premium Wallpapers",
                                  "Unlimited Premium Widgets",
-                                 "Unlimited AI-Generate"]
+                                 "Unlimited AI-Generate",
+                                 "Ad-free experience"
+    ]
     @EnvironmentObject var store : MyStore
     @State var showSubView : Bool = true
     @State var giftOpen : Bool = false
@@ -31,39 +33,9 @@ struct SpecialSubView: View {
         ZStack{
             VisualEffectView(effect: UIBlurEffect(style: .dark))
                 .ignoresSafeArea()
-            
- //           if showSubView {
+
                 SubView()
-//            }else{
-//                
-//                VStack{
-//                    HStack{
-//                        Spacer()
-//                        
-//                        Button(action: {
-//                         onClickClose()
-//                        }, label: {
-//                            Image("close.circle.fill")
-//                                .resizable()
-//                                .frame(width: 24, height: 24)
-//                                .opacity(0.7)
-//                        })
-//                        
-//                    }
-//                    .frame(maxWidth: .infinity)
-//                    .padding(16)
-//                    Spacer()
-//                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-//                
-//                if giftOpen{
-//                    
-//                    GiftShowView()
-//                    
-//                }else{
-//                    GiftView()
-//                }
-//            }
-            
+
         }
     }
 }
@@ -124,32 +96,71 @@ extension SpecialSubView{
                 .padding(.top, 12)
                 .padding(.bottom, 8)
             
-            ForEach(vip_op, id : \.self){
-                opt in
-                HStack{
-                    Image("stone_yellow")
-                        .resizable()
-                        .frame(width: 12, height: 8)
-                    Text(opt.toLocalize())
-                        .mfont(17, .bold)
-                        .foregroundColor(.white)
-                        .padding(.leading, 24)
-                        .lineLimit(1)
-                        .fixedSize()
+            
+            VStack(spacing : 16){
+                ForEach(vip_op, id : \.self){
+                    opt in
+                    HStack(spacing : 16){
+                        Image("stone_yellow")
+                            .resizable()
+                            .frame(width: 12, height: 8)
+                        Text(opt.toLocalize())
+                            .mfont(17, .bold)
+                            .foregroundColor(.white)
+                            .lineLimit(1)
+                            .fixedSize()
+                        
+                    }.frame(maxWidth: .infinity, alignment : .leading)
+                       
+                       
+                }
+            }.frame(maxWidth: .infinity)
+                .padding(EdgeInsets(top: 22, leading: 22, bottom: 22, trailing: 22))
+                .background{
+                    Color.white.opacity(0.1)
                     
-                }.frame(maxWidth: .infinity, alignment : .leading)
-                    .padding(.top, 16)
-                    .padding(.leading, 48)
-            }
+                }
+                .cornerRadius(16)
+                .padding(.horizontal, 24)
+                .padding(.top, 24)
+         
             
             
             VStack(spacing : 0){
                 
-                if let weekProduct = store.weekProductNotSale, let monthProduct = store.monthProduct, let yearProduct = store.getYearOriginUsingProduct(){
-                    Opt_Year(product: yearProduct)
-                    Opt_Month(product: monthProduct).padding(.top, 12)
-                    Opt_Week(product: weekProduct).padding(.top, 12).padding(.bottom, 24)
+                if  let yearProduct = store.getYearOriginUsingProduct(){
+//                    Opt_Year(product: yearProduct)
+//                    Opt_Month(product: monthProduct).padding(.top, 12)
+//                    Opt_Week(product: weekProduct).padding(.top, 12).padding(.bottom, 24)
+                    HStack(spacing : 0){
+                        Text("~ ")
+                            .mfont(24, .bold)
+                          .multilineTextAlignment(.center)
+                          .foregroundColor(.white)
+                        Text("\(getDisplayPrice(price: yearProduct.price ,chia: 52 ,displayPrice: yearProduct.displayPrice))")
+                            .mfont(24, .bold)
+                          .multilineTextAlignment(.center)
+                          .foregroundColor(.main)
+                        Text("/Week")
+                            .mfont(24, .bold)
+                          .multilineTextAlignment(.center)
+                          .foregroundColor(.white)
+                    }.padding(.top, 20)
+                 
                     
+                    Text("Just \(yearProduct.displayPrice)/year")
+                        .mfont(13, .bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                      .padding(.top, 8)
+                    
+                    Text("Auto-renewable, cancel anytime.")
+                      .font(Font.custom("SVN-Avo", size: 10))
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(.white)
+                      .opacity(0.7)
+                      .padding(.top, 16)
+                      .padding(.bottom, 10)
                     
                     Button(action: {
                         
@@ -157,9 +168,9 @@ extension SpecialSubView{
                             store.isPurchasing = true
                             showProgressSubView()
                           
-                            let product : Product = buyType == .YEARLY ? yearProduct :  ( buyType == .MONTHLY ? monthProduct : weekProduct )
+                            let product : Product = yearProduct
                             
-                            let productString : String = buyType == .YEARLY ? "Year" :  ( buyType == .MONTHLY ? "Month" : "Week" )
+                            let productString : String =  "Year"
                             
                          
                             
@@ -195,7 +206,7 @@ extension SpecialSubView{
                         HStack{
                             
                             
-                            Text("Continue".toLocalize())
+                            Text("GET PREMIUM".toLocalize())
                                 .mfont(16, .bold)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -248,7 +259,7 @@ extension SpecialSubView{
                         
                         
                         Button(action: {
-                            if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                            if let url = URL(string: "https://docs.google.com/document/d/1EY8f5f5Z_-5QfqAeG2oYdUxlu-1sBc-mgfco2qdRMaU") {
                                 UIApplication.shared.open(url)
                             }
                         }, label: {
@@ -261,7 +272,7 @@ extension SpecialSubView{
                 }.frame(height: 48)
                 
                 
-            }.padding(.top, 32)
+            }
             
             
             
@@ -355,7 +366,7 @@ extension SpecialSubView{
                         
                     }
                 }, label: {
-                    Text("Claim Offer")
+                    Text("GET PREMIUM")
                         .mfont(20, .bold)
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
@@ -399,7 +410,7 @@ extension SpecialSubView{
                 
                 
                 Button(action: {
-                    if let url = URL(string: "https://docs.google.com/document/d/1SmR-gcwA_QaOTCEOTRcSacZGkPPbxZQO1Ze_1nVro_M") {
+                    if let url = URL(string: "https://docs.google.com/document/d/1EY8f5f5Z_-5QfqAeG2oYdUxlu-1sBc-mgfco2qdRMaU") {
                         UIApplication.shared.open(url)
                     }
                 }, label: {

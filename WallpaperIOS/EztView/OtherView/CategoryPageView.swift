@@ -173,14 +173,7 @@ struct CategoryPageView: View {
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
-//                                    .overlay(alignment : .topTrailing){
-//                                        if !store.isPro() && wallpaper.content_type == "private" {
-//                                            Image("crown")
-//                                                .resizable()
-//                                                .frame(width: 16, height: 16, alignment: .center)
-//                                                .padding(8)
-//                                        }
-//                                    }
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
                             })
                             
                             
