@@ -41,14 +41,16 @@ enum AdStatus {
 struct BannerViewController: UIViewControllerRepresentable  {
     
     let adUnitID: String
+    let isCollapBanner : Bool
     let adSize: GADAdSize
     static var latestTimeShowCollapse: Double = 0
     @Binding var adStatus: AdStatus
    
     
-    init(adUnitID: String, adSize: GADAdSize, adStatus: Binding<AdStatus>) {
+    init(adUnitID: String, isCollapBanner : Bool ,adSize: GADAdSize, adStatus: Binding<AdStatus>) {
 
         self.adUnitID = adUnitID
+        self.isCollapBanner = isCollapBanner
         self.adSize = adSize
         self._adStatus = adStatus
        
@@ -65,8 +67,8 @@ struct BannerViewController: UIViewControllerRepresentable  {
         let request = GADRequest()
         view.delegate = context.coordinator
 
-        view.adUnitID = AdsConfig.bannerID
-        if Date.now.timeIntervalSince1970 - BannerViewController.latestTimeShowCollapse > 30 {
+        view.adUnitID = adUnitID
+        if isCollapBanner {
                 view.adUnitID = AdsConfig.bannerCollapID
                 BannerViewController.latestTimeShowCollapse = Date.now.timeIntervalSince1970
                 let extras = GADExtras()
@@ -119,18 +121,17 @@ struct BannerViewController: UIViewControllerRepresentable  {
     }
 }
 
-
+//MARK: ForBanner Collapse
 struct BannerAdViewMain: View {
     
-    // 
-  //  BannerViewController(adUnitID: "ca-app-pub-3940256099942544/8388050270", adSize: size, adStatus: $adStatus)
+  
     @Binding var adStatus: AdStatus
     
     var size = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width - 32)
     
     var body: some View {
         HStack {
-            BannerViewController(adUnitID: AdsConfig.bannerID, adSize: size, adStatus: $adStatus)
+            BannerViewController(adUnitID: AdsConfig.bannerCollapID, isCollapBanner: true, adSize: size, adStatus: $adStatus)
            
                 .frame(width: size.size.width, height: adStatus == .success ? size.size.height : 0.0  )
         }.frame(maxWidth: .infinity, alignment: .center)
@@ -140,4 +141,20 @@ struct BannerAdViewMain: View {
     
  
     
+}
+
+
+struct BannerAdViewInDetail : View {
+    @Binding var adStatus: AdStatus
+    
+    var size = GADAdSizeBanner
+    
+    var body: some View {
+        HStack {
+            BannerViewController(adUnitID: AdsConfig.bannerID, isCollapBanner: false, adSize: size, adStatus: $adStatus)
+           
+                .frame(width: size.size.width, height: adStatus == .success ? size.size.height : 0.0  )
+        }.frame(maxWidth: .infinity, alignment: .center)
+
+    }
 }

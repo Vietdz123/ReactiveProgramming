@@ -173,10 +173,14 @@ struct EztMainView : View {
                             timeCountEnterApp = timeCountEnterApp + Int.random(in: 0...1)
                         }
                         
-                        if timeCountEnterApp % 2 == 0 {
+                        if timeCountEnterApp % 3 == 0 {
                             mainViewModel.currentWallpaperTab = .Category
-                        }else{
+                        }
+                        else if timeCountEnterApp % 3 == 1 {
                             mainViewModel.currentWallpaperTab = .Special
+                        }
+                        else{
+                            mainViewModel.currentWallpaperTab = .LockScreenTheme
                         }
                         UserDefaults.standard.set(timeCountEnterApp + 1, forKey: "timecount_enter_app")
                         

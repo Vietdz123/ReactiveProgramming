@@ -24,6 +24,7 @@ class VideoControllViewModel : ObservableObject {
     @Published var showContentPremium : Bool = false
     @Published var isDownloading : Bool = false
     @Published var actionSelected : DetailWallpaperAction = .LOCK
+    @Published var showRateView : Bool = false
     func changeSubType() {
 
         
@@ -44,7 +45,7 @@ class VideoControllViewModel : ObservableObject {
 
 
 
-struct ReelsPlayer : View{
+struct ReelsPlayerVertical : View{
     
     let i : Int
     let liveWL : SpLiveWallpaper
@@ -92,6 +93,62 @@ struct ReelsPlayer : View{
                 self.player!.cancelPendingPrerolls()
                 self.player = nil
             }
+            
+        })
+        
+    }
+    
+    
+    
+}
+
+
+struct ReelsPlayerHorizontal : View{
+    
+    let i : Int
+    let liveWL : SpLiveWallpaper
+    @Binding var currentIndex : Int
+    @State var player : AVPlayer?
+    
+    var body: some View{
+        ZStack{
+            
+            if  player != nil {
+                MyVideoPlayer(player: player!)
+                
+                
+                GeometryReader{
+                    proxy -> Color in
+                    
+                    let minX  = proxy.frame(in: .global).minX
+                    let size = proxy.size
+                    
+                    DispatchQueue.main.async {
+                        if -minX < ( size.width / 2 ) && minX < (size.width / 2) && i == currentIndex {
+                            print("Video play: \(i)")
+                            player?.play()
+                        }else{
+                            print("Video pause: \(i)")
+                            player?.pause()
+                           
+                            
+                        }
+                    }
+                    
+                    return Color.clear
+                }
+                
+            }
+            
+        }.onAppear(perform: {
+            self.player =  AVPlayer(url: URL(string: liveWL.path.first?.url.full ?? "")!)
+        })
+        .onDisappear(perform: {
+         
+                self.player?.pause()
+                self.player?.cancelPendingPrerolls()
+                self.player = nil
+         
             
         })
         

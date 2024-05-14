@@ -32,6 +32,7 @@ struct IDProduct {
     
     
     //MARK: current sungs
+    static let WEEK_FT = "com.ezt.wl.weekft"
     static let WEEK_2 = "com.ezt.wl.weekly_2"
     static let MONTH_1 = "com.ezt.wl.monthly_1"
     static let YEARLY_SALE_50 = "com.ezt.wl.year_3"
@@ -48,7 +49,7 @@ class MyStore: ObservableObject {
     
     @Published var purchasedIds: [String] = []
     
-    @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1,
+    @Published var allProductIdLoad : [String] = [IDProduct.WEEK_2, IDProduct.WEEK_1, IDProduct.WEEK_FT,
                                                   IDProduct.MONTH_1 , IDProduct.MONTH,
                                                   IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_SALE_50, IDProduct.YEARLY_ORIGINAL ,IDProduct.MONTHLY_V2, IDProduct.THREE_MONTH,
                                                   IDProduct.YEAR_SALE_50_NEW, IDProduct.YEAR_ORIGINAL_NEW,
@@ -59,7 +60,7 @@ class MyStore: ObservableObject {
     
     @Published var productIdAllowShows : [String] = []
     
-    
+    @Published var weekFreeTrialProduct : Product?
     @Published var weekProductNotSale : Product?
     @Published var monthProduct : Product?
     
@@ -77,7 +78,7 @@ class MyStore: ObservableObject {
     var remoteConfig : RemoteConfig
     
     
-    @Published var usingNewPrice : Bool = false
+ 
 
     
     init() {
@@ -87,7 +88,6 @@ class MyStore: ObservableObject {
         settings.minimumFetchInterval = 1
         self.remoteConfig.configSettings = settings
         self.remoteConfig.setDefaults(fromPlist: "GoogleService-Info")
-        
         self.fetchProducts()
         self.fetchConfig()
         
@@ -100,18 +100,14 @@ class MyStore: ObservableObject {
     }
     
     func isNewVeriosn() -> Bool {
-        print("Current version: \(UIApplication.version)")
-        print("Firebase version: \(UserDefaults.standard.string(forKey: "current_version"))")
         return UIApplication.version != UserDefaults.standard.string(forKey: "current_version") ?? ""
     }
     
     func getYearOriginUsingProduct() -> Product?{
-       // return usingNewPrice ? yearlyOriginalNewProduct : yearlyOriginalProduct
         return yearlyOriginalNewProduct
     }
     
     func getYearSale50UsingProduct() -> Product?{
-      //  return usingNewPrice ? yearlv2Sale50NewProduct : yearlv2Sale50Product
         return yearlv2Sale50NewProduct
     }
     
@@ -124,21 +120,9 @@ class MyStore: ObservableObject {
             if status == .success {
                 print("MYSTORE---fetchConfig-success")
                 self.remoteConfig.activate { changed, error in
-                    
-                    let usingNewPriceForYear = self.remoteConfig.configValue(forKey: "using_new_price_for_year").boolValue
-                    DispatchQueue.main.async {
-                        self.usingNewPrice = usingNewPriceForYear
-                    }
-                    
-                    
-                    let using_new_sub_screen_for_onb      =  self.remoteConfig.configValue(forKey: "using_new_sub_screen_for_onb").boolValue
-                    UserDefaults.standard.set(using_new_sub_screen_for_onb,   forKey: "using_new_usb_in_onb")
-                    
-                    
-                    //MARK: A/B test có màn consider hay không
-                    let usingConsiderScreen = self.remoteConfig.configValue(forKey: "using_consider_screen").boolValue
-                    UserDefaults.standard.set(usingConsiderScreen, forKey: "using_consider_screen_in_app")
-                    
+                    //MARK: using_onb_has_freetrial
+                    let usingOnbHasFreetrial = self.remoteConfig.configValue(forKey: "using_onb_has_freetrial").boolValue
+                    UserDefaults.standard.set(usingOnbHasFreetrial, forKey: "using_onb_has_freetrial")
                     
                     //MARK: ADS ID
                     let bannerID = self.remoteConfig.configValue(forKey: "id_banner_ads").stringValue ?? AdsConfig.def_bannerID
@@ -146,7 +130,7 @@ class MyStore: ObservableObject {
                     let interID = self.remoteConfig.configValue(forKey: "id_inter_ads").stringValue ?? AdsConfig.def_interID
                     let openID = self.remoteConfig.configValue(forKey: "id_open_ads").stringValue ?? AdsConfig.def_openID
                     let nativeID = self.remoteConfig.configValue(forKey: "id_native_ads").stringValue ?? AdsConfig.def_nativeID
-                    let usingCollapBanner = self.remoteConfig.configValue(forKey: "using_banner_collapsible").boolValue
+                 
                     
                     
                     UserDefaults.standard.set(bannerID, forKey: "id_banner_ads")
@@ -154,7 +138,7 @@ class MyStore: ObservableObject {
                     UserDefaults.standard.set(interID, forKey: "id_inter_ads")
                     UserDefaults.standard.set(openID, forKey: "id_open_ads")
                     UserDefaults.standard.set(nativeID, forKey: "id_native_ads")
-                    UserDefaults.standard.set(usingCollapBanner, forKey: "using_banner_collapsible")
+                  
                     
                     
                     let wl_domain       =  self.remoteConfig.configValue(forKey: "wl_domain").stringValue ?? "http://3.8.138.29/"
@@ -227,12 +211,9 @@ class MyStore: ObservableObject {
                 
             } else {
                 print("MYSTORE---fetchConfig-failure")
-                
                 if self.allowFetcConfigWhenError {
                     self.allowFetcConfigWhenError = false
                     self.fetchConfig()
-                }else {
-                    self.getProductsIdFromRemote(productJsonStr: "[\"com.ezt.wl.monthly\", \"com.ezt.wl.yearly\"]")
                 }
                 
             }
@@ -241,35 +222,12 @@ class MyStore: ObservableObject {
         
     }
     
-    func usingOnboardingSub2() -> Bool {
-        return UserDefaults.standard.bool(forKey:  "using_new_usb_in_onb")
-    }
-    
+  
     func isHasEvent() -> Bool{
         return UserDefaults.standard.bool(forKey:  "has_event")
     }
     
-    func getProductsIdFromRemote(productJsonStr : String){
-        
-        
-        
-        let data = Data(productJsonStr.utf8)
-        do {
-            if let products = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
-                DispatchQueue.main.async {
-                    
-                    
-                    self.productIdAllowShows = products
-                    self.fetchProducts()
-                }
-                
-            }
-        } catch _ as NSError {
-            self.productIdAllowShows = ["com.ezt.wl.monthly","com.ezt.wl.yearly"]
-            self.fetchProducts()
-        }
-    }
-    
+
     func isPro() -> Bool {
         return !purchasedIds.isEmpty
         
@@ -290,6 +248,9 @@ class MyStore: ObservableObject {
                         let productId = productttt.id
                         
                         switch productId {
+                        case IDProduct.WEEK_FT :
+                            self.weekFreeTrialProduct = productttt
+                            break
                         case IDProduct.WEEK_2 :
                             self.weekProductNotSale = productttt
                             break
@@ -369,6 +330,11 @@ class MyStore: ObservableObject {
                     case .verified(let trans):
                         DispatchQueue.main.async {
                             switch trans.productID {
+                            case IDProduct.WEEK_FT:
+                                self.purchasedIds.append(trans.productID)
+                                self.Firebase_log("Sub_buy_successful_1_weekly_freetrial")
+                                onBuySuccess(true)
+                                break
                             case IDProduct.WEEK_2:
                                 self.purchasedIds.append(trans.productID)
                                 self.Firebase_log("Sub_buy_successful_1_weekly(2)")

@@ -155,7 +155,7 @@ extension SpecialSubView{
                       .padding(.top, 8)
                     
                     Text("Auto-renewable, cancel anytime.")
-                      .font(Font.custom("SVN-Avo", size: 10))
+                        .mfont(10, .regular)
                       .multilineTextAlignment(.center)
                       .foregroundColor(.white)
                       .opacity(0.7)

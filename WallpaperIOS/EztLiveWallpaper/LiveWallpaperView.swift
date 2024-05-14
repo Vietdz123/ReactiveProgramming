@@ -1,5 +1,5 @@
 //
-//  EztLiveWallpaperView.swift
+//  LiveWallpaperView.swift
 //  WallpaperIOS
 //
 //  Created by Duc on 17/10/2023.
@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct EztLiveWallpaperView: View {
+struct LiveWallpaperView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel : LiveWallpaperViewModel
     
@@ -123,5 +123,5 @@ struct EztLiveWallpaperView: View {
 
 
 #Preview {
-    EztLiveWallpaperView()
+    LiveWallpaperView()
 }

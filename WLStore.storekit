@@ -489,6 +489,36 @@
           "referenceName" : "Yearly_Sale copy",
           "subscriptionGroupID" : "5CA6DDB4",
           "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "7.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "AF0F6C7D",
+          "introductoryOffer" : {
+            "displayPrice" : "0.99",
+            "internalID" : "7327191A",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ezt.wl.weekft",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Week FreeTrial",
+          "subscriptionGroupID" : "5CA6DDB4",
+          "type" : "RecurringSubscription"
         }
       ]
     }

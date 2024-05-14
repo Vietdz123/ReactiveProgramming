@@ -8,12 +8,12 @@
 import SwiftUI
 import SDWebImageSwiftUI
 struct LockThemeView: View {
-    @StateObject var viewModel : LockThemeViewModel = .init()
+    @EnvironmentObject var viewModel : LockThemeViewModel
     @Environment(\.presentationMode) var presentationMode
-//    @EnvironmentObject var reward : RewardAd
-//    @EnvironmentObject var store : MyStore
-//    @EnvironmentObject var interAd : InterstitialAdLoader
-//    @State var adStatus : AdStatus = .loading
+    @EnvironmentObject var reward : RewardAd
+    @EnvironmentObject var store : MyStore
+    @EnvironmentObject var interAd : InterstitialAdLoader
+    @State var adStatus : AdStatus = .loading
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -46,11 +46,12 @@ struct LockThemeView: View {
                             let string : String = wallpaper.thumbnail.first?.url.preview ?? ""
                             
                             NavigationLink(destination: {
-//                                SpWLDetailView(index: i)
-//                                    .environmentObject(viewModel as SpViewModel)
-//                                    .environmentObject(store)
-//                                    .environmentObject(interAd)
-//                                    .environmentObject(reward)
+                                
+                                LockThemeDetailView( index: i)
+                                    .environmentObject(store)
+                                    .environmentObject(viewModel)
+                                    .environmentObject(interAd)
+                                    .environmentObject(reward)
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
@@ -62,7 +63,7 @@ struct LockThemeView: View {
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                   
-                                 //   .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
 
                             })
                             .onAppear(perform: {
@@ -80,23 +81,14 @@ struct LockThemeView: View {
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .edgesIgnoringSafeArea(.bottom)
             .addBackground()
-//            .overlay(
-//                ZStack{
-//                    if store.allowShowBanner(){
-//                        BannerAdViewMain(adStatus: $adStatus)
-//                            
-//                    }
-//                }
-//                
-//                , alignment: .bottom
-//            )
-//            .onAppear{
-//                if !store.isPro(){
-//                    interAd.showAd(onCommit: {
-//                        
-//                    })
-//                }
-//            }
+
+            .onAppear{
+                if !store.isPro(){
+                    interAd.showAd(onCommit: {
+                        
+                    })
+                }
+            }
     }
 }
 

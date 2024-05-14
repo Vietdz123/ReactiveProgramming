@@ -21,7 +21,7 @@ struct SplashView: View {
     @StateObject var homeVM : HomeViewModel = .init()
     @State private var splash_process = 0.0
     
-    private let formViewControllerRepresentable = FormViewControllerRepresentable()
+ 
     
     let openAd : OpenAd = OpenAd()
     @Environment(\.scenePhase)  var scenePhase
@@ -35,8 +35,23 @@ struct SplashView: View {
     var body: some View {
         NavigationView{
             ZStack{
+                
+                
                 NavigationLink(destination:
-                                OnboardingVerTwoSubView()
+                                OnboardingView()
+                    .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarHidden(true)
+                    .environmentObject(homeVM)
+                    .environmentObject(myStore)
+                    .environmentObject(interAd)
+                    .environmentObject(rewardAd)
+                               , isActive: $appVM.navigateToOnboarding1, label: {
+                    EmptyView()
+                })
+                
+                
+                NavigationLink(destination:
+                                OnbooaringHasFreeTrial()
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarHidden(true)
                     .environmentObject(homeVM)
@@ -81,11 +96,19 @@ struct SplashView: View {
                 if splash_process == 100 {
                     
             
-                //   appVM.navigateToOnboarding2.toggle()
+                //appVM.navigateToOnboarding2.toggle()
+              //      appVM.navigateToHome.toggle()
             
-                //    MARK: start
+                    //MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-                        appVM.navigateToOnboarding2.toggle()
+                        let usingOnbHasFreetrial =   UserDefaults.standard.bool(forKey: "using_onb_has_freetrial")
+                        if usingOnbHasFreetrial {
+                            appVM.navigateToOnboarding2.toggle()
+                        }else{
+                            appVM.navigateToOnboarding1.toggle()
+                        }
+                        
+                        
                     }else{
                         
                         if myStore.isPro(){
@@ -102,7 +125,7 @@ struct SplashView: View {
                             })
                         }
                     }
-                //    MARK: end
+                    //MARK: end
                     
                 }
             })
@@ -181,21 +204,13 @@ struct SplashView_Previews: PreviewProvider {
 }
 
 
-struct FormViewControllerRepresentable: UIViewControllerRepresentable {
-  let viewController = UIViewController()
 
-  func makeUIViewController(context: Context) -> some UIViewController {
-    return viewController
-  }
-
-  func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-}
 
 
 class AppViewModel: ObservableObject {
     
     @Published var appGoBackground : Bool = true
-    @Published var navigateToOnboarding : Bool = false
+    @Published var navigateToOnboarding1 : Bool = false
     @Published var navigateToOnboarding2 : Bool = false
     @Published var navigateToHome : Bool = false
     @Published var hasLoadOpenAds : Bool = false

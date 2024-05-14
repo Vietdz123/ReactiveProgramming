@@ -171,10 +171,7 @@ struct ImageGenArtHanlderView: View {
                             .frame(width: 120, height: 96)
                       
                         Text("Zoom and Move to select the frame you want")
-                          .font(
-                            Font.custom("SVN-Avo", size: 11)
-                              .weight(.bold)
-                          )
+                            .mfont(11, .bold)
                           .multilineTextAlignment(.center)
                           .foregroundColor(.white)
                           .frame(width: 160, alignment: .top)

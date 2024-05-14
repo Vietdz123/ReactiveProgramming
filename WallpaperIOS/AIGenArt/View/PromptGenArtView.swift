@@ -92,13 +92,13 @@ struct PromptGenArtView: View {
                     
                         TextField(text: $textFieldVM.text, axis: .vertical, label: {
                             Text(placeHolderText)
-                                .font(Font.custom("SVN-Avo", size: 13))
+                                .mfont(13, .regular)
                                 .foregroundColor(.white.opacity(0.6))
                                
                         })
 
                         .fixedSize(horizontal: false, vertical: true)
-                            .font(Font.custom("SVN-Avo", size: 13))
+                        .mfont(13, .regular)
                             .submitLabel(SubmitLabel.return)
                             .lineLimit(nil)
                             .foregroundColor(.white)

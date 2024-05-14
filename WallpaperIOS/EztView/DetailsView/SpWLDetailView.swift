@@ -203,9 +203,17 @@ struct SpWLDetailView: View {
             }
             
         )
-        .fullScreenCover(isPresented: $showTuto , content: {
-            PosterContactTutoView()
-        })
+        .overlay{
+               if ctrlViewModel.showRateView {
+                   EztRateView(onClickSubmit5star: {
+                       ctrlViewModel.showRateView = false
+                       rateApp()
+                   }, onClickNoThanksOrlessthan5: {
+                       ctrlViewModel.showRateView = false
+                   })
+               }
+           }
+
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
                 .environmentObject(store)
@@ -411,7 +419,7 @@ extension SpWLDetailView{
             
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
                 .offset(y : viewModel.wallpapers[index].specialContentV2ID == 6 ?  16 : 0)
@@ -440,14 +448,15 @@ extension SpWLDetailView{
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-
-                      showTuto1stTime()
-                        
-                        let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                        UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if downloadCount == 2 {
-                            showRateView()
-                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                   showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                       ctrlViewModel.showRateView = true
+                                                   }, onShowGifView: {
+                                                       ctrlViewModel.showGifView.toggle()
+                                                       ctrlViewModel.changeSubType()
+                                                   })
+                                               })
+                     
                     }else{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "xmark", color: .red, mess: "Download Failure!")
@@ -463,19 +472,7 @@ extension SpWLDetailView{
         
     }
     
-    func showTuto1stTime() {
-        if viewModel.wallpapers[index].specialContentV2ID == 6 {
-            let show = UserDefaults.standard.bool(forKey: "showTuto_poster_contact_1st")
-            if show == false{
-                UserDefaults.standard.set(true, forKey: "showTuto_poster_contact_1st")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                    showTuto.toggle()
-                })
-            }
-        }
-      
-        
-    }
+
     
   
 }

@@ -38,6 +38,8 @@
 		<string>bold.ttf</string>
 		<string>italic.ttf</string>
 		<string>regular.ttf</string>
+       
+             
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

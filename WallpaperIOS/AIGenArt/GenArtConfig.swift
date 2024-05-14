@@ -13,11 +13,11 @@ struct GenArtConfig {
     static let sendImageToServerURL = "https://api.ezedit.ai/api/v1/stable-diffusion/img2img"
     static let sendPromptToServerURL = "https://api.ezedit.ai/api/v1/stable-diffusion/txt2img"
     static let getImageServerURL = "https://api.ezedit.ai/api/v1/queues-ai/"
-    static let getAllModelURL = "https://api.ezedit.ai/api/v1/stable-models?order_by=order+desc,id+desc&fields=id,thumbnails,name"
+    static let getAllModelURL = "https://api.ezedit.ai/api/v1/stable-models?order_by=order+desc,id+desc&fields=id,thumbnails,name&app=5"
     static let forbiddenURL = "https://api.ezedit.ai/api/v1/configurations?fields=key,value&where=key+stb_prompt_filter"
     
     static var forbiddenKeywords : [String] = []
-//  static var forbiddenKeywords : [String] = ["nude","sexy","pussy","dick","tit","sex","ass","no bra","no shirt","no pants","don't wear clothes","shirtless","18+","porn","erotica","sexual","naked","nud", "sucbucus"]
+
     
     static let errorToast : String = "Error"
     

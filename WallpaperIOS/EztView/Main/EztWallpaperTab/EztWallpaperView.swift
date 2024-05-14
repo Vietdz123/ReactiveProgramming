@@ -14,14 +14,10 @@ import SwiftUI
 enum WallpaperTab : String, CaseIterable{
     case ForYou = "For You"
     case Special = "Special"
+    case LockScreenTheme = "Lockscreen Packs"
     case Category = "Category"
-//    case ShufflePack = "Shuffle Pack"
-//    case DepthEffect = "Depth Effect"
-//    case WatchFace = "Watch Face"
-//    case LightingEffect = "Lighting Effect"
-//    case PosterContact = "Post Contact"
-//    case DynamicIsland = "Dynamic Island"
-//    case Live = "Live Wallpapers"
+
+
 }
 
 
@@ -62,12 +58,18 @@ struct EztWallpaperView: View {
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .tag(WallpaperTab.ForYou)
+             
                 EztSpecialView(showGift : $showGift)
                     .environmentObject(catalogVM)
                     .environmentObject(rewardAd)
                     .environmentObject(interAd)
                     .environmentObject(store)
                     .tag(WallpaperTab.Special)
+                EztLockThemeScreenView()
+                    .environmentObject(rewardAd)
+                    .environmentObject(interAd)
+                    .environmentObject(store)
+                    .tag(WallpaperTab.LockScreenTheme)
                 EztCategoryView()
                     .environmentObject(rewardAd)
                     .environmentObject(interAd)
@@ -88,65 +90,71 @@ struct EztWallpaperView: View {
 
 extension EztWallpaperView{
     func TabControllView() -> some View{
-      
-           
-                HStack(spacing : 16){
-                    ForEach(WallpaperTab.allCases, id : \.rawValue){
-                        tab in
-                        
-                        Text(tab.rawValue.toLocalize())
-                            .mfont(13, currentTab == tab ? .bold : .regular)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                          
-                            .id(tab)
-                            .frame(height : 32)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                ZStack{
-                                    Capsule()
-                                        .fill(
-                                            Color.white.opacity(0.1)
-                                        )
-                                    
-                                    if currentTab == tab{
-                                        
+        ScrollViewReader {
+            reader in
+            ScrollView(.horizontal, showsIndicators: false){
+                    HStack(spacing : 16){
+                        ForEach(WallpaperTab.allCases, id : \.rawValue){
+                            tab in
+                            
+                            Text(tab.rawValue.toLocalize())
+                                .mfont(13, currentTab == tab ? .bold : .regular)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                                .id(tab)
+                                .frame(height : 32)
+                               
+                                .background(
+                                    ZStack{
                                         Capsule()
                                             .fill(
-                                                LinearGradient(
-                                                    stops: [
-                                                        Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                                        Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                                        Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                                    ],
-                                                    startPoint: UnitPoint(x: 0, y: 1.38),
-                                                    endPoint: UnitPoint(x: 1, y: -0.22)
-                                                )
+                                                Color.white.opacity(0.1)
                                             )
-                                            .matchedGeometryEffect(id: "TAB_WL", in: anim)
                                         
+                                        if currentTab == tab{
+                                            
+                                            Capsule()
+                                                .fill(
+                                                    LinearGradient(
+                                                        stops: [
+                                                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                        ],
+                                                        startPoint: UnitPoint(x: 0, y: 1.38),
+                                                        endPoint: UnitPoint(x: 1, y: -0.22)
+                                                    )
+                                                )
+                                                .matchedGeometryEffect(id: "TAB_WL", in: anim)
+                                            
+                                            
+                                        }
                                         
                                     }
+                                 
+                                )
+                                .contentShape(Rectangle())
+                                .onTapGesture{
+                                    withAnimation{
+                                        currentTab = tab
+                                    }
+                                   
+                                  
                                     
                                 }
-                             
-                            )
-                            .contentShape(Rectangle())
-                            .onTapGesture{
-                                withAnimation{
-                                    currentTab = tab
-                                }
-                               
-                              
-                                
-                            }
+                            
+                        }
+                        
                         
                     }
-                    
-                    
-                }.padding(.horizontal, 16)
-         
-       
+                    .padding(.horizontal, 16)
+                    .onChange(of: currentTab , perform: { value in
+                        reader.scrollTo(value, anchor: .center)
+                    })
+            }
+        }
+      
       
         
     }

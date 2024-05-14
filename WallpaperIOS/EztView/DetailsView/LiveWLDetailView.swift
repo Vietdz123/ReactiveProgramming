@@ -20,8 +20,7 @@ struct LiveWLView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @AppStorage("current_coin", store: .standard) var currentCoin = 0
-    //@AppStorage("first_time_video_wl", store: .standard) var firsttimeliveWL : Bool = true
-    @State var firsttimeliveWL : Bool = false
+
     
     @State var currentIndex : Int = 0
     @State var adStatus : AdStatus = .loading
@@ -51,9 +50,9 @@ struct LiveWLView: View {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let livewallpaper = viewModel.wallpapers[i]
-                            ReelsPlayer( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
+                            ReelsPlayerHorizontal( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
                                 .frame(width: size.width)
-                                .rotationEffect(.init(degrees: -90))
+                            //    .rotationEffect(.init(degrees: -90))
                                 .ignoresSafeArea(.all)
                                 .tag(i)
                                 .onAppear(perform: {
@@ -74,7 +73,7 @@ struct LiveWLView: View {
                         }
                         
                     }
-                    .rotationEffect(.init(degrees: 90))
+                   // .rotationEffect(.init(degrees: 90))
                     .frame(width: size.height)
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .frame(width: size.width)
@@ -92,47 +91,11 @@ struct LiveWLView: View {
                         
                     }
                     
-                    
-                
-                    
-                    if firsttimeliveWL {
-                        
-                        ResizableLottieView(filename: "viewmore")
-                            .frame(width: getRect().width - 60)
-                            .onAppear(perform: {
-                                ctrlViewModel.showControll = false
-                                
-                                
-                            })
-                            .onDisappear(perform: {
-                                ctrlViewModel.showControll = true
-                                
-                            })
-                            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                                .onEnded({ value in
-                                    
-                                    if value.translation.height < 0 {
-                                        firsttimeliveWL = false
-                                    }
-                                    
-                                    if value.translation.height > 0 {
-                                        firsttimeliveWL = false
-                                    }
-                                }))
-                        
-                    }
-                    
-                    
+
                     
                 }
             }
-            .onAppear(perform: {
-                let firstTime = UserDefaults.standard.bool(forKey: "first_time_video_wl")
-                if !firstTime {
-                    UserDefaults.standard.set(true, forKey:  "first_time_video_wl")
-                    firsttimeliveWL = true
-                }
-            })
+       
             
             
             
@@ -176,6 +139,16 @@ struct LiveWLView: View {
                 })
             }
         }
+        .overlay{
+                   if ctrlViewModel.showRateView {
+                       EztRateView(onClickSubmit5star: {
+                           ctrlViewModel.showRateView = false
+                           rateApp()
+                       }, onClickNoThanksOrlessthan5: {
+                           ctrlViewModel.showRateView = false
+                       })
+                   }
+               }
         
         
         
@@ -311,7 +284,7 @@ struct LiveWLView: View {
             
                         ZStack{
                             if store.allowShowBanner(){
-                                BannerAdViewMain(adStatus: $adStatus)
+                                BannerAdViewInDetail(adStatus: $adStatus)
                             }
                         }.frame(height: GADAdSizeBanner.size.height)
             
@@ -416,6 +389,14 @@ struct LiveWLView: View {
                         ctrlViewModel.isDownloading = false
                         if success{
                             showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                           ctrlViewModel.showRateView = true
+                                                       }, onShowGifView: {
+                                                           ctrlViewModel.showGifView.toggle()
+                                                           ctrlViewModel.changeSubType()
+                                                       })
+                                                   })
                             print("LivePhoto convert success")
                         }else{
                             showToastWithContent(image: "xmark", color: .green, mess: "Failure")

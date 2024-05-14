@@ -57,10 +57,7 @@ struct EztDepthEffectView: View {
                         
                         HStack(spacing : 0){
                             Text("Depth Effect Category")
-                              .font(
-                                Font.custom("SVN-Avo", size: 20)
-                                  .weight(.bold)
-                              )
+                                .mfont(20, .bold)
                               .foregroundColor(.white)
                               .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
                               .padding(.leading, 16)

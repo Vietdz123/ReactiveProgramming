@@ -1158,7 +1158,6 @@ extension EztHomeView{
                 
                 NavigationLink(destination: {
                     EztLiveWallpaperView()
-                        .environmentObject(liveWlVM)
                         .environmentObject(store)
                         .environmentObject(rewardAd)
                         .environmentObject(interAd)

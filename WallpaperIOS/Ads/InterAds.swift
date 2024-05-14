@@ -23,7 +23,8 @@ import UIKit
 
  class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate {
     @Published var interstitial: GADInterstitialAd?
-     
+ 
+     private var allowShowInter : Bool = false
  
     private var timeShowPrev : Int = 0
     private var onComplete: ( () -> () )?
@@ -97,6 +98,12 @@ import UIKit
      }
 
     func showAd( onCommit: @escaping () -> ()  ){
+        if !allowShowInter {
+            allowShowInter = true
+            timeShowPrev = Date().currentTimeMillis()
+            onCommit()
+            return
+        }
         let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
         self.onComplete = onCommit
         

@@ -143,7 +143,7 @@ struct ResultPromptGenArtView: View {
                             VStack{
                                 TextField(text: $textFieldVM.text, axis: .vertical, label: {
                                     
-                                }).font(Font.custom("SVN-Avo", size: 13))
+                                }) .mfont(13, .regular)
                                     .lineLimit(10)
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.leading)
@@ -219,10 +219,7 @@ struct ResultPromptGenArtView: View {
                                     .overlay(alignment : .topTrailing ){
                                         if allowGenMore && !store.isPro(){
                                             Text("1")
-                                                .font(
-                                                    Font.custom("SVN-Avo", size: 11)
-                                                        .weight(.bold)
-                                                )
+                                                .mfont(11, .bold)
                                                 .multilineTextAlignment(.center)
                                                 .foregroundColor(.white)
                                                 .frame(width: 16, height: 16, alignment: .center)

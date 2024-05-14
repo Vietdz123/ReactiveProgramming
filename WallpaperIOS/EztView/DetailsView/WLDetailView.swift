@@ -32,6 +32,7 @@ class ControllViewModel : ObservableObject {
     @Published var showContentPremium : Bool = false
     
     
+    @Published var showRateView : Bool = false
     @Published var showGifView : Bool = false
     
     
@@ -189,6 +190,16 @@ struct WLView: View {
                 GiftView()
             }
         }
+        .overlay{
+            if ctrlViewModel.showRateView {
+                EztRateView(onClickSubmit5star: {
+                    ctrlViewModel.showRateView = false
+                    rateApp()
+                }, onClickNoThanksOrlessthan5: {
+                    ctrlViewModel.showRateView = false
+                })
+            }
+        }
       
     }
     
@@ -321,7 +332,7 @@ struct WLView: View {
             
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
             
@@ -403,28 +414,17 @@ struct WLView: View {
                     success in
                     if success{
                         ctrlViewModel.isDownloading = false
+                        showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
                        
-                       
                         
-                        let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                        UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-          
-                        
-                        if downloadCount == 1 {
-                            showRateView()
-                        }else{
-                            if !store.isPro()  {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                                    ctrlViewModel.showGifView.toggle()
-                                    ctrlViewModel.changeSubType()
-                                })
-                               
-                             }
-                        }
-                        
-                        DispatchQueue.main.async {
-                            showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                ctrlViewModel.showRateView = true
+                            }, onShowGifView: {
+                                ctrlViewModel.showGifView.toggle()
+                                ctrlViewModel.changeSubType()
+                            })
+                        })
 
                     }else{
                         ctrlViewModel.isDownloading = false

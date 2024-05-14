@@ -20,6 +20,8 @@ struct SlideMenuView: View {
     
     
     @State var showNotificationOpt : Bool = false
+    @State var showRateView : Bool = false
+    
     
     var body: some View {
         ZStack{
@@ -129,27 +131,27 @@ struct SlideMenuView: View {
                                 
                             })
                             
-                            
-                            Button(action: {
-                                
-                                
-                              rateApp()
-                            }, label: {
-                                HStack{
-                                    Image("slide_star")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
-                                        .padding(16)
+                            if UserDefaults.standard.bool(forKey: "user_click_button_submit_in_rateview") == false{
+                                Button(action: {
+                                    showRateView.toggle()
+                                }, label: {
+                                    HStack{
+                                        Image("slide_star")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                            .padding(16)
+                                        
+                                        Text("Rating Wallive")
+                                            .mfont(17, .regular)
+                                            .foregroundColor(.white)
+                                        
+                                        
+                                    }.frame(maxWidth: .infinity, alignment: .leading)
+                                        .frame(height: 56)
                                     
-                                    Text("Rating Wallive")
-                                        .mfont(17, .regular)
-                                        .foregroundColor(.white)
-                                    
-                                    
-                                }.frame(maxWidth: .infinity, alignment: .leading)
-                                    .frame(height: 56)
-                                
-                            })
+                                })
+                            }
+                         
                             
                             NavigationLink(destination: {
                                 TutorialContentView()
@@ -397,20 +399,22 @@ struct SlideMenuView: View {
                 }
             })
         }
-        
-        
-        
-    }
-    
-    func rateApp() {
-        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id\(appId)?mt=8&action=write-review") else { return }
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(url)
+        .overlay{
+            if showRateView{
+                EztRateView(onClickSubmit5star: {
+                    showRateView = false
+                    rateApp()
+                }, onClickNoThanksOrlessthan5: {
+                    showRateView = false
+                })
+            }
         }
+        
+        
+        
     }
     
+
   
 }
 

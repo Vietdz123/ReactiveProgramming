@@ -8,13 +8,24 @@
 import SwiftUI
 import WidgetKit
 
-@available(iOS 17.0, *)
+
 @main
 struct WidgetEztttExtension: WidgetBundle {
     var body: some Widget {
-        WidgetEzttt()
-        HealthWidget()
-      
+
+        if #available(iOSApplicationExtension 17.0, *) {
+            return WidgetBundleBuilder.buildBlock(WidgetEzttt(),
+                                                  HealthWidget(),
+                                                  LockRectangleWidgetIOS16(),
+                                                  LockSquareWidgetIOS16(),
+                                                  LockInlineWidgetIOS16())
+
+           
+        } else  {
+            return WidgetBundleBuilder.buildBlock(LockRectangleWidgetIOS16(),
+                                                  LockSquareWidgetIOS16(),
+                                                  LockInlineWidgetIOS16())
+        }
         
     }
 }   

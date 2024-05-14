@@ -193,7 +193,7 @@ struct WatchFaceDetailView: View {
                 .padding(.bottom, store.allowShowBanner() ? 24 : 40)
                 
                 if store.allowShowBanner(){
-                    BannerAdViewMain(adStatus: $adStatus)
+                    BannerAdViewInDetail(adStatus: $adStatus)
                         .padding(.bottom, getSafeArea().bottom)
                 }
                 
@@ -244,6 +244,16 @@ struct WatchFaceDetailView: View {
                 }
             }
         })
+        .overlay{
+                   if ctrlViewModel.showRateView {
+                       EztRateView(onClickSubmit5star: {
+                           ctrlViewModel.showRateView = false
+                           rateApp()
+                       }, onClickNoThanksOrlessthan5: {
+                           ctrlViewModel.showRateView = false
+                       })
+                   }
+               }
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
         })
@@ -266,12 +276,14 @@ struct WatchFaceDetailView: View {
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                        if UserDefaults.standard.bool(forKey: "firsttime_showtuto_watchface") == false {
-                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                showTuto.toggle()
-                            })
-                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                   showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                       ctrlViewModel.showRateView = true
+                                                   }, onShowGifView: {
+                                                       ctrlViewModel.showGifView.toggle()
+                                                       ctrlViewModel.changeSubType()
+                                                   })
+                                               })
                         
                      
                     }else{

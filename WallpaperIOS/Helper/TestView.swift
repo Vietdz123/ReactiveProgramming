@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+#Preview {
+    OOOOASD()
+}
+
+
+struct OOOOASD : View {
+    var body: some View {
+        VStack{
+            Text("0.62$/Week")
+                .font(.system(size: 20).weight(.semibold))
+                .foregroundStyle(
+                    LinearGradient(colors: [Color.init(hex: "FFB665")!, Color.init(hex: "FF5479")!, Color.init(hex: "584FFF")! ],
+                                   startPoint: .leading,
+                                   endPoint: .trailing)
+                
+                )
+        }
+    }
+}
+
 //extension View {
 //    func snapshot() -> UIImage {
 //        let controller = UIHostingController(rootView: self)

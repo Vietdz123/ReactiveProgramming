@@ -367,5 +367,38 @@ extension View{
         .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
     }
     
+    func PlaceHolderListLoadForTheme() -> some View{
+        ScrollView(.horizontal, showsIndicators: false){
+            HStack(spacing : 8){
+                
+                
+                placeHolderImage()
+                    .frame(width: 160, height: 160 * 2.2)
+                    .clipped()
+                    .cornerRadius(8)
+                
+                LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
+                    ForEach(1..<15, content: {
+                        i in
+                        
+                        placeHolderImage()
+                            .frame(width: 78, height: 78 * 2.2)
+                            .clipped()
+                            .cornerRadius(8)
+                        
+                        
+                        
+                    })
+                })
+            }
+            
+            
+        }
+        .frame(height: 160 * 2.2)
+        .padding(.horizontal, 16)
+        .disabled(/*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
+    }
+    
+    
 }
 

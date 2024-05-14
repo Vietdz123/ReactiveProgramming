@@ -36,16 +36,42 @@ struct AppConfig {
 }
 
 extension View{
-    func showRateView(){
-        let allowShowRate : Bool = UserDefaults.standard.bool(forKey: "allow_show_rate")
-        let saveDateShowRate = UserDefaults.standard.string(forKey: "showrate_date") ?? ""
-        if saveDateShowRate != Date().toString(format: "dd/MM/yyyy") {
-            UserDefaults.standard.set(Date().toString(format: "dd/MM/yyyy"), forKey: "showrate_date")
-            if allowShowRate && Date().toString(format: "dd/MM/yyyy") != AppConfig.getDateInstall() {
-                SKStoreReviewController.requestReview()
+   
+    func showActionAfterDownload(isUserPro : Bool,
+                                 onShowRate:@escaping () -> (),
+                                 onShowGifView: @escaping () -> ()   ){
+        //MARK: set download count +1
+        let downloadCount = UserDefaults.standard.integer(forKey: "download_count_all")
+        UserDefaults.standard.set(downloadCount + 1, forKey: "download_count_all")
+        let allowShow : Bool = (UserDefaults.standard.bool(forKey: "user_click_button_submit_in_rateview") == false )
+        if isUserPro {
+            if allowShow {
+                onShowRate()
+            }
+        }else{
+            if downloadCount % 2 == 0 {
+                onShowGifView()
+            }else{
+                if allowShow {
+                    onShowRate()
+                }else{
+                    onShowGifView()
+                }
             }
         }
+        
+        
     }
+    
+    func rateApp() {
+        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id\(AppConfig.APP_IN_STORE_ID)?mt=8&action=write-review") else { return }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
 }
 
 

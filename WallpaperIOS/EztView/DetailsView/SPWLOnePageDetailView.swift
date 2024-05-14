@@ -187,6 +187,16 @@ struct SPWLOnePageDetailView: View {
             }
             
         )
+        .overlay{
+                 if ctrlViewModel.showRateView {
+                     EztRateView(onClickSubmit5star: {
+                         ctrlViewModel.showRateView = false
+                         rateApp()
+                     }, onClickNoThanksOrlessthan5: {
+                         ctrlViewModel.showRateView = false
+                     })
+                 }
+             }
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
                 .environmentObject(store)
@@ -342,7 +352,7 @@ extension SPWLOnePageDetailView{
             
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
             
@@ -395,18 +405,14 @@ extension SPWLOnePageDetailView{
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-//                        if UserDefaults.standard.bool(forKey: "firsttime_showtuto") == false {
-//                            UserDefaults.standard.set(true, forKey: "firsttime_showtuto")
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                                ctrlViewModel.showTutorial = true
-//                            })
-//                        }
-                        
-                        let downloadCount = UserDefaults.standard.integer(forKey: "user_download_count")
-                        UserDefaults.standard.set(downloadCount + 1, forKey: "user_download_count")
-                        if downloadCount == 1 {
-                            showRateView()
-                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                   showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                       ctrlViewModel.showRateView = true
+                                                   }, onShowGifView: {
+                                                       ctrlViewModel.showGifView.toggle()
+                                                       ctrlViewModel.changeSubType()
+                                                   })
+                                               })
                     }else{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "xmark", color: .red, mess: "Download Failure!")

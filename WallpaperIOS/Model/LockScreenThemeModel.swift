@@ -22,8 +22,10 @@ struct LockScreenObj: Codable {
     let trend: Int
     let thumbnail: [LockThumbnail]
     let active, category_id: Int
+    
+    let `private` : Int
 
-
+   
 
 }
 
@@ -36,8 +38,9 @@ struct LockContent: Codable {
 struct ContentData: Codable {
     let images: [LockThumbnail]?
     let fontID, fontSize: Int?
-    let background: [String]?
+    let background: [LockThumbnail]?
     let contentInline: String?
+    let delayAnimation: Int?
 
     enum CodingKeys: String, CodingKey {
         case images
@@ -45,6 +48,7 @@ struct ContentData: Codable {
         case fontSize = "font_size"
         case background
         case contentInline = "content_inline"
+        case delayAnimation = "delay_animation"
     }
 }
 

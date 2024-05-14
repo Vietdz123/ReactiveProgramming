@@ -220,7 +220,7 @@ struct PreviewWidgetSheet: View {
                 
                 
                 if storeVM.allowShowBanner(){
-                    BannerAdViewMain(adStatus: $adStatus)
+                    BannerAdViewInDetail(adStatus: $adStatus)
                         .padding(.bottom, getSafeArea().bottom)
                 }
                 

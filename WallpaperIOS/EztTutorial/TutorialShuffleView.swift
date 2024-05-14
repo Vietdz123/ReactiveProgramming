@@ -46,10 +46,7 @@ struct TutorialShuffleView: View {
               )
             
             Text("How to Set Shuffle Pack")
-              .font(
-                Font.custom("SVN-Avo", size: 17)
-                  .weight(.bold)
-              )
+                .mfont(17, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(Color.main)
               .padding(.top, 16)
