@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Lottie
+
 struct LockThemeView: View {
     @EnvironmentObject var viewModel : LockThemeViewModel
     @Environment(\.presentationMode) var presentationMode
@@ -43,7 +45,7 @@ struct LockThemeView: View {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let  wallpaper = viewModel.wallpapers[i]
-                            let string : String = wallpaper.thumbnail.first?.url.preview ?? ""
+                            let string : String = wallpaper.thumbnail.first?.url.full ?? ""
                             
                             NavigationLink(destination: {
                                 
@@ -53,16 +55,31 @@ struct LockThemeView: View {
                                     .environmentObject(interAd)
                                     .environmentObject(reward)
                             }, label: {
-                                WebImage(url: URL(string: string))
-                                    .resizable()
-                                    .placeholder {
-                                        placeHolderImage()
-                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                ZStack{
+                                    if string.contains(".json"){
+                                        if let url = URL(string: string){
+                                            LottieView {
+                                                await LottieAnimation.loadedFrom(url:  url )
+                                            } .looping()
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                               
+                                        }
+
+                                    }else{
+                                        WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
+                                            .resizable()
+                                            .placeholder {
+                                                placeHolderImage()
+                                                    .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                            }
+                                          
+                                            .scaledToFill()
                                     }
-                                    .scaledToFill()
-                                    .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                   
+                                }  .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
                                     .cornerRadius(8)
-                                  
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
 
                             })

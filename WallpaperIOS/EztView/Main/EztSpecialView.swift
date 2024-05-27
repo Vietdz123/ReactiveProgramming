@@ -987,6 +987,7 @@ extension EztSpecialView{
                                     
                                     NavigationLink(destination: {
                                         LiveWLView(currentIndex : i)
+                                      //  LocalLiveVideoDetailsView(currentIndex : i)
                                             .navigationBarTitle("", displayMode: .inline)
                                             .navigationBarHidden(true)
                                             .environmentObject(liveWlVM)

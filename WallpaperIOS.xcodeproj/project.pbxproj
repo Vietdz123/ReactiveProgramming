@@ -200,7 +200,6 @@
 		8978310B2BEA1F3900621B9A /* WidgetIntentIOS16.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 897830F12BEA1F3800621B9A /* WidgetIntentIOS16.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		897831132BEA1FEB00621B9A /* ConfigureAppIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 897830EA2BEA1EB800621B9A /* ConfigureAppIntent.intentdefinition */; };
 		897831152BEA1FF400621B9A /* WidgetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 893A52FE2B1828CB0079DFF1 /* WidgetModel.xcdatamodeld */; };
-		897831162BEA204500621B9A /* Wallpaper_WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53482B182A300079DFF1 /* Wallpaper_WidgetBundle.swift */; };
 		897831452BEA20FC00621B9A /* LockInlineWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897831192BEA20FB00621B9A /* LockInlineWidget.swift */; };
 		897831462BEA20FC00621B9A /* LockInlineWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897831192BEA20FB00621B9A /* LockInlineWidget.swift */; };
 		897831472BEA20FC00621B9A /* InlineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8978311B2BEA20FB00621B9A /* InlineProvider.swift */; };
@@ -272,11 +271,7 @@
 		8978318A2BEA221400621B9A /* WDNetworkHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53252B1829490079DFF1 /* WDNetworkHomeModel.swift */; };
 		8978318B2BEA223700621B9A /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53652B182C270079DFF1 /* Constant.swift */; };
 		8978318C2BEA225300621B9A /* ItemExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53162B1828F10079DFF1 /* ItemExtension.swift */; };
-		8978318D2BEA232500621B9A /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53512B182AA60079DFF1 /* AppIntent.swift */; };
 		8978318E2BEA233300621B9A /* AppIntity+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53532B182AA70079DFF1 /* AppIntity+Query.swift */; };
-		8978318F2BEA237A00621B9A /* SourceMakerIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53562B182AA70079DFF1 /* SourceMakerIntent.swift */; };
-		897831902BEA23CE00621B9A /* HomeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A535F2B182AB90079DFF1 /* HomeProvider.swift */; };
-		897831912BEA23D200621B9A /* EntryHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53622B182B3B0079DFF1 /* EntryHome.swift */; };
 		897831922BEA241700621B9A /* CategoryHome+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A539E2B1834D90079DFF1 /* CategoryHome+CoreDataClass.swift */; };
 		897831932BEA241900621B9A /* CategoryHome+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A539F2B1834D90079DFF1 /* CategoryHome+CoreDataProperties.swift */; };
 		897831942BEA243000621B9A /* CategoryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53182B1828F10079DFF1 /* CategoryExtension.swift */; };
@@ -284,11 +279,9 @@
 		897831962BEA243900621B9A /* HealthExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53172B1828F10079DFF1 /* HealthExtension.swift */; };
 		897831972BEA245200621B9A /* ButtonCheckListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53242B1829490079DFF1 /* ButtonCheckListModel.swift */; };
 		897831982BEA246D00621B9A /* ImageDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A534E2B182A880079DFF1 /* ImageDataViewModel.swift */; };
-		897831992BEA247D00621B9A /* ExtensionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A535E2B182AB90079DFF1 /* ExtensionProvider.swift */; };
 		8978319A2BEA257400621B9A /* WeekendDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53272B1829490079DFF1 /* WeekendDayModel.swift */; };
 		8978319C2BEA25DF00621B9A /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8978319B2BEA25DF00621B9A /* DateService.swift */; };
 		8978319D2BEA25DF00621B9A /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8978319B2BEA25DF00621B9A /* DateService.swift */; };
-		8978319E2BEA264600621B9A /* MView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8994BBD02AEA5198003D45A8 /* MView.swift */; };
 		8978319F2BEA265A00621B9A /* ChangeBackgroundIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53522B182AA70079DFF1 /* ChangeBackgroundIntent.swift */; };
 		897831A02BEA26AD00621B9A /* RandomRoutinButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53542B182AA70079DFF1 /* RandomRoutinButtonIntent.swift */; };
 		897831A12BEA26BA00621B9A /* SingleRoutineButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A53552B182AA70079DFF1 /* SingleRoutineButtonIntent.swift */; };
@@ -328,6 +321,7 @@
 		898677492AF0ED7500E25E1D /* WidgetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898677482AF0ED7500E25E1D /* WidgetListView.swift */; };
 		8986774B2AF0FC3F00E25E1D /* video4v2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8986774A2AF0FC3F00E25E1D /* video4v2.mp4 */; };
 		8986774D2AF0FC4700E25E1D /* video1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8986774C2AF0FC4700E25E1D /* video1.mp4 */; };
+		898710512BF2FDF30068FD70 /* LocalLiveVideoDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898710502BF2FDF30068FD70 /* LocalLiveVideoDetailsView.swift */; };
 		8988A52E2AE60E9000D5F04D /* GiftSub_1_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8988A52D2AE60E9000D5F04D /* GiftSub_1_View.swift */; };
 		8988A5302AE61CE700D5F04D /* GiftSub_2_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8988A52F2AE61CE700D5F04D /* GiftSub_2_View.swift */; };
 		8988A5322AE61D2900D5F04D /* GifSub_3_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8988A5312AE61D2900D5F04D /* GifSub_3_View.swift */; };
@@ -646,6 +640,7 @@
 		898677482AF0ED7500E25E1D /* WidgetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetListView.swift; sourceTree = "<group>"; };
 		8986774A2AF0FC3F00E25E1D /* video4v2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video4v2.mp4; sourceTree = "<group>"; };
 		8986774C2AF0FC4700E25E1D /* video1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video1.mp4; sourceTree = "<group>"; };
+		898710502BF2FDF30068FD70 /* LocalLiveVideoDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLiveVideoDetailsView.swift; sourceTree = "<group>"; };
 		8988A52D2AE60E9000D5F04D /* GiftSub_1_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftSub_1_View.swift; sourceTree = "<group>"; };
 		8988A52F2AE61CE700D5F04D /* GiftSub_2_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftSub_2_View.swift; sourceTree = "<group>"; };
 		8988A5312AE61D2900D5F04D /* GifSub_3_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifSub_3_View.swift; sourceTree = "<group>"; };
@@ -1261,6 +1256,7 @@
 				049D37B62A1B1AD100AF5BD5 /* VideoListView.swift */,
 				890BFC3A2ADE739A00C28F6C /* LiveWallpaperView.swift */,
 				896EF69B2BEB55CB000F0CEC /* EztLiveWallpaperView.swift */,
+				898710502BF2FDF30068FD70 /* LocalLiveVideoDetailsView.swift */,
 			);
 			path = EztLiveWallpaper;
 			sourceTree = "<group>";
@@ -1894,6 +1890,7 @@
 				8974AB132BCD15EB009B020F /* Converter4Image.swift in Sources */,
 				0495232329F7D407004538DD /* ScrollOffsetModifier.swift in Sources */,
 				893A53A92B1834DD0079DFF1 /* CategoryHome+CoreDataProperties.swift in Sources */,
+				898710512BF2FDF30068FD70 /* LocalLiveVideoDetailsView.swift in Sources */,
 				8994BB772AEA04E5003D45A8 /* PreviewWidgetSheet.swift in Sources */,
 				04C1262E2A862FDB002ED9BC /* ShuffleTutoView.swift in Sources */,
 				898C39DF2B04B6CE00EFAA31 /* AdsConfig.swift in Sources */,
@@ -1985,14 +1982,11 @@
 			files = (
 				897831892BEA220F00621B9A /* WDHomeFolderType.swift in Sources */,
 				8978316C2BEA20FC00621B9A /* ExtensionRectangleProvider.swift in Sources */,
-				8978318D2BEA232500621B9A /* AppIntent.swift in Sources */,
 				8978318E2BEA233300621B9A /* AppIntity+Query.swift in Sources */,
 				897831982BEA246D00621B9A /* ImageDataViewModel.swift in Sources */,
 				897831862BEA21FC00621B9A /* CoreDataService.swift in Sources */,
-				897831912BEA23D200621B9A /* EntryHome.swift in Sources */,
 				897831A02BEA26AD00621B9A /* RandomRoutinButtonIntent.swift in Sources */,
 				897831522BEA20FC00621B9A /* SquareProvider.swift in Sources */,
-				897831992BEA247D00621B9A /* ExtensionProvider.swift in Sources */,
 				897831562BEA20FC00621B9A /* LockSquareWidget.swift in Sources */,
 				897831542BEA20FC00621B9A /* ExtensionSquareProvider.swift in Sources */,
 				897831942BEA243000621B9A /* CategoryExtension.swift in Sources */,
@@ -2002,7 +1996,6 @@
 				8978319D2BEA25DF00621B9A /* DateService.swift in Sources */,
 				897831602BEA20FC00621B9A /* SquareBackgroundView.swift in Sources */,
 				8978315E2BEA20FC00621B9A /* SquareViewModel.swift in Sources */,
-				8978319E2BEA264600621B9A /* MView.swift in Sources */,
 				897831502BEA20FC00621B9A /* InlineWidgetView.swift in Sources */,
 				897831972BEA245200621B9A /* ButtonCheckListModel.swift in Sources */,
 				8978316E2BEA20FC00621B9A /* LockRectangleWidget.swift in Sources */,
@@ -2023,10 +2016,8 @@
 				8978317A2BEA20FC00621B9A /* RectCountdownView.swift in Sources */,
 				897831842BEA21DE00621B9A /* ItemHome+CoreDataClass.swift in Sources */,
 				897831822BEA20FC00621B9A /* LockPlaceHolderView.swift in Sources */,
-				8978318F2BEA237A00621B9A /* SourceMakerIntent.swift in Sources */,
 				897831832BEA21C000621B9A /* CategoryLockExtension.swift in Sources */,
 				897831782BEA20FC00621B9A /* RectangleViewModel.swift in Sources */,
-				897831902BEA23CE00621B9A /* HomeProvider.swift in Sources */,
 				897831802BEA20FC00621B9A /* RectBackgroundView.swift in Sources */,
 				8978316A2BEA20FC00621B9A /* RectangleProvider.swift in Sources */,
 				897831662BEA20FC00621B9A /* SquareQuoteView.swift in Sources */,
@@ -2037,7 +2028,6 @@
 				8978319F2BEA265A00621B9A /* ChangeBackgroundIntent.swift in Sources */,
 				897831622BEA20FC00621B9A /* SquareIconView.swift in Sources */,
 				897831A12BEA26BA00621B9A /* SingleRoutineButtonIntent.swift in Sources */,
-				897831162BEA204500621B9A /* Wallpaper_WidgetBundle.swift in Sources */,
 				897831952BEA243300621B9A /* DataController.swift in Sources */,
 				8978315C2BEA20FC00621B9A /* ChangeBackgroundSquareIntent.swift in Sources */,
 				8978314E2BEA20FC00621B9A /* LockInlineWidgetView.swift in Sources */,
@@ -2272,7 +2262,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -2295,7 +2285,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2321,7 +2311,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -2344,7 +2334,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";

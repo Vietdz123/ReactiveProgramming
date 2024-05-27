@@ -277,3 +277,4 @@ struct SearchView_Previews: PreviewProvider {
         SearchView()
     }
 }
+  

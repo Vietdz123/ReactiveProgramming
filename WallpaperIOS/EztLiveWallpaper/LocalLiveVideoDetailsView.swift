@@ -1,17 +1,18 @@
 //
-//  LiveWLView.swift
+//  LocalLiveVideoDetailsView.swift
 //  WallpaperIOS
 //
-//  Created by Mac on 07/06/2023.
+//  Created by Duc on 14/05/2024.
 //
+
 
 import SwiftUI
 import Photos
 import PhotosUI
 import AVKit
 import GoogleMobileAds
-
-struct LiveWLView: View {
+import SDWebImageSwiftUI
+struct LocalLiveVideoDetailsView: View {
     let generator = UINotificationFeedbackGenerator()
     @EnvironmentObject var viewModel  : LiveWallpaperViewModel
     @EnvironmentObject var store : MyStore
@@ -50,9 +51,37 @@ struct LiveWLView: View {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
                             let livewallpaper = viewModel.wallpapers[i]
-                            ReelsPlayerHorizontal( i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
-                                .frame(width: size.width)
-                            //    .rotationEffect(.init(degrees: -90))
+                            ZStack{
+                                WebImage(url: URL(string: livewallpaper.thumbnail.first?.path.full ?? ""))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: .infinity, maxHeight : .infinity)
+                                    .clipped()
+                                
+                                VisualEffectView(effect: UIBlurEffect(style: .dark))
+                                    .ignoresSafeArea()
+                                Text("Prepare Video")
+                                    .mfont(21, .bold, line: 1)
+                                    .foregroundStyle(eztGradientHori)
+                                    .onAppear(perform: {
+                                        let urlFile = getDocumentURL().appendingPathComponent("\(livewallpaper.id).mp4")
+                                        
+                                        if FileManager.default.fileExists(atPath: urlFile.path()){
+                                            viewModel.wallpapers[i].localVideoURLString = urlFile.absoluteString
+                                        }else{
+                                            
+                                        }
+                                    })
+                                
+                                if let urlLocalVideo = livewallpaper.localVideoURLString {
+                                    ReelsPlayerForVideoLocal(i: i, liveWL: livewallpaper, currentIndex: $currentIndex)
+                                        .frame(width: size.width, height : size.height)
+                                }
+                                
+                                
+                                
+                            }
+                            .frame(width: size.width)
                                 .ignoresSafeArea(.all)
                                 .tag(i)
                                 .onAppear(perform: {
@@ -103,7 +132,6 @@ struct LiveWLView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
-        
         .sheet(isPresented: $ctrlViewModel.showTuto, content: {
             TutorialContentView()
             
@@ -155,6 +183,10 @@ struct LiveWLView: View {
         
     }
     
+    func getDocumentURL() -> URL {
+        let folderVideoForLive  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("VideoForLiveWallpaper")
+        return folderVideoForLive
+    }
     
     
     @ViewBuilder
@@ -412,6 +444,8 @@ struct LiveWLView: View {
             
         })
     }
+    
+  
     
     
 }

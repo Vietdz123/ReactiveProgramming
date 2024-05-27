@@ -74,8 +74,10 @@ struct WallpaperWidgetEntryView : View {
         switch entry.type {
         case .digitalFriend, .sound, .gif, .makeDecision:
             BackgroudView(entry: entry)
+            
         case .routineMonitor:
             CheckListView(entry: entry)
+            
         case .placeholder:
             PlaceholderView(size: entry.size)
         }

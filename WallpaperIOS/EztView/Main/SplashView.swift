@@ -95,9 +95,7 @@ struct SplashView: View {
                 newValue in
                 if splash_process == 100 {
                     
-            
-                //appVM.navigateToOnboarding2.toggle()
-              //      appVM.navigateToHome.toggle()
+          
             
                     //MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
@@ -260,6 +258,16 @@ class AppViewModel: ObservableObject {
                     
                 }
             }
+            
+            
+            let dataPath4 = documentsURL.appendingPathComponent("VideoForLiveWallpaper")
+            if !fileManager.fileExists(atPath: dataPath4.path) {
+                do {
+                    try FileManager.default.createDirectory(atPath: dataPath2.path, withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                }
+            }
+            
             UserDefaults.standard.set(true, forKey: "alreadylaunched")
         }
     }

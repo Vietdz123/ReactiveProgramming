@@ -35,7 +35,7 @@ class WidgetMainViewModel: ObservableObject {
     }
     
     func getWidgets(){
-        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(15)&offset=\(currentOffset)\(getSortParamStr())&all=1" //
+        let urlString = "\(APIHelper.WIDGET)\(getFetchWidgetType())&limit=\(15)&offset=\(currentOffset)\(getSortParamStr())\(AppConfig.forOnlyIOS)&all=1" //
            
            guard let url  = URL(string: urlString) else {
                return

@@ -9,9 +9,11 @@ import SwiftUI
 
 struct EztRateView: View {
     
-    @State var currentStar : Int = 5
+    @State var currentStar : Int = 0
     let onClickSubmit5star : () -> ()
     let onClickNoThanksOrlessthan5 : () -> ()
+    
+    @State var showLottieFile : Bool = true
     
     var body: some View {
         ZStack{
@@ -50,9 +52,32 @@ struct EztRateView: View {
                             }
                         
                     }
-                }
+                }.overlay(alignment: .trailing, content: {
+                    if showLottieFile{
+                        ResizableLottieView(filename: "preview_wg")
+                            .frame(width: 160, height: 160, alignment: .center)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                showLottieFile = false
+                                currentStar = 5
+                            }
+                            .offset(x : 60)
+                            .onAppear(perform: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0,  execute: {
+                                    showLottieFile = false
+                                })
+                            })
+                    }
+                
+                })
                 
                 Button(action: {
+                    
+                    if currentStar == 0 {
+                        showToastWithContent(image: "xmark", color: .red, mess: "Please vote before submitting")
+                        return
+                    }
+                    
                     UserDefaults.standard.set(true, forKey: "user_click_button_submit_in_rateview")
                     if currentStar ==  5 {
                         onClickSubmit5star()

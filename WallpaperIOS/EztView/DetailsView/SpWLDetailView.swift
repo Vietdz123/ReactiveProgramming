@@ -419,7 +419,7 @@ extension SpWLDetailView{
             
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
                 .offset(y : viewModel.wallpapers[index].specialContentV2ID == 6 ?  16 : 0)

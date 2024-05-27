@@ -7,7 +7,7 @@
 
 @implementation LivePhotoUtil
 
-+ (void)convertVideo:(NSString*)path complete:(void(^)(BOOL, NSString*))complete;{
++ (void)convertVideo:(NSString*)path complete:(void(^)(BOOL, NSString*))complete {
     NSLog(@"start converting");
     
     NSURL *metaURL = [NSBundle.mainBundle URLForResource:@"metadata" withExtension:@"mov"];
@@ -57,15 +57,23 @@
                             complete(NO, error.localizedDescription);
                             return;
                         }
+                        
+                        
+                        
                         [PHPhotoLibrary.sharedPhotoLibrary performChanges:^{
                             PHAssetCreationRequest *request = [PHAssetCreationRequest creationRequestForAsset];
                             NSURL *photoURL = [NSURL fileURLWithPath:picturePath];
                             NSURL *pairedVideoURL = [NSURL fileURLWithPath:videoPath];
                             
+                           
+                            
                             NSLog(@"start converting: %@", pairedVideoURL.absoluteString);
                             
                             [request addResourceWithType:PHAssetResourceTypePhoto fileURL:photoURL options:[PHAssetResourceCreationOptions new]];
                             [request addResourceWithType:PHAssetResourceTypePairedVideo fileURL:pairedVideoURL options:[PHAssetResourceCreationOptions new]];
+                            
+                            
+                            
                         } completionHandler:^(BOOL success, NSError * _Nullable error) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 complete(error==nil, error.localizedDescription);

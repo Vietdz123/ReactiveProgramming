@@ -181,6 +181,10 @@ struct PreviewWidgetSheet: View {
                                 }
                                 
                                 CoreDataService.shared.saveHealthItem(name: healthE.rawValue)
+                                ServerHelper.sendDataWidget(widget_id: widget.id)
+                                DispatchQueue.main.async(execute: {
+                                    showToastWithContent(image: "checkmark", color: .green, mess: "Save successful")
+                                })
                             }else{
                                 
                                 downloadWidget()
@@ -220,7 +224,7 @@ struct PreviewWidgetSheet: View {
                 
                 
                 if storeVM.allowShowBanner(){
-                    BannerAdViewInDetail(adStatus: $adStatus)
+                    BannerAdViewMain(adStatus: $adStatus)
                         .padding(.bottom, getSafeArea().bottom)
                 }
                 

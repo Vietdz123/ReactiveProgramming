@@ -7,6 +7,157 @@
 
 import SwiftUI
 import GoogleMobileAds
+import SDWebImageSwiftUI
+
+struct HorizotalGifWidgetView : View{
+    
+    let listRectangle : [String]
+    let listSquare1 : [String]
+    let listSquare2 : [String]
+    let isContentGif : Bool
+    let delayAnimation : Double
+    @State var indexGifRectangle : Int = 0
+    @State var indexGifSquare1 : Int = 0
+    @State var indexGifSquare2 : Int = 0
+    
+    var body: some View
+    {
+        let width =  (getRect().width - 52) / 4
+        HStack(spacing : 10){
+            WebImage(url: URL(string : listRectangle[indexGifRectangle]))
+                .resizable()
+                .scaledToFit()
+                .frame(width: width * 2, height: width)
+            
+            WebImage(url: URL(string : listSquare1[indexGifSquare1]))
+                .resizable()
+                .scaledToFit()
+                .frame(width: width , height: width)
+            
+            WebImage(url: URL(string : listSquare2[indexGifSquare2]))
+                .resizable()
+                .scaledToFit()
+                .frame(width: width , height: width)
+            
+        }.frame(maxWidth: .infinity)
+            .frame(height: width)
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+            .onAppear(perform: {
+                if !isContentGif {
+                    return
+                }
+                for rectangle in listRectangle {
+                    SDWebImageManager.shared.loadImage(with: URL(string: rectangle), progress: nil, completed: {
+                        _,_,_,_,_,_ in
+                    })
+                }
+                for rectangle in listSquare1 {
+                    SDWebImageManager.shared.loadImage(with: URL(string: rectangle), progress: nil, completed: {
+                        _,_,_,_,_,_ in
+                    })
+                }
+                for rectangle in listSquare2 {
+                    SDWebImageManager.shared.loadImage(with: URL(string: rectangle), progress: nil, completed: {
+                        _,_,_,_,_,_ in
+                    })
+                }
+                indexGifRectangle = 0
+                if indexGifRectangle < listRectangle.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifRectangle += 1
+                        }
+                        
+                    })
+                }
+                
+                
+                indexGifSquare1 = 0
+                if indexGifSquare1 < listSquare1.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare1 += 1
+                        }
+                        
+                    })
+                }
+                
+                indexGifSquare2 = 0
+                if indexGifSquare2 < listSquare2.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare2 += 1
+                        }
+                        
+                    })
+                }
+            })
+            .onChange(of: indexGifRectangle, perform: { _ in
+                if !isContentGif {
+                    return
+                }
+                if indexGifRectangle < listRectangle.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifRectangle += 1
+                        }
+                       
+                    })
+                }else{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifRectangle = 0
+                        }
+                        
+                    })
+                }
+                
+            })
+            .onChange(of: indexGifSquare1, perform: { _ in
+                if !isContentGif {
+                    return
+                }
+                if indexGifSquare1 < listSquare1.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare1 += 1
+                        }
+                       
+                    })
+                }else{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare1 = 0
+                        }
+                      
+                    })
+                }
+                
+            })
+            .onChange(of: indexGifSquare2, perform: { _ in
+                if !isContentGif {
+                    return
+                }
+                if indexGifSquare2 < listSquare2.count - 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare2 += 1
+                        }
+                      
+                    })
+                }else{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayAnimation, execute: {
+                        withAnimation(.easeInOut){
+                            indexGifSquare2 = 0
+                        }
+                        
+                    })
+                }
+                
+            })
+    }
+}
 
 extension LockThemeDetailView {
     func showSelectWatchRewardAds(completion: @escaping(_ optionSelected: Bool) -> Void) {
@@ -107,7 +258,7 @@ extension LockThemeDetailView {
         }.overlay(alignment: .bottom, content: {
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
         })

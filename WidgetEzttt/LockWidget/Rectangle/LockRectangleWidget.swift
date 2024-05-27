@@ -36,8 +36,14 @@ struct LockRectangleWidgetIOS16: Widget {
                             intent: LockRectangleConfigurationAppIntentIOS16Intent.self,
                             provider: RectangleLockProviderIOS16(),
                             content: { entry in
-            RectangleWidgetView(entry: entry)
-                            }
+            if #available(iOSApplicationExtension 17.0, *) {
+                RectangleWidgetView(entry: entry)
+                        .containerBackground(.fill.tertiary, for: .widget)
+                    
+                    } else {
+                        RectangleWidgetView(entry: entry)
+                    }
+            }
         )
         .contentMarginsDisabled()
         .supportedFamilies([ .accessoryRectangular ])

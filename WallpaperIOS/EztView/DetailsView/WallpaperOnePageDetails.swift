@@ -295,7 +295,7 @@ struct WallpaperOnePageDetails: View {
             
             ZStack{
                 if store.allowShowBanner(){
-                    BannerAdViewInDetail(adStatus: $ctrlViewModel.adStatus)
+                    BannerAdViewMain(adStatus: $ctrlViewModel.adStatus)
                 }
             }.frame(height: GADAdSizeBanner.size.height)
             

@@ -97,6 +97,11 @@
             value = "WidgetEzttt"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "__WidgetKind"
+            value = "WidgetEzttt"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction

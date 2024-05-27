@@ -27,14 +27,13 @@ struct AdsConfig {
     //for production
     static let def_bannerID = "ca-app-pub-5782595411387549/9881325801"
     static let def_banner_collapID = "ca-app-pub-5782595411387549/7255779031"
-    static let def_interID = "ca-app-pub-5782595411387549/7246551467"
+    static let def_interID = "ca-app-pub-5782595411387549/724655O1467"
     static let def_rewardID = "ca-app-pub-5782595411387549/3315917452"
     static let def_openID = "ca-app-pub-5782595411387549/4564547807"
     static let def_nativeID = "ca-app-pub-5782595411387549/2002835788"
     
     
-    //static let bannerID = m_debug ? test_bannerID : UserDefaults.standard.string(forKey: "id_banner_ads") ?? def_bannerID
-    static let bannerID = m_debug ? test_bannerID : def_bannerID
+    static let bannerID = m_debug ? test_bannerID : UserDefaults.standard.string(forKey: "id_banner_ads") ?? def_bannerID
     static let bannerCollapID = m_debug ? test_bannerCollapID : def_banner_collapID
     static let openID = m_debug ? test_openID : UserDefaults.standard.string( forKey: "id_open_ads") ?? def_openID
     static let rewardID = m_debug ? test_rewardID : UserDefaults.standard.string(forKey: "id_reward_ads") ?? def_rewardID

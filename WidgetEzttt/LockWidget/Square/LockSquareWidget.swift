@@ -41,9 +41,19 @@ struct LockSquareWidgetIOS16: Widget {
                             intent: LockSquareConfigurationAppIntentIOS16Intent.self,
                             provider: SquareProviderIOS16(),
                             content: { entry in
-            SquareWidgetView(entry: entry)
-                            }
-        )
+            if #available(iOSApplicationExtension 17.0, *) {
+                SquareWidgetView(entry: entry)
+                        .containerBackground(.fill.tertiary, for: .widget)
+                    
+                    } else {
+                        SquareWidgetView(entry: entry)
+                    }
+            
+                            
+                            
+                            
+        })
+        
         .contentMarginsDisabled()
         .supportedFamilies([ .accessoryCircular ])
         .configurationDisplayName("Lock Widget")

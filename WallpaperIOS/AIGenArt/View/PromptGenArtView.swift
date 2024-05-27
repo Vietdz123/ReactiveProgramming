@@ -26,12 +26,12 @@ struct PromptGenArtView: View {
     @EnvironmentObject var interAd : InterstitialAdLoader
     @EnvironmentObject var store : MyStore
     @State var genArtModelSelected : GenArtModel?
-    
+    @State var adStatus : AdStatus = .loading
     @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack(spacing : 0){
-            Text("Image -> AI Wallpaper")
+            Text("Prompt -> AI Wallpaper")
                 .mfont(20, .bold)
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
@@ -202,8 +202,23 @@ struct PromptGenArtView: View {
                 }
             }
             .frame(height: 320)
+           
+           Spacer()
+                        .frame( height: 200, alignment: .center)
             
-            Spacer()
+         
+                }
+            }
+            
+            
+         
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+     
+        .overlay(alignment: .bottom, content: {
+            VStack(spacing : 0){
+                
+            
             
             Button(action: {
                 if !textFieldVM.text.isEmpty{
@@ -237,13 +252,16 @@ struct PromptGenArtView: View {
                   .frame(width: 240, height: 48)
                   .background(Capsule()
                     .fill( textFieldVM.text.isEmpty ? Color.gray : Color.main))
-            }).padding(.top, 32)
-                .disabled(textFieldVM.text.isEmpty)
+            }).disabled(textFieldVM.text.isEmpty)
+                
+                if !store.isPro(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                        .padding(.top, 16)
                 }
-            }
-            
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                
+            }.padding(.top, 16)
+                .padding(.bottom, getSafeArea().bottom - 10)
+        })
         .edgesIgnoringSafeArea(.bottom)
         .contentShape(Rectangle())
         .onTapGesture {

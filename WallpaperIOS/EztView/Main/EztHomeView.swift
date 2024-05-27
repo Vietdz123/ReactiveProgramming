@@ -30,8 +30,6 @@ struct EztHomeView: View {
     @StateObject var gifWidgetVM : WidgetMainViewModel = .init(type : .Gif, sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var digitalFriendWidgetVM : WidgetMainViewModel = .init(type : .DigitalFriend, sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var watchFaceViewModel : EztWatchFaceViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
-    
-    
     @StateObject var liveWlVM : LiveWallpaperViewModel = .init(sort: .POPULAR, sortByTop: .TOP_WEEK)
     
     

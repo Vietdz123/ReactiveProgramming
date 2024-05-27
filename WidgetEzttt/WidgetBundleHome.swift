@@ -14,17 +14,20 @@ struct WidgetEztttExtension: WidgetBundle {
     var body: some Widget {
 
         if #available(iOSApplicationExtension 17.0, *) {
-            return WidgetBundleBuilder.buildBlock(WidgetEzttt(),
-                                                  HealthWidget(),
+            return WidgetBundleBuilder.buildBlock(WidgetEztttSmall(), WidgetEzttt(), WidgetEztttLarge(),
                                                   LockRectangleWidgetIOS16(),
                                                   LockSquareWidgetIOS16(),
-                                                  LockInlineWidgetIOS16())
+                                                  LockInlineWidgetIOS16(),
+                                                  HealthWidget())
 
            
         } else  {
+            
             return WidgetBundleBuilder.buildBlock(LockRectangleWidgetIOS16(),
                                                   LockSquareWidgetIOS16(),
                                                   LockInlineWidgetIOS16())
+            
+
         }
         
     }

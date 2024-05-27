@@ -152,16 +152,7 @@ struct OnboadingSubFreeTrialView : View {
                         .scaledToFit()
                         .frame(width: 44, height: 24, alignment: .center)
                         .opacity( enableFreeTrial ? 1.0 : 0.7)
-                        .contentShape(Rectangle())
-                        .onTapGesture{
-                            if enableFreeTrial {
-                                enableFreeTrial = false
-                            }else {
-                                enableFreeTrial = true
-                                isBuyYear = false
-                            }
-                          
-                        }
+                      
                         .padding(.trailing, 16)
                     
                     
@@ -178,6 +169,16 @@ struct OnboadingSubFreeTrialView : View {
                         )
                     }
                     .cornerRadius(12)
+                    .contentShape(Rectangle())
+                    .onTapGesture{
+                        if enableFreeTrial {
+                            enableFreeTrial = false
+                        }else {
+                            enableFreeTrial = true
+                            isBuyYear = false
+                        }
+                      
+                    }
                     .padding(.top, 32)
                     .padding(.horizontal, 16)
                 

@@ -193,7 +193,7 @@ struct WatchFaceDetailView: View {
                 .padding(.bottom, store.allowShowBanner() ? 24 : 40)
                 
                 if store.allowShowBanner(){
-                    BannerAdViewInDetail(adStatus: $adStatus)
+                    BannerAdViewMain(adStatus: $adStatus)
                         .padding(.bottom, getSafeArea().bottom)
                 }
                 

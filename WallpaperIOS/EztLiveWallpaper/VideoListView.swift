@@ -144,7 +144,6 @@ struct ReelsPlayerHorizontal : View{
             self.player =  AVPlayer(url: URL(string: liveWL.path.first?.url.full ?? "")!)
         })
         .onDisappear(perform: {
-         
                 self.player?.pause()
                 self.player?.cancelPendingPrerolls()
                 self.player = nil
@@ -153,9 +152,59 @@ struct ReelsPlayerHorizontal : View{
         })
         
     }
+
+}
+
+struct ReelsPlayerForVideoLocal : View{
     
+    let i : Int
+    let liveWL : SpLiveWallpaper
+    @Binding var currentIndex : Int
+    @State var player : AVPlayer?
     
-    
+    var body: some View{
+        ZStack{
+            
+            if  player != nil {
+                MyVideoPlayer(player: player!)
+                
+                
+                GeometryReader{
+                    proxy -> Color in
+                    
+                    let minX  = proxy.frame(in: .global).minX
+                    let size = proxy.size
+                    
+                    DispatchQueue.main.async {
+                        if -minX < ( size.width / 2 ) && minX < (size.width / 2) && i == currentIndex {
+                            print("Video play: \(i)")
+                            player?.play()
+                        }else{
+                            print("Video pause: \(i)")
+                            player?.pause()
+                           
+                            
+                        }
+                    }
+                    
+                    return Color.clear
+                }
+                
+            }
+            
+        }.onAppear(perform: {
+            self.player =  AVPlayer(url: URL(string: liveWL.path.first?.url.full ?? "")!)
+        })
+        .onDisappear(perform: {
+                self.player?.pause()
+                self.player?.cancelPendingPrerolls()
+                self.player = nil
+         
+            
+        })
+        
+    }
+
 }
 
 struct MyVideoPlayer : UIViewControllerRepresentable {

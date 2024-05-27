@@ -67,7 +67,7 @@ struct BannerViewController: UIViewControllerRepresentable  {
         let request = GADRequest()
         view.delegate = context.coordinator
 
-        view.adUnitID = adUnitID
+        view.adUnitID = self.adUnitID
         if isCollapBanner {
                 view.adUnitID = AdsConfig.bannerCollapID
                 BannerViewController.latestTimeShowCollapse = Date.now.timeIntervalSince1970

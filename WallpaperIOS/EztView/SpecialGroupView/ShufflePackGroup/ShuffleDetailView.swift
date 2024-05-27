@@ -33,6 +33,10 @@ struct ShuffleDetailView: View {
     @State var adStatus : AdStatus = .loading
     
     
+    @State var showRateView : Bool = false
+    @State var showGifView : Bool = false
+    
+    
     var body: some View {
         
         ZStack{
@@ -146,6 +150,21 @@ struct ShuffleDetailView: View {
                 }
                 
             )
+            .overlay{
+                if showGifView{
+                    GiftView()
+                }
+            }
+            .overlay{
+                if showRateView {
+                    EztRateView(onClickSubmit5star: {
+                        showRateView = false
+                        rateApp()
+                    }, onClickNoThanksOrlessthan5: {
+                        showRateView = false
+                    })
+                }
+            }
             .fullScreenCover(isPresented: $showSub, content: {
                 EztSubcriptionView()
                     .environmentObject(store)
@@ -172,6 +191,16 @@ struct ShuffleDetailView: View {
 extension ShuffleDetailView{
     
  
+    @ViewBuilder
+    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
+        if giftSubType == 0 {
+           GiftSub_1_View(show: $showGifView)
+        }else if giftSubType == 1{
+            GiftSub_2_View(show: $showGifView)
+        }else{
+            GifSub_3_View(show: $showGifView)
+        }
+    }
     
     @ViewBuilder
     func ControllView() -> some View {
@@ -258,25 +287,7 @@ extension ShuffleDetailView{
                     .background(Color.main)
                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 
-//                HStack{
-//                    Text("Save Packs")
-//                        .mfont(16, .bold)
-//                        .multilineTextAlignment(.center)
-//                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-//                        .overlay(
-//                            ZStack{
-//                                if isDownloading{
-//                                    EZProgressView()
-//                                }
-//                            }.offset(x : -36)
-//                            , alignment: .leading
-//                        )
-//                }.frame(width: 240, height: 48)
-//                    .contentShape(Rectangle())
-//                    .background(
-//                        Capsule()
-//                            .foregroundColor(.main)
-//                    )
+
             })
             
             ZStack{
@@ -331,8 +342,15 @@ extension ShuffleDetailView{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
                             isDownloading = false
-                            showTutorialFirst()
-                            
+                          
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                         showRateView = true
+                                                       }, onShowGifView: {
+                                                        showGifView.toggle()
+                                                           changeSubType()
+                                                       })
+                                                   })
                             
                         }
                     }else{
@@ -388,14 +406,23 @@ extension ShuffleDetailView{
         }
     }
     
-    func showTutorialFirst() {
-        let showTutoshuffle = UserDefaults.standard.bool(forKey: "show_tuto_shuffleee")
-        if showTutoshuffle == false{
-            UserDefaults.standard.set(true, forKey: "show_tuto_shuffleee")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                showTuto.toggle()
-            })
+
+    
+    func changeSubType() {
+
+        
+        let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
+      
+        
+        if subTypeSave == 0 {
+                UserDefaults.standard.set(1, forKey: "gift_sub_type")
+        }else if subTypeSave == 1 {
+                UserDefaults.standard.set(2, forKey: "gift_sub_type")
+        }else if subTypeSave == 2{
+                UserDefaults.standard.set(0, forKey: "gift_sub_type")
         }
+        
+       
     }
     
 }

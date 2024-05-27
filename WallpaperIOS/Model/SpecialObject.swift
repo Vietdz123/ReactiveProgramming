@@ -41,6 +41,7 @@ struct SpLiveWallpaper: Codable {
     let setCount, isTrend: Int?
     let createdAt, updatedAt: String?
     let specialContent: SpecialContent?
+    var localVideoURLString : String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -57,6 +58,7 @@ struct SpLiveWallpaper: Codable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case specialContent = "special_content"
+        case localVideoURLString = "local_video_url_string"
     }
 }
 

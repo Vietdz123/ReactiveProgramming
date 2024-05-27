@@ -23,7 +23,7 @@ struct HealthWidget: Widget {
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .contentMarginsDisabled()
-        .supportedFamilies([ .systemMedium,   .systemSmall])
+        .supportedFamilies([ .systemSmall ,.systemMedium])
         .configurationDisplayName("Health Widget")
       
         
