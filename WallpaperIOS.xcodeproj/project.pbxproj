@@ -2262,7 +2262,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -2285,7 +2285,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.4;
+				MARKETING_VERSION = 1.4.5;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2311,7 +2311,7 @@
 				CODE_SIGN_ENTITLEMENTS = WallpaperIOS/WallpaperIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"WallpaperIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 9984TDX9XM;
 				ENABLE_PREVIEWS = YES;
@@ -2334,7 +2334,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.4;
+				MARKETING_VERSION = 1.4.5;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezt.wallpp.hd4k;
 				PRODUCT_NAME = "$(TARGET_NAME)";

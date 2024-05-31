@@ -103,7 +103,8 @@ struct LiveWLView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
-        
+        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarHidden(true)
         .sheet(isPresented: $ctrlViewModel.showTuto, content: {
             TutorialContentView()
             

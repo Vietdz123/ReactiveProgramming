@@ -52,7 +52,15 @@ struct EztSubcriptionView: View {
             VStack(spacing : 0){
                 HStack{
                     Button(action: {
-                        
+                        Task{
+                            let b = await store.restore()
+                            if b {
+                                store.fetchProducts()
+                                showToastWithContent(image: "checkmark", color: .green, mess: "Restore Successful")
+                            }else{
+                                showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
+                            }
+                        }
                     }, label: {
                         Text("Restore".toLocalize())
                             .mfont(13, .regular)

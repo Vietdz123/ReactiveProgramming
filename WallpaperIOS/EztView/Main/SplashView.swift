@@ -99,13 +99,20 @@ struct SplashView: View {
             
                     //MARK: start
                     if  UserDefaults.standard.bool(forKey: "firstTimeLauncher") == false {
-                        let usingOnbHasFreetrial =   UserDefaults.standard.bool(forKey: "using_onb_has_freetrial")
-                        if usingOnbHasFreetrial {
-                            appVM.navigateToOnboarding2.toggle()
-                        }else{
-                            appVM.navigateToOnboarding1.toggle()
-                        }
+                        openAd.tryToPresentAd(onCommit: {
+                            _ in
+                            DispatchQueue.main.async {
+                                let usingOnbHasFreetrial =   UserDefaults.standard.bool(forKey: "using_onb_has_freetrial")
+                                if usingOnbHasFreetrial {
+                                    appVM.navigateToOnboarding2.toggle()
+                                }else{
+                                    appVM.navigateToOnboarding1.toggle()
+                                }
+                                
+                            }
+                        })
                         
+                     
                         
                     }else{
                         

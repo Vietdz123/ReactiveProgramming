@@ -26,12 +26,6 @@ extension OnboardingView {
     //MARK: show ATT and GDPR
     func showATTandGDPR(){
         ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-            
-            Firebase_log("ATT_Tracking_show")
-            if status == .authorized{
-                Firebase_log("ATT_Tracking_authorized")
-            }
-            
             // Create a UMPRequestParameters object.
             let parameters = UMPRequestParameters()
             // Set tag for under age of consent. false means users are not under age

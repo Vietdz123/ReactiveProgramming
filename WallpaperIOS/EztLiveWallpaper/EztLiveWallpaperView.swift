@@ -255,7 +255,7 @@ extension EztLiveWallpaperView {
                         
                         NavigationLink(destination: {
                             LiveWLView(currentIndex: i)
-                                .environmentObject(newestVM)
+                                .environmentObject(popularVM)
                                 .environmentObject(store)
                                 .environmentObject(rewardAd)
                                 .environmentObject(interAd)
