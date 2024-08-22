@@ -9,109 +9,99 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct EztForYouView: View {
-    @EnvironmentObject var viewModel : HomeViewModel
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
-  
     
- 
-    
-    @EnvironmentObject var tagViewModel : TagViewModel 
+    @StateObject var viewModel : HomeViewModel = .shared
+    @StateObject var store : MyStore = .shared
+    @StateObject var tagViewModel : TagViewModel = .shared
     
     var body: some View {
         
         ZStack{
-            NavigationLink(isActive: $tagViewModel.navigateAtHome, destination: {
-                TagView()
-                    .environmentObject(tagViewModel)
-                    .environmentObject(reward)
-                    .environmentObject(store)
-                   
-                    .environmentObject(interAd)
-                
-            }, label: {
-                EmptyView()
-            })
+//            NavigationLink(isActive: $tagViewModel.navigateAtHome, destination: {
+//                TagView()
+//
+//                
+//            }, label: {
+//                EmptyView()
+//            })
             
             
-            if !viewModel.wallpapers.isEmpty{
-                VStack(spacing : 0){
-
-                    ScrollView(.vertical, showsIndicators: false){
-                        CompositionalView(items: 0..<viewModel.wallpapers.count, id: \.self, content: {
-                            index in
-                            
-                            GeometryReader{
-                                proxy in
-                                let size = proxy.size
-                                let wallpaper = viewModel.wallpapers[index]
-                                let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                                
-                                NavigationLink(destination: {
-                                    WLView(index: index)
-                                        .environmentObject(viewModel as CommandViewModel)
-                                        .environmentObject(reward)
-                                        .environmentObject(store)
-                                        
-                                        .environmentObject(interAd)
-                                }, label: {
-                                    
-                                    WebImage(url: URL(string: string))
-                                        .onSuccess { image, data, cacheType in
-                                            
-                                        }
-                                        .resizable()
-                                        .placeholder {
-                                            placeHolderImage()
-                                                .frame(width: size.width, height: size.height)
-                                        }
-                                        
-                                        .scaledToFill()
-                                        .clipped()
-                                        .frame(width: size.width, height: size.height, alignment: .center)
-                                        .cornerRadius(8)
-                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
-
-                                })
-                               
-                                
-                                .onAppear(perform: {
-                         
-                                    if viewModel.shouldLoadData(id: index){
-                                        viewModel.getWallpapers()
-                                        
-                                    }
-                                })
-                                
-                            }
-                         
-                            
-                        }, content2: { index in
-                            if !viewModel.tags.isEmpty && index < viewModel.tags.count{
-                                TagViewBuilder(tag: viewModel.tags[index])
-                                    .onAppear(perform: {
-                                        if viewModel.checkLoadNextPageTag(index: index) == true{
-                                            viewModel.getTags()
-                                           
-                                        }
-                                    })
-                                    
-                            }
-                        
-                        }).padding(.horizontal, 16)
-                        
-                        
-                        
-                        
-                    }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                
-                
-                
-                
-            }
+//            if !viewModel.wallpapers.isEmpty{
+//                VStack(spacing : 0){
+//
+//                    ScrollView(.vertical, showsIndicators: false){
+//                        CompositionalView(items: 0..<viewModel.wallpapers.count, id: \.self, content: {
+//                            index in
+//                            
+//                            GeometryReader{
+//                                proxy in
+//                                let size = proxy.size
+//                                let wallpaper = viewModel.wallpapers[index]
+//                                let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
+//                                
+//                                NavigationLink(destination: {
+//                                    WLView(index: index)
+//                                        .environmentObject(viewModel as CommandViewModel)
+//                                        .environmentObject(reward)
+//                                        .environmentObject(store)
+//                                        
+//                                        .environmentObject(interAd)
+//                                }, label: {
+//                                    
+//                                    WebImage(url: URL(string: string))
+//                                        .onSuccess { image, data, cacheType in
+//                                            
+//                                        }
+//                                        .resizable()
+//                                        .placeholder {
+//                                            placeHolderImage()
+//                                                .frame(width: size.width, height: size.height)
+//                                        }
+//                                        
+//                                        .scaledToFill()
+//                                        .clipped()
+//                                        .frame(width: size.width, height: size.height, alignment: .center)
+//                                        .cornerRadius(8)
+//                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
+//
+//                                })
+//                               
+//                                
+//                                .onAppear(perform: {
+//                         
+//                                    if viewModel.shouldLoadData(id: index){
+//                                        viewModel.getWallpapers()
+//                                        
+//                                    }
+//                                })
+//                                
+//                            }
+//                         
+//                            
+//                        }, content2: { index in
+//                            if !viewModel.tags.isEmpty && index < viewModel.tags.count{
+//                                TagViewBuilder(tag: viewModel.tags[index])
+//                                    .onAppear(perform: {
+//                                        if viewModel.checkLoadNextPageTag(index: index) == true{
+//                                            viewModel.getTags()
+//                                           
+//                                        }
+//                                    })
+//                                    
+//                            }
+//                        
+//                        }).padding(.horizontal, 16)
+//                        
+//                        
+//                        
+//                        
+//                    }
+//                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+//                
+//                
+//                
+//                
+//            }
 
             
         }

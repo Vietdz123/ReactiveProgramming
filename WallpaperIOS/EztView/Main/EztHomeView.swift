@@ -744,9 +744,10 @@ extension EztHomeView{
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
-                                            .placeholder {
-                                                placeHolderImage()
-                                            }
+                                            
+//                                            .placeholder {
+//                                                placeHolderImage()
+//                                            }
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()
@@ -831,9 +832,9 @@ extension EztHomeView{
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
-                                            .placeholder {
-                                                placeHolderImage()
-                                            }
+//                                            .placeholder {
+//                                                placeHolderImage()
+//                                            }
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()
@@ -1197,9 +1198,9 @@ extension EztHomeView{
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
-                                            .placeholder {
-                                                placeHolderImage()
-                                            }
+//                                            .placeholder {
+//                                                placeHolderImage()
+//                                            }
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()

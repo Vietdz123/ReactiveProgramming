@@ -16,7 +16,7 @@ import FirebaseAnalytics
 
 extension View{
 
-
+    
     
     func Firebase_log( _ event : String) {
         if isDebug {
@@ -25,4 +25,18 @@ extension View{
             Analytics.logEvent(event, parameters: nil)
         }
     }
+}
+
+struct FirebaseHelper {
+    static let share = FirebaseHelper()
+    
+    
+    func log( _ event : String) {
+        if isDebug {
+            print("Firebaselog event: \(event) ")
+        }else{
+            Analytics.logEvent(event, parameters: nil)
+        }
+    }
+    
 }

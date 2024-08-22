@@ -22,6 +22,8 @@ import UIKit
 //#endif
 
  class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate , ImpressionRevenueAds {
+     
+     static let shared = InterstitialAdLoader()
     @Published var interstitial: GADInterstitialAd?
  
      private var allowShowInter : Bool = false

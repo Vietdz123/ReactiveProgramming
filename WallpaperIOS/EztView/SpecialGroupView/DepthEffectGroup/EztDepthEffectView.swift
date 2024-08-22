@@ -181,9 +181,9 @@ extension EztDepthEffectView {
                                 
                                 WebImage(url: URL(string: newestVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
                                     .resizable()
-                                    .placeholder {
-                                        placeHolderImage()
-                                    }
+//                                    .placeholder {
+//                                        placeHolderImage()
+//                                    }
                                     .scaledToFill()
                                     .frame(width: 160, height: 320)
                                     .clipped()
@@ -281,10 +281,10 @@ extension EztDepthEffectView {
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()
-                                .placeholder {
-                                    placeHolderImage()
-                                        .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-                                }
+//                                .placeholder {
+//                                    placeHolderImage()
+//                                        .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+//                                }
                               
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)

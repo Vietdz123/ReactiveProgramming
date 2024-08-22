@@ -17,24 +17,25 @@ struct EztCategoryView: View {
     
     @StateObject var categoryPageViewModel : CategoryPageViewModel = .init()
     @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
+    @State var store : MyStore = .shared
   
     @EnvironmentObject var interAd : InterstitialAdLoader
     var body: some View {
         VStack(spacing : 0){
            
             ScrollView(.vertical, showsIndicators: false){
-                NavigationLink(isActive: $viewModel.navigate, destination: {
-                    CategoryPageView()
-                        .environmentObject(categoryPageViewModel)
-                        .environmentObject(reward)
-                        .environmentObject(store)
-                      
-                        .environmentObject(interAd)
-                    
-                }, label: {
-                    EmptyView()
-                })
+                //MARK: - Viet
+//                NavigationLink(isActive: $viewModel.navigate, destination: {
+//                    CategoryPageView()
+//                        .environmentObject(categoryPageViewModel)
+//                        .environmentObject(reward)
+//                        .environmentObject(store)
+//                      
+//                        .environmentObject(interAd)
+//                    
+//                }, label: {
+//                    EmptyView()
+//                })
                 
                 
              
@@ -232,33 +233,35 @@ struct EztCategoryView: View {
                                                 i in
                                                 let wallpaper = categoryData.wallpapers[i]
                                                 let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
-                                                NavigationLink(destination: {
-                                                    
-                                                    WallpaperOnePageDetails(wallpapers: categoryData.wallpapers, index : i)
-                                                        .environmentObject(reward)
-                                                        .environmentObject(store)
-                                                        .environmentObject(interAd)
-                                                    
-                                                }, label: {
-                                                    
-                                                    WebImage(url: URL(string: string))
-                                                        .onSuccess { image, data, cacheType in
-                                                            
-                                                        }
-                                                        .resizable()
-                                                        .placeholder {
-                                                            placeHolderImage()
-                                                                .frame(width: 108, height: 216)
-                                                            
-                                                        }
- 
-                                                        .scaledToFill()
-                                                        .frame(width: 108, height: 216)
-                                                        .cornerRadius(8)
-                                                        .clipped()
-                                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
-
-                                                })
+                                                
+                                                //MARK: - Viet
+//                                                NavigationLink(destination: {
+//                                                    
+//                                                    WallpaperOnePageDetails(wallpapers: categoryData.wallpapers, index : i)
+//                                                        .environmentObject(reward)
+//                                                        .environmentObject(store)
+//                                                        .environmentObject(interAd)
+//                                                    
+//                                                }, label: {
+//                                                    
+//                                                    WebImage(url: URL(string: string))
+//                                                        .onSuccess { image, data, cacheType in
+//                                                            
+//                                                        }
+//                                                        .resizable()
+//                                                        .placeholder {
+//                                                            placeHolderImage()
+//                                                                .frame(width: 108, height: 216)
+//                                                            
+//                                                        }
+// 
+//                                                        .scaledToFill()
+//                                                        .frame(width: 108, height: 216)
+//                                                        .cornerRadius(8)
+//                                                        .clipped()
+//                                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
+//
+//                                                })
                                                 
                                             }
                                             Spacer().frame(width: 16)

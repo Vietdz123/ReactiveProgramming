@@ -193,24 +193,24 @@ extension EztSpecialView{
                 
                 
                 Spacer()
-                
-                NavigationLink(destination: {
-                    EztWatchFaceView()
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
-                    
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
+                //MARK: - Viet
+//                NavigationLink(destination: {
+//                    EztWatchFaceView()
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+//                    
+//                }, label: {
+//                    HStack(spacing : 0){
+//                        Text("See All".toLocalize())
+//                            .mfont(11, .regular)
+//                            .foregroundColor(.white)
+//                        Image("arrow.right")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 18, height: 18, alignment: .center)
+//                    }
+//                })
             }.padding(.horizontal, 16)
             ZStack{
                 if watchFaceViewModel.wallpapers.isEmpty{
@@ -224,57 +224,58 @@ extension EztSpecialView{
                                 let  wallpaper = watchFaceViewModel.wallpapers[i]
                                 let string : String = wallpaper.path.first?.path.preview ?? ""
                                 
-                                NavigationLink(destination: {
-                                    WatchFaceDetailView(wallpaper: wallpaper)
-                                        .environmentObject(store)
-                                        .environmentObject(rewardAd)
-                                        .environmentObject(interAd)
-                                }, label: {
-                                    ZStack{
-                                        Color.black
-                                        WebImage(url: URL(string: string))
-                                            .resizable()
-                                            .cornerRadius(24)
-                                            .padding(9)
-                                    }
-                                    .frame(width: 139 , height: 176)
-                                        .clipShape(RoundedRectangle(cornerRadius: 30))
-                                        .cornerRadius(30)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 30)
-                                                    .inset(by: 1.5)
-                                                    .stroke(.white.opacity(0.3), lineWidth: 3)
-                                        )
-                                        .overlay(alignment: .bottomTrailing, content: {
-                                            VStack(alignment: .trailing, spacing : 0){
-                                                Text("TUE 16")
-                                                .mfont(11, .bold, line: 1)
-                                                  .multilineTextAlignment(.trailing)
-                                                  .foregroundColor(.white)
-                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                                                
-                                                Text("10:09")
-                                                    .mfont(32, .regular, line: 1)
-                                                  .multilineTextAlignment(.trailing)
-                                                  .foregroundColor(.white)
-                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                                                  .offset(y : -8)
-                                                
-                                                
-                                            }.padding(.bottom, 12)
-                                                .padding(.trailing , 20)
-                                        })
-                                        .overlay(alignment: .topTrailing, content: {
-                                            if !store.isPro()  && wallpaper.contentType == 1 {
-                                                Image("crown")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 16, height: 16)
-                                                    .padding(.top, 16)
-                                                    .padding(.trailing, 18)
-                                            }
-                                        })
-                                })
+                                //MARK: - Viet
+//                                NavigationLink(destination: {
+//                                    WatchFaceDetailView(wallpaper: wallpaper)
+//                                        .environmentObject(store)
+//                                        .environmentObject(rewardAd)
+//                                        .environmentObject(interAd)
+//                                }, label: {
+//                                    ZStack{
+//                                        Color.black
+//                                        WebImage(url: URL(string: string))
+//                                            .resizable()
+//                                            .cornerRadius(24)
+//                                            .padding(9)
+//                                    }
+//                                    .frame(width: 139 , height: 176)
+//                                        .clipShape(RoundedRectangle(cornerRadius: 30))
+//                                        .cornerRadius(30)
+//                                        .overlay(
+//                                            RoundedRectangle(cornerRadius: 30)
+//                                                    .inset(by: 1.5)
+//                                                    .stroke(.white.opacity(0.3), lineWidth: 3)
+//                                        )
+//                                        .overlay(alignment: .bottomTrailing, content: {
+//                                            VStack(alignment: .trailing, spacing : 0){
+//                                                Text("TUE 16")
+//                                                .mfont(11, .bold, line: 1)
+//                                                  .multilineTextAlignment(.trailing)
+//                                                  .foregroundColor(.white)
+//                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+//                                                
+//                                                Text("10:09")
+//                                                    .mfont(32, .regular, line: 1)
+//                                                  .multilineTextAlignment(.trailing)
+//                                                  .foregroundColor(.white)
+//                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+//                                                  .offset(y : -8)
+//                                                
+//                                                
+//                                            }.padding(.bottom, 12)
+//                                                .padding(.trailing , 20)
+//                                        })
+//                                        .overlay(alignment: .topTrailing, content: {
+//                                            if !store.isPro()  && wallpaper.contentType == 1 {
+//                                                Image("crown")
+//                                                    .resizable()
+//                                                    .scaledToFit()
+//                                                    .frame(width: 16, height: 16)
+//                                                    .padding(.top, 16)
+//                                                    .padding(.trailing, 18)
+//                                            }
+//                                        })
+//                                })
 
                             }
                         }
@@ -306,24 +307,24 @@ extension EztSpecialView{
                 
                 Spacer()
                 
-
-                NavigationLink(destination: {
-                    EztShufflePackView()
-                        .environmentObject(wallpaperCatelogVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
+                //MARK: - Viet
+//                NavigationLink(destination: {
+//                    EztShufflePackView()
+//                        .environmentObject(wallpaperCatelogVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+//                }, label: {
+//                    HStack(spacing : 0){
+//                        Text("See All".toLocalize())
+//                            .mfont(11, .regular)
+//                            .foregroundColor(.white)
+//                        Image("arrow.right")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 18, height: 18, alignment: .center)
+//                    }
+//                })
                 
                 
                 
@@ -382,15 +383,15 @@ extension EztSpecialView{
                                 let shuffle = shuffleVM.wallpapers[i]
                                 
                                 
-                                
-                                NavigationLink(destination: {
-                                    ShuffleDetailView(wallpaper: shuffle)
-                                        .environmentObject(store)
-                                        .environmentObject(interAd)
-                                        .environmentObject(rewardAd)
-                                }, label: {
-                                    ItemShuffleWL(wallpaper: shuffle, isPro: store.isPro())
-                                })
+                                //MARK: - Viet
+//                                NavigationLink(destination: {
+//                                    ShuffleDetailView(wallpaper: shuffle)
+//                                        .environmentObject(store)
+//                                        .environmentObject(interAd)
+//                                        .environmentObject(rewardAd)
+//                                }, label: {
+//                                    ItemShuffleWL(wallpaper: shuffle, isPro: store.isPro())
+//                                })
                                 
                             }
                             
@@ -829,22 +830,23 @@ extension EztSpecialView{
                 Spacer()
 
                 
-                NavigationLink(destination: {
-                    EztLiveWallpaperView()
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
+//                NavigationLink(destination: {
+//                    EztLiveWallpaperView()
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
+//                    
+//                }, label: {
+//                    HStack(spacing : 0){
+//                        Text("See All".toLocalize())
+//                            .mfont(11, .regular)
+//                            .foregroundColor(.white)
+//                        Image("arrow.right")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 18, height: 18, alignment: .center)
+//                    }
+//                })
                 
             }.padding(.horizontal, 16)
             ZStack{
@@ -861,38 +863,39 @@ extension EztSpecialView{
                                     let wallpaper = liveWlVM.wallpapers[i]
                                     let string = wallpaper.thumbnail.first?.path.preview ?? ""
                                     
-                                    NavigationLink(destination: {
-                                        LiveWLView(currentIndex : i)
-                                      //  LocalLiveVideoDetailsView(currentIndex : i)
-                                            .navigationBarTitle("", displayMode: .inline)
-                                            .navigationBarHidden(true)
-                                            .environmentObject(liveWlVM)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
-                                    }, label: {
-                                        WebImage(url: URL(string: string))
-                                            .resizable()
-                                            .placeholder {
-                                                placeHolderImage()
-                                            }
-                                            .scaledToFill()
-                                            .frame(width: 128, height: 280)
-                                            .clipped()
-                                            .cornerRadius(8)
-                                            .overlay(alignment : .top){
-                                                    HStack{
-                                                        Image("live")
-                                                            .resizable()
-                                                            .frame(width: 16, height: 16 )
-                                                            .padding(8)
-                                                        Spacer()
-                                                       
-                                                    }
-                                            }
-                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-                                          
-                                    })
+                                    //MARK: - Viet
+//                                    NavigationLink(destination: {
+//                                        LiveWLView(currentIndex : i)
+//                                      //  LocalLiveVideoDetailsView(currentIndex : i)
+//                                            .navigationBarTitle("", displayMode: .inline)
+//                                            .navigationBarHidden(true)
+//                                            .environmentObject(liveWlVM)
+//                                            .environmentObject(store)
+//                                            .environmentObject(rewardAd)
+//                                            .environmentObject(interAd)
+//                                    }, label: {
+//                                        WebImage(url: URL(string: string))
+//                                            .resizable()
+//                                            .placeholder {
+//                                                placeHolderImage()
+//                                            }
+//                                            .scaledToFill()
+//                                            .frame(width: 128, height: 280)
+//                                            .clipped()
+//                                            .cornerRadius(8)
+//                                            .overlay(alignment : .top){
+//                                                    HStack{
+//                                                        Image("live")
+//                                                            .resizable()
+//                                                            .frame(width: 16, height: 16 )
+//                                                            .padding(8)
+//                                                        Spacer()
+//                                                       
+//                                                    }
+//                                            }
+//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+//                                          
+//                                    })
                                     
                                     
                                     

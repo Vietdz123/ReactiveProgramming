@@ -28,16 +28,8 @@ struct EztWallpaperView: View {
     @EnvironmentObject var tagViewModel : TagViewModel 
     @EnvironmentObject var foryouVM : HomeViewModel 
     @EnvironmentObject var catalogVM : WallpaperCatalogViewModel 
-   
-    
-   
- //   @EnvironmentObject var liveVM : LiveWallpaperViewModel
-    
-    
-    
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+
+
     
     @Binding var currentTab : WallpaperTab
     @Binding var showGift : Bool
@@ -52,28 +44,16 @@ struct EztWallpaperView: View {
             TabView(selection: $currentTab,
                     content:  {
                 EztForYouView()
-                    .environmentObject(foryouVM)
-                    .environmentObject(tagViewModel)
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
+
                     .tag(WallpaperTab.ForYou)
              
                 EztSpecialView(showGift : $showGift)
-                    .environmentObject(catalogVM)
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
                     .tag(WallpaperTab.Special)
+                
                 EztLockThemeScreenView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
                     .tag(WallpaperTab.LockScreenTheme)
+                
                 EztCategoryView()
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
-                    .environmentObject(store)
                     .tag(WallpaperTab.Category)
 
             }).tabViewStyle(.page(indexDisplayMode: .never))

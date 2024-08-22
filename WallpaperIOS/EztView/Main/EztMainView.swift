@@ -69,18 +69,15 @@ struct EztMainView : View {
     @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var depthVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
-  //  @StateObject var liveVM : LiveWallpaperViewModel = .init()
+    @StateObject var liveVM : LiveWallpaperViewModel = .init()
    
     
     @StateObject var foryouVM : HomeViewModel = .init()
     @StateObject var tagViewModel : TagViewModel = .init()
     
     @StateObject var catalogVM : WallpaperCatalogViewModel = .init()
-    
-    
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+
+    @StateObject var store : MyStore = .shared
     
     
     @Namespace var anim
@@ -91,38 +88,41 @@ struct EztMainView : View {
                 TabView(selection: $mainViewModel.currentTab,
                         content:  {
                     EztHomeView(currentTab: $mainViewModel.currentTab, wallpaperTab: $mainViewModel.currentWallpaperTab)
-                        .environmentObject(catalogVM)
-                        .environmentObject(exlusiveVM)
-                        .environmentObject(shuffleVM)
-                        .environmentObject(depthVM)
-                        .environmentObject(dynamicVM)
-                        
-                      //  .environmentObject(liveVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                        .environmentObject(catalogVM)
+//                        .environmentObject(exlusiveVM)
+//                        .environmentObject(shuffleVM)
+//                        .environmentObject(depthVM)
+//                        .environmentObject(dynamicVM)
+//                        
+//                      //  .environmentObject(liveVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
                         .gesture(DragGesture())
                         .tag(EztTab.HOME)
+                    
                     EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab, showGift : $mainViewModel.showGift)
-                        .environmentObject(catalogVM)
-                        .environmentObject(foryouVM)
-                        .environmentObject(tagViewModel)
-                     //   .environmentObject(liveVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                        .environmentObject(catalogVM)
+//                        .environmentObject(foryouVM)
+//                        .environmentObject(tagViewModel)
+//                     //   .environmentObject(liveVM)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
                         .gesture(DragGesture())
                         .tag(EztTab.WALLPAPER)
+                    
                     EztWidgetView()
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
                         .gesture(DragGesture())
                         .tag(EztTab.WIDGET)
+                    
                     GenArtMainView()
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+//                        .environmentObject(store)
+//                        .environmentObject(rewardAd)
+//                        .environmentObject(interAd)
                         .tag(EztTab.GENERATION)
                 })
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -135,25 +135,21 @@ struct EztMainView : View {
                 SlideMenuView(
                     showMenu:  $mainViewModel.showMenu
                 )
-                .environmentObject(store)
-                .environmentObject(rewardAd)
-                .environmentObject(interAd)
+//                .environmentObject(store)
+//                .environmentObject(rewardAd)
+//                .environmentObject(interAd)
                 
             }
             
             
-        }//.addBackground()
+        }
         .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(true)
             .onAppear(perform: {
                 
                 UserDefaults.standard.setValue(true, forKey: "user_go_main")
                 
-                if !store.isPro(){
-                    interAd.loadInterstitial()
-                    rewardAd.loadRewardedAd()
-                    NativeAdsViewModel.shared.loadAds()
-                }
+
                 
                 
                 
@@ -252,10 +248,9 @@ extension EztMainView{
             
             NavigationLink(destination: {
                                 SearchView()
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(store)
-                                   
-                                    .environmentObject(interAd)
+//                                    .environmentObject(rewardAd)
+//                                    .environmentObject(store)
+//                                    .environmentObject(interAd)
             }, label: {
                 Image("search")
                     .resizable()

@@ -79,6 +79,8 @@ struct SpecialTagWithData {
 
 class WallpaperCatalogViewModel: ObservableObject {
     
+    static let shared = WallpaperCatalogViewModel()
+     
     @Published var shufflePackTags  : [SpecialTagWithData] = []
     @Published var depthEffectTags  : [SpecialTagWithData] = []
     @Published var dynamicTags  : [SpecialTagWithData] = []

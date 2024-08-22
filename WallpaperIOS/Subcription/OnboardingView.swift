@@ -371,7 +371,3 @@ extension OnboardingView{
 }
 
 
-#Preview {
-    SplashView()
-    
-}

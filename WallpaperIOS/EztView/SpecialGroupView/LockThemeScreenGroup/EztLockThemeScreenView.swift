@@ -8,12 +8,13 @@
 import SwiftUI
 import SDWebImageSwiftUI
 import Lottie
+
 struct EztLockThemeScreenView: View {
     @StateObject var newestVM : LockThemeViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : LockThemeViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
     @EnvironmentObject var rewardAd : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
  //   @Environment(\.presentationMode) var presentationMode
     var body: some View {
@@ -46,16 +47,7 @@ struct EztLockThemeScreenView: View {
         }
         .frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
-        
-        
-       
-        
+        .addBackground()
 
     }
 }
@@ -71,24 +63,25 @@ extension EztLockThemeScreenView {
                     
 
                 Spacer()
-               NavigationLink(destination: {
-                   LockThemeView()
-                       .environmentObject(newestVM)
-                       .environmentObject(store)
-                       .environmentObject(rewardAd)
-                       .environmentObject(interAd)
-                   
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
+                //MARK: - Viet
+//               NavigationLink(destination: {
+//                   LockThemeView()
+//                       .environmentObject(newestVM)
+//                       .environmentObject(store)
+//                       .environmentObject(rewardAd)
+//                       .environmentObject(interAd)
+//                   
+//                }, label: {
+//                    HStack(spacing : 0){
+//                        Text("See All".toLocalize())
+//                            .mfont(11, .regular)
+//                            .foregroundColor(.white)
+//                        Image("arrow.right")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 18, height: 18, alignment: .center)
+//                    }
+//                })
                 
                 
             }.frame(height: 36)
@@ -103,10 +96,8 @@ extension EztLockThemeScreenView {
                         HStack(spacing : 8){
                             NavigationLink(destination: {
                               LockThemeDetailView(index: 0)
-                                    .environmentObject(newestVM)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                             
+                                
                             }, label: {
                                 
                                 let wallpaper = newestVM.wallpapers.first
@@ -144,38 +135,41 @@ extension EztLockThemeScreenView {
                                 ForEach(1..<minItem, id: \.self ,content: {
                                     i in
                                     let wallpaper = newestVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        LockThemeDetailView(index: i)
-                                              .environmentObject(newestVM)
-                                              .environmentObject(store)
-                                              .environmentObject(rewardAd)
-                                              .environmentObject(interAd)
-                                    }, label: {
-                                        ZStack{
-                                            if (wallpaper.thumbnail.first?.url.full ?? "" ).contains(".json"){
-                                                if let url = URL(string: wallpaper.thumbnail.first?.url.full ?? ""){
-                                                    LottieView {
-                                                        await LottieAnimation.loadedFrom(url:  url )
-                                                    } .looping()
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 78, height: 78 * 2.2)
-                                                    
-                                                }
-                                            }else{
-                                                WebImage(url: URL(string:  wallpaper.thumbnail.first?.url.preview ?? ""))
-                                                    .resizable()
-                                                    .placeholder {
-                                                        placeHolderImage()
-                                                    }
-                                                    .scaledToFill()
-                                                    .frame(width: 78, height: 78 * 2.2)
-                                                    .clipped()
-                                            }
-                                        }  .frame(width: 78, height: 78 * 2.2)
-                                            .cornerRadius(8)
-                                            .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-                                    })
+                                    
+                                    //MARK: - Viet
+                                    
+//                                    NavigationLink(destination: {
+//                                        LockThemeDetailView(index: i)
+//                                              .environmentObject(newestVM)
+//                                              .environmentObject(store)
+//                                              .environmentObject(rewardAd)
+//                                              .environmentObject(interAd)
+//                                    }, label: {
+//                                        ZStack{
+//                                            if (wallpaper.thumbnail.first?.url.full ?? "" ).contains(".json"){
+//                                                if let url = URL(string: wallpaper.thumbnail.first?.url.full ?? ""){
+//                                                    LottieView {
+//                                                        await LottieAnimation.loadedFrom(url:  url )
+//                                                    } .looping()
+//                                                        .resizable()
+//                                                        .scaledToFill()
+//                                                        .frame(width: 78, height: 78 * 2.2)
+//                                                    
+//                                                }
+//                                            }else{
+//                                                WebImage(url: URL(string:  wallpaper.thumbnail.first?.url.preview ?? ""))
+//                                                    .resizable()
+//                                                    .placeholder {
+//                                                        placeHolderImage()
+//                                                    }
+//                                                    .scaledToFill()
+//                                                    .frame(width: 78, height: 78 * 2.2)
+//                                                    .clipped()
+//                                            }
+//                                        }  .frame(width: 78, height: 78 * 2.2)
+//                                            .cornerRadius(8)
+//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
+//                                    })
                                     
                                     
                                     
@@ -234,48 +228,49 @@ extension EztLockThemeScreenView {
                         let  wallpaper = popularVM.wallpapers[i]
                         let string : String = wallpaper.thumbnail.first?.url.full ?? ""
                         
-                        NavigationLink(destination: {
-                            LockThemeDetailView(index: i)
-                                  .environmentObject(newestVM)
-                                  .environmentObject(store)
-                                  .environmentObject(rewardAd)
-                                  .environmentObject(interAd)
-                        }, label: {
-                            ZStack{
-                                if string.contains(".json"){
-                                    if let url = URL(string: string){
-                                        LottieView {
-                                            await LottieAnimation.loadedFrom(url:  url )
-                                        } .looping()
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-                                            .onAppear(perform: {
-                                                print("Lockthemes Lottie File: \(string)")
-                                            })
-                                    }
-
-                                }else{
-                                    WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
-                                        .resizable()
-                                        .placeholder {
-                                            placeHolderImage()
-                                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-                                        }
-                                      
-                                        .scaledToFill()
-                                }
-                               
-                            }  .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-                                .cornerRadius(8)
-                                .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-
-                        })
-                        .onAppear(perform: {
-                            if i == ( popularVM.wallpapers.count - 6 ){
-                                popularVM.getWallpapers()
-                            }
-                        })
+                        //MARK: - Viet
+//                        NavigationLink(destination: {
+//                            LockThemeDetailView(index: i)
+//                                  .environmentObject(newestVM)
+//                                  .environmentObject(store)
+//                                  .environmentObject(rewardAd)
+//                                  .environmentObject(interAd)
+//                        }, label: {
+//                            ZStack{
+//                                if string.contains(".json"){
+//                                    if let url = URL(string: string){
+//                                        LottieView {
+//                                            await LottieAnimation.loadedFrom(url:  url )
+//                                        } .looping()
+//                                            .resizable()
+//                                            .scaledToFill()
+//                                            .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+//                                            .onAppear(perform: {
+//                                                print("Lockthemes Lottie File: \(string)")
+//                                            })
+//                                    }
+//
+//                                }else{
+//                                    WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
+//                                        .resizable()
+//                                        .placeholder {
+//                                            placeHolderImage()
+//                                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+//                                        }
+//                                      
+//                                        .scaledToFill()
+//                                }
+//                               
+//                            }  .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+//                                .cornerRadius(8)
+//                                .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
+//
+//                        })
+//                        .onAppear(perform: {
+//                            if i == ( popularVM.wallpapers.count - 6 ){
+//                                popularVM.getWallpapers()
+//                            }
+//                        })
                     }
                 }
             }

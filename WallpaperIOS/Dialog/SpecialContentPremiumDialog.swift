@@ -23,9 +23,9 @@ struct SpecialContentPremiumDialog: View {
                 .ignoresSafeArea()
             WebImage(url: URL(string: urlStr))
                .resizable()
-               .placeholder {
-                   EZProgressView()
-               }
+//               .placeholder {
+//                   EZProgressView()
+//               }
                .scaledToFill()
                .frame(width: width, height: height)
                .clipped()

@@ -107,11 +107,11 @@ struct ConditionDepthEffectView: View {
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
-                                    .placeholder {
-                                        
-                                        placeHolderImage()
-                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-                                    }
+//                                    .placeholder {
+//                                        
+//                                        placeHolderImage()
+//                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+//                                    }
                                   
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)

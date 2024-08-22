@@ -112,7 +112,7 @@ struct ConditionDynamicView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                    .indicator(.activity) // Activity Indicator
+//                                    .indicator(.activity) // Activity Indicator
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                     .overlay(

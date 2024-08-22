@@ -45,7 +45,7 @@ struct IDProduct {
 
 class MyStore: ObservableObject {
     
-    
+    static let shared = MyStore()
     
     @Published var purchasedIds: [String] = []
     

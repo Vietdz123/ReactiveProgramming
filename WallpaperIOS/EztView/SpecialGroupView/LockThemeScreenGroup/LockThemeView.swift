@@ -70,10 +70,10 @@ struct LockThemeView: View {
                                     }else{
                                         WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
                                             .resizable()
-                                            .placeholder {
-                                                placeHolderImage()
-                                                    .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-                                            }
+//                                            .placeholder {
+//                                                placeHolderImage()
+//                                                    .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+//                                            }
                                           
                                             .scaledToFill()
                                     }

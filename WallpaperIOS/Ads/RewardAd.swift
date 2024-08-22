@@ -20,6 +20,8 @@ import GoogleMobileAds
 
 
 class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate, ImpressionRevenueAds {
+    
+    static let shared = RewardAd()
 
   @Published var rewardedAd: GADRewardedAd?
     

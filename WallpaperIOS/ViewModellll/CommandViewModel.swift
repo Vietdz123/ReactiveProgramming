@@ -56,9 +56,11 @@ class CommandViewModel: ObservableObject {
 }
 
 class HomeViewModel : CommandViewModel {
+    
+    static let shared = HomeViewModel()
     @Published var tags : [Tag] = []
    
-    
+        
     override init() {
         super.init()
         self.getTags()
@@ -174,6 +176,8 @@ enum TagTab : String, CaseIterable {
 }
 
 class TagViewModel : CommandViewModel {
+    
+    static let shared = TagViewModel()
     @Published var tag : String = ""
     @Published var navigateAtHome : Bool = false
     
