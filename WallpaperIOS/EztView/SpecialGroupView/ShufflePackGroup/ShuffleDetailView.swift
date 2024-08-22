@@ -37,6 +37,10 @@ struct ShuffleDetailView: View {
     @State var showGifView : Bool = false
     
     
+    @State var type : String = "ShufflePack"
+    @State var urlForDownloadSuccess :  [URL] = []
+    @State var navigateToDownloadSuccessView : Bool = false
+    
     var body: some View {
         
         ZStack{
@@ -48,6 +52,19 @@ struct ShuffleDetailView: View {
                 label: {
                     EmptyView()
                 })
+            
+            NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                DownloadSuccessView(type: type, url: nil, wallpaper: wallpaper, onClickBackToHome: {
+                    navigateToDownloadSuccessView = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        dismiss.callAsFunction()
+                    })
+                   
+                }).environmentObject(store)
+            }, label: {
+                EmptyView()
+            })
+        
      
                 TabView(selection: $currentIndex){
                     ForEach(0..<wallpaper.path.count, id: \.self) {
@@ -105,15 +122,15 @@ struct ShuffleDetailView: View {
             VStack(spacing: 0){
                 ControllView()
             }
-            
-            if showBuySubAtScreen {
-             
-               SpecialSubView(onClickClose: {
-                   showBuySubAtScreen = false
-               })
-                    .environmentObject(store)
-                    
-            }
+//            
+//            if showBuySubAtScreen {
+//             
+//               SpecialSubView(onClickClose: {
+//                   showBuySubAtScreen = false
+//               })
+//                    .environmentObject(store)
+//                    
+//            }
             
             
             if showDialogRv {
@@ -259,7 +276,8 @@ extension ShuffleDetailView{
                                 DispatchQueue.main.async {
                                     withAnimation(.easeInOut){
                                         if wallpaper.contentType == 1 {
-                                            showBuySubAtScreen.toggle()
+                                      //      showBuySubAtScreen.toggle()
+                                            showSub.toggle()
                                         }else{
                                             showDialogRv.toggle()
                                         }
@@ -343,14 +361,11 @@ extension ShuffleDetailView{
                             showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
                             isDownloading = false
                           
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                         showRateView = true
-                                                       }, onShowGifView: {
-                                                        showGifView.toggle()
-                                                           changeSubType()
-                                                       })
-                                                   })
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                self.navigateToDownloadSuccessView = true
+                            })
+                            
+
                             
                         }
                     }else{

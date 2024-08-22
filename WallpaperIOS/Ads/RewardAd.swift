@@ -19,7 +19,7 @@ import GoogleMobileAds
 //#endif
 
 
-class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
+class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate, ImpressionRevenueAds {
 
   @Published var rewardedAd: GADRewardedAd?
     
@@ -61,6 +61,14 @@ class RewardAd: NSObject, ObservableObject , GADFullScreenContentDelegate {
             }
             
             self?.rewardedAd = rewardedAd
+            
+            
+            self?.rewardedAd?.paidEventHandler = { [weak self] adValue in
+                
+                let info = rewardedAd?.responseInfo
+                self?.impressionAdsValue(name: "Reward_Ads", adValue: adValue, responseInfo: info)
+
+            }
             
             if self?.rewardedAd != nil{
                 self?.rewardedAd?.fullScreenContentDelegate = self

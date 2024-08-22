@@ -210,11 +210,7 @@ struct EztMainView : View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 15.0, execute: {
                         NotificationHelper.share.requestNotificationPermission(onComplete: {
                             _ in
-//                            if b {
-//                                DispatchQueue.main.async {
-//                                    showToastWithContent(image: "checkmark", color: .green, mess: "Thanks for permisson!")
-//                                }
-//                            }
+
                         })
                         
                     })
@@ -223,49 +219,11 @@ struct EztMainView : View {
                 
                 
             })
-//
-//            .fullScreenCover(isPresented: $mainViewModel.showSubView, onDismiss: {
-//               
-//            }, content: {
-//                SubViewRandom()
-//                    .environmentObject(store)
-//            })
-            .overlay{
-                if mainViewModel.showGift{
-                    GiftView()
-                        .environmentObject(store)
-                }
-            }
-        
-    }
-    
-    
-    @ViewBuilder
-    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
-        if giftSubType == 0 {
-           GiftSub_1_View(show: $mainViewModel.showGift)
-        }else if giftSubType == 1{
-            GiftSub_2_View(show: $mainViewModel.showGift)
-        }else{
-            GifSub_3_View(show: $mainViewModel.showGift)
-        }
-    }
 
+    }
     
-//    @ViewBuilder
-//    func SubViewRandom() -> some View {
-//        if mainViewModel.subType == 0 {
-//            if store.isHasEvent(){
-//                Sub_Event()
-//            }else{
-//                Sub_1_View()
-//            }
-//        }else if mainViewModel.subType == 1 {
-//            Sub_2_View()
-//        }else{
-//            Sub_3_View()
-//        }
-//    }
+    
+
 }
 
 extension EztMainView{
@@ -314,12 +272,8 @@ extension EztMainView{
     
     @ViewBuilder
     func BottomBar() -> some View{
-        VStack(spacing : 2){
-            if store.allowShowBanner(){
-                BannerAdViewMain( adStatus: $mainViewModel.adStatus)
-                    .frame(width: 320, height: 50)
-                
-            }
+        VStack(spacing : 0){
+         
             
            
            
@@ -392,7 +346,7 @@ extension EztMainView{
                                        
                                     
                                 }
-                               // .padding(EdgeInsets(top: 0, leading: 8, bottom: 12, trailing: 8))
+                             
                             }
                         }.padding(.horizontal, 8)
                             .padding(.bottom, 8)
@@ -414,84 +368,21 @@ extension EztMainView{
                    // Color.red
                 )
                 .background(Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.7))
+            
+            
+            if store.allowShowBanner(){
+                BannerAdHomeView()
+                   
+                
+            }
+            
                
         }
         .frame(maxWidth: .infinity)
-    //    .background(.white.opacity(0.001))
-     //   .frame(height: store.isPro() ? 72 : ( 72 + 2 + 50 ), alignment : .bottom)
-      //  .frame(height: 72 , alignment : .bottom)
+
         
     }
     
     
 }
 
-//
-//Button(action: {
-//    mainViewModel.showGift.toggle()
-//    mainViewModel.changeSubType()
-//}, label: {
-//    
-//
-//
-//HStack(spacing : 0){
-//    HStack(spacing : 0){
-//        ResizableLottieView(filename: "giftbox")
-//            .frame(width: 86, height: 86)
-//            .offset(y : 4)
-//        // .padding(.leading, 12)
-//        //  .padding(.trailing, 12)
-//        
-//        Text("Last chance for your gift...".toLocalize())
-//            .mfont(15, .bold, line: 1)
-//            .foregroundColor(.white)
-//            .multilineTextAlignment(.leading)
-//            
-//            
-//        Spacer()
-//      
-//         
-//   
-//            Text("Open".toLocalize())
-//                .mfont(13, .bold)
-//                .multilineTextAlignment(.center)
-//                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-//                .frame(width: 64, height: 28)
-//                .background(
-//                    Capsule()
-//                        .fill(.white)
-//                    
-//                )
-//                .padding(.trailing, 12)
-//      
-//        
-//        
-//        
-//    }.frame(maxWidth: .infinity)
-//        .frame(height: 48)
-//        .background(
-//            Capsule()
-//                .fill(
-//                    LinearGradient(
-//                        stops: [
-//                            Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-//                            Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-//                            Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-//                        ],
-//                        startPoint: UnitPoint(x: 0, y: 1.38),
-//                        endPoint: UnitPoint(x: 1, y: -0.22)
-//                    )
-//                )
-//                .frame(height: 48)
-//            
-//        )
-//        .padding(.horizontal, 12)
-//}
-//.frame(height: 68, alignment: .bottom)
-//.clipped()
-//
-//
-//})
-//
-//
-//

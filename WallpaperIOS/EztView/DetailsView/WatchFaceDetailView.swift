@@ -18,7 +18,7 @@ struct WatchFaceDetailView: View {
     
     
     let wallpaper : SpWallpaper
-    @State var showBuySubAtScreen : Bool = false
+  //  @State var showBuySubAtScreen : Bool = false
     @State var showSub : Bool = false
     @StateObject var ctrlViewModel : ControllViewModel = .init()
     @State var showTuto : Bool = false
@@ -26,10 +26,32 @@ struct WatchFaceDetailView: View {
     
     @State var adStatus : AdStatus = .loading
     
+    
+    @State var type : String = "WatchFace"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
+    
+    
     var body: some View {
         
         
         ZStack(alignment: .bottom){
+            
+            
+            
+                 NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                     DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                         navigateToDownloadSuccessView = false
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                             presentationMode.wrappedValue.dismiss()
+                         })
+                        
+                     }).environmentObject(store)
+                 }, label: {
+                     EmptyView()
+                 })
+             
+            
             VStack(spacing : 0){
                 HStack(spacing : 0){
                     Image("menu")
@@ -138,23 +160,7 @@ struct WatchFaceDetailView: View {
                    
                 }.frame(width: 163, height: 276)
                     .padding(.vertical, 24)
-//             
-//                if !store.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
-//                   
-//              
-//                        
-//                        NativeAdsCoordinator()
-//                         .frame(maxWidth : .infinity)
-//                         .frame( height: 84)
-//                         .background(Color.white.opacity(0.03))
-//                         .cornerRadius(12)
-//                            .padding(.horizontal,  16)
-//                            .padding(.vertical, 40)
-//                        
-//                   
-//                }
-                
-                
+
                
             
                 
@@ -166,14 +172,15 @@ struct WatchFaceDetailView: View {
                         DispatchQueue.main.async {
                             withAnimation(.easeInOut){
                                 if wallpaper.contentType == 1 {
-                                   showBuySubAtScreen.toggle()
+                                  // showBuySubAtScreen.toggle()
+                                    showSub.toggle()
                             }else{
                                     showDialogReward.toggle()
                                }
                             }
                         }
                         
-                       // showBuySubAtScreen.toggle()
+                     
                     }
                   
                     
@@ -208,13 +215,7 @@ struct WatchFaceDetailView: View {
                 )
                 .cornerRadius(16)
             
-            if showBuySubAtScreen {
-                SpecialSubView( onClickClose: {
-                    showBuySubAtScreen = false
-                })
-                .environmentObject(store)
-            }
-            
+
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -276,14 +277,11 @@ struct WatchFaceDetailView: View {
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                   showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                       ctrlViewModel.showRateView = true
-                                                   }, onShowGifView: {
-                                                       ctrlViewModel.showGifView.toggle()
-                                                       ctrlViewModel.changeSubType()
-                                                   })
-                                               })
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            let urlPreview = urlStr
+                            self.urlForDownloadSuccess = URL(string: urlPreview)
+                            self.navigateToDownloadSuccessView = true
+                        })
                         
                      
                     }else{

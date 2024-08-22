@@ -12,10 +12,10 @@ import SwiftUI
 
 
 struct NativeAdsCoordinator: UIViewControllerRepresentable {
-    
+    let width: CGFloat
     
     func makeUIViewController(context: Context) -> NativeAdsController {
-        return NativeAdsController()
+        return NativeAdsController(width: width)
     }
     
     func updateUIViewController(_ uiViewController: NativeAdsController, context: Context) {
@@ -34,18 +34,22 @@ class NativeAdsViewModel: NSObject, GADAdLoaderDelegate, GADNativeAdLoaderDelega
     var nativeAdLoader = GADAdLoader()
 
     func loadAds() {
+        let request = GADRequest()
+        request.scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         nativeAdLoader = GADAdLoader(adUnitID: idAds,
                                      rootViewController: nil,
                                      adTypes: [ .native ],
                                      options: nil)
         
         nativeAdLoader.delegate = self
-        nativeAdLoader.load(GADRequest())
+        nativeAdLoader.load(request)
     }
     
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: Error) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            self.nativeAdLoader.load(GADRequest())
+            let request = GADRequest()
+            request.scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            self.nativeAdLoader.load(request)
         }
     }
     
@@ -59,30 +63,23 @@ class NativeAdsViewModel: NSObject, GADAdLoaderDelegate, GADNativeAdLoaderDelega
     
     func refetchAds() {
      //   if !MyStore.shared.isPro() {
+            let request = GADRequest()
+            request.scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            
             nativeAd = nil
-            nativeAdLoader.load(GADRequest())
-    //    }
+            nativeAdLoader.load(request)
+       // }
     }
     
 }
 
-extension UIView {
-    func setDimensions(width: CGFloat, height: CGFloat) {
-          translatesAutoresizingMaskIntoConstraints = false
-          NSLayoutConstraint.activate([
-              widthAnchor.constraint(equalToConstant: width),
-              heightAnchor.constraint(equalToConstant: height),
-          ])
-      }
-}
+
 
 class NativeAdsView: GADNativeAdView {
     
-
-    
     //MARK: - Properties
     lazy var logoAdsImageView: UIImageView = {
-        let imv = UIImageView(image: UIImage(named: "native_ad"))
+        let imv = UIImageView(image: UIImage(named: "AD_Viet"))
         imv.translatesAutoresizingMaskIntoConstraints = false
         return imv
     }()
@@ -92,7 +89,7 @@ class NativeAdsView: GADNativeAdView {
         imv.layer.cornerRadius = 12
         imv.layer.masksToBounds = true
         imv.translatesAutoresizingMaskIntoConstraints = false
-        imv.setDimensions(width: 40, height: 40)
+        imv.setDimensions(width: 44, height: 44)
         return imv
     }()
     
@@ -100,8 +97,28 @@ class NativeAdsView: GADNativeAdView {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 1
-      //  lbl.font = .fontSVNAVoBold(12)
-        lbl.font = UIFont(name: "SVN-Avobold", size: 14)
+        lbl.font = UIFont(name: "SVN-Avo-Bold", size: 16)
+        lbl.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        return lbl
+    }()
+    
+    lazy var logoAndHeaderlineStackView: UIStackView = {
+        let stackview = UIStackView(arrangedSubviews: [logoAdsImageView,
+                                                       headerLineLabel])
+        stackview.axis = .horizontal
+        stackview.spacing = 6
+        stackview.alignment = .center
+        stackview.translatesAutoresizingMaskIntoConstraints = false
+        stackview.clipsToBounds = true
+        return stackview
+    }()
+    
+    lazy var advertiserViewLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.numberOfLines = 1
+        lbl.font = UIFont(name: "SVN-Avo-Bold", size: 10)
+        lbl.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         return lbl
     }()
     
@@ -110,11 +127,12 @@ class NativeAdsView: GADNativeAdView {
         return imv
     }()
     
-    lazy var headerlineRateStackView: UIStackView = {
-        let stackview = UIStackView(arrangedSubviews: [headerLineLabel,
-                                                       rateStarImageView])
+    lazy var logoHeaderlineRateStackView: UIStackView = {
+        let stackview = UIStackView(arrangedSubviews: [logoAndHeaderlineStackView,
+                                                       rateStarImageView,
+                                                       advertiserViewLabel])
         stackview.axis = .vertical
-        stackview.spacing = 8
+        stackview.spacing = 6
         stackview.alignment = .leading
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.clipsToBounds = true
@@ -123,31 +141,44 @@ class NativeAdsView: GADNativeAdView {
     
     lazy var contentStackView: UIStackView = {
         let stackview = UIStackView(arrangedSubviews: [iconAdsImageView,
-                                                       headerlineRateStackView])
+                                                       logoHeaderlineRateStackView])
         stackview.axis = .horizontal
-        stackview.spacing = 20
-        stackview.alignment = .center
+        stackview.spacing = 12
+        stackview.alignment = .top
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.clipsToBounds = true
         return stackview
     }()
     
-    private lazy var backgroundViewBtn: UIView = {
-        let view = UIView()
+    
+    private lazy var backgroundBtnView: UIView = {
+        var view = UIView()
+        let layer = CAGradientLayer()
+        layer.colors = [
+            UIColor(red: 0.15, green: 0.696, blue: 1, alpha: 1).cgColor,
+            UIColor(red: 0.464, green: 0.371, blue: 1, alpha: 1).cgColor,
+            UIColor(red: 0.904, green: 0.2, blue: 0.869, alpha: 1).cgColor
+        ]
+        layer.locations = [0, 0.52, 1]
+        layer.startPoint = CGPoint(x: 0.25, y: 0.5)
+        layer.endPoint = CGPoint(x: 0.75, y: 0.5)
+        layer.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.width - 48, height: 48)
+        
+        view.layer.addSublayer(layer)
+        view.layer.cornerRadius = 24
+        view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(named: "main")
-        view.layer.cornerRadius = 14
         return view
     }()
 
-    lazy var actionButton: UIButton = {
-        let btn = UIButton(type: .custom)
+    
+    lazy var actionButton: UILabel = {
+        let btn = UILabel()//UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitleColor(.black, for: .normal)
-        btn.setTitle("", for: .normal)
-//        btn.backgroundColor = UIColor(named: "main")
-        btn.layer.cornerRadius = 14
+        btn.textColor = .white
+        btn.font = UIFont(name: "SVN-Avobold", size: 20)
         btn.clipsToBounds = true
+        btn.textAlignment = .center
         return btn
     }()
     
@@ -164,57 +195,59 @@ class NativeAdsView: GADNativeAdView {
     
     //MARK: - Helpers
     private func configureUI() {
-        backgroundColor = .white.withAlphaComponent(0.2)
+        backgroundColor = .white.withAlphaComponent(0.01)
         
         self.iconView = self.iconAdsImageView
         self.callToActionView = self.actionButton
         self.headlineView = self.headerLineLabel
         self.starRatingView = self.rateStarImageView
-        
-        addSubview(logoAdsImageView)
+        self.advertiserView = self.advertiserViewLabel
+
         addSubview(contentStackView)
-        addSubview(backgroundViewBtn)
+        addSubview(backgroundBtnView)
         addSubview(actionButton)
+        layer.cornerRadius = 16
         
         NSLayoutConstraint.activate([
-            logoAdsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            logoAdsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            logoAdsImageView.widthAnchor.constraint(equalToConstant: 24),
-            logoAdsImageView.heightAnchor.constraint(equalToConstant: 16),
-            
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            contentStackView.heightAnchor.constraint(equalToConstant: 44),
-            contentStackView.trailingAnchor.constraint(equalTo: actionButton.leadingAnchor, constant: -6),
-            
-            backgroundViewBtn.centerYAnchor.constraint(equalTo: iconAdsImageView.centerYAnchor, constant: 0),
-            backgroundViewBtn.heightAnchor.constraint(equalToConstant: 28),
-            backgroundViewBtn.widthAnchor.constraint(equalToConstant: 80),
-            backgroundViewBtn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
 
-            actionButton.centerYAnchor.constraint(equalTo: iconAdsImageView.centerYAnchor, constant: -2),
-            actionButton.heightAnchor.constraint(equalToConstant: 28),
-            actionButton.widthAnchor.constraint(equalToConstant: 80),
-            actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-
+            backgroundBtnView.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor),
+            backgroundBtnView.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor),
+            backgroundBtnView.heightAnchor.constraint(equalToConstant: 48),
+            backgroundBtnView.topAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: 8),
+            
+            actionButton.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor, constant: 0),
+            actionButton.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor, constant: -0),
+            actionButton.heightAnchor.constraint(equalToConstant: 48),
+            actionButton.topAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: 8),
         ])
-        
-        
+
         
     }
     
 }
 
-class NativeAdsController: UIViewController {
+class NativeAdsController: UIViewController , ImpressionRevenueAds {
     
     //MARK: - Properties
     let nativeView = NativeAdsView(frame: .zero)
     let viewModel = NativeAdsViewModel.shared
+    let width: CGFloat
     
     //MARK: - View LifeCycle
+    init(width: CGFloat) {
+        self.width = width
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         configureUI()
         loadNativeAds()
@@ -227,16 +260,8 @@ class NativeAdsController: UIViewController {
     
     //MARK: - Helpers
     private func configureUI() {
-        nativeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nativeView)
-        view.backgroundColor = .clear
-        NSLayoutConstraint.activate([
-            nativeView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            nativeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            nativeView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-            nativeView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0)
-        ])
-
+        nativeView.frame = .init(x: 24, y: 0, width: width - 48, height: 132)
     }
     
     private func loadNativeAds() {
@@ -253,22 +278,34 @@ class NativeAdsController: UIViewController {
     private func attachNativeAds(nativeAd: GADNativeAd) {
         nativeAd.delegate = self
         nativeView.headerLineLabel.text = nativeAd.headline
-        (nativeView.starRatingView as? UIImageView)?.image = imageOfStars(
-            from: nativeAd.starRating)
+        (nativeView.starRatingView as? UIImageView)?.image = imageOfStars(from: nativeAd.starRating)
         nativeView.starRatingView?.isHidden = nativeAd.starRating == nil
         
-        nativeView.actionButton.setTitle(nativeAd.callToAction, for: .normal)
-        
+        nativeView.actionButton.text = nativeAd.callToAction
+        nativeView.actionButton.isHidden = nativeAd.callToAction == nil
         nativeView.actionButton.isUserInteractionEnabled = false
-        nativeView.actionButton.titleLabel?.font =  UIFont(name: "SVN-Avobold", size: 14)
         
         nativeView.iconAdsImageView.image = nativeAd.icon?.image
+        nativeView.advertiserViewLabel.isHidden = nativeAd.advertiser == nil
+        if nativeAd.advertiser == nil {
+            nativeView.frame = .init(x: 24, y: 0, width: width - 48, height: 132)
+            
+        } else {
+            nativeView.frame = .init(x: 24, y: 0, width: width - 48 , height: 114)
+        }
+        
         nativeView.iconAdsImageView.isHidden = nativeAd.icon == nil
-        nativeView.nativeAd = nativeAd
+        nativeView.advertiserViewLabel.text = nativeAd.advertiser
+        
         nativeView.isUserInteractionEnabled = true
         nativeView.addGestureRecognizer(UITapGestureRecognizer(target: self,
                                                                action: #selector(refetchNativeAds)))
-        nativeView.backgroundColor = .clear
+        nativeView.nativeAd = nativeAd
+        nativeView.nativeAd?.paidEventHandler = { [weak self] adValue in
+            let info = self?.nativeView.nativeAd?.responseInfo
+            self?.impressionAdsValue(name: "Native_Ads", adValue: adValue, responseInfo: info)
+
+        }
     }
     
     @objc func refetchNativeAds() {
@@ -318,4 +355,14 @@ extension NativeAdsController: GADVideoControllerDelegate {
 }
 
 
+
+extension UIView {
     
+    func setDimensions(width: CGFloat, height: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: width),
+            heightAnchor.constraint(equalToConstant: height),
+        ])
+    }
+}

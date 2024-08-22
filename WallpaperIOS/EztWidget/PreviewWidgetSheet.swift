@@ -41,8 +41,27 @@ struct PreviewWidgetSheet: View {
     let clickClose : () -> ()
     
     
+    @State var type : String = "Widget"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
+    
+    
     var body: some View {
         ZStack(alignment: .bottom){
+            
+            
+                 NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                     DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                         navigateToDownloadSuccessView = false
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                             clickClose()
+                         })
+                        
+                     }).environmentObject(storeVM)
+                 }, label: {
+                     EmptyView()
+                 })
+            
             VStack(spacing : 0){
                 HStack(spacing : 0){
                     Button(action: {
@@ -135,21 +154,7 @@ struct PreviewWidgetSheet: View {
                         
                     }
                     .padding(.vertical, 24)
-//                 if  !storeVM.isPro() && UserDefaults.standard.bool(forKey: "allow_show_native_ads"){
-//                    
-//              
-//              
-//                        NativeAdsCoordinator()
-//                         .frame(maxWidth : .infinity)
-//                         .frame( height: 84)
-//                         .background(Color.white.opacity(0.03))
-//                         .cornerRadius(12)
-//                            .padding(.horizontal,  16)
-//                            .padding(.top, 16)
-//                            .padding(.bottom, 40)
-//                        
-//                    
-//                }
+
                
                 
                 Button(action: {
@@ -244,13 +249,10 @@ struct PreviewWidgetSheet: View {
                 DialogUpdateIOS(show: $showUpdate)
             }
         }
-        .overlay{
-            if showSubView{
-                SpecialSubView( from : "WG" ,onClickClose: {
-                    showSubView = false
-                })
-            }
-        }
+        .fullScreenCover(isPresented: $showSubView, content: {
+            EztSubcriptionView().environmentObject(storeVM)
+        })
+
         .overlay{
             if showDialogReward{
                 DialogWatchRewardAdsForWidget(urlStr: widget.thumbnail?.first?.url.full ?? "", show: $showDialogReward, onRewarded: {
@@ -273,9 +275,7 @@ struct PreviewWidgetSheet: View {
         .fullScreenCover(isPresented: $showSubOrigin, content: {
             EztSubcriptionView()
         })
-        .onAppear(perform: {
-            print("HUYYYYY ga non: \(widget.set)")
-        })
+      
         
     }
     
@@ -296,13 +296,20 @@ extension PreviewWidgetSheet {
             DispatchQueue.main.async{
                 showToastWithContent(image: "checkmark", color: .green, mess: "Download Successful!")
                 ServerHelper.sendDataWidget(widget_id: widget.id)
-                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
-                if show == false{
-                    UserDefaults.standard.set(true, forKey: "wg_show_when_download")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                        showTuto.toggle()
-                    })
-                }
+//                let show = UserDefaults.standard.bool(forKey: "wg_show_when_download")
+//                if show == false{
+//                    UserDefaults.standard.set(true, forKey: "wg_show_when_download")
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+//                        showTuto.toggle()
+//                    })
+//                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    let urlPreview = widget.thumbnail?.first?.url.full ?? ""
+                    self.urlForDownloadSuccess = URL(string: urlPreview)
+                    self.navigateToDownloadSuccessView = true
+                })
+                
+                
                 
             }
         })

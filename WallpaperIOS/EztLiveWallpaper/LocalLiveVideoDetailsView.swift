@@ -155,18 +155,18 @@ struct LocalLiveVideoDetailsView: View {
             }
             
         }
-        .overlay{
-            if ctrlViewModel.showGifView{
-                GiftView()
-            }
-        }
-        .overlay{
-            if ctrlViewModel.showSpeciaSub {
-                SpecialSubView(onClickClose: {
-                    ctrlViewModel.showSpeciaSub = false
-                })
-            }
-        }
+//        .overlay{
+//            if ctrlViewModel.showGifView{
+//                GiftView()
+//            }
+//        }
+//        .overlay{
+//            if ctrlViewModel.showSpeciaSub {
+//                SpecialSubView(onClickClose: {
+//                    ctrlViewModel.showSpeciaSub = false
+//                })
+//            }
+//        }
         .overlay{
                    if ctrlViewModel.showRateView {
                        EztRateView(onClickSubmit5star: {
@@ -363,17 +363,7 @@ struct LocalLiveVideoDetailsView: View {
         
     }
     
-    @ViewBuilder
-    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
-        if giftSubType == 0 {
-            GiftSub_1_View(show: $ctrlViewModel.showGifView)
-        }else if giftSubType == 1{
-            GiftSub_2_View(show: $ctrlViewModel.showGifView)
-        }else{
-            GifSub_3_View(show: $ctrlViewModel.showGifView)
-        }
-    }
-    
+  
     @ViewBuilder
     func Dialog(liveWL : SpLiveWallpaper) -> some View{
         

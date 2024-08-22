@@ -24,6 +24,9 @@ struct WallpaperOnePageDetails: View {
     
     @State var index : Int
     
+    @State var type : String = "Wallpaper"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
     
     var body: some View {
         ZStack(alignment: .top){
@@ -33,6 +36,19 @@ struct WallpaperOnePageDetails: View {
                            , isActive: $ctrlViewModel.navigateView, label: {
                 EmptyView()
             })
+            
+            
+                 NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                     DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                         navigateToDownloadSuccessView = false
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                             dismiss.callAsFunction()
+                         })
+                     }).environmentObject(store)
+                 }, label: {
+                     EmptyView()
+                 })
+             
             
             TabView(selection: $index, content: {
                 ForEach(0..<wallpapers.count, id: \.self){ i in
@@ -108,25 +124,28 @@ struct WallpaperOnePageDetails: View {
                 
             }
             
-            if ctrlViewModel.showDialogBuyCoin{
-
-                SpecialSubView(onClickClose: {
-                    ctrlViewModel.showDialogBuyCoin = false
-                })
-               
-            }
-            
+//            if ctrlViewModel.showDialogBuyCoin{
+//
+//                SpecialSubView(onClickClose: {
+//                    ctrlViewModel.showDialogBuyCoin = false
+//                })
+//               
+//            }
+//            
         
            
             
         }
         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
         .addBackground()
-        .overlay{
-            if ctrlViewModel.showGifView{
-                GiftView()
-            }
-        }
+        .fullScreenCover(isPresented: $ctrlViewModel.showDialogBuyCoin, content: {
+            EztSubcriptionView()
+        })
+//        .overlay{
+//            if ctrlViewModel.showGifView{
+//                GiftView()
+//            }
+//        }
         .overlay(
             ZStack{
                 if ctrlViewModel.showContentPremium {
@@ -386,13 +405,10 @@ struct WallpaperOnePageDetails: View {
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                            showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                ctrlViewModel.showRateView = true
-                            }, onShowGifView: {
-                                ctrlViewModel.showGifView.toggle()
-                                ctrlViewModel.changeSubType()
-                            })
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            self.urlForDownloadSuccess = URL(string: urlStr)
+                            self.navigateToDownloadSuccessView = true
                         })
 
               

@@ -82,21 +82,33 @@ struct Page_9_View : View {
                 
                 
                 if let weekProduct = store.weekProductNotSale,
-                   let yearProductOrigin = store.getYearOriginUsingProduct()
+                   let lifeTimeProduct = store.lifeTimeProduct
                 {
                     
-                    
-                    Opt_Year(product: yearProductOrigin)
-                        .padding(.top, 16)
                     Opt_Week(product: weekProduct)
                         .padding(.top, 16)
+                    Opt_LifeTime(product: lifeTimeProduct)
+                        .padding(.top, 16)
+                  
 
-                    Text("Auto-renewable, cancel anytime.")
-                        .mfont(11, .regular)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .padding(.top,   16)
-
+                    HStack(spacing : 4){
+                        if currentProduct == 1 {
+                            Text("Auto-renewable, cancel anytime.")
+                                .mfont(11, .regular)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                        }else{
+                            Image("shield 1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                            
+                            Text("Cancel anytime.")
+                                .mfont(11, .regular)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                        }
+                    }.padding(.top,   16)
                     
                 }
                 
@@ -136,7 +148,7 @@ struct Page_9_View : View {
     func Opt_Week(product : Product) -> some View {
         HStack(spacing : 0){
             ZStack{
-                Circle().stroke(Color.white, lineWidth: 1)
+                Circle().stroke(Color.white.opacity(0.7), lineWidth: 1)
                 if currentProduct == 1 {
                     Image("checkmark")
                         .resizable()
@@ -171,21 +183,29 @@ struct Page_9_View : View {
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        // Text("\(product.displayPrice)/week")
-                        Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
-                            .mfont(12, .regular)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .opacity(currentProduct == 1 ? 1 : 0.7)
+                       
+//                        Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
+//                            .mfont(12, .regular)
+//                            .foregroundColor(.white)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
                         
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    // Text("\(product.displayPrice)/week")
-                    Text(String(format: NSLocalizedString("%@/week", comment: ""), product.displayPrice))
-                        .mfont(12, .regular)
-                        .foregroundColor(.white)
-                        .padding(.trailing, 16)
+                    VStack(alignment: .trailing, content: {
+                        Text(product.displayPrice)
+                            .mfont(12, .regular)
+                            .foregroundColor(.white)
+                            .opacity(currentProduct == 1 ? 1 : 0.7)
+                        
+                        Text("per week")
+                            .mfont(12, .regular)
+                            .foregroundColor(.white)
+                            .opacity(currentProduct == 1 ? 1 : 0.7)
+                           
+                    }) .padding(.trailing, 16)
+                    
                 }
 
             }
@@ -213,11 +233,11 @@ struct Page_9_View : View {
         
     }
     
-    func Opt_Year(product : Product) -> some View {
+    func Opt_LifeTime(product : Product) -> some View {
         HStack(spacing : 0){
             ZStack{
                 Circle()
-                    .stroke(Color.white, lineWidth: 1)
+                    .stroke(Color.white.opacity(0.7), lineWidth: 1)
                 if currentProduct == 2 {
                     Image("checkmark")
                         .resizable()
@@ -249,23 +269,34 @@ struct Page_9_View : View {
             
             ZStack{
                 HStack{
-                    VStack(spacing : 2){
-                        Text("Annually".toLocalize())
+                    VStack(alignment: .leading ,spacing : 2){
+                        Text("LifeTime")
                             .mfont(16, .bold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Text(String(format: NSLocalizedString("%@/year", comment: ""), product.displayPrice ))
+                            .opacity(currentProduct == 2 ? 1 : 0.7)
+                        Text("One-time payment")
                         
                             .mfont(12, .regular)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .opacity(currentProduct == 2 ? 1 : 0.7)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
-                    Text(String(format: NSLocalizedString("%@/week", comment: ""), getDisplayPrice(price: product.price, chia: 51, displayPrice: product.displayPrice) ))
-                        .mfont(12, .regular)
-                        .foregroundColor(.white)
-                        .padding(.trailing, 16)
+                    VStack(alignment: .trailing){
+                        Text(product.displayPrice)
+                            .mfont(12, .regular)
+                            .foregroundColor(.white)
+                            .padding(.trailing, 16)
+                            .opacity(currentProduct == 2 ? 1 : 0.7)
+                        Text("billed once")
+                            .mfont(12, .regular)
+                            .foregroundColor(.white)
+                            .padding(.trailing, 16)
+                            .opacity(currentProduct == 2 ? 1 : 0.7)
+                    }
+                    
                 }
             }
             

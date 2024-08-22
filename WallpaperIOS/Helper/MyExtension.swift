@@ -148,9 +148,6 @@ extension View{
         guard let url = URL(string: "https://apps.apple.com/vn/app/wallive-live-wallpaper-maker/id6449699978") else{
             return
         }
-        
-      
-        
         shareLink(url: url)
         
         

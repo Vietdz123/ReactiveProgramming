@@ -50,17 +50,7 @@ struct SplashView: View {
                 })
                 
                 
-                NavigationLink(destination:
-                                OnbooaringHasFreeTrial()
-                    .navigationBarTitle("", displayMode: .inline)
-                    .navigationBarHidden(true)
-                    .environmentObject(homeVM)
-                    .environmentObject(myStore)
-                    .environmentObject(interAd)
-                    .environmentObject(rewardAd)
-                               , isActive: $appVM.navigateToOnboarding2, label: {
-                    EmptyView()
-                })
+
                 
                 
                 NavigationLink(destination:
@@ -102,12 +92,7 @@ struct SplashView: View {
                         openAd.tryToPresentAd(onCommit: {
                             _ in
                             DispatchQueue.main.async {
-                                let usingOnbHasFreetrial =   UserDefaults.standard.bool(forKey: "using_onb_has_freetrial")
-                                if usingOnbHasFreetrial {
-                                    appVM.navigateToOnboarding2.toggle()
-                                }else{
                                     appVM.navigateToOnboarding1.toggle()
-                                }
                                 
                             }
                         })

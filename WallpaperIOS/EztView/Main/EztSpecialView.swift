@@ -128,49 +128,16 @@ struct EztSpecialView: View {
                 LazyVStack(spacing : 0){
                    
                 
-//                    LockThemeInHome()
+
                     
-                ForEach(0..<3, id: \.self){
+                ForEach(0..<7, id: \.self){
                     index in
                     let category = viewModel.categoryList[index]
                     ViewFromId(id: category.id)
                 }
-                if !store.isPro(){
-                    
-               
-                Image("banner_sale_special")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .overlay(alignment : .bottomLeading){
-                        
-                        Button(action: {
-                            showGift.toggle()
-                            viewModel.changeSubType()
-                        }, label: {
-                            Text("Get Now")
-                                .mfont(17, .bold)
-                                .foregroundColor(.white)
-                                .frame(width: 144, height: 36)
-                                .background(eztGradientHori)
-                                .clipShape(Capsule())
-                                .padding(.horizontal, 16)
-                                .padding(.bottom, 12)
-                        })
-                    
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 24)
-                }
-                ForEach(3..<7, id: \.self){
-                    index in
-                    let category = viewModel.categoryList[index]
-                    ViewFromId(id: category.id)
-                    
-                }
-                    
-                    
-                //    LiveWallpaperInHome()
+           
+              
+
             }.padding(EdgeInsets(top: -24, leading: 0, bottom: 100, trailing: 0))
             }else{
                 ProgressView()
@@ -444,98 +411,7 @@ extension EztSpecialView{
         
     }
     
-    //MARK: LOCK THEME
-//    func LockThemeInHome() -> some View{
-//        VStack(spacing : 16){
-//            HStack(spacing : 0){
-//                Text("Lock Screen Themes".toLocalize())
-//                    .mfont(20, .bold)
-//                    .foregroundColor(.white)
-//                
-//                
-//                Spacer()
-//                
-//                NavigationLink(destination: {
-//                    
-//               EztLockThemeScreenView()
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                    
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
-//                
-//                
-//                
-//            }.padding(.horizontal, 16)
-//            ZStack{
-//                
-//                
-//                
-//                if lockScreenVM.wallpapers.isEmpty{
-//                    PlaceHolderListLoadHori()
-//                }else{
-//                    ScrollView(.horizontal, showsIndicators: false){
-//                            LazyHStack( spacing: 12, content: {
-//                                ForEach(0..<7, content: {
-//                                    i in
-//                                    let wallpaper = lockScreenVM.wallpapers[i]
-//                                    let string = wallpaper.thumbnail.first?.url.preview ?? ""
-//                                    
-//                                    NavigationLink(destination: {
-//                                        LockThemeDetailView(index: i)
-//                                            .environmentObject(lockScreenVM)
-//                                            .environmentObject(store)
-//                                            .environmentObject(rewardAd)
-//                                            .environmentObject(interAd)
-//                                    }, label: {
-//                                        WebImage(url: URL(string: string))
-//                                            .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                            }
-//                                            .scaledToFill()
-//                                            .frame(width: 128, height: 280)
-//                                            .clipped()
-//                                            .cornerRadius(8)
-//                                       
-//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-//                                          
-//                                    })
-//                                    
-//                                    
-//                                    
-//                                    
-//                                    
-//                                })
-//                            })
-//                        
-//                        
-//                        
-//                    }
-//                    .frame(height: 280)
-//                    .padding(.horizontal, 16)
-//                }
-//            }
-//            .frame(maxWidth: .infinity)
-//            .frame(height: 280)
-//            
-//            
-//            
-//            
-//        }.padding(.top, 24)
-//    }
-    
-    
+
     func DepthEffectViewInHome() -> some View{
         VStack(spacing : 16){
             HStack(spacing : 0){

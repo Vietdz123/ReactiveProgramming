@@ -34,6 +34,11 @@ struct SpWLDetailView: View {
     @State var showDialogRv : Bool = false
     @State var showTuto : Bool = false
     
+    
+    @State var type : String = "Wallpaper"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
+    
     var body: some View {
         
         
@@ -49,6 +54,20 @@ struct SpWLDetailView: View {
                     EmptyView()
                 })
                 
+                
+                
+                     NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                         DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                             navigateToDownloadSuccessView = false
+                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                                 dismiss.callAsFunction()
+                             })
+                            
+                         }).environmentObject(store)
+                     }, label: {
+                         EmptyView()
+                     })
+                 
                 
                 TabView(selection: $index, content: {
                     ForEach(0..<viewModel.wallpapers.count, id: \.self){ i in
@@ -161,13 +180,13 @@ struct SpWLDetailView: View {
                 }
                 
                 
-                if showBuySubAtScreen {
-                    SpecialSubView( onClickClose: {
-                        showBuySubAtScreen = false
-                    })
-                    .environmentObject(store)
-                }
-                
+//                if showBuySubAtScreen {
+//                    SpecialSubView( onClickClose: {
+//                        showBuySubAtScreen = false
+//                    })
+//                    .environmentObject(store)
+//                }
+//                
                 if showDialogRv {
                     let url  = viewModel.wallpapers[index].path.first?.path.small ?? viewModel.wallpapers[index].path.first?.path.preview ?? ""
                         WatchRVtoGetWLDialog( urlStr: url, show: $showDialogRv ,onRewarded: {
@@ -203,17 +222,11 @@ struct SpWLDetailView: View {
             }
             
         )
-        .overlay{
-               if ctrlViewModel.showRateView {
-                   EztRateView(onClickSubmit5star: {
-                       ctrlViewModel.showRateView = false
-                       rateApp()
-                   }, onClickNoThanksOrlessthan5: {
-                       ctrlViewModel.showRateView = false
-                   })
-               }
-           }
-
+  
+        .fullScreenCover(isPresented: $showBuySubAtScreen, content: {
+            EztSubcriptionView()
+                .environmentObject(store)
+        })
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
                 .environmentObject(store)
@@ -384,7 +397,8 @@ extension SpWLDetailView{
                                                             DispatchQueue.main.async {
                                                                 withAnimation(.easeInOut){
                                                                     if viewModel.wallpapers[index].contentType == 1 {
-                                                                        showBuySubAtScreen.toggle()
+                                                                   //     showBuySubAtScreen.toggle()
+                                                                        showSub.toggle()
                                                                     }else{
                                                                         showDialogRv.toggle()
                                                                     }
@@ -448,14 +462,13 @@ extension SpWLDetailView{
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                   showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                       ctrlViewModel.showRateView = true
-                                                   }, onShowGifView: {
-                                                       ctrlViewModel.showGifView.toggle()
-                                                       ctrlViewModel.changeSubType()
-                                                   })
-                                               })
+                      
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            let urlPreview = viewModel.wallpapers[index].thumbnail?.path.full ??  viewModel.wallpapers[index].path.first?.path.full ?? ""
+                            self.urlForDownloadSuccess = URL(string: urlPreview)
+                            self.navigateToDownloadSuccessView = true
+                        })
+                        
                      
                     }else{
                         ctrlViewModel.isDownloading = false

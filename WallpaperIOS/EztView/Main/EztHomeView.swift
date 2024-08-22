@@ -58,7 +58,7 @@ struct EztHomeView: View {
                 /*1*/   TopWallpaper()
                 /*2*/   WidgetInHome()
                 /*3*/   WatchFaceViewInHome()
-                /*4*/   BannerSaleHome()
+             //   /*4*/   BannerSaleHome()
                 /*5*/   DepthEffectViewInHome()
                 /*6*/   LightningEffectInHome()
                 /*7*/   WidgetDigital()

@@ -29,6 +29,12 @@ struct LiveWLView: View {
     @AppStorage("remoteCf_live_using_coin", store: .standard) var remoteCf_live_using_coin : Bool = false
     
     
+    @State var type : String = "LiveWallpaper"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
+    
+    
+    
     
     var body: some View {
         GeometryReader{
@@ -44,6 +50,20 @@ struct LiveWLView: View {
                 }, label: {
                     EmptyView()
                 })
+                
+                
+                
+                     NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                         DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                             navigateToDownloadSuccessView = false
+                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                                 presentationMode.wrappedValue.dismiss()
+                             })
+                            
+                         }).environmentObject(store)
+                     }, label: {
+                         EmptyView()
+                     })
                 
                 if !viewModel.wallpapers.isEmpty{
                     TabView(selection: $currentIndex){
@@ -128,18 +148,26 @@ struct LiveWLView: View {
             }
             
         }
-        .overlay{
-            if ctrlViewModel.showGifView{
-                GiftView()
-            }
-        }
-        .overlay{
-            if ctrlViewModel.showSpeciaSub {
-                SpecialSubView(onClickClose: {
-                    ctrlViewModel.showSpeciaSub = false
-                })
-            }
-        }
+//        .overlay{
+//            if ctrlViewModel.showGifView{
+//                GiftView()
+//            }
+//        }
+        .fullScreenCover(isPresented: $ctrlViewModel.showSpeciaSub, content: {
+            EztSubcriptionView()
+                .environmentObject(store)
+        })
+//        
+//        .fullScreenCover(isPresented: $ctrlViewModel., content: {
+//            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
+//        })
+//        .overlay{
+//            if ctrlViewModel.showSpeciaSub {
+//                SpecialSubView(onClickClose: {
+//                    ctrlViewModel.showSpeciaSub = false
+//                })
+//            }
+//        }
         .overlay{
                    if ctrlViewModel.showRateView {
                        EztRateView(onClickSubmit5star: {
@@ -245,6 +273,7 @@ struct LiveWLView: View {
                                     if viewModel.wallpapers[currentIndex].contentType == 1 {
                                         DispatchQueue.main.async {
                                             ctrlViewModel.showSpeciaSub = true
+                                            
                                         }
                                     }else{
                                         DispatchQueue.main.async {
@@ -390,14 +419,22 @@ struct LiveWLView: View {
                         ctrlViewModel.isDownloading = false
                         if success{
                             showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                           ctrlViewModel.showRateView = true
-                                                       }, onShowGifView: {
-                                                           ctrlViewModel.showGifView.toggle()
-                                                           ctrlViewModel.changeSubType()
-                                                       })
-                                                   })
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+//                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+//                                                           ctrlViewModel.showRateView = true
+//                                                       }, onShowGifView: {
+//                                                           ctrlViewModel.showGifView.toggle()
+//                                                           ctrlViewModel.changeSubType()
+//                                                       })
+//                                                   })
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                               // let urlPreview = urlVideo
+                                self.urlForDownloadSuccess = urlVideo
+                                self.navigateToDownloadSuccessView = true
+                            })
+                            
+                            
                             print("LivePhoto convert success")
                         }else{
                             showToastWithContent(image: "xmark", color: .green, mess: "Failure")

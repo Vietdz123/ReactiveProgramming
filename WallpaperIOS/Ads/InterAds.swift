@@ -21,7 +21,7 @@ import UIKit
 //let delay = 30000
 //#endif
 
- class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate {
+ class InterstitialAdLoader: NSObject, ObservableObject , GADFullScreenContentDelegate , ImpressionRevenueAds {
     @Published var interstitial: GADInterstitialAd?
  
      private var allowShowInter : Bool = false
@@ -55,6 +55,12 @@ import UIKit
                 return
             }
             interstitial = ad
+            interstitial?.paidEventHandler = { [weak self] adValue in
+            
+            let info = self?.interstitial?.responseInfo
+                self?.impressionAdsValue(name: "Inter_ads", adValue: adValue, responseInfo: info)
+
+            }
             interstitial?.fullScreenContentDelegate = self
         
         }
@@ -98,12 +104,12 @@ import UIKit
      }
 
     func showAd( onCommit: @escaping () -> ()  ){
-        if !allowShowInter {
-            allowShowInter = true
-            timeShowPrev = Date().currentTimeMillis()
-            onCommit()
-            return
-        }
+//        if !allowShowInter {
+//            allowShowInter = true
+//            timeShowPrev = Date().currentTimeMillis()
+//            onCommit()
+//            return
+//        }
         let delay =  UserDefaults.standard.integer(forKey: "delay_inter") * 1000
         self.onComplete = onCommit
         

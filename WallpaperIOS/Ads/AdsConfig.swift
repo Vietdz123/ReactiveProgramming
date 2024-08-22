@@ -30,7 +30,7 @@ struct AdsConfig {
     static let def_interID = "ca-app-pub-5782595411387549/724655O1467"
     static let def_rewardID = "ca-app-pub-5782595411387549/3315917452"
     static let def_openID = "ca-app-pub-5782595411387549/4564547807"
-    static let def_nativeID = "ca-app-pub-5782595411387549/2002835788"
+    static let def_nativeID = ""
     
     
     static let bannerID = m_debug ? test_bannerID : UserDefaults.standard.string(forKey: "id_banner_ads") ?? def_bannerID

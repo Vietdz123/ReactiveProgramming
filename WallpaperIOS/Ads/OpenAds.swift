@@ -16,7 +16,7 @@ import GoogleMobileAds
 //let openAdsId = "ca-app-pub-5782595411387549/4564547807"
 //#endif
 
-final class OpenAd: NSObject, GADFullScreenContentDelegate {
+final class OpenAd: NSObject, GADFullScreenContentDelegate, ImpressionRevenueAds {
     var appOpenAd: GADAppOpenAd?
     var loadTime = Date()
    
@@ -35,6 +35,12 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate {
                           orientation: UIInterfaceOrientation.portrait,
                           completionHandler: { (appOpenAdIn, _) in
             self.appOpenAd = appOpenAdIn
+            
+            self.appOpenAd?.paidEventHandler = { [weak self] adValue in
+                let info = self?.appOpenAd?.responseInfo
+                self?.impressionAdsValue(name: "Open_Ads", adValue: adValue, responseInfo: info)
+            }
+            
             if  self.appOpenAd != nil{
                 print("LOAD_ADS OPEN has")
             }else{

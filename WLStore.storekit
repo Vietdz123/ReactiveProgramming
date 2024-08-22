@@ -63,6 +63,21 @@
       "productID" : "com.ezt.wl.coinpack3",
       "referenceName" : "100_Ecoins",
       "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "29.97",
+      "familyShareable" : false,
+      "internalID" : "93DA2AFC",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.ezt.wl.lifetime",
+      "referenceName" : "lifetime",
+      "type" : "NonConsumable"
     }
   ],
   "settings" : {

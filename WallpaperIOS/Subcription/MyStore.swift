@@ -19,7 +19,7 @@ struct IDProduct {
     
     static let WEEK_1 = "com.ezt.wl.weekly_1"
     
-    
+    static let LIFETIME = "com.ezt.wl.lifetime"
     
     
     static let MONTH = "com.ezt.wl.monthly"
@@ -54,7 +54,7 @@ class MyStore: ObservableObject {
                                                   IDProduct.YEARLY_FREE_TRIAL, IDProduct.YEARLY_SALE_50, IDProduct.YEARLY_ORIGINAL ,IDProduct.MONTHLY_V2, IDProduct.THREE_MONTH,
                                                   IDProduct.YEAR_SALE_50_NEW, IDProduct.YEAR_ORIGINAL_NEW,
                                                   IDProduct.YEAR_1, IDProduct.YEAR_2 ,
-                                                  IDProduct.UNLIMITED ,
+                                                  IDProduct.UNLIMITED , IDProduct.LIFETIME
                                                   
     ]
     
@@ -70,6 +70,7 @@ class MyStore: ObservableObject {
     @Published var yearlyOriginalNewProduct : Product?
     @Published var yearlv2Sale50NewProduct :  Product?
     
+    @Published var lifeTimeProduct : Product?
     
     
     @Published var allowFetcConfigWhenError : Bool = true
@@ -270,7 +271,9 @@ class MyStore: ObservableObject {
                         case IDProduct.YEAR_SALE_50_NEW:
                             self.yearlv2Sale50NewProduct = productttt
                             break
-                            
+                        case IDProduct.LIFETIME:
+                            self.lifeTimeProduct = productttt
+                            break
                             
                         default:
                             break
@@ -359,6 +362,11 @@ class MyStore: ObservableObject {
                                 break
                             case IDProduct.YEAR_SALE_50_NEW:
                                 self.purchasedIds.append(trans.productID)
+                                onBuySuccess(true)
+                                break
+                            case IDProduct.LIFETIME:
+                                self.purchasedIds.append(trans.productID)
+                                self.Firebase_log("Sub_buy_successful_lifetime")
                                 onBuySuccess(true)
                                 break
                             default:

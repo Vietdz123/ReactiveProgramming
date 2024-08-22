@@ -33,7 +33,10 @@ struct LockThemeDetailView: View {
     @State var showTuto : Bool = false
     @State var showDownloadView : Bool = false
     
- 
+    
+    @State var type : String = "LockScreenTheme"
+    @State var urlForDownloadSuccess :  URL?
+    @State var navigateToDownloadSuccessView : Bool = false
     
     var body: some View {
         ZStack{
@@ -48,6 +51,19 @@ struct LockThemeDetailView: View {
                     EmptyView()
                 })
                 
+                
+                NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+                    DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+                        navigateToDownloadSuccessView = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                            dismiss.callAsFunction()
+                        })
+                       
+                    }).environmentObject(store)
+                }, label: {
+                    EmptyView()
+                })
+            
                 
                 TabView(selection: $index, content: {
                     ForEach(0..<viewModel.wallpapers.count, id: \.self){ i in
@@ -126,17 +142,7 @@ struct LockThemeDetailView: View {
                 if ctrlViewModel.showControll{
                     ControllView()
                 }
-                
-                
-                if showBuySubAtScreen {
-                    SpecialSubView( onClickClose: {
-                        showBuySubAtScreen = false
-                    })
-                    .environmentObject(store)
-                }
-                
-         
-                
+
                 
             }
         }
@@ -154,11 +160,7 @@ struct LockThemeDetailView: View {
             }
             
         )
-        .overlay{
-            if ctrlViewModel.showGifView{
-                GiftView()
-            }
-        }
+       
         .overlay{
             if ctrlViewModel.showRateView {
                 EztRateView(onClickSubmit5star: {
@@ -169,7 +171,10 @@ struct LockThemeDetailView: View {
                 })
             }
         }
-  
+        .fullScreenCover(isPresented: $showBuySubAtScreen, content: {
+            EztSubcriptionView()
+                .environmentObject(store)
+        })
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
                 .environmentObject(store)
@@ -187,16 +192,7 @@ struct LockThemeDetailView: View {
 extension LockThemeDetailView{
     
     
-    @ViewBuilder
-    func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
-        if giftSubType == 0 {
-           GiftSub_1_View(show: $ctrlViewModel.showGifView)
-        }else if giftSubType == 1{
-            GiftSub_2_View(show: $ctrlViewModel.showGifView)
-        }else{
-            GifSub_3_View(show: $ctrlViewModel.showGifView)
-        }
-    }
+
     
   //  @State var indexGif : Int = 0
     func ThemeDownloadView() -> some View{
@@ -605,13 +601,22 @@ extension LockThemeDetailView{
                                                 
                                                 ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
                                                
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                        ctrlViewModel.showRateView = true
-                                                    }, onShowGifView: {
-                                                        ctrlViewModel.showGifView.toggle()
-                                                        ctrlViewModel.changeSubType()
-                                                    })
+                                                
+                                                //MARK: ALL
+//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+//                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+//                                                        ctrlViewModel.showRateView = true
+//                                                    }, onShowGifView: {
+//                                                        ctrlViewModel.showGifView.toggle()
+//                                                        ctrlViewModel.changeSubType()
+//                                                    })
+//                                                })
+                                                
+                                                
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                                    let urlPreview = wallpaper.thumbnail.first?.url.full ?? ""
+                                                    self.urlForDownloadSuccess = URL(string: urlPreview)
+                                                    self.navigateToDownloadSuccessView = true
                                                 })
                                                
                                                 

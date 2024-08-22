@@ -13,9 +13,7 @@ struct WatchFaceView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var reward : RewardAd
     @EnvironmentObject var store : MyStore
- 
     @EnvironmentObject var interAd : InterstitialAdLoader
-    
     @State var adStatus : AdStatus = .loading
     
     var body: some View {

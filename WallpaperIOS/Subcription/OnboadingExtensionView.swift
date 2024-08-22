@@ -27,6 +27,18 @@ extension OnboardingView {
     func showATTandGDPR(){
         ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
             // Create a UMPRequestParameters object.
+            
+            GADMobileAds.sharedInstance().start()
+            rewardAd.loadRewardedAd()
+            interAd.loadInterstitial()
+            
+            
+            if status != .authorized {
+                return 
+            }
+            
+            
+            
             let parameters = UMPRequestParameters()
             // Set tag for under age of consent. false means users are not under age
             // of consent.
@@ -53,9 +65,7 @@ extension OnboardingView {
                     
                     
                     print("chay vao day khong")
-                    GADMobileAds.sharedInstance().start()
-                    rewardAd.loadRewardedAd()
-                    interAd.loadInterstitial()
+                 
                     
                     
                 }

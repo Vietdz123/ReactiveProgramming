@@ -85,7 +85,7 @@ struct BannerViewController: UIViewControllerRepresentable  {
 
         view.load(request)
         
-        
+      
         
         viewController.view.addSubview(view)
         view.frame = .init(x: 0, y: 0, width: adSize.size.width, height: adSize.size.height)
@@ -97,7 +97,7 @@ struct BannerViewController: UIViewControllerRepresentable  {
       
     }
     
-    class Coordinator: NSObject, GADBannerViewDelegate {
+    class Coordinator: NSObject, GADBannerViewDelegate, ImpressionRevenueAds {
         
         var bannerViewController: BannerViewController
         
@@ -108,7 +108,11 @@ struct BannerViewController: UIViewControllerRepresentable  {
       
         
         func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-      
+            bannerView.paidEventHandler = { [weak self] adValue in
+                let info = bannerView.responseInfo
+                self?.impressionAdsValue(name: "Banner_ads", adValue: adValue, responseInfo: info)
+
+            }
             bannerViewController.adStatus = .success
         }
         
@@ -119,6 +123,32 @@ struct BannerViewController: UIViewControllerRepresentable  {
         
         
     }
+}
+
+
+
+//MARK: Banner In Home
+struct BannerAdHomeView : View {
+    @State var adStatus: AdStatus = .loading
+    
+    var size = AdFormat.adaptiveBanner.adSize
+    
+    var body: some View {
+        ZStack {
+         
+              
+          
+                Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.7)
+                VisualEffectView(effect: UIBlurEffect(style: .dark))
+            BannerViewController(adUnitID: AdsConfig.bannerCollapID, isCollapBanner: true, adSize: size, adStatus: $adStatus)
+                .frame(width: size.size.width, height: size.size.height  )
+           
+        }.frame(height: size.size.height)
+
+          
+    }
+    
+   
 }
 
 //MARK: ForBanner Collapse

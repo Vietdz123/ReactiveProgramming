@@ -92,9 +92,11 @@ struct OnboardingView: View {
                         if currentPage == 9  && showXmark {
                             Button(action: {
                                 UserDefaults.standard.set(true, forKey: "firstTimeLauncher")
-                                    withAnimation{
-                                        navigateToHome.toggle()
-                                    }
+                            
+                                    navigateToHome.toggle()
+                               
+                                       
+                                   
                             }, label: {
                                 Image("close.circle.fill")
                                     .resizable()
@@ -187,14 +189,9 @@ extension OnboardingView{
                             purchasesss(product: weekPro, string: "Onb_Week")
                         }
                     }else if  currentProduct == 2 {
-                        if let yearPro = store.getYearOriginUsingProduct()  {
+                        if let yearPro = store.lifeTimeProduct {
                             Firebase_log("Click_Buy_Sub_In_Onb_Year")
                             purchasesss(product: yearPro, string: "Onb_Year_FreeTrial")
-                        }
-                    }else if  currentProduct == 3 {
-                        if let month24Pro = store.monthProduct {
-                            Firebase_log("Click_Buy_Sub_In_Onb_Month")
-                            purchasesss(product: month24Pro, string: "Onb_Month")
                         }
                     }
                     
