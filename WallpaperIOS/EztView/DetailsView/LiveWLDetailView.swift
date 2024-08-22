@@ -13,28 +13,22 @@ import GoogleMobileAds
 
 struct LiveWLView: View {
     let generator = UINotificationFeedbackGenerator()
-    @EnvironmentObject var viewModel  : LiveWallpaperViewModel
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var inter : InterstitialAdLoader
+    @StateObject var viewModel : LiveWallpaperViewModel
+    @StateObject var store : MyStore = .shared
     
     @Environment(\.presentationMode) var presentationMode
     @AppStorage("current_coin", store: .standard) var currentCoin = 0
 
     
-    @State var currentIndex : Int = 0
+    @State var currentIndex : Int
     @State var adStatus : AdStatus = .loading
     @StateObject var ctrlViewModel : VideoControllViewModel = .init()
     
     @AppStorage("remoteCf_live_using_coin", store: .standard) var remoteCf_live_using_coin : Bool = false
-    
-    
+
     @State var type : String = "LiveWallpaper"
     @State var urlForDownloadSuccess :  URL?
     @State var navigateToDownloadSuccessView : Bool = false
-    
-    
-    
     
     var body: some View {
         GeometryReader{
@@ -85,7 +79,7 @@ struct LiveWLView: View {
                                     }
                                     
                                     if !store.isPro(){
-                                        inter.showAd(onCommit: {})
+                                        InterstitialAdLoader.shared.showAd(onCommit: {})
                                     }
                                 })
                             
@@ -397,8 +391,8 @@ struct LiveWLView: View {
             }, clickBuyPro: {
                 ctrlViewModel.showDialogDownload.toggle()
                 ctrlViewModel.navigateView.toggle()
-            }).environmentObject(store)
-                .environmentObject(reward)
+            })
+             
         }
         
         
@@ -419,17 +413,9 @@ struct LiveWLView: View {
                         ctrlViewModel.isDownloading = false
                         if success{
                             showToastWithContent(image: "checkmark", color: .green, mess: "Successful")
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-//                                                       showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-//                                                           ctrlViewModel.showRateView = true
-//                                                       }, onShowGifView: {
-//                                                           ctrlViewModel.showGifView.toggle()
-//                                                           ctrlViewModel.changeSubType()
-//                                                       })
-//                                                   })
+
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                               // let urlPreview = urlVideo
                                 self.urlForDownloadSuccess = urlVideo
                                 self.navigateToDownloadSuccessView = true
                             })

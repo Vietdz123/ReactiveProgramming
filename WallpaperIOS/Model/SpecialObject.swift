@@ -8,30 +8,30 @@
 import Foundation
 
 // MARK: - Welcome
-struct SpResponse: Codable {
+struct SpResponse: Codable, Hashable {
     let data: DataClass
 }
 
 // MARK: - DataClass
-struct DataClass: Codable {
+struct DataClass: Codable, Hashable {
     let data: [SpWallpaper]
 }
 
 
 
 
-struct SpLiveResponse: Codable {
+struct SpLiveResponse: Codable, Hashable {
     let data: LiveDataClass
 }
 
 // MARK: - DataClass
-struct LiveDataClass: Codable {
+struct LiveDataClass: Codable, Hashable {
     let data: [SpLiveWallpaper]
 }
 
 
 // MARK: - SpLiveWallpaper
-struct SpLiveWallpaper: Codable {
+struct SpLiveWallpaper: Codable, Hashable {
     let id, userID, cost, contentType: Int
     let path: [VideoPath]
     let thumbnail: [PathElement]
@@ -63,12 +63,12 @@ struct SpLiveWallpaper: Codable {
 }
 
 
-struct VideoPath : Codable{
+struct VideoPath : Codable, Hashable {
     let url : PathURLL
 }
 
 // MARK: - Datum
-struct SpWallpaper: Codable {
+struct SpWallpaper: Codable, Hashable {
     let id, userID, cost, contentType: Int
     let path: [PathElement]
     let thumbnail: PathElement?
@@ -98,7 +98,7 @@ struct SpWallpaper: Codable {
 }
 
 // MARK: - PathElement
-struct PathElement: Codable {
+struct PathElement: Codable, Hashable {
     let fileName: String
     let path: PathPath
   
@@ -111,7 +111,7 @@ struct PathElement: Codable {
 }
 
 // MARK: - PathPath
-struct PathPath: Codable {
+struct PathPath: Codable, Hashable {
     let full, preview, small, extraSmall: String
 
     enum CodingKeys: String, CodingKey {
@@ -121,7 +121,7 @@ struct PathPath: Codable {
 }
 
 // MARK: - PathPath
-struct PathURLL: Codable {
+struct PathURLL: Codable, Hashable {
     let full, large, medium, small: String
 
     enum CodingKeys: String, CodingKey {
@@ -131,7 +131,7 @@ struct PathURLL: Codable {
 }
 
 // MARK: - SpecialContent
-struct SpecialContent: Codable {
+struct SpecialContent: Codable, Hashable {
     let id: Int
     let title: String
     let type: Int

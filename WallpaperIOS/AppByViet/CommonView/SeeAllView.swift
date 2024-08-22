@@ -20,5 +20,6 @@ struct SeeAllView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 18, height: 18, alignment: .center)
         }
+        
     }
 }

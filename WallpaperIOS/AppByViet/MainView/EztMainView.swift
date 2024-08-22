@@ -123,6 +123,27 @@ struct EztMainView : View {
                     
                 case .gotoEztPosterContactView:
                     EztPosterContactView()
+                    
+                case .gotoEztLiveWallpaperView:
+                    EztLiveWallpaperView()
+                    
+                case .gotoDynamicIslandView:
+                    EztDynamicIsland()
+                    
+                case .gotoShufflePackView:
+                    EztShufflePackView()
+                    
+                case .gotoLightingEffectView:
+                    EztLightingEffectView()
+                    
+                case .gotoWatchFaceView:
+                    EztWatchFaceView()
+                    
+                case .gotoDepthEffectView:
+                    EztDepthEffectView()
+                    
+                case let .gotoLiveWallpaperDetail(currentOffset, wallpapers):
+                    LiveWLView(viewModel: .init(wallpapers: wallpapers), currentIndex: currentOffset)
                 }
             }
             .onAppear(perform: {

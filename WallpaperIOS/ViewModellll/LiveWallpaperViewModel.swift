@@ -12,9 +12,9 @@ class LiveWallpaperViewModel: ObservableObject {
     
     @Published var wallpapers : [SpLiveWallpaper] = []
     @Published var currentOffset : Int = 0
-    @Published var domain : String
-    @Published var sort : SpSort
-    @Published var sortByTop : SpTopRate
+    @Published var domain : String = "https://wallpaper.eztechglobal.com/"
+    @Published var sort : SpSort = .NEW
+    @Published var sortByTop : SpTopRate = .TOP_WEEK
     
     init(sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
         self.sort = sort
@@ -23,9 +23,13 @@ class LiveWallpaperViewModel: ObservableObject {
         getWallpapers()
     }
     
+    init(wallpapers: [SpLiveWallpaper]) {
+        self.wallpapers = wallpapers
+    }
+    
     func getWallpapers() {
         
-        let urlString = "\(domain)api/v1/video-specials?limit=\(AppConfig.limit)&offset=\(currentOffset)\(getSortParamStr())&mobile_app_id=2&app=2"
+        let urlString = "\(domain)api/v1/video-specials?limit=\(AppConfig.limit)&offset=\(wallpapers.count)\(getSortParamStr())&mobile_app_id=2&app=2"
         
         guard let url  = URL(string: urlString) else {
             return

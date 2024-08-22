@@ -13,11 +13,7 @@ struct WatchFaceDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject var store : MyStore = .shared
     
-  //  @ObservedObject private var nativeAdViewModel = NativeAdViewModel.shared
-    
-    
     let wallpaper : SpWallpaper
-  //  @State var showBuySubAtScreen : Bool = false
     @State var showSub : Bool = false
     @StateObject var ctrlViewModel : ControllViewModel = .init()
     @State var showTuto : Bool = false

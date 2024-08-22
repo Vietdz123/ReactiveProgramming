@@ -51,46 +51,45 @@ struct LiveWallpaperView: View {
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.thumbnail.first?.path.preview ?? ""
                             
-                            NavigationLink(destination: {
-                                                                LiveWLView(currentIndex : i)
-                                                                    .navigationBarTitle("", displayMode: .inline)
-                                                                    .navigationBarHidden(true)
-                                                                    .environmentObject(viewModel)
-                                                                    .environmentObject(store)
-                                                                    .environmentObject(reward)
-                                                                    .environmentObject(interAd)
-                            }, label: {
-                                
-                                WebImage(url: URL(string: string))
-                                
-                                
-                                    .resizable()
-                                    .placeholder {
-                                        placeHolderImage()
-                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-                                    }
-                                    .scaledToFill()
-                                    .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-                                    .cornerRadius(8)
-                                    .overlay(alignment : .top){
-                                            HStack{
-                                                Image("live")
-                                                    .resizable()
-                                                    .frame(width: 16, height: 16 )
-                                                    .padding(8)
-                                                Spacer()
-                                               
-                                            }
-                                    }
-                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-                            })
-                            
-                            
-                            .onAppear(perform: {
-                                if viewModel.shouldLoadData(id: i){
-                                    viewModel.getWallpapers()
-                                }
-                            })
+                            //MARK: - Viet
+//                            NavigationLink(destination: {
+//                                                                LiveWLView(currentIndex : i)
+//                                                                    .navigationBarTitle("", displayMode: .inline)
+//                                                                    .navigationBarHidden(true)
+//                                                                    .environmentObject(viewModel)
+//                                                                    .environmentObject(store)
+//                                                                    .environmentObject(reward)
+//                                                                    .environmentObject(interAd)
+//                            }, label: {
+//                                
+//                                WebImage(url: URL(string: string))
+//                                
+//                                
+//                                    .resizable()
+//                                    .placeholder {
+//                                        placeHolderImage()
+//                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+//                                    }
+//                                    .scaledToFill()
+//                                    .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+//                                    .cornerRadius(8)
+//                                    .overlay(alignment : .top){
+//                                            HStack{
+//                                                Image("live")
+//                                                    .resizable()
+//                                                    .frame(width: 16, height: 16 )
+//                                                    .padding(8)
+//                                                Spacer()
+//                                               
+//                                            }
+//                                    }
+//                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+//                            })
+//                            .onAppear(perform: {
+//                                if viewModel.shouldLoadData(id: i){
+//                                    viewModel.getWallpapers()
+//                                }
+//                            })
                             
                         }
                     }

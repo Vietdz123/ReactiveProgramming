@@ -9,4 +9,11 @@ import SwiftUI
 
 enum Router: Hashable {
     case gotoEztPosterContactView
+    case gotoEztLiveWallpaperView
+    case gotoDynamicIslandView
+    case gotoShufflePackView
+    case gotoLightingEffectView
+    case gotoWatchFaceView
+    case gotoDepthEffectView
+    case gotoLiveWallpaperDetail(currentIndex: Int, wallpapers: [SpLiveWallpaper])
 }

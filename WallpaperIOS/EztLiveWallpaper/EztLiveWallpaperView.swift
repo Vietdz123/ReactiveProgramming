@@ -100,6 +100,7 @@ extension EztLiveWallpaperView {
                 
                 
                 Spacer()
+                
                 NavigationLink(destination: {
                     LiveWallpaperView()
                         .environmentObject(newestVM)
@@ -129,13 +130,11 @@ extension EztLiveWallpaperView {
                 if !newestVM.wallpapers.isEmpty{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                LiveWLView(currentIndex: 0)
-                                    .environmentObject(newestVM)
-                                    .environmentObject(store)
-                              
+                            //MARK: - Viet
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoLiveWallpaperDetail(currentIndex: 0,
+                                                                                                wallpapers: newestVM.wallpapers))
                             }, label: {
-                                
                                 WebImage(url: URL(string:  newestVM.wallpapers.first?.thumbnail.first?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -152,11 +151,12 @@ extension EztLiveWallpaperView {
                                                 .frame(width: 16, height: 16 )
                                                 .padding(8)
                                             Spacer()
-                                            
+
                                         }
                                     }
                                     .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
+
                             
                             let minItem = min(newestVM.wallpapers.count, 15)
                             
@@ -164,11 +164,10 @@ extension EztLiveWallpaperView {
                                 ForEach(1..<minItem, id: \.self ,content: {
                                     i in
                                     let wallpaper = newestVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        LiveWLView(currentIndex: i)
-                                            .environmentObject(newestVM)
-                                            .environmentObject(store)
-                                    
+                                    //MARK: - Viet
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoLiveWallpaperDetail(currentIndex: i,
+                                                                                                        wallpapers: newestVM.wallpapers))
                                     }, label: {
                                         WebImage(url: URL(string:  wallpaper.thumbnail.first?.path.preview ?? ""))
                                             .resizable()
@@ -186,16 +185,11 @@ extension EztLiveWallpaperView {
                                                         .frame(width: 16, height: 16 )
                                                         .padding(8)
                                                     Spacer()
-                                                    
+
                                                 }
                                             }
                                             .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
                                     
                                 })
                             })
@@ -249,11 +243,9 @@ extension EztLiveWallpaperView {
                         let  wallpaper = popularVM.wallpapers[i]
                         let string : String = wallpaper.thumbnail.first?.path.preview ?? ""
                         
-                        NavigationLink(destination: {
-                            LiveWLView(currentIndex: i)
-                                .environmentObject(popularVM)
-                                .environmentObject(store)
-                   
+                        Button(action: {
+                            EztMainViewModel.shared.paths.append(Router.gotoLiveWallpaperDetail(currentIndex: i,
+                                                                                            wallpapers: popularVM.wallpapers))
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()
@@ -276,13 +268,13 @@ extension EztLiveWallpaperView {
                                     }
                                 }
                                 .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-                            
+                                .onAppear(perform: {
+                                    if i == (popularVM.wallpapers.count - 6) {
+                                        popularVM.getWallpapers()
+                                    }
+                                })
                         })
-                        .onAppear(perform: {
-                            if i == ( popularVM.wallpapers.count - 6 ){
-                                popularVM.getWallpapers()
-                            }
-                        })
+
                     }
                 }
             }

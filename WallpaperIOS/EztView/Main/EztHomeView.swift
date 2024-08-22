@@ -1187,37 +1187,38 @@ extension EztHomeView{
                                     let wallpaper = liveWlVM.wallpapers[i]
                                     let string = wallpaper.thumbnail.first?.path.preview ?? ""
                                     
-                                    NavigationLink(destination: {
-                                        LiveWLView(currentIndex : i)
-                                            .navigationBarTitle("", displayMode: .inline)
-                                            .navigationBarHidden(true)
-                                            .environmentObject(liveWlVM)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
-                                    }, label: {
-                                        WebImage(url: URL(string: string))
-                                            .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
+                                    //MARK: - Viet
+//                                    NavigationLink(destination: {
+//                                        LiveWLView(currentIndex : i)
+//                                            .navigationBarTitle("", displayMode: .inline)
+//                                            .navigationBarHidden(true)
+//                                            .environmentObject(liveWlVM)
+//                                            .environmentObject(store)
+//                                            .environmentObject(rewardAd)
+//                                            .environmentObject(interAd)
+//                                    }, label: {
+//                                        WebImage(url: URL(string: string))
+//                                            .resizable()
+////                                            .placeholder {
+////                                                placeHolderImage()
+////                                            }
+//                                            .scaledToFill()
+//                                            .frame(width: 128, height: 280)
+//                                            .clipped()
+//                                            .cornerRadius(8)
+//                                            .overlay(alignment : .top){
+//                                                    HStack{
+//                                                        Image("live")
+//                                                            .resizable()
+//                                                            .frame(width: 16, height: 16 )
+//                                                            .padding(8)
+//                                                        Spacer()
+//                                                       
+//                                                    }
 //                                            }
-                                            .scaledToFill()
-                                            .frame(width: 128, height: 280)
-                                            .clipped()
-                                            .cornerRadius(8)
-                                            .overlay(alignment : .top){
-                                                    HStack{
-                                                        Image("live")
-                                                            .resizable()
-                                                            .frame(width: 16, height: 16 )
-                                                            .padding(8)
-                                                        Spacer()
-                                                       
-                                                    }
-                                            }
-                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-                                          
-                                    })
+//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+//                                          
+//                                    })
                                     
                                     
                                     
