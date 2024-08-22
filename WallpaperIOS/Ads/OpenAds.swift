@@ -32,7 +32,6 @@ final class OpenAd: NSObject, GADFullScreenContentDelegate, ImpressionRevenueAds
         let request = GADRequest()
         GADAppOpenAd.load(withAdUnitID: AdsConfig.openID,
                           request: request,
-                          orientation: UIInterfaceOrientation.portrait,
                           completionHandler: { (appOpenAdIn, _) in
             self.appOpenAd = appOpenAdIn
             

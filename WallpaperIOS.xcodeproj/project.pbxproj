@@ -35,7 +35,6 @@
 		049187E429F8D6FC00917B30 /* AnimationEndCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049187E329F8D6FC00917B30 /* AnimationEndCallback.swift */; };
 		049187E629F8FF4300917B30 /* MyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049187E529F8FF4300917B30 /* MyExtension.swift */; };
 		049187EB29F9134300917B30 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049187EA29F9134300917B30 /* FontHelper.swift */; };
-		0491B5572A1F0C260002EB08 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 0491B5562A1F0C260002EB08 /* GoogleMobileAds */; };
 		0491B5592A1F0D5C0002EB08 /* RewardAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B5582A1F0D5B0002EB08 /* RewardAd.swift */; };
 		0491B55B2A1F43E70002EB08 /* CommandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B55A2A1F43E70002EB08 /* CommandViewModel.swift */; };
 		04924C222A6682960088D51D /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04924C212A6682960088D51D /* SDWebImageSwiftUI */; };
@@ -84,6 +83,7 @@
 		04DFA2292A83426200649B94 /* SpWLDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DFA2282A83426200649B94 /* SpWLDetailView.swift */; };
 		181C68462A376EFE00638CA7 /* placeholder_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 181C68452A376EFE00638CA7 /* placeholder_anim.json */; };
 		181C68482A37730100638CA7 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181C68472A37730100638CA7 /* DateHelper.swift */; };
+		5CB82C112C770227004E059C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 5CB82C102C770227004E059C /* GoogleMobileAds */; };
 		890BFC392ADE71B800C28F6C /* EztCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890BFC382ADE71B800C28F6C /* EztCategoryView.swift */; };
 		890BFC3B2ADE739A00C28F6C /* LiveWallpaperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890BFC3A2ADE739A00C28F6C /* LiveWallpaperView.swift */; };
 		8915F49C2B3AB38E00ABD53A /* PosterContactTutoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915F49B2B3AB38E00ABD53A /* PosterContactTutoView.swift */; };
@@ -697,7 +697,7 @@
 			files = (
 				89770BED2B26FFD8005C353E /* FirebaseMessaging in Frameworks */,
 				04B605952A272534006ED140 /* StoreKit.framework in Frameworks */,
-				0491B5572A1F0C260002EB08 /* GoogleMobileAds in Frameworks */,
+				5CB82C112C770227004E059C /* GoogleMobileAds in Frameworks */,
 				89770BE92B26FF6A005C353E /* FirebaseAnalytics in Frameworks */,
 				89770BEB2B26FF6A005C353E /* FirebaseRemoteConfig in Frameworks */,
 				8977C7502BBFD8DF00C738AE /* Adjust in Frameworks */,
@@ -1600,7 +1600,6 @@
 			name = WallpaperIOS;
 			packageProductDependencies = (
 				049D991F2A14BD3C009DAA07 /* Lottie */,
-				0491B5562A1F0C260002EB08 /* GoogleMobileAds */,
 				0490BF512A283C0C009DF873 /* NavigationTransitions */,
 				04924C212A6682960088D51D /* SDWebImageSwiftUI */,
 				89770BE82B26FF6A005C353E /* FirebaseAnalytics */,
@@ -1608,6 +1607,7 @@
 				89770BEC2B26FFD8005C353E /* FirebaseMessaging */,
 				897E2C8F2B30400400CB474E /* SwiftJWT */,
 				8977C74F2BBFD8DF00C738AE /* Adjust */,
+				5CB82C102C770227004E059C /* GoogleMobileAds */,
 			);
 			productName = WallpaperIOS;
 			productReference = 0495230529F7C6CB004538DD /* WallpaperIOS.app */;
@@ -1691,12 +1691,12 @@
 			mainGroup = 049522FC29F7C6CB004538DD;
 			packageReferences = (
 				049D991E2A14BD3C009DAA07 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				0491B5552A1F0C250002EB08 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				0490BF502A283C0C009DF873 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
 				04924C202A6682960088D51D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				89770BE72B26FF6A005C353E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				897E2C8E2B30400400CB474E /* XCRemoteSwiftPackageReference "Swift-JWT" */,
 				8977C74E2BBFD8DF00C738AE /* XCRemoteSwiftPackageReference "ios_sdk" */,
+				5CB82C0F2C770227004E059C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 0495230629F7C6CB004538DD /* Products */;
 			projectDirPath = "";
@@ -2524,14 +2524,6 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		0491B5552A1F0C250002EB08 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
-			requirement = {
-				kind = exactVersion;
-				version = 10.13.0;
-			};
-		};
 		04924C202A6682960088D51D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -2548,12 +2540,20 @@
 				kind = branch;
 			};
 		};
+		5CB82C0F2C770227004E059C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = exactVersion;
+				version = 11.2.0;
+			};
+		};
 		89770BE72B26FF6A005C353E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = exactVersion;
-				version = 10.24.0;
+				version = 10.27.0;
 			};
 		};
 		8977C74E2BBFD8DF00C738AE /* XCRemoteSwiftPackageReference "ios_sdk" */ = {
@@ -2580,11 +2580,6 @@
 			package = 0490BF502A283C0C009DF873 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
 			productName = NavigationTransitions;
 		};
-		0491B5562A1F0C260002EB08 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0491B5552A1F0C250002EB08 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
 		04924C212A6682960088D51D /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 04924C202A6682960088D51D /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
@@ -2594,6 +2589,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 049D991E2A14BD3C009DAA07 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		5CB82C102C770227004E059C /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CB82C0F2C770227004E059C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 		893A53AF2B1837060079DFF1 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
