@@ -25,11 +25,9 @@ struct EztWallpaperView: View {
     
     //@StateObject var ctrlVM : EztWallpaperViewModel = .init()
     
-    @EnvironmentObject var tagViewModel : TagViewModel 
-    @EnvironmentObject var foryouVM : HomeViewModel 
-    @EnvironmentObject var catalogVM : WallpaperCatalogViewModel 
-
-
+    @StateObject var tagViewModel : TagViewModel = .shared
+    @StateObject var foryouVM : HomeViewModel = .shared
+    @StateObject var catalogVM : WallpaperCatalogViewModel = .shared
     
     @Binding var currentTab : WallpaperTab
     @Binding var showGift : Bool
@@ -44,7 +42,6 @@ struct EztWallpaperView: View {
             TabView(selection: $currentTab,
                     content:  {
                 EztForYouView()
-
                     .tag(WallpaperTab.ForYou)
              
                 EztSpecialView(showGift : $showGift)

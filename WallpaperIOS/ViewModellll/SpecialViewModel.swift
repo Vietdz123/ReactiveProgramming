@@ -24,6 +24,7 @@ enum SpTopRate : String, CaseIterable {
 
 class SpViewModel: ObservableObject {
    
+    static let shared = SpViewModel()
     @Published var wallpapers : [SpWallpaper] = []
     @Published var currentOffset : Int = 0
     @Published var domain : String

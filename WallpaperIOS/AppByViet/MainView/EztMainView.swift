@@ -14,7 +14,8 @@ import SDWebImageSwiftUI
 
 class EztMainViewModel : ObservableObject{
     
-    
+    static let shared = EztMainViewModel()
+    @Published var paths: NavigationPath = NavigationPath()
     @Published var showMenu : Bool = false
     @Published var currentTab : EztTab = .HOME
     @Published var currentWallpaperTab : WallpaperTab = .ForYou
@@ -25,7 +26,7 @@ class EztMainViewModel : ObservableObject{
     
     @Published var showSubView : Bool = false
     @Published var allowShowSubView : Bool = true
-  
+    
     let subType : Int
     
     init() {
@@ -56,112 +57,85 @@ class EztMainViewModel : ObservableObject{
     
     
     
-   
-
+    
+    
     
 }
 
 struct EztMainView : View {
     
-    @StateObject var mainViewModel : EztMainViewModel = .init()
+    @StateObject var mainViewModel : EztMainViewModel = .shared
     @StateObject var exlusiveVM : ExclusiveViewModel = .init()
-    
     @StateObject var shuffleVM : ShufflePackViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var depthVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .POPULAR, sortByTop: .TOP_WEEK)
     @StateObject var liveVM : LiveWallpaperViewModel = .init()
-   
-    
     @StateObject var foryouVM : HomeViewModel = .init()
     @StateObject var tagViewModel : TagViewModel = .init()
-    
     @StateObject var catalogVM : WallpaperCatalogViewModel = .init()
-
     @StateObject var store : MyStore = .shared
     
     
     @Namespace var anim
     var body: some View {
-        ZStack{
-            VStack(spacing : 0){
-                TopBar()
-                TabView(selection: $mainViewModel.currentTab,
-                        content:  {
-                    EztHomeView(currentTab: $mainViewModel.currentTab, wallpaperTab: $mainViewModel.currentWallpaperTab)
-//                        .environmentObject(catalogVM)
-//                        .environmentObject(exlusiveVM)
-//                        .environmentObject(shuffleVM)
-//                        .environmentObject(depthVM)
-//                        .environmentObject(dynamicVM)
-//                        
-//                      //  .environmentObject(liveVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-                        .gesture(DragGesture())
-                        .tag(EztTab.HOME)
+        NavigationStack(path: $mainViewModel.paths) {
+            ZStack(alignment: .top) {
+                Image("BGIMG")
+                    .resizable()
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    TopBar()
+                        .padding(.top, topSafeArea)
                     
-                    EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab, showGift : $mainViewModel.showGift)
-//                        .environmentObject(catalogVM)
-//                        .environmentObject(foryouVM)
-//                        .environmentObject(tagViewModel)
-//                     //   .environmentObject(liveVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
+                    TabView(selection: $mainViewModel.currentTab,
+                            content:  {
+                        EztHomeView(currentTab: $mainViewModel.currentTab, wallpaperTab: $mainViewModel.currentWallpaperTab)
+                            .gesture(DragGesture())
+                            .tag(EztTab.HOME)
+                        
+                        EztWallpaperView(currentTab: $mainViewModel.currentWallpaperTab,
+                                         showGift : $mainViewModel.showGift)
                         .gesture(DragGesture())
                         .tag(EztTab.WALLPAPER)
-                    
-                    EztWidgetView()
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-                        .gesture(DragGesture())
-                        .tag(EztTab.WIDGET)
-                    
-                    GenArtMainView()
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-                        .tag(EztTab.GENERATION)
+                        
+                        EztWidgetView()
+                            .gesture(DragGesture())
+                            .tag(EztTab.WIDGET)
+                        
+                        GenArtMainView()
+                            .tag(EztTab.GENERATION)
+                    })
+                }
+                .overlay(alignment: .bottom, content: {
+                    BottomBar()
                 })
-            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .overlay(
-                    BottomBar(), alignment: .bottom
-                )
-                .edgesIgnoringSafeArea(.bottom)
-            
-            if  mainViewModel.showMenu{
-                SlideMenuView(
-                    showMenu:  $mainViewModel.showMenu
-                )
-//                .environmentObject(store)
-//                .environmentObject(rewardAd)
-//                .environmentObject(interAd)
+              
                 
+                if mainViewModel.showMenu {
+                    SlideMenuView(showMenu: $mainViewModel.showMenu)
+                }
             }
-            
-            
-        }
-        .navigationBarTitle("", displayMode: .inline)
-            .navigationBarHidden(true)
+            .frame(width: widthDevice, height: heightDevice)
+            .ignoresSafeArea()
+            .navigationDestination(for: Router.self) { value in
+                switch value {
+                    
+                case .gotoEztPosterContactView:
+                    EztPosterContactView()
+                }
+            }
             .onAppear(perform: {
-                
                 UserDefaults.standard.setValue(true, forKey: "user_go_main")
-                
-
-                
-                
-                
                 
                 if mainViewModel.firstAppear {
                     mainViewModel.firstAppear = false
                     let notFirstTimeInMain = UserDefaults.standard.bool(forKey: "not_1st_time_in_main")
                     if !notFirstTimeInMain {
                         UserDefaults.standard.set(true, forKey: "not_1st_time_in_main")
-                    }else{
-                        mainViewModel.currentTab = .WALLPAPER
                         
+                    } else {
+                        mainViewModel.currentTab = .WALLPAPER
                         var timeCountEnterApp : Int = UserDefaults.standard.integer(forKey: "timecount_enter_app")
                         
                         if !UserDefaults.standard.bool(forKey: "lan_hai_vao_app"){
@@ -171,15 +145,15 @@ struct EztMainView : View {
                         
                         if timeCountEnterApp % 3 == 0 {
                             mainViewModel.currentWallpaperTab = .Category
-                        }
-                        else if timeCountEnterApp % 3 == 1 {
+                            
+                        } else if timeCountEnterApp % 3 == 1 {
                             mainViewModel.currentWallpaperTab = .Special
-                        }
-                        else{
+                            
+                        } else{
                             mainViewModel.currentWallpaperTab = .LockScreenTheme
                         }
-                        UserDefaults.standard.set(timeCountEnterApp + 1, forKey: "timecount_enter_app")
                         
+                        UserDefaults.standard.set(timeCountEnterApp + 1, forKey: "timecount_enter_app")
                         
                         if mainViewModel.allowShowSubView && !store.isPro() {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
@@ -191,14 +165,9 @@ struct EztMainView : View {
                     }
                 }
                 
-
                 if  mainViewModel.showMenu{
                     mainViewModel.showMenu = false
                 }
-
-                   
-                
-            
                 
                 let getPermissionNotification = UserDefaults.standard.bool(forKey: "getPermissionNotification")
                 if !getPermissionNotification {
@@ -206,20 +175,19 @@ struct EztMainView : View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 15.0, execute: {
                         NotificationHelper.share.requestNotificationPermission(onComplete: {
                             _ in
-
+                            
                         })
                         
                     })
                 }
-               
-                
-                
             })
-
+        }
     }
-    
+     
+       
     
 
+    
 }
 
 extension EztMainView{
@@ -247,10 +215,8 @@ extension EztMainView{
             Spacer()
             
             NavigationLink(destination: {
-                                SearchView()
-//                                    .environmentObject(rewardAd)
-//                                    .environmentObject(store)
-//                                    .environmentObject(interAd)
+                SearchView()
+
             }, label: {
                 Image("search")
                     .resizable()
@@ -260,28 +226,22 @@ extension EztMainView{
                 
             })
             
-        }.frame(maxWidth: .infinity)
-            .frame(height: 48)
+        }
+        .frame(width: widthDevice, height: 48)
         
     }
     
     @ViewBuilder
     func BottomBar() -> some View{
         VStack(spacing : 0){
-         
-            
-           
-           
-               
-                
-            
+
             HStack(spacing : 0 ){
                 ForEach(EztTab.allCases, id : \.rawValue){
                     tab in
                     VStack(spacing : 0){
                         ZStack{
                             if mainViewModel.currentTab == tab{
-
+                                
                                 
                                 VStack(spacing : 4){
                                     Image("\(tab.rawValue)111")
@@ -294,38 +254,38 @@ extension EztMainView{
                                         .foregroundColor(.white)
                                     
                                 }
-                                    .frame(maxHeight: .infinity)
-                                    .background(
-                                        TrapezoidShape()
-                                            .fill(
-                                                LinearGradient(
+                                .frame(maxHeight: .infinity)
+                                .background(
+                                    TrapezoidShape()
+                                        .fill(
+                                            LinearGradient(
                                                 stops: [
-                                                Gradient.Stop(color: Color(red: 0.18, green: 0.66, blue: 1).opacity(0.9), location: 0.00),
-                                                Gradient.Stop(color: Color(red: 0.87, green: 0.22, blue: 0.88).opacity(0.36), location: 1.00),
+                                                    Gradient.Stop(color: Color(red: 0.18, green: 0.66, blue: 1).opacity(0.9), location: 0.00),
+                                                    Gradient.Stop(color: Color(red: 0.87, green: 0.22, blue: 0.88).opacity(0.36), location: 1.00),
                                                 ],
                                                 startPoint: UnitPoint(x: 0.5, y: 0),
                                                 endPoint: UnitPoint(x: 0.5, y: 1)
-                                                )
                                             )
+                                        )
                                         .blur(radius: 15)
                                         .opacity(0.7)
                                         .matchedGeometryEffect(id: "MAIN_TABB", in: anim)
-                                    )
-                                    .overlay(
-                                        ZStack{
-                                            if mainViewModel.currentTab == tab{
-                                                Capsule()
-                                                    .fill(Color.main)
-                                                    .frame(width: 16, height: 2)
-                                                    .matchedGeometryEffect(id: "MAIN_TAB", in: anim)
-                                                    .padding(.bottom, 8)
-                                                    //.offset(y : 0)
-                                                
-                                            }
-                                        }, alignment : .bottom
-                                    )
+                                )
+                                .overlay(
+                                    ZStack{
+                                        if mainViewModel.currentTab == tab{
+                                            Capsule()
+                                                .fill(Color.main)
+                                                .frame(width: 16, height: 2)
+                                                .matchedGeometryEffect(id: "MAIN_TAB", in: anim)
+                                                .padding(.bottom, 8)
+                                            //.offset(y : 0)
+                                            
+                                        }
+                                    }, alignment : .bottom
+                                )
                             }else{
-                             
+                                
                                 
                                 VStack(spacing : 4){
                                     Image("\(tab.rawValue)111")
@@ -338,10 +298,10 @@ extension EztMainView{
                                     Text(tab.rawValue.uppercased().toLocalize())
                                         .mfont(11,  .regular)
                                         .foregroundColor(.white.opacity(0.7))
-                                       
+                                    
                                     
                                 }
-                             
+                                
                             }
                         }.padding(.horizontal, 8)
                             .padding(.bottom, 8)
@@ -360,21 +320,21 @@ extension EztMainView{
                 .frame(height: 72)
                 .background(
                     VisualEffectView(effect: UIBlurEffect(style: .dark))
-                   // Color.red
+                    // Color.red
                 )
                 .background(Color(red: 0.08, green: 0.1, blue: 0.09).opacity(0.7))
             
             
             if store.allowShowBanner(){
                 BannerAdHomeView()
-                   
+                
                 
             }
             
-               
+            
         }
         .frame(maxWidth: .infinity)
-
+        
         
     }
     

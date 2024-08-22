@@ -12,10 +12,9 @@ struct EztLiveWallpaperView: View {
     
     @StateObject var newestVM : LiveWallpaperViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : LiveWallpaperViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
+    
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         
@@ -79,7 +78,7 @@ struct EztLiveWallpaperView: View {
         )
         .onAppear{
             if !store.isPro(){
-                interAd.showAd(onCommit: {})
+                InterstitialAdLoader.shared.showAd(onCommit: {})
             }
         }
         
@@ -105,8 +104,7 @@ extension EztLiveWallpaperView {
                     LiveWallpaperView()
                         .environmentObject(newestVM)
                         .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+                     
                     
                 }, label: {
                     HStack(spacing : 0){
@@ -135,8 +133,7 @@ extension EztLiveWallpaperView {
                                 LiveWLView(currentIndex: 0)
                                     .environmentObject(newestVM)
                                     .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                              
                             }, label: {
                                 
                                 WebImage(url: URL(string:  newestVM.wallpapers.first?.thumbnail.first?.path.preview ?? ""))
@@ -171,8 +168,7 @@ extension EztLiveWallpaperView {
                                         LiveWLView(currentIndex: i)
                                             .environmentObject(newestVM)
                                             .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    
                                     }, label: {
                                         WebImage(url: URL(string:  wallpaper.thumbnail.first?.path.preview ?? ""))
                                             .resizable()
@@ -257,8 +253,7 @@ extension EztLiveWallpaperView {
                             LiveWLView(currentIndex: i)
                                 .environmentObject(popularVM)
                                 .environmentObject(store)
-                                .environmentObject(rewardAd)
-                                .environmentObject(interAd)
+                   
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()

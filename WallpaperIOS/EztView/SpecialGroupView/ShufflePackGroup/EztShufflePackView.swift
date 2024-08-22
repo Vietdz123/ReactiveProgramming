@@ -12,10 +12,8 @@ struct EztShufflePackView: View {
     @StateObject var newestVM : ShufflePackViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : ShufflePackViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
     
-    @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var wallpaperCatelogVM : WallpaperCatalogViewModel = .shared
+    @StateObject var store : MyStore = .shared
   
     @Environment(\.presentationMode) var presentationMode
     @State var adStatus : AdStatus = .loading
@@ -45,10 +43,8 @@ struct EztShufflePackView: View {
                 LazyVStack(spacing: 0, content: {
                     NavigationLink(destination: {
                         EztShufflePackListCateView()
-                            .environmentObject(wallpaperCatelogVM)
-                            .environmentObject(rewardAd)
-                            .environmentObject(interAd)
-                            .environmentObject(store)
+               
+                        
                     }, label: {
                         HStack(spacing : 0){
                             Text("Shuffle Packs Category")
@@ -114,7 +110,7 @@ struct EztShufflePackView: View {
             )
             .onAppear{
                 if !store.isPro(){
-                    interAd.showAd(onCommit: {})
+                    InterstitialAdLoader.shared.showAd(onCommit: {})
                 }
             }
         
@@ -144,10 +140,7 @@ extension EztShufflePackView{
                 
                 NavigationLink(destination: {
                     ShufflePackView()
-                        .environmentObject(newestVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+        
                 }, label: {
                     HStack(spacing : 0){
                         Text("See All".toLocalize())
@@ -180,9 +173,7 @@ extension EztShufflePackView{
                                 let img3 = wallpaper.path[2].path.extraSmall
                                 NavigationLink(destination: {
                                     ShuffleDetailView(wallpaper: wallpaper)
-                                          .environmentObject(store)
-                                          .environmentObject(interAd)
-                                          .environmentObject(rewardAd)
+                             
                                 }, label: {
                                     ZStack(alignment: .trailing){
                                         WebImage(url: URL(string: img3))
@@ -288,9 +279,7 @@ extension EztShufflePackView{
                         let shuffle = popularVM.wallpapers[i]
                         NavigationLink(destination: {
                           ShuffleDetailView(wallpaper: shuffle)
-                                .environmentObject(store)
-                                .environmentObject(interAd)
-                                .environmentObject(rewardAd)
+                     
                         }, label: {
                             ItemShuffleWL2(wallpaper: shuffle, isPro: store.isPro())
                         })

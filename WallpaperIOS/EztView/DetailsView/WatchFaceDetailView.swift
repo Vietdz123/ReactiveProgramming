@@ -9,10 +9,9 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct WatchFaceDetailView: View {
+    
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var store : MyStore = .shared
     
   //  @ObservedObject private var nativeAdViewModel = NativeAdViewModel.shared
     
@@ -240,7 +239,7 @@ struct WatchFaceDetailView: View {
         .edgesIgnoringSafeArea(.bottom)
         .onAppear(perform: {
             if !store.isPro(){
-                interAd.showAd {
+                InterstitialAdLoader.shared.showAd {
                     
                 }
             }

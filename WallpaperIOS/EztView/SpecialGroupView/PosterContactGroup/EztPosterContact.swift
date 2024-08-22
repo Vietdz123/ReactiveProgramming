@@ -8,13 +8,12 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+//MARK: - Processing
 struct EztPosterContactView: View {
     @StateObject var newestVM : PosterContactViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : PosterContactViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
     @State var adStatus : AdStatus = .loading
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -80,7 +79,7 @@ struct EztPosterContactView: View {
             )
             .onAppear{
                 if !store.isPro(){
-                    interAd.showAd(onCommit: {})
+                    InterstitialAdLoader.shared.showAd(onCommit: {})
                 }
             }
      
@@ -104,8 +103,7 @@ extension EztPosterContactView {
                  PosterContactView()
                        .environmentObject(newestVM)
                        .environmentObject(store)
-                       .environmentObject(rewardAd)
-                       .environmentObject(interAd)
+                    
                    
                 }, label: {
                     HStack(spacing : 0){
@@ -134,8 +132,7 @@ extension EztPosterContactView {
                                 SpWLDetailView(index: 0)
                                     .environmentObject(newestVM as SpViewModel)
                                     .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                       
                             }, label: {
                                 
                                 WebImage(url: URL(string: newestVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
@@ -157,8 +154,7 @@ extension EztPosterContactView {
                                             SpWLDetailView(index: i)
                                                 .environmentObject(newestVM as SpViewModel)
                                                 .environmentObject(store)
-                                                .environmentObject(rewardAd)
-                                                .environmentObject(interAd)
+                                      
                                         }, label: {
                                             WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
                                                 .resizable()
@@ -232,8 +228,7 @@ extension EztPosterContactView {
                             SpWLDetailView(index: i)
                                 .environmentObject(popularVM as SpViewModel)
                                 .environmentObject(store)
-                                .environmentObject(interAd)
-                                .environmentObject(rewardAd)
+                          
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()

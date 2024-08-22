@@ -11,10 +11,8 @@ import SDWebImageSwiftUI
 struct EztDepthEffectView: View {
     @StateObject var newestVM : DepthEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : DepthEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var wallpaperCatelogVM : WallpaperCatalogViewModel = .shared
+    @StateObject var store : MyStore = .shared
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -50,9 +48,8 @@ struct EztDepthEffectView: View {
                     NavigationLink(destination: {
                         EztDepthEffectCateView()
                             .environmentObject(wallpaperCatelogVM)
-                            .environmentObject(rewardAd)
-                            .environmentObject(interAd)
                             .environmentObject(store)
+                        
                     }, label: {
                         
                         HStack(spacing : 0){
@@ -117,11 +114,7 @@ struct EztDepthEffectView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
+
         
        
         
@@ -145,8 +138,7 @@ extension EztDepthEffectView {
                    DepthEffectView()
                        .environmentObject(newestVM)
                        .environmentObject(store)
-                       .environmentObject(rewardAd)
-                       .environmentObject(interAd)
+  
                    
                 }, label: {
                     HStack(spacing : 0){
@@ -175,8 +167,7 @@ extension EztDepthEffectView {
                                 SpWLDetailView(index: 0)
                                     .environmentObject(newestVM as SpViewModel)
                                     .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                         
                             }, label: {
                                 
                                 WebImage(url: URL(string: newestVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
@@ -200,8 +191,7 @@ extension EztDepthEffectView {
                                         SpWLDetailView(index: i)
                                             .environmentObject(newestVM as SpViewModel)
                                             .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                              
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
                                             .resizable()
@@ -276,8 +266,7 @@ extension EztDepthEffectView {
                             SpWLDetailView(index: i)
                                 .environmentObject(popularVM as SpViewModel)
                                 .environmentObject(store)
-                                .environmentObject(interAd)
-                                .environmentObject(rewardAd)
+              
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()

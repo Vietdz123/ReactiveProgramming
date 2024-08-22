@@ -13,11 +13,8 @@ import GoogleMobileAds
 struct ShuffleDetailView: View {
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var reward : RewardAd
-   
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var store : MyStore = .shared
+
     @State var currentIndex  = 0
     @State var showMore : Bool = false
     let wallpaper : SpWallpaper
@@ -189,7 +186,7 @@ struct ShuffleDetailView: View {
           
             .onAppear(perform: {
                 if !store.isPro(){
-                    interAd.showAd {
+                    InterstitialAdLoader.shared.showAd {
                         
                     }
                 }

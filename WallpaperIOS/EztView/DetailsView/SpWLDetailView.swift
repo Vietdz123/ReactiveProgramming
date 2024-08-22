@@ -17,11 +17,8 @@ struct SpWLDetailView: View {
     @State var index : Int
     
     @StateObject var ctrlViewModel : ControllViewModel = .init()
-    @EnvironmentObject var viewModel : SpViewModel
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var viewModel : SpViewModel = .shared
+    @StateObject var store = MyStore.shared
     @AppStorage("current_coin", store: .standard) var currentCoin : Int = 0
     @AppStorage("exclusive_cost", store: .standard) var exclusiveCost : Int = 4
     
@@ -47,9 +44,9 @@ struct SpWLDetailView: View {
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
                     EztSubcriptionView()
-                        .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
+                    
                 }, label: {
                     EmptyView()
                 })
@@ -63,7 +60,7 @@ struct SpWLDetailView: View {
                                  dismiss.callAsFunction()
                              })
                             
-                         }).environmentObject(store)
+                         })
                      }, label: {
                          EmptyView()
                      })
@@ -146,7 +143,7 @@ struct SpWLDetailView: View {
                                 viewModel.getWallpapers()
                             }
                             if !store.isPro(){
-                                interAd.showAd(onCommit: {})
+                                InterstitialAdLoader.shared.showAd(onCommit: {})
                             }
                             
                         })

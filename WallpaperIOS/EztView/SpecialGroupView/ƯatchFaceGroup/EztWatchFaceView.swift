@@ -12,7 +12,7 @@ struct EztWatchFaceView: View {
     
     @StateObject var newestVM : EztWatchFaceViewModel = .init(sort :.NEW)
     @StateObject var popularVM : EztWatchFaceViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH )
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
     @EnvironmentObject  var reward : RewardAd
     @EnvironmentObject var interAd : InterstitialAdLoader
     

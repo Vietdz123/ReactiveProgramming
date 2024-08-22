@@ -101,6 +101,8 @@
 		5CBD77122C7727250089B364 /* Extension+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD770B2C7727250089B364 /* Extension+Collection.swift */; };
 		5CBD77132C7727250089B364 /* extension+ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD770C2C7727250089B364 /* extension+ViewController.swift */; };
 		5CBD77152C7727320089B364 /* Extension+Widget+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD77142C7727310089B364 /* Extension+Widget+App.swift */; };
+		5CBD77182C7736B30089B364 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD77172C7736B30089B364 /* Router.swift */; };
+		5CBD771B2C77384D0089B364 /* SeeAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD771A2C77384D0089B364 /* SeeAllView.swift */; };
 		890BFC392ADE71B800C28F6C /* EztCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890BFC382ADE71B800C28F6C /* EztCategoryView.swift */; };
 		890BFC3B2ADE739A00C28F6C /* LiveWallpaperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890BFC3A2ADE739A00C28F6C /* LiveWallpaperView.swift */; };
 		8915F49C2B3AB38E00ABD53A /* PosterContactTutoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8915F49B2B3AB38E00ABD53A /* PosterContactTutoView.swift */; };
@@ -504,6 +506,8 @@
 		5CBD770B2C7727250089B364 /* Extension+Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+Collection.swift"; sourceTree = "<group>"; };
 		5CBD770C2C7727250089B364 /* extension+ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "extension+ViewController.swift"; sourceTree = "<group>"; };
 		5CBD77142C7727310089B364 /* Extension+Widget+App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+Widget+App.swift"; sourceTree = "<group>"; };
+		5CBD77172C7736B30089B364 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		5CBD771A2C77384D0089B364 /* SeeAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeAllView.swift; sourceTree = "<group>"; };
 		890BFC382ADE71B800C28F6C /* EztCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EztCategoryView.swift; sourceTree = "<group>"; };
 		890BFC3A2ADE739A00C28F6C /* LiveWallpaperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveWallpaperView.swift; sourceTree = "<group>"; };
 		8915F49B2B3AB38E00ABD53A /* PosterContactTutoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterContactTutoView.swift; sourceTree = "<group>"; };
@@ -992,7 +996,9 @@
 		5CBD76E32C77153D0089B364 /* AppByViet */ = {
 			isa = PBXGroup;
 			children = (
+				5CBD77192C7738420089B364 /* CommonView */,
 				0495230829F7C6CB004538DD /* WallpaperIOSApp.swift */,
+				5CBD77162C7731160089B364 /* MainView */,
 				5CBD76E42C77154A0089B364 /* Onboarding */,
 				5CBD77042C771FD00089B364 /* ExtensionViet.swift */,
 				5CBD77072C7727240089B364 /* Extension+Bundle.swift */,
@@ -1003,6 +1009,7 @@
 				5CBD77082C7727240089B364 /* Extension+View.swift */,
 				5CBD770C2C7727250089B364 /* extension+ViewController.swift */,
 				5CBD77142C7727310089B364 /* Extension+Widget+App.swift */,
+				5CBD77172C7736B30089B364 /* Router.swift */,
 			);
 			path = AppByViet;
 			sourceTree = "<group>";
@@ -1014,6 +1021,22 @@
 				04A1D54B2A1DAA0400853047 /* SplashScreenView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		5CBD77162C7731160089B364 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				89762A1A2ADCE57D00DAA578 /* EztMainView.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		5CBD77192C7738420089B364 /* CommonView */ = {
+			isa = PBXGroup;
+			children = (
+				5CBD771A2C77384D0089B364 /* SeeAllView.swift */,
+			);
+			path = CommonView;
 			sourceTree = "<group>";
 		};
 		891F79AC2AE0D84900440B8D /* ViewModellll */ = {
@@ -1252,7 +1275,6 @@
 			children = (
 				89762A1C2ADCE61500DAA578 /* EztTab.swift */,
 				89702E8D2ADD230A00883729 /* EztHomeView.swift */,
-				89762A1A2ADCE57D00DAA578 /* EztMainView.swift */,
 				8972387C2AE8C1080065C27D /* TopWallpapersView.swift */,
 				894ADF382B1D7AA700A3FC83 /* EztWallpaperTab */,
 				89A8089B2B95BA8D00029310 /* EztSpecialView.swift */,
@@ -1846,6 +1868,7 @@
 				890BFC392ADE71B800C28F6C /* EztCategoryView.swift in Sources */,
 				893A532C2B1829490079DFF1 /* WDHomeFolderType.swift in Sources */,
 				890BFC3B2ADE739A00C28F6C /* LiveWallpaperView.swift in Sources */,
+				5CBD77182C7736B30089B364 /* Router.swift in Sources */,
 				0491B55B2A1F43E70002EB08 /* CommandViewModel.swift in Sources */,
 				897294142BEF50C60056E214 /* LockThemeDetail+Ext.swift in Sources */,
 				89C589162ABD9B08005EE7B1 /* Lifecycle.swift in Sources */,
@@ -1944,6 +1967,7 @@
 				89BF4E902B2FF5C9006F5718 /* PromptGenArtView.swift in Sources */,
 				898CB1572BEDC63800CF1D56 /* IntentHandler.swift in Sources */,
 				89BF4E8E2B2FF5BC006F5718 /* ImageGenArtView.swift in Sources */,
+				5CBD771B2C77384D0089B364 /* SeeAllView.swift in Sources */,
 				899F40612B1EE06B00FD3B37 /* EztDepthEffectCateView.swift in Sources */,
 				8984ADB12B10808C0005E3A3 /* EztWatchFaceViewModel.swift in Sources */,
 				89702E932ADD237200883729 /* EztWidgetView.swift in Sources */,

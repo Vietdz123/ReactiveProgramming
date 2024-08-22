@@ -96,17 +96,10 @@ class SpecialCategoryViewModel : ObservableObject {
 
 struct EztSpecialView: View {
    
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    
-    
-    
+    @StateObject var store : MyStore = .shared
+    @StateObject var wallpaperCatelogVM : WallpaperCatalogViewModel = .shared
     @StateObject var viewModel : SpecialCategoryViewModel = .init()
-    
     @StateObject var lockScreenVM : LockThemeViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
-    
     @StateObject var depthVM : DepthEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
     @StateObject var dynamicVM : DynamicIslandViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
     @StateObject var lightningVM : LightingEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_WEEK)
@@ -194,23 +187,20 @@ extension EztSpecialView{
                 
                 Spacer()
                 //MARK: - Viet
-//                NavigationLink(destination: {
-//                    EztWatchFaceView()
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                    
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
+                NavigationLink(destination: {
+                    EztWatchFaceView()
+                    
+                }, label: {
+                    HStack(spacing : 0){
+                        Text("See All".toLocalize())
+                            .mfont(11, .regular)
+                            .foregroundColor(.white)
+                        Image("arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 18, height: 18, alignment: .center)
+                    }
+                })
             }.padding(.horizontal, 16)
             ZStack{
                 if watchFaceViewModel.wallpapers.isEmpty{
@@ -225,57 +215,55 @@ extension EztSpecialView{
                                 let string : String = wallpaper.path.first?.path.preview ?? ""
                                 
                                 //MARK: - Viet
-//                                NavigationLink(destination: {
-//                                    WatchFaceDetailView(wallpaper: wallpaper)
-//                                        .environmentObject(store)
-//                                        .environmentObject(rewardAd)
-//                                        .environmentObject(interAd)
-//                                }, label: {
-//                                    ZStack{
-//                                        Color.black
-//                                        WebImage(url: URL(string: string))
-//                                            .resizable()
-//                                            .cornerRadius(24)
-//                                            .padding(9)
-//                                    }
-//                                    .frame(width: 139 , height: 176)
-//                                        .clipShape(RoundedRectangle(cornerRadius: 30))
-//                                        .cornerRadius(30)
-//                                        .overlay(
-//                                            RoundedRectangle(cornerRadius: 30)
-//                                                    .inset(by: 1.5)
-//                                                    .stroke(.white.opacity(0.3), lineWidth: 3)
-//                                        )
-//                                        .overlay(alignment: .bottomTrailing, content: {
-//                                            VStack(alignment: .trailing, spacing : 0){
-//                                                Text("TUE 16")
-//                                                .mfont(11, .bold, line: 1)
-//                                                  .multilineTextAlignment(.trailing)
-//                                                  .foregroundColor(.white)
-//                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-//                                                
-//                                                Text("10:09")
-//                                                    .mfont(32, .regular, line: 1)
-//                                                  .multilineTextAlignment(.trailing)
-//                                                  .foregroundColor(.white)
-//                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-//                                                  .offset(y : -8)
-//                                                
-//                                                
-//                                            }.padding(.bottom, 12)
-//                                                .padding(.trailing , 20)
-//                                        })
-//                                        .overlay(alignment: .topTrailing, content: {
-//                                            if !store.isPro()  && wallpaper.contentType == 1 {
-//                                                Image("crown")
-//                                                    .resizable()
-//                                                    .scaledToFit()
-//                                                    .frame(width: 16, height: 16)
-//                                                    .padding(.top, 16)
-//                                                    .padding(.trailing, 18)
-//                                            }
-//                                        })
-//                                })
+                                NavigationLink(destination: {
+                                    WatchFaceDetailView(wallpaper: wallpaper)
+                              
+                                }, label: {
+                                    ZStack{
+                                        Color.black
+                                        WebImage(url: URL(string: string))
+                                            .resizable()
+                                            .cornerRadius(24)
+                                            .padding(9)
+                                    }
+                                    .frame(width: 139 , height: 176)
+                                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                                        .cornerRadius(30)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 30)
+                                                    .inset(by: 1.5)
+                                                    .stroke(.white.opacity(0.3), lineWidth: 3)
+                                        )
+                                        .overlay(alignment: .bottomTrailing, content: {
+                                            VStack(alignment: .trailing, spacing : 0){
+                                                Text("TUE 16")
+                                                .mfont(11, .bold, line: 1)
+                                                  .multilineTextAlignment(.trailing)
+                                                  .foregroundColor(.white)
+                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                                
+                                                Text("10:09")
+                                                    .mfont(32, .regular, line: 1)
+                                                  .multilineTextAlignment(.trailing)
+                                                  .foregroundColor(.white)
+                                                  .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                                  .offset(y : -8)
+                                                
+                                                
+                                            }.padding(.bottom, 12)
+                                                .padding(.trailing , 20)
+                                        })
+                                        .overlay(alignment: .topTrailing, content: {
+                                            if !store.isPro()  && wallpaper.contentType == 1 {
+                                                Image("crown")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 16, height: 16)
+                                                    .padding(.top, 16)
+                                                    .padding(.trailing, 18)
+                                            }
+                                        })
+                                })
 
                             }
                         }
@@ -308,23 +296,21 @@ extension EztSpecialView{
                 Spacer()
                 
                 //MARK: - Viet
-//                NavigationLink(destination: {
-//                    EztShufflePackView()
-//                        .environmentObject(wallpaperCatelogVM)
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
+                NavigationLink(destination: {
+                    EztShufflePackView()
+                   
+                   
+                }, label: {
+                    HStack(spacing : 0){
+                        Text("See All".toLocalize())
+                            .mfont(11, .regular)
+                            .foregroundColor(.white)
+                        Image("arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 18, height: 18, alignment: .center)
+                    }
+                })
                 
                 
                 
@@ -384,14 +370,12 @@ extension EztSpecialView{
                                 
                                 
                                 //MARK: - Viet
-//                                NavigationLink(destination: {
-//                                    ShuffleDetailView(wallpaper: shuffle)
-//                                        .environmentObject(store)
-//                                        .environmentObject(interAd)
-//                                        .environmentObject(rewardAd)
-//                                }, label: {
-//                                    ItemShuffleWL(wallpaper: shuffle, isPro: store.isPro())
-//                                })
+                                NavigationLink(destination: {
+                                    ShuffleDetailView(wallpaper: shuffle)
+                               
+                                }, label: {
+                                    ItemShuffleWL(wallpaper: shuffle, isPro: store.isPro())
+                                })
                                 
                             }
                             
@@ -426,10 +410,7 @@ extension EztSpecialView{
                 NavigationLink(destination: {
                     
                EztDepthEffectView()
-                        .environmentObject(wallpaperCatelogVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+
                     
                 }, label: {
                     HStack(spacing : 0){
@@ -457,10 +438,7 @@ extension EztSpecialView{
                         HStack(spacing : 8){
                             NavigationLink(destination: {
                                 SpWLDetailView(index: 0)
-                                    .environmentObject(depthVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                        
                             }, label: {
                                 
                                 WebImage(url: URL(string: depthVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
@@ -482,10 +460,7 @@ extension EztSpecialView{
                                     let wallpaper = depthVM.wallpapers[i]
                                     NavigationLink(destination: {
                                         SpWLDetailView(index: i)
-                                            .environmentObject(depthVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
                                             .resizable()
@@ -537,10 +512,7 @@ extension EztSpecialView{
                 NavigationLink(destination: {
                     
                EztDynamicIsland()
-                        .environmentObject(wallpaperCatelogVM)
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+  
                     
                     
                 }, label: {
@@ -569,10 +541,7 @@ extension EztSpecialView{
                         HStack(spacing : 8){
                             NavigationLink(destination: {
                                 SpWLDetailView(index: 0)
-                                    .environmentObject(dynamicVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                  
                             }, label: {
                                 
                                 WebImage(url: URL(string: dynamicVM.wallpapers.first?.path.first?.path.preview ?? ""))
@@ -601,8 +570,7 @@ extension EztSpecialView{
                                         SpWLDetailView(index: i)
                                             .environmentObject(dynamicVM as SpViewModel)
                                             .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                               
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.path.first?.path.preview ?? ""))
                                             .resizable()
@@ -654,35 +622,27 @@ extension EztSpecialView{
                 
                 
                 Spacer()
+                
+                
+                //MARK: - Viet
+                    Button(action: {
+                        EztMainViewModel.shared.paths.append(Router.gotoEztPosterContactView)
+                    }, label: {
+                        SeeAllView()
+                            .padding(.horizontal, 16)
+                    })
 
+                }
                 
-            NavigationLink(destination: {
-                EztPosterContactView()
-                    .environmentObject(store)
-                    .environmentObject(rewardAd)
-                    .environmentObject(interAd)
+                
+                ZStack {
                     
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
-                
-            }.padding(.horizontal, 16)
-            ZStack{
-                
-                
-                
-                if posterContactVM.wallpapers.isEmpty{
-                    PlaceHolderListLoadHori()
-                }else{
-                    ScrollView(.horizontal, showsIndicators: false){
+                    
+                    
+                    if posterContactVM.wallpapers.isEmpty{
+                        PlaceHolderListLoadHori()
+                    }else{
+                        ScrollView(.horizontal, showsIndicators: false){
                             LazyHStack(spacing: 12, content: {
                                 ForEach(0..<7, content: {
                                     i in
@@ -690,12 +650,11 @@ extension EztSpecialView{
                                     
                                     let string = wallpaper.thumbnail?.path.small ?? ""
                                     
+                                    
+                                    //MARK: - Viet
                                     NavigationLink(destination: {
                                         SpWLDetailView(index: i)
-                                            .environmentObject(posterContactVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                  
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
@@ -717,19 +676,20 @@ extension EztSpecialView{
                                     
                                 })
                             })
-
+                            
+                        }
+                        .frame(height: 280)
+                        .padding(.horizontal, 16)
                     }
-                    .frame(height: 280)
-                    .padding(.horizontal, 16)
                 }
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 280)
-            
-            
-            
-            
-        }.padding(.top, 24)
+                .frame(maxWidth: .infinity)
+                .frame(height: 280)
+                
+                
+                
+                
+            }.padding(.top, 24)
+        
     }
     
     
@@ -743,12 +703,10 @@ extension EztSpecialView{
                 
                 Spacer()
 
-                
+                //MARK: - Viet
                 NavigationLink(destination: {
                     EztLightingEffectView()
-                        .environmentObject(store)
-                        .environmentObject(rewardAd)
-                        .environmentObject(interAd)
+               
                 }, label: {
                     HStack(spacing : 0){
                         Text("See All".toLocalize())
@@ -776,12 +734,13 @@ extension EztSpecialView{
                                     let wallpaper = lightningVM.wallpapers[i]
                                     let string = wallpaper.path.first?.path.preview  ?? ""
                                     
+                                    
+                                    //MARK: - Viet
                                     NavigationLink(destination: {
                                         SpWLDetailView(index: i)
                                             .environmentObject(lightningVM as SpViewModel)
                                             .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                   
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
@@ -830,31 +789,27 @@ extension EztSpecialView{
                 Spacer()
 
                 
-//                NavigationLink(destination: {
-//                    EztLiveWallpaperView()
-//                        .environmentObject(store)
-//                        .environmentObject(rewardAd)
-//                        .environmentObject(interAd)
-//                    
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
+                NavigationLink(destination: {
+                    EztLiveWallpaperView()
+                    
+                }, label: {
+                    HStack(spacing : 0){
+                        Text("See All".toLocalize())
+                            .mfont(11, .regular)
+                            .foregroundColor(.white)
+                        Image("arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 18, height: 18, alignment: .center)
+                    }
+                })
                 
             }.padding(.horizontal, 16)
             ZStack{
                 
-                
-                
                 if liveWlVM.wallpapers.isEmpty{
                     PlaceHolderListLoadHori()
+                    
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                             LazyHStack( spacing: 12, content: {
@@ -864,38 +819,37 @@ extension EztSpecialView{
                                     let string = wallpaper.thumbnail.first?.path.preview ?? ""
                                     
                                     //MARK: - Viet
-//                                    NavigationLink(destination: {
-//                                        LiveWLView(currentIndex : i)
-//                                      //  LocalLiveVideoDetailsView(currentIndex : i)
-//                                            .navigationBarTitle("", displayMode: .inline)
-//                                            .navigationBarHidden(true)
-//                                            .environmentObject(liveWlVM)
-//                                            .environmentObject(store)
-//                                            .environmentObject(rewardAd)
-//                                            .environmentObject(interAd)
-//                                    }, label: {
-//                                        WebImage(url: URL(string: string))
-//                                            .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                            }
-//                                            .scaledToFill()
-//                                            .frame(width: 128, height: 280)
-//                                            .clipped()
-//                                            .cornerRadius(8)
-//                                            .overlay(alignment : .top){
-//                                                    HStack{
-//                                                        Image("live")
-//                                                            .resizable()
-//                                                            .frame(width: 16, height: 16 )
-//                                                            .padding(8)
-//                                                        Spacer()
-//                                                       
-//                                                    }
-//                                            }
-//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-//                                          
-//                                    })
+                                    NavigationLink(destination: {
+                                        //MARK: - Viet not done
+                                        LiveWLView(currentIndex : i)
+                                            .navigationBarTitle("", displayMode: .inline)
+                                            .navigationBarHidden(true)
+                                            .environmentObject(liveWlVM)
+                                            .environmentObject(store)
+                                          
+                                    }, label: {
+                                        WebImage(url: URL(string: string))
+                                            .resizable()
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
+                                            .scaledToFill()
+                                            .frame(width: 128, height: 280)
+                                            .clipped()
+                                            .cornerRadius(8)
+                                            .overlay(alignment : .top){
+                                                    HStack{
+                                                        Image("live")
+                                                            .resizable()
+                                                            .frame(width: 16, height: 16 )
+                                                            .padding(8)
+                                                        Spacer()
+                                                       
+                                                    }
+                                            }
+                                            .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                          
+                                    })
                                     
                                     
                                     
