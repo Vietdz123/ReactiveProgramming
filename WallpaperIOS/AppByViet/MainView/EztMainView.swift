@@ -136,7 +136,7 @@ struct EztMainView : View {
                 case .gotoLightingEffectView:
                     EztLightingEffectView()
                     
-                case .gotoWatchFaceView:
+                case .gotoNewestAnSpecialWatchFaceView:
                     EztWatchFaceView()
                     
                 case .gotoDepthEffectView:
@@ -144,6 +144,9 @@ struct EztMainView : View {
                     
                 case let .gotoLiveWallpaperDetail(currentOffset, wallpapers):
                     LiveWLView(viewModel: .init(wallpapers: wallpapers), currentIndex: currentOffset)
+                    
+                case .gotoNewestWatchFaceView:
+                    NewestWatchFaceView(viewModel: .init())
                 }
             }
             .onAppear(perform: {
@@ -202,6 +205,7 @@ struct EztMainView : View {
                     })
                 }
             })
+            .navigationTransition(.fade(.out))
         }
     }
      

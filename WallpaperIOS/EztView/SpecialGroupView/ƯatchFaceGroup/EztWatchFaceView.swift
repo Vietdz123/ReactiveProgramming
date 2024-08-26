@@ -13,8 +13,6 @@ struct EztWatchFaceView: View {
     @StateObject var newestVM : EztWatchFaceViewModel = .init(sort :.NEW)
     @StateObject var popularVM : EztWatchFaceViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH )
     @StateObject var store : MyStore = .shared
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
     
     @Environment(\.presentationMode) var presentationMode
     @State var adStatus : AdStatus = .loading
@@ -66,11 +64,7 @@ struct EztWatchFaceView: View {
                     
                     , alignment: .bottom
                 )
-                .onAppear{
-                    if !store.isPro(){
-                        interAd.showAd(onCommit: {})
-                    }
-                }
+
             
         
         
@@ -92,23 +86,14 @@ extension EztWatchFaceView{
                 
                 Spacer()
                 
+                //MARK: - Viet
                 
-                NavigationLink(destination: {
-                    WatchFaceView()
-                        .environmentObject(newestVM)
-                        .environmentObject(store)
-                        .environmentObject(reward)
-                        .environmentObject(interAd)
+                
+                Button(action: {
+                    EztMainViewModel.shared.paths.append(Router.gotoNewestWatchFaceView)
+                    
                 }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
+                  SeeAllView()
                 })
                 
                 
@@ -131,9 +116,7 @@ extension EztWatchFaceView{
                                 let string : String = wallpaper.path.first?.path.preview ?? ""
                                 NavigationLink(destination: {
                                     WatchFaceDetailView(wallpaper: wallpaper)
-                                        .environmentObject(store)
-                                        .environmentObject(interAd)
-                                        .environmentObject(reward)
+  
                                 }, label: {
                                     ZStack{
                                         Color.black
@@ -228,9 +211,7 @@ extension EztWatchFaceView{
                         
                         NavigationLink(destination: {
                             WatchFaceDetailView( wallpaper: wallpaper)
-                                .environmentObject(store)
-                                .environmentObject(interAd)
-                                .environmentObject(reward)
+
                         }, label: {
                             ZStack{
                                 Color.black

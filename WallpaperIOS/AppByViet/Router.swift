@@ -13,7 +13,8 @@ enum Router: Hashable {
     case gotoDynamicIslandView
     case gotoShufflePackView
     case gotoLightingEffectView
-    case gotoWatchFaceView
+    case gotoNewestAnSpecialWatchFaceView
     case gotoDepthEffectView
     case gotoLiveWallpaperDetail(currentIndex: Int, wallpapers: [SpLiveWallpaper])
+    case gotoNewestWatchFaceView
 }

@@ -188,11 +188,10 @@ extension EztSpecialView{
                 
                 //MARK: - Viet
                 Button(action: {
-                    EztMainViewModel.shared.paths.append(Router.gotoWatchFaceView)
+                    EztMainViewModel.shared.paths.append(Router.gotoNewestAnSpecialWatchFaceView)
                     
                 }, label: {
                     SeeAllView()
-                    
                 })
                 
             }
@@ -201,7 +200,7 @@ extension EztSpecialView{
             ZStack{
                 if watchFaceViewModel.wallpapers.isEmpty{
                     
-                }else{
+                } else {
                     let itemshow = min(6, watchFaceViewModel.wallpapers.count)
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 12){

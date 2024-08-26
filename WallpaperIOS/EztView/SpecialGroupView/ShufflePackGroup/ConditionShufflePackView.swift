@@ -17,6 +17,8 @@ class ConditionShufflePackViewModel: SpViewModel {
     
     override init(sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
         print("ConditionShufflePackViewModel init")
+        
+        super.init(sort: sort, sortByTop: sortByTop)
     }
     
     override func getWallpapers() {

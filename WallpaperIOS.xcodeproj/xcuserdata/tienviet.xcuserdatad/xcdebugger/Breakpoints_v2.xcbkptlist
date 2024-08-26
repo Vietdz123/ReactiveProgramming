@@ -3,4 +3,80 @@
    uuid = "1484076D-D21A-4B16-B381-857BAABE7012"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BBA6BF66-62BA-4E54-9647-DE99787EA5FE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WallpaperIOS/EztView/SpecialGroupView/ShufflePackGroup/ConditionShufflePackView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "ConditionShufflePackViewModel"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "BBA6BF66-62BA-4E54-9647-DE99787EA5FE - 132ed683722a7d18"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 0 of WallpaperIOS.ConditionShufflePackViewModel.init(sort: WallpaperIOS.SpSort, sortByTop: WallpaperIOS.SpTopRate) -&gt; WallpaperIOS.ConditionShufflePackViewModel"
+                  moduleName = "WallpaperIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tienviet/Desktop/EZT-Project/ios_wallive/WallpaperIOS/EztView/SpecialGroupView/ShufflePackGroup/ConditionShufflePackView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18">
+               </Location>
+               <Location
+                  uuid = "BBA6BF66-62BA-4E54-9647-DE99787EA5FE - add22d0d5fe88f1b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 1 of WallpaperIOS.ConditionShufflePackViewModel.init(sort: WallpaperIOS.SpSort, sortByTop: WallpaperIOS.SpTopRate) -&gt; WallpaperIOS.ConditionShufflePackViewModel"
+                  moduleName = "WallpaperIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tienviet/Desktop/EZT-Project/ios_wallive/WallpaperIOS/EztView/SpecialGroupView/ShufflePackGroup/ConditionShufflePackView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18">
+               </Location>
+               <Location
+                  uuid = "BBA6BF66-62BA-4E54-9647-DE99787EA5FE - a6016ba17055332f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WallpaperIOS.ConditionShufflePackViewModel.__allocating_init(sort: WallpaperIOS.SpSort, sortByTop: WallpaperIOS.SpTopRate) -&gt; WallpaperIOS.ConditionShufflePackViewModel"
+                  moduleName = "WallpaperIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tienviet/Desktop/EZT-Project/ios_wallive/WallpaperIOS/EztView/SpecialGroupView/ShufflePackGroup/ConditionShufflePackView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "BBA6BF66-62BA-4E54-9647-DE99787EA5FE - ee7268575c5f79cf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WallpaperIOS.ConditionShufflePackViewModel.init(sort: WallpaperIOS.SpSort, sortByTop: WallpaperIOS.SpTopRate) -&gt; WallpaperIOS.ConditionShufflePackViewModel"
+                  moduleName = "WallpaperIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tienviet/Desktop/EZT-Project/ios_wallive/WallpaperIOS/EztView/SpecialGroupView/ShufflePackGroup/ConditionShufflePackView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

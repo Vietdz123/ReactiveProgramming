@@ -8,12 +8,10 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct WatchFaceView: View {
-    @EnvironmentObject var viewModel : EztWatchFaceViewModel
+struct NewestWatchFaceView: View {
+    @StateObject var viewModel : EztWatchFaceViewModel
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var store = MyStore.shared
     @State var adStatus : AdStatus = .loading
     
     var body: some View {
@@ -48,10 +46,8 @@ struct WatchFaceView: View {
                             let string : String = wallpaper.path.first?.path.small ?? ""
                             
                             NavigationLink(destination: {
-                                WatchFaceDetailView( wallpaper: wallpaper)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                    .environmentObject(reward)
+                                WatchFaceDetailView(wallpaper: wallpaper)
+
                             }, label: {
                                 ZStack{
                                     Color.black
@@ -61,7 +57,6 @@ struct WatchFaceView: View {
                                             placeHolderImage()
                                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                         }
-                                    //  .scaledToFill()
                                         .cornerRadius(30)
                                         .padding(11)
                                     
@@ -132,17 +127,6 @@ struct WatchFaceView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
-                }
-            }
            
     }
-}
-
-#Preview {
-    WatchFaceView()
 }

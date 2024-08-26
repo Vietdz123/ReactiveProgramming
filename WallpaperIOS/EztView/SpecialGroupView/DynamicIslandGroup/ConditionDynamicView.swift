@@ -17,6 +17,8 @@ class ConditionDynamicViewModel: SpViewModel {
     
     override init(sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
         print("ConditionDynamicViewModel init")
+        
+        super.init(sort: sort, sortByTop: sortByTop)
     }
     
     override func getWallpapers() {

@@ -371,7 +371,7 @@
 		89BF4E8E2B2FF5BC006F5718 /* ImageGenArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E8D2B2FF5BC006F5718 /* ImageGenArtView.swift */; };
 		89BF4E902B2FF5C9006F5718 /* PromptGenArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E8F2B2FF5C9006F5718 /* PromptGenArtView.swift */; };
 		89BF4E942B2FFBEE006F5718 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF4E932B2FFBEE006F5718 /* ImagePicker.swift */; };
-		89BF8C0F2B3BD8BB00E6AD70 /* WatchFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF8C0E2B3BD8BB00E6AD70 /* WatchFaceView.swift */; };
+		89BF8C0F2B3BD8BB00E6AD70 /* NewestWatchFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BF8C0E2B3BD8BB00E6AD70 /* NewestWatchFaceView.swift */; };
 		89C179DA2BEC7AB000594288 /* OnboadingExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C179D92BEC7AB000594288 /* OnboadingExtensionView.swift */; };
 		89C179DC2BEC7C4300594288 /* OnboardingSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C179DB2BEC7C4300594288 /* OnboardingSubView.swift */; };
 		89C179DE2BEC7E4A00594288 /* OnboadingSubABTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C179DD2BEC7E4A00594288 /* OnboadingSubABTestView.swift */; };
@@ -700,7 +700,7 @@
 		89BF4E8D2B2FF5BC006F5718 /* ImageGenArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGenArtView.swift; sourceTree = "<group>"; };
 		89BF4E8F2B2FF5C9006F5718 /* PromptGenArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptGenArtView.swift; sourceTree = "<group>"; };
 		89BF4E932B2FFBEE006F5718 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		89BF8C0E2B3BD8BB00E6AD70 /* WatchFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchFaceView.swift; sourceTree = "<group>"; };
+		89BF8C0E2B3BD8BB00E6AD70 /* NewestWatchFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewestWatchFaceView.swift; sourceTree = "<group>"; };
 		89C179D92BEC7AB000594288 /* OnboadingExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboadingExtensionView.swift; sourceTree = "<group>"; };
 		89C179DB2BEC7C4300594288 /* OnboardingSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSubView.swift; sourceTree = "<group>"; };
 		89C179DD2BEC7E4A00594288 /* OnboadingSubABTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboadingSubABTestView.swift; sourceTree = "<group>"; };
@@ -996,19 +996,11 @@
 		5CBD76E32C77153D0089B364 /* AppByViet */ = {
 			isa = PBXGroup;
 			children = (
+				5CEE85CF2C7C7E9700796EF7 /* Extension */,
 				5CBD77192C7738420089B364 /* CommonView */,
 				0495230829F7C6CB004538DD /* WallpaperIOSApp.swift */,
 				5CBD77162C7731160089B364 /* MainView */,
 				5CBD76E42C77154A0089B364 /* Onboarding */,
-				5CBD77042C771FD00089B364 /* ExtensionViet.swift */,
-				5CBD77072C7727240089B364 /* Extension+Bundle.swift */,
-				5CBD770A2C7727240089B364 /* Extension+CaptureScreen.swift */,
-				5CBD770B2C7727250089B364 /* Extension+Collection.swift */,
-				5CBD77062C7727240089B364 /* extension+UIKit.swift */,
-				5CBD77092C7727240089B364 /* Extension+UIView.swift */,
-				5CBD77082C7727240089B364 /* Extension+View.swift */,
-				5CBD770C2C7727250089B364 /* extension+ViewController.swift */,
-				5CBD77142C7727310089B364 /* Extension+Widget+App.swift */,
 				5CBD77172C7736B30089B364 /* Router.swift */,
 			);
 			path = AppByViet;
@@ -1037,6 +1029,22 @@
 				5CBD771A2C77384D0089B364 /* SeeAllView.swift */,
 			);
 			path = CommonView;
+			sourceTree = "<group>";
+		};
+		5CEE85CF2C7C7E9700796EF7 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5CBD77042C771FD00089B364 /* ExtensionViet.swift */,
+				5CBD77072C7727240089B364 /* Extension+Bundle.swift */,
+				5CBD770A2C7727240089B364 /* Extension+CaptureScreen.swift */,
+				5CBD770B2C7727250089B364 /* Extension+Collection.swift */,
+				5CBD77062C7727240089B364 /* extension+UIKit.swift */,
+				5CBD77092C7727240089B364 /* Extension+UIView.swift */,
+				5CBD77082C7727240089B364 /* Extension+View.swift */,
+				5CBD770C2C7727250089B364 /* extension+ViewController.swift */,
+				5CBD77142C7727310089B364 /* Extension+Widget+App.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		891F79AC2AE0D84900440B8D /* ViewModellll */ = {
@@ -1102,7 +1110,7 @@
 			isa = PBXGroup;
 			children = (
 				8984ADAE2B10807E0005E3A3 /* EztWatchFaceView.swift */,
-				89BF8C0E2B3BD8BB00E6AD70 /* WatchFaceView.swift */,
+				89BF8C0E2B3BD8BB00E6AD70 /* NewestWatchFaceView.swift */,
 			);
 			name = WatchFaceGroup;
 			path = "ƯatchFaceGroup";
@@ -1986,7 +1994,7 @@
 				897D2AB12C411A730053C7CF /* ImpressionRevenueAds.swift in Sources */,
 				04B1F8DD2A1C9DD1006F22E8 /* ColorHelper.swift in Sources */,
 				89C179DA2BEC7AB000594288 /* OnboadingExtensionView.swift in Sources */,
-				89BF8C0F2B3BD8BB00E6AD70 /* WatchFaceView.swift in Sources */,
+				89BF8C0F2B3BD8BB00E6AD70 /* NewestWatchFaceView.swift in Sources */,
 				89A8089C2B95BA8D00029310 /* EztSpecialView.swift in Sources */,
 				8988A5382AE62DB500D5F04D /* EztForYouView.swift in Sources */,
 				898CB3252AF8847500CBC5B8 /* LocalizeHepler.swift in Sources */,

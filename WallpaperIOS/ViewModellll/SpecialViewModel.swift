@@ -30,9 +30,6 @@ class SpViewModel: ObservableObject {
     @Published var domain : String
     @Published var sort : SpSort //= .NEW
     @Published var sortByTop : SpTopRate
-   
-  
-    
     
     init(sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
         self.sort = sort
@@ -41,7 +38,14 @@ class SpViewModel: ObservableObject {
         getWallpapers()
     }
     
-    func getWallpapers(){
+    init(wallpapers: [SpWallpaper], sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
+        self.wallpapers = wallpapers
+        self.sort = sort
+        self.sortByTop = sortByTop
+        domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
+    }
+    
+    func getWallpapers() {
         
     }
     

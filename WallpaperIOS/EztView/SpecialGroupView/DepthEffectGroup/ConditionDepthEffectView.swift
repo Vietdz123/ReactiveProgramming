@@ -16,6 +16,7 @@ class ConditionDepthEffectViewModel: SpViewModel {
     
     override init(sort : SpSort = .NEW, sortByTop : SpTopRate = .TOP_WEEK) {
         print("ConditionDepthEffectViewModel init")
+        super.init(sort: sort, sortByTop: sortByTop)
     }
     
     override func getWallpapers() {
