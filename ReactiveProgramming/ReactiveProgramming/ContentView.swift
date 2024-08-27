@@ -35,7 +35,8 @@ struct ContentView: View {
             
             let observable = Observable<Void>.empty()
             
-            observable.subscribe(
+            
+            let subscribe = observable.subscribe(
               onNext: { element in
                 print(element)
             },
@@ -43,6 +44,8 @@ struct ContentView: View {
                 print("Completed")
               }
             )
+            
+            
         })
         .padding()
     }

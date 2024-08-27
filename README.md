@@ -75,6 +75,7 @@ completed
 
 
 Ta thấy cứ thằng nào subscribe đều sẽ nhận được bản tin.
+- `Một đối tượng Observable sẽ phát đi dữ liệu khi nó được một đối tượng khác (hay cái gì đó) đăng ký tới.`
 
 
 # II. Observables – Trái tim của RxSwift
@@ -301,6 +302,101 @@ let observable = Observable<Int>.range(start: 1, count: 10)
 
 
 Nó giống như một vòng for đơn giản. Observable với kiểu phần tử được phát đi là Int. Chúng sẽ phát ra lần lượt, số lần phát chính là count và giá trị bắt đầu phát ra là start. Sau mỗi lần phát thì start sẽ được tăng lên 1 đơn vị.
+
+### 2.2.5 Tổng kết
+
+
+- `Observables` là nguồn phát dữ liệu.
+- `Sequence`, `Observable` `Sequence` hay `Stream` đều mang ý nghĩa giống nhau.
+- Có 3 cách tạo 1 `Observables` đơn giản:
+  - `just` phát ra phần tử duy nhất và kết thúc
+  - `of` phát ra lần lượt các phần tử cung cấp và kết thúc
+  - `from` tương tự như `of` mà tham số truyền vào là 1 array, tiết kiệm thời gian ngồi gõ code
+- Các observable đặc biệt:
+  - `empty` không có gì hết và kết thúc.
+  - `never` không có gì luôn và không kết thúc luôn.
+  - `range` tạo ra 1 vòng for nhỏ nhỏ, dùng cho Int và mỗi lần như vậy thì sẽ tăng giá trị lên.
+
+# III. DisposeBag
+
+Điểm nguy hiểm nhất khi sử dụng `RxSwift` (hay Reactive Programming) là việc quản lý bộ nhớ. Nó không hoàn toàn tự động và không được tối ưu. Khi có quá nhiều nguồn phát và quá nhiều đối tượng lắng nghe tới các nguồn phát đó, thì ta có dám chắc rằng ta đã giải phóng tất cả các đối tượng hay không.
+
+- `Một đối tượng Observable sẽ phát đi dữ liệu khi nó được một đối tượng khác (hay cái gì đó) đăng ký tới.`
+
+## 3.1 Vấn đề
+
+Ta chỉ cần tò mò một chút thì sẽ có nhiều vấn đề trong cơ chế hoạt động trên. Như:
+- Nếu `Observable` không kết thúc thì sao nào?
+- Không muốn nhận nữa mà `Observable` vẫn cứ phát dữ liệu đi?
+- Chã lẻ lúc nào cũng phải mang theo 1 closure để đi `subscribe Observable`.
+- Có nên huỷ nó hay không huỷ nó, khi phải làm việc với bất đồng bộ. Như đang chờ dữ liệu từ API trả về...
+- Lỡ quên huỷ mất tiêu … thì có toang không ta?
+
+Quá nhiều, chắc cũng phải tới 1001 lý do ở đây rồi. Nhưng ta chỉ cần quan tâm là mối liên kết giữa chúng không bị giải phóng. Dù ít hay nhiều thì bộ nhớ của thiết bị sẽ bị chiếm dụng. Nguy hiểm hơn là chúng ta sẽ không handle được sự thay đổi tới các thành phần khác mà cùng đăng ký tới `Observable`.
+
+
+## 3.2 DisposeBag
+
+`DisposeBag`, `Dispose` & `Disposable` thì chỉ có trong nền tảng `RxSwift` và nó không tương đồng với các nền tảng khác trong đa vũ trụ Rx. Đây là cơ chế giúp cho `RxSwift` có thể quản lý bộ nhớ của mình được tốt nhất. Đây cũng là `cách nhanh nhất đơn phương kết thúc một đăng ký (subscription) từ phía người đăng ký (subscriber). Mà không cần đợi nguồn phát phát đi error hay completed`.
+
+
+## 3.3 Dispose Subscription
+
+Khi một `Observable được tạo ra, nó sẽ không hoạt động hay hành động gì cho tới khi có 1 subscriber đăng ký tới`. Việc `subscriber` khi đăng ký tới thì gọi là sub`scription. Lúc đó, sẽ kích hoạt `Observable` (hay gọi là trigger) bắn đi các giá trị của mình. Việc này cứ lặp đi lặp lại, cho đến khi phát ra `.error hoặc .completed.`
+
+- Vấn đề chính bắt đầu từ đây. Ta không bao giờ biết lúc nào nó kết thúc hoặc ta phó mặc nó với số phận. Khi ta chấp nhận buông tay thì hậu quả để lại là các đối tượng trong chương trình của ta không bao giờ bị giải phóng. Và bạn không biết khi nào dữ liệu tới hoặc de-bugs để biết lỗi từ đâu mà ra.
+
+```swift
+let observable = Observable<String>.of("A", "B", "C", "D", "E", "F")
+    
+let subscription = observable.subscribe { event in
+    print(event)
+}
+```
+
+Ta có một đoạn code với việc khai báo 1 `Observable` với kiểu dữ liệu Output là String. Tiếp sau đó, tạo thêm 1 `subscription` bằng việc sử dụng toán tử `.subscribe cho Observable`. Cung cấp thêm 1 closure để handle các dữ liệu nhận được.
+
+Tiếp theo, để dừng việc phát của Observable thì ta sử dụng hàm `.dispose()`:
+
+```swift
+subscription.dispose()
+```
+
+
+## 3.4 DisposeBag
+
+Câu chuyện vẫn còn vui, bạn xem tiếp ví dụ code sau:
+
+```swift
+Observable<String>.of("A", "B", "C", "D", "E", "F")
+        .subscribe { event in
+            print(event)
+        }
+```
+
+Nếu như bạn tạo ra 1 `subscription` để quản lý các đăng ký. Thì mọi thứ đơn giản rồi. Tuy nhiên vẫn là câu nói cũ Đời không như là mơ. Thường trong code Rx thì:
+- Các đối tượng `subscriber` hầu như không tồn tại hoặc không tạo ra.
+- Các `subscription` sẽ được tạo ra nhằm giữ kết nối. Nó sẽ phục vụ cho tới khi nào class chứa nó bị giải phóng.
+- Có quá nhiều `subscription` trong một class.
+- Nhiều trường hợp muốn `subscribe` nhanh tới 1 `Observable` nên các `subscription` sẽ không tạo ra.
+
+Vậy là, vấn đề bộ nhớ vẫn nhức nhói. Do đó, người ta sinh ra khái niệm mới `DisposeBag` (túi rác quốc dân). Bạn xem tiếp code ví dụ trên với việc thêm `DisposeBag` vào:
+
+```swift
+let bag = DisposeBag()
+
+Observable<String>.of("A", "B", "C", "D", "E", "F")
+    .subscribe { event in
+        print(event)
+    }
+    .disposed(by: bag)
+```
+
+Lúc này, bạn không cần bận tâm lắm về `Observable` mình tự do làm càng. Tất cả sẽ được `disposeBag` quản lý và thủ tiêu. Áp dụng vào trong `project`, khi bạn khai báo 1 `disposeBag` là biến toàn cục. Khi đó, bạn chỉ cần ném tất cả các `subscription` hoặc các `Observable` vào đó. Và yên tâm về vấn đề bộ nhớ sẽ không bị ảnh hưởng.
+
+
+
+
 
 
 
