@@ -11,14 +11,12 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct LiveWallpaperView: View {
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var viewModel : LiveWallpaperViewModel
     
-        @EnvironmentObject var reward : RewardAd
-        @EnvironmentObject var store : MyStore
-        
-        @EnvironmentObject var interAd : InterstitialAdLoader
+    @Environment(\.presentationMode) var presentationMode
+    @StateObject var viewModel : LiveWallpaperViewModel = .init()
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
+    
     var body: some View {
         VStack(spacing : 0){
             
@@ -52,44 +50,37 @@ struct LiveWallpaperView: View {
                             let string : String = wallpaper.thumbnail.first?.path.preview ?? ""
                             
                             //MARK: - Viet
-//                            NavigationLink(destination: {
-//                                                                LiveWLView(currentIndex : i)
-//                                                                    .navigationBarTitle("", displayMode: .inline)
-//                                                                    .navigationBarHidden(true)
-//                                                                    .environmentObject(viewModel)
-//                                                                    .environmentObject(store)
-//                                                                    .environmentObject(reward)
-//                                                                    .environmentObject(interAd)
-//                            }, label: {
-//                                
-//                                WebImage(url: URL(string: string))
-//                                
-//                                
-//                                    .resizable()
-//                                    .placeholder {
-//                                        placeHolderImage()
-//                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-//                                    }
-//                                    .scaledToFill()
-//                                    .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-//                                    .cornerRadius(8)
-//                                    .overlay(alignment : .top){
-//                                            HStack{
-//                                                Image("live")
-//                                                    .resizable()
-//                                                    .frame(width: 16, height: 16 )
-//                                                    .padding(8)
-//                                                Spacer()
-//                                               
-//                                            }
-//                                    }
-//                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-//                            })
-//                            .onAppear(perform: {
-//                                if viewModel.shouldLoadData(id: i){
-//                                    viewModel.getWallpapers()
-//                                }
-//                            })
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoLiveWallpaperDetail(currentIndex: i,
+                                                                                                wallpapers: viewModel.wallpapers))
+                                
+                            }, label: {
+                                WebImage(url: URL(string: string))
+                                    .resizable()
+                                    .placeholder {
+                                        placeHolderImage()
+                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                    }
+                                    .scaledToFill()
+                                    .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                    .cornerRadius(8)
+                                    .overlay(alignment : .top){
+                                            HStack{
+                                                Image("live")
+                                                    .resizable()
+                                                    .frame(width: 16, height: 16 )
+                                                    .padding(8)
+                                                Spacer()
+                                               
+                                            }
+                                    }
+                                    .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                            })
+                            .onAppear(perform: {
+                                if viewModel.shouldLoadData(id: i){
+                                    viewModel.getWallpapers()
+                                }
+                            })
                             
                         }
                     }
@@ -112,11 +103,7 @@ struct LiveWallpaperView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
+
     }
 }
 

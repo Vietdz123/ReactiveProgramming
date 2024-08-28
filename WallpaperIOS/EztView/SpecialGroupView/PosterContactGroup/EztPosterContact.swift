@@ -77,11 +77,7 @@ struct EztPosterContactView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    InterstitialAdLoader.shared.showAd(onCommit: {})
-                }
-            }
+
      
         
 
@@ -128,13 +124,12 @@ extension EztPosterContactView {
                 if !newestVM.wallpapers.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                    .environmentObject(newestVM as SpViewModel)
-                                    .environmentObject(store)
-                       
-                            }, label: {
+                            
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                         wallpapers: newestVM.wallpapers))
                                 
+                            }, label: {
                                 WebImage(url: URL(string: newestVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -145,16 +140,15 @@ extension EztPosterContactView {
                                     .clipped()
                                     .cornerRadius(8)
                             })
+
                             if newestVM.wallpapers.count >= 15 {
                                 LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
-                                    ForEach(1..<15, content: {
-                                        i in
+                                    ForEach(1..<15, content: { i in
                                         let wallpaper = newestVM.wallpapers[i]
-                                        NavigationLink(destination: {
-                                            SpWLDetailView(index: i)
-                                                .environmentObject(newestVM as SpViewModel)
-                                                .environmentObject(store)
-                                      
+                                        
+                                        Button(action: {
+                                            EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                                     wallpapers: newestVM.wallpapers))
                                         }, label: {
                                             WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
                                                 .resizable()
@@ -167,8 +161,7 @@ extension EztPosterContactView {
                                                 .cornerRadius(8)
                                                 .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                         })
-
-                                        
+     
                                     })
                                 })
                             }
@@ -224,11 +217,10 @@ extension EztPosterContactView {
                         let  wallpaper = popularVM.wallpapers[i]
                         let string : String = wallpaper.thumbnail?.path.preview ?? ""
                         
-                        NavigationLink(destination: {
-                            SpWLDetailView(index: i)
-                                .environmentObject(popularVM as SpViewModel)
-                                .environmentObject(store)
-                          
+                        Button(action: {
+                            EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                     wallpapers: popularVM.wallpapers))
+                            
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()
@@ -241,7 +233,6 @@ extension EztPosterContactView {
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
                                 .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                         })
                         .onAppear(perform: {
                             if i == ( popularVM.wallpapers.count - 6 ){

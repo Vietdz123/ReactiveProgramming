@@ -9,17 +9,16 @@ import SwiftUI
 import SDWebImageSwiftUI
 struct EztDepthEffectCateView: View {
     
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @Environment(\.dismiss) var dismiss
+    @StateObject var wallpaperCatelogVM : WallpaperCatalogViewModel = .shared
+    @StateObject var store : MyStore = .shared
     
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -53,11 +52,11 @@ struct EztDepthEffectCateView: View {
                                    
 
                                 Spacer()
-                               NavigationLink(destination: {
-                                   EztSpecialPageView(currentTag: data.specialTag.title, type: 2, tagID: data.specialTag.id)
-                                       .environmentObject(rewardAd)
-                                       .environmentObject(interAd)
-                                       .environmentObject(store)
+                                
+                                Button(action: {
+                                    EztMainViewModel.shared.paths.append(Router.gotoSpeicalPageView(title: data.specialTag.title,
+                                                                                                    type: 2,
+                                                                                                    tadId: data.specialTag.id))
                                 }, label: {
                                     HStack(spacing : 0){
                                         Text("See All".toLocalize())
@@ -69,11 +68,11 @@ struct EztDepthEffectCateView: View {
                                             .frame(width: 18, height: 18, alignment: .center)
                                     }
                                 })
-                                
-                                
-                            }.frame(height: 36)
-                                .padding(.horizontal, 16)
-                                .padding(.bottom, 8)
+            
+                            }
+                            .frame(height: 36)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 8)
                             
                             
                             
@@ -86,15 +85,12 @@ struct EztDepthEffectCateView: View {
                                                 stt in
                                                 let wallpaper = data.wallpapers[stt]
                                                 let string : String = wallpaper.thumbnail?.path.preview ?? ""
-                                                NavigationLink(destination: {
-                                                    SPWLOnePageDetailView(wallpapers: data.wallpapers, index : stt)
-                                                        .environmentObject(store)
-                                                        .environmentObject(interAd)
-                                                        .environmentObject(rewardAd)
+                                                
+                                                Button(action: {
+                                                    EztMainViewModel.shared.paths.append(Router.gotoSpecialOnePageDetailView(wallpapers: data.wallpapers,
+                                                                                                                             index: stt))
                                                 }, label: {
-
                                                     WebImage(url: URL(string: string))
-
                                                         .onSuccess { image, data, cacheType in
 
                                                         }
@@ -104,13 +100,13 @@ struct EztDepthEffectCateView: View {
                                                                 .frame(width: 108, height: 216)
 
                                                         }
-
                                                         .scaledToFill()
                                                         .frame(width: 108, height: 216)
                                                         .cornerRadius(8)
                                                         .clipped()
                                                         .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                                 })
+                                         
 
                                             }
                                             Spacer().frame(width: 16)
@@ -144,14 +140,8 @@ struct EztDepthEffectCateView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
-                }
-            }
+        .addBackground()
+
     }
 }
 

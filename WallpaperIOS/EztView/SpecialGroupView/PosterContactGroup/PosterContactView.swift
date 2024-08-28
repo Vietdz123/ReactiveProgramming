@@ -10,14 +10,10 @@ import SDWebImageSwiftUI
 
 struct PosterContactView: View {
     
-    @EnvironmentObject var viewModel : PosterContactViewModel
+    @StateObject var viewModel: PosterContactViewModel = .init()
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    
     @State var adStatus : AdStatus = .loading
+    @StateObject private var store = MyStore.shared
     
     var body: some View {
         VStack(spacing : 0){
@@ -50,12 +46,10 @@ struct PosterContactView: View {
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.thumbnail?.path.small ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                         wallpapers: viewModel.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
@@ -63,12 +57,11 @@ struct PosterContactView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-                                  
+                                
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -89,20 +82,14 @@ struct PosterContactView: View {
                 ZStack{
                     if store.allowShowBanner(){
                         BannerAdViewMain( adStatus: $adStatus)
-                            
+                        
                     }
                 }
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
-                }
-            }
-            
+
+        
     }
 }
 

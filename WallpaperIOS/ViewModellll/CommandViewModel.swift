@@ -20,13 +20,21 @@ class CommandViewModel: ObservableObject {
     
     init() {
         domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
+        
         if UserDefaults.standard.bool(forKey: "home_load_first") == false{
             UserDefaults.standard.set(true, forKey: "home_load_first")
-        }else{
+            
+        } else {
             randomOffset = Int.random(in: 0...800)
             tagRandomOffset = Int.random(in: 0...200)
         }
         getWallpapers()
+    }
+    
+    init(wallpapers: [Wallpaper]) {
+        self.wallpapers = wallpapers
+        
+        domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"
     }
     
     func getWallpapers(){
@@ -223,7 +231,7 @@ enum CategorySorted : String, CaseIterable {
 }
 
 class CategoryPageViewModel : CommandViewModel {
-   
+    
     @Published var category : Category?
     @Published var categorySort : CategorySorted = .NEW
     
@@ -233,7 +241,7 @@ class CategoryPageViewModel : CommandViewModel {
             
             let sort = ( categorySort == .NEW ) ? "&order_by=uploaded_at+desc" : "&order_by=daily_rating+desc,is_trend+desc"
             
-            guard let url  = URL(string: "\(domain)api/v1/data?category_id=\(category?.id ?? 1)&limit=\(AppConfig.limit)&offset=\(currentOffset)\(sort)&not_prioritize_private=1\(AppConfig.forOnlyIOS)") else {
+            guard let url  = URL(string: "\(domain)api/v1/data?category_id=\(category?.id ?? 1)&limit=\(AppConfig.limit)&offset=\(wallpapers.count)\(sort)&not_prioritize_private=1\(AppConfig.forOnlyIOS)") else {
                 return
             }
             
@@ -250,11 +258,10 @@ class CategoryPageViewModel : CommandViewModel {
                 let itemsCurrentLoad = try? JSONDecoder().decode(WallpaperList.self, from: data)
                 DispatchQueue.main.async {
                     self.wallpapers.append(contentsOf: itemsCurrentLoad?.items ?? [])
-                    self.currentOffset = self.wallpapers.count
-                    //   self.maxCount = ( itemsCurrentLoad?.count  ?? 115 ) - 15
                 }
                 
-            }.resume()
+            }
+            .resume()
             
         }
     }
@@ -276,20 +283,15 @@ class FindViewModel : CommandViewModel {
             return
         }
         
-        URLSession.shared.dataTask(with: url){
-            data, _ ,err  in
+        URLSession.shared.dataTask(with: url){ data, _ ,err  in
             guard let data = data, err == nil else {
                 return
             }
+            
             let itemsCurrentLoad = try? JSONDecoder().decode(WallpaperList.self, from: data)
             DispatchQueue.main.async {
                 self.wallpapers.append(contentsOf: itemsCurrentLoad?.items ?? [])
-                print("FINDVIEWMODEL \(self.wallpapers.count)")
                 self.currentOffset = self.wallpapers.count
-              
-                
-                
-                
             }
             
         }.resume()

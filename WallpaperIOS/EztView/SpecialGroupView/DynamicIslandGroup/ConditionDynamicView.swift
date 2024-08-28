@@ -98,13 +98,10 @@ struct ConditionDynamicView: View {
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.path.first?.path.small ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                   
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                    wallpapers: viewModel.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .onSuccess { image, data, cacheType in
@@ -114,7 +111,6 @@ struct ConditionDynamicView: View {
                                         placeHolderImage()
                                             .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     }
-//                                    .indicator(.activity) // Activity Indicator
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                     .overlay(
@@ -122,7 +118,6 @@ struct ConditionDynamicView: View {
                                             .resizable()
                                             .cornerRadius(8)
                                     )
-
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){

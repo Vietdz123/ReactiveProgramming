@@ -9,24 +9,19 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 
-struct DynamicView: View {
+struct NewestDynamicView: View {
     
-    
-    @EnvironmentObject var viewModel : DynamicIslandViewModel
+    @State var viewModel : DynamicIslandViewModel 
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
     
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
-                   
                     self.presentationMode.wrappedValue.dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -53,13 +48,9 @@ struct DynamicView: View {
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.path.first?.path.small ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                   
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                    wallpapers: viewModel.wallpapers))
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .onSuccess { image, data, cacheType in
@@ -78,7 +69,6 @@ struct DynamicView: View {
                                             .cornerRadius(8)
                                     )
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -105,17 +95,6 @@ struct DynamicView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
             
-    }
-}
-
-struct DynamicView_Previews: PreviewProvider {
-    static var previews: some View {
-        DynamicView()
     }
 }

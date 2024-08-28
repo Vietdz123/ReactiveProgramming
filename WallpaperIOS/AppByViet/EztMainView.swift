@@ -136,6 +136,9 @@ struct EztMainView : View {
                 case .gotoLightingEffectView:
                     EztLightingEffectView()
                     
+                case .gotoNewestLightingEffect:
+                    NewestLightingEffectView()
+                    
                 case .gotoNewestAnSpecialWatchFaceView:
                     EztWatchFaceView()
                     
@@ -147,6 +150,36 @@ struct EztMainView : View {
                     
                 case .gotoNewestWatchFaceView:
                     NewestWatchFaceView(viewModel: .init())
+                    
+                case .gotoShufflePackeList:
+                    EztShufflePackListCateView()
+                    
+                case let .gotoSpecialWalliveDetailView(currentIndex, wallpapers):
+                    SpWLDetailView(index: currentIndex, viewModel: .init(wallpapers: wallpapers))
+                    
+                case let .gotoSpeicalPageView(title: title, type: type, tadId: tagID):
+                    EztSpecialPageView(currentTag: title, type: type, tagID: tagID)
+                    
+                case .gotoShuffleDetailView(let wallpaper):
+                    ShuffleDetailView(wallpaper: wallpaper)
+                    
+                case let .gotoSpecialOnePageDetailView(wallpapers: wallpapers, index: index):
+                    SPWLOnePageDetailView(wallpapers: wallpapers, index: index)
+                    
+                case .gotoNewestAndPopularDynamic:
+                    EztDynamicIslslandCateView()
+                    
+                case .gotoNewestDynamicView(let wallpapers):
+                    NewestDynamicView(viewModel: .init(wallpapers: wallpapers))
+                    
+                case .gotoListDepthEffectView(let wallpapers):
+                    DepthEffectListView(viewModel: .init(wallpapers: wallpapers))
+                    
+                case let .gotoLockThemeListView(wallpapers: wallpapers):
+                    LockThemeListView(viewModel: .init(wallpapers: wallpapers))
+                    
+                case let .gotoLockThemeDetailView(wallpapers: wallpapers, currentIndex: currentIndex):
+                    LockThemeDetailView(index: currentIndex, viewModel: .init(wallpapers: wallpapers))
                 }
             }
             .onAppear(perform: {
@@ -205,7 +238,7 @@ struct EztMainView : View {
                     })
                 }
             })
-            .navigationTransition(.fade(.out))
+//            .navigationTransition(.fade(.out))
         }
     }
      

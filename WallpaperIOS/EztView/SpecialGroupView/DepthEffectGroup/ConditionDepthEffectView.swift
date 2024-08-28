@@ -98,41 +98,33 @@ struct ConditionDepthEffectView: View {
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.thumbnail?.path.small ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                   
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                    wallpapers: viewModel.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
-//                                    .placeholder {
-//                                        
-//                                        placeHolderImage()
-//                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
-//                                    }
+                                    .placeholder {
+                                        
+                                        placeHolderImage()
+                                            .frame(width: AppConfig.width_1, height: AppConfig.height_1)
+                                    }
                                   
                                     .scaledToFill()
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
-//                                    .overlay(
-//                                        
-//                                        ZStack{
-//                                            if !store.isPro(){
-//                                                Image("crown")
-//                                                    .resizable()
-//                                                    .frame(width: 16, height: 16, alignment: .center)
-//                                                    .padding(8)
-//                                            }
-//                                        }
-//                                        
-//                                     
-//                                               
-//                                        
-//                                        , alignment: .topTrailing
-//                                    )
+                                    .overlay(
+                                        ZStack{
+                                            if !store.isPro(){
+                                                Image("crown")
+                                                    .resizable()
+                                                    .frame(width: 16, height: 16, alignment: .center)
+                                                    .padding(8)
+                                            }
+                                        }
+                                        ,alignment: .topTrailing
+                                    )
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){

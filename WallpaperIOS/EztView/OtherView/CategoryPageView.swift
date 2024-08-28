@@ -11,11 +11,8 @@ import SDWebImageSwiftUI
 struct CategoryPageView: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var viewModel : CategoryPageViewModel
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var viewModel : CategoryPageViewModel
+    @StateObject var store : MyStore = .shared
     @State var currentCategoryName : String = ""
     @State var adStatus : AdStatus = .loading
     
@@ -27,6 +24,7 @@ struct CategoryPageView: View {
             HStack(spacing : 0){
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -35,6 +33,7 @@ struct CategoryPageView: View {
                         .frame(width: 24, height: 24)
                         .containerShape(Rectangle())
                 })
+                
                 Text(viewModel.category?.title ?? "")
                     .foregroundColor(.white)
                     .mfont(22, .bold)
@@ -43,106 +42,95 @@ struct CategoryPageView: View {
                         currentCategoryName = viewModel.category?.title ?? ""
                     })
                 
-            }.frame(maxWidth: .infinity, alignment: .leading)
-                .frame(height: 44)
-                .padding(.horizontal, 20)
-            
-            if currentCategoryName != "New Trending"{
-                
-         
-            
-            HStack{
-                
-                
-                
-                          Text("Newest")
-                              .mfont(13, .bold)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .frame(width : 80, height: 28)
-                            .background(
-                              ZStack{
-                                  Capsule()
-                                      .fill(Color.white.opacity(0.1))
-                                  
-                                  if viewModel.categorySort == .NEW {
-                                      Capsule()
-                                          .fill(
-                                              LinearGradient(
-                                              stops: [
-                                              Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                              Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                              Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                              ],
-                                              startPoint: UnitPoint(x: 0, y: 1.38),
-                                              endPoint: UnitPoint(x: 1, y: -0.22)
-                                              )
-                                          
-                                          )
-                                          .matchedGeometryEffect(id: "SORT", in: anim)
-                                  }
-                                  
-                              }
-                              
-                            )
-                            .contentShape(Rectangle())
-                            .onTapGesture(perform: {
-                                viewModel.categorySort = .NEW
-                                viewModel.currentOffset = 0
-                                viewModel.wallpapers.removeAll()
-                                viewModel.getWallpapers()
-                            })
-                
-                
-                Text("Popular")
-                    .mfont(13, .bold)
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(.white)
-                  .frame(width : 80, height: 28)
-                  .background(
-                    ZStack{
-                        Capsule()
-                            .fill(Color.white.opacity(0.1))
-                        
-                        if viewModel.categorySort == .TOP {
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                    stops: [
-                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
-                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
-                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
-                                    ],
-                                    startPoint: UnitPoint(x: 0, y: 1.38),
-                                    endPoint: UnitPoint(x: 1, y: -0.22)
-                                    )
-                                
-                                )
-                                .matchedGeometryEffect(id: "SORT", in: anim)
-                        }
-                        
-                    }
-                    
-                  )
-                  .contentShape(Rectangle())
-                  .onTapGesture(perform: {
-                      viewModel.categorySort = .TOP
-                      viewModel.currentOffset = 0
-                      viewModel.wallpapers.removeAll()
-                      viewModel.getWallpapers()
-                  })
-                
-                Spacer()
-                
-                
-           
-                
-            } .padding(16)
-            
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 44)
+            .padding(.horizontal, 20)
             
-            
-            
+            if currentCategoryName != "New Trending" {
+                HStack {
+                    Text("Newest")
+                        .mfont(13, .bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .frame(width : 80, height: 28)
+                        .background(
+                            ZStack{
+                                Capsule()
+                                    .fill(Color.white.opacity(0.1))
+                                
+                                if viewModel.categorySort == .NEW {
+                                    Capsule()
+                                        .fill(
+                                            LinearGradient(
+                                                stops: [
+                                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                ],
+                                                startPoint: UnitPoint(x: 0, y: 1.38),
+                                                endPoint: UnitPoint(x: 1, y: -0.22)
+                                            )
+                                            
+                                        )
+                                        .matchedGeometryEffect(id: "SORT", in: anim)
+                                }
+                                
+                            }
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture(perform: {
+                            viewModel.categorySort = .NEW
+                            viewModel.currentOffset = 0
+                            viewModel.wallpapers.removeAll()
+                            viewModel.getWallpapers()
+                        })
+                    
+                    Text("Popular")
+                        .mfont(13, .bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .frame(width : 80, height: 28)
+                        .background(
+                            ZStack{
+                                Capsule()
+                                    .fill(Color.white.opacity(0.1))
+                                
+                                if viewModel.categorySort == .TOP {
+                                    Capsule()
+                                        .fill(
+                                            LinearGradient(
+                                                stops: [
+                                                    Gradient.Stop(color: Color(red: 0.15, green: 0.7, blue: 1), location: 0.00),
+                                                    Gradient.Stop(color: Color(red: 0.46, green: 0.37, blue: 1), location: 0.52),
+                                                    Gradient.Stop(color: Color(red: 0.9, green: 0.2, blue: 0.87), location: 1.00),
+                                                ],
+                                                startPoint: UnitPoint(x: 0, y: 1.38),
+                                                endPoint: UnitPoint(x: 1, y: -0.22)
+                                            )
+                                            
+                                        )
+                                        .matchedGeometryEffect(id: "SORT", in: anim)
+                                }
+                                
+                            }
+                            
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture(perform: {
+                            viewModel.categorySort = .TOP
+                            viewModel.currentOffset = 0
+                            viewModel.wallpapers.removeAll()
+                            viewModel.getWallpapers()
+                        })
+                    
+                    Spacer()
+
+                } 
+                .padding(16)
+                
+            }
+
             ScrollView(.vertical, showsIndicators: false){
                 LazyVGrid(columns: [GridItem.init(spacing: 8),  GridItem.init()], spacing: 8 ){
                     if !viewModel.wallpapers.isEmpty {
@@ -153,18 +141,10 @@ struct CategoryPageView: View {
                             
                             NavigationLink(destination: {
                                 WLView(index: i)
-                                    .environmentObject(viewModel  as CommandViewModel)
-                                    .environmentObject(reward)
-                                    .environmentObject(store)
-                                   
-                                    .environmentObject(interAd)
+                                    .environmentObject(viewModel as CommandViewModel)
+                                
                             }, label: {
-                                
                                 WebImage(url: URL(string: string))
-                                
-                                    .onSuccess { image, data, cacheType in
-                                        
-                                    }
                                     .resizable()
                                     .placeholder {
                                         placeHolderImage()
@@ -175,47 +155,31 @@ struct CategoryPageView: View {
                                     .cornerRadius(8)
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
                             })
-                            
-                            
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
                                     viewModel.getWallpapers()
                                     
                                 }
-                                
-                                
-                                
-                                
                             })
-                            
                         }
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
-            }.refreshable {
-                
+            }
+            .refreshable {
                 viewModel.currentOffset = 0
                 viewModel.wallpapers.removeAll()
                 viewModel.getWallpapers()
             }
             .onAppear(perform: {
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-                
-                if ( viewModel.category?.title ?? "" ) != currentCategoryName {
+                if (viewModel.category?.title ?? "" ) != currentCategoryName {
                     viewModel.categorySort = .NEW
                     viewModel.wallpapers = []
                     viewModel.currentOffset = 0
                     viewModel.getWallpapers()
                 }
-                
-                
             })
-            
-            
-            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .edgesIgnoringSafeArea(.bottom)
@@ -228,8 +192,6 @@ struct CategoryPageView: View {
             
             , alignment: .bottom
         )
-      
-        
         .addBackground()
     }
 }

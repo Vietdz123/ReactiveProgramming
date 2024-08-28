@@ -17,22 +17,17 @@ struct SPWLOnePageDetailView: View {
     
     @StateObject var ctrlViewModel : ControllViewModel = .init()
     
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
 
-    @EnvironmentObject var interAd : InterstitialAdLoader
     @AppStorage("current_coin", store: .standard) var currentCoin : Int = 0
     @AppStorage("exclusive_cost", store: .standard) var exclusiveCost : Int = 4
-    
-    
+
     @State var showBuySubAtScreen : Bool = false
     @State var isBuySubWeek : Bool = true
     @State var showMore : Bool = false
     @State var showContentPremium : Bool = false
     @State var showSub : Bool = false
     @State var showDialogRv : Bool = false
-    
-    
     
     @State var type : String = "Wallpaper"
     @State var urlForDownloadSuccess :  URL?
@@ -407,13 +402,10 @@ extension SPWLOnePageDetailView{
         }, clickBuyPro: {
             ctrlViewModel.showDialogRV.toggle()
             ctrlViewModel.navigateView.toggle()
-        }).environmentObject(reward)
-            .environmentObject(store)
+        })
     }
     
-  
-    
-    
+
     func downloadImageToGallery(title : String, urlStr : String){
         DispatchQueue.main.async {
             ctrlViewModel.isDownloading = true

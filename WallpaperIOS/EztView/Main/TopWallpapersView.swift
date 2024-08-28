@@ -51,7 +51,7 @@ struct TopWallpapersView: View {
                         let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
                         
                         NavigationLink(destination: {
-                            WLView(index: i)
+                            WallpaperNormalDetailView(index: i)
                                 .environmentObject(viewModel as CommandViewModel)
                                 .environmentObject(reward)
                                 .environmentObject(store)

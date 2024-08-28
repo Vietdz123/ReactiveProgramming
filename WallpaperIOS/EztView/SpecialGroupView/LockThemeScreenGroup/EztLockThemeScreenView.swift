@@ -12,96 +12,71 @@ import Lottie
 struct EztLockThemeScreenView: View {
     @StateObject var newestVM : LockThemeViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : LockThemeViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
     @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
- //   @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         
         VStack(spacing : 0){
-
-            ScrollView(.vertical, showsIndicators: false){
-             
-                LazyVStack(spacing : 0){
-                    
             
-                    
-                    
-                    Newset().padding(.bottom, 16)
-                    
-                    Popular().padding(.bottom, 16)
-                    
+            ScrollView(.vertical, showsIndicators: false){
                 
+                LazyVStack(spacing : 0){
+
+                    Newset()
+                        .padding(.bottom, 16)
+                    
+                    Popular()
+                        .padding(.bottom, 16)
+
                     Spacer()
                         .frame(height: 152)
                 }
                 
-             
-                
-            }
-            .refreshable {
-               
-               
             }
         }
         .frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .top)
         .edgesIgnoringSafeArea(.bottom)
         .addBackground()
-
+        
     }
 }
 
 extension EztLockThemeScreenView {
-    func Newset() -> some View{
+    func Newset() -> some View {
         VStack(spacing : 0){
-            HStack(spacing : 0){
+            HStack(spacing : 0) {
                 Text("Newest".toLocalize())
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
-
+                
+                
                 Spacer()
                 //MARK: - Viet
-//               NavigationLink(destination: {
-//                   LockThemeView()
-//                       .environmentObject(newestVM)
-//                       .environmentObject(store)
-//                       .environmentObject(rewardAd)
-//                       .environmentObject(interAd)
-//                   
-//                }, label: {
-//                    HStack(spacing : 0){
-//                        Text("See All".toLocalize())
-//                            .mfont(11, .regular)
-//                            .foregroundColor(.white)
-//                        Image("arrow.right")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 18, height: 18, alignment: .center)
-//                    }
-//                })
                 
-                
-            }.frame(height: 36)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
-            
-            
-            
-            ZStack{
+                Button(action: {
+                    EztMainViewModel.shared.paths.append(Router.gotoLockThemeListView(wallpapers: newestVM.wallpapers))
+                    
+                }, label: {
+                    SeeAllView()
+                })
+            }
+            .frame(height: 36)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+
+            ZStack {
                 if !newestVM.wallpapers.isEmpty{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                              LockThemeDetailView(index: 0)
-                             
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoLockThemeDetailView(wallpapers: newestVM.wallpapers, currentIndex: 0))
                                 
                             }, label: {
-                                
                                 let wallpaper = newestVM.wallpapers.first
-                                ZStack{
+                                
+                                ZStack {
                                     if (wallpaper?.thumbnail.first?.url.full ?? "" ).contains(".json"){
                                         if let url = URL(string: wallpaper?.thumbnail.first?.url.full ?? ""){
                                             LottieView {
@@ -110,9 +85,10 @@ extension EztLockThemeScreenView {
                                                 .resizable()
                                                 .scaledToFill()
                                                 .frame(width: 160, height: 160 * 2.2)
-                                              
+                                            
                                         }
-                                    }else{
+                                        
+                                    } else {
                                         WebImage(url: URL(string:  wallpaper?.thumbnail.first?.url.preview ?? ""))
                                             .resizable()
                                             .placeholder {
@@ -122,85 +98,71 @@ extension EztLockThemeScreenView {
                                             .frame(width: 160, height: 160 * 2.2)
                                             .clipped()
                                     }
-                                }.frame(width: 160, height: 160 * 2.2)
-                                    .cornerRadius(8)
-                                    .showCrownIfNeeded(!store.isPro() && wallpaper?.private == 1)
-                                
-                            
+                                }
+                                .frame(width: 160, height: 160 * 2.2)
+                                .cornerRadius(8)
+                                .showCrownIfNeeded(!store.isPro() && wallpaper?.private == 1)
                             })
                             
                             let minItem = min(newestVM.wallpapers.count, 15)
                             
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
-                                ForEach(1..<minItem, id: \.self ,content: {
-                                    i in
+                                ForEach(1 ..< minItem, id: \.self ,content: { i in
                                     let wallpaper = newestVM.wallpapers[i]
                                     
                                     //MARK: - Viet
-                                    
-//                                    NavigationLink(destination: {
-//                                        LockThemeDetailView(index: i)
-//                                              .environmentObject(newestVM)
-//                                              .environmentObject(store)
-//                                              .environmentObject(rewardAd)
-//                                              .environmentObject(interAd)
-//                                    }, label: {
-//                                        ZStack{
-//                                            if (wallpaper.thumbnail.first?.url.full ?? "" ).contains(".json"){
-//                                                if let url = URL(string: wallpaper.thumbnail.first?.url.full ?? ""){
-//                                                    LottieView {
-//                                                        await LottieAnimation.loadedFrom(url:  url )
-//                                                    } .looping()
-//                                                        .resizable()
-//                                                        .scaledToFill()
-//                                                        .frame(width: 78, height: 78 * 2.2)
-//                                                    
-//                                                }
-//                                            }else{
-//                                                WebImage(url: URL(string:  wallpaper.thumbnail.first?.url.preview ?? ""))
-//                                                    .resizable()
-//                                                    .placeholder {
-//                                                        placeHolderImage()
-//                                                    }
-//                                                    .scaledToFill()
-//                                                    .frame(width: 78, height: 78 * 2.2)
-//                                                    .clipped()
-//                                            }
-//                                        }  .frame(width: 78, height: 78 * 2.2)
-//                                            .cornerRadius(8)
-//                                            .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-//                                    })
-                                    
-                                    
-                                    
-                                    
-                                    
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoLockThemeDetailView(wallpapers: newestVM.wallpapers,
+                                                                                                            currentIndex: i))
+                                        
+                                    }, label: {
+                                        ZStack{
+                                            if (wallpaper.thumbnail.first?.url.full ?? "" ).contains(".json"){
+                                                if let url = URL(string: wallpaper.thumbnail.first?.url.full ?? ""){
+                                                    LottieView {
+                                                        await LottieAnimation.loadedFrom(url:  url )
+                                                    } 
+                                                    .looping()
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 78, height: 78 * 2.2)
+                                                }
+                                                
+                                            } else {
+                                                WebImage(url: URL(string:  wallpaper.thumbnail.first?.url.preview ?? ""))
+                                                    .resizable()
+                                                    .placeholder {
+                                                        placeHolderImage()
+                                                    }
+                                                    .scaledToFill()
+                                                    .frame(width: 78, height: 78 * 2.2)
+                                                    .clipped()
+                                            }
+                                        }
+                                        .frame(width: 78, height: 78 * 2.2)
+                                        .cornerRadius(8)
+                                        .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
+                                    })
                                     
                                 })
                             })
                         }
                         
-                        
                     }
                     .frame(height: 320)
                     .padding(.horizontal, 16)
-                }
-                else{
+                    
+                } else {
                     PlaceHolderListLoadForTheme()
                 }
 
-
-            }.frame(height : 160 * 2.2)
-           
-              
-            
-            
+            }
+            .frame(height : 160 * 2.2)
         }
-       
     }
     
     
-    func Popular() -> some View{
+    func Popular() -> some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Image("sparkle")
@@ -212,13 +174,12 @@ extension EztLockThemeScreenView {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 8)
-                   
+                
                 Spacer()
-            }.frame(height: 36)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
-            
-            
+            }
+            .frame(height: 36)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
             
             LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
                 
@@ -229,58 +190,53 @@ extension EztLockThemeScreenView {
                         let string : String = wallpaper.thumbnail.first?.url.full ?? ""
                         
                         //MARK: - Viet
-//                        NavigationLink(destination: {
-//                            LockThemeDetailView(index: i)
-//                                  .environmentObject(newestVM)
-//                                  .environmentObject(store)
-//                                  .environmentObject(rewardAd)
-//                                  .environmentObject(interAd)
-//                        }, label: {
-//                            ZStack{
-//                                if string.contains(".json"){
-//                                    if let url = URL(string: string){
-//                                        LottieView {
-//                                            await LottieAnimation.loadedFrom(url:  url )
-//                                        } .looping()
-//                                            .resizable()
-//                                            .scaledToFill()
-//                                            .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-//                                            .onAppear(perform: {
-//                                                print("Lockthemes Lottie File: \(string)")
-//                                            })
-//                                    }
-//
-//                                }else{
-//                                    WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
-//                                        .resizable()
-//                                        .placeholder {
-//                                            placeHolderImage()
-//                                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-//                                        }
-//                                      
-//                                        .scaledToFill()
-//                                }
-//                               
-//                            }  .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-//                                .cornerRadius(8)
-//                                .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-//
-//                        })
-//                        .onAppear(perform: {
-//                            if i == ( popularVM.wallpapers.count - 6 ){
-//                                popularVM.getWallpapers()
-//                            }
-//                        })
+                        Button(action: {
+                            EztMainViewModel.shared.paths.append(Router.gotoLockThemeDetailView(wallpapers: popularVM.wallpapers, currentIndex: i))
+                            
+                        }, label: {
+                            ZStack{
+                                if string.contains(".json"){
+                                    if let url = URL(string: string){
+                                        LottieView {
+                                            await LottieAnimation.loadedFrom(url:  url )
+                                        } .looping()
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                            .onAppear(perform: {
+                                                print("Lockthemes Lottie File: \(string)")
+                                            })
+                                    }
+                                    
+                                }else{
+                                    WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
+                                        .resizable()
+                                        .placeholder {
+                                            placeHolderImage()
+                                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                        }
+                                    
+                                        .scaledToFill()
+                                }
+                                
+                            }
+                            .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                            .cornerRadius(8)
+                            .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
+                            .onAppear(perform: {
+                                if i == ( popularVM.wallpapers.count - 6 ){
+                                    popularVM.getWallpapers()
+                                }
+                            })
+                        })
+                        
                     }
                 }
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
-              
-            
-            
+
         }
-       
     }
-    
+
 }

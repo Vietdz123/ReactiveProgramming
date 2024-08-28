@@ -996,6 +996,7 @@
 		5CBD76E32C77153D0089B364 /* AppByViet */ = {
 			isa = PBXGroup;
 			children = (
+				89762A1A2ADCE57D00DAA578 /* EztMainView.swift */,
 				5CEE85CF2C7C7E9700796EF7 /* Extension */,
 				5CBD77192C7738420089B364 /* CommonView */,
 				0495230829F7C6CB004538DD /* WallpaperIOSApp.swift */,
@@ -1018,7 +1019,6 @@
 		5CBD77162C7731160089B364 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
-				89762A1A2ADCE57D00DAA578 /* EztMainView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";

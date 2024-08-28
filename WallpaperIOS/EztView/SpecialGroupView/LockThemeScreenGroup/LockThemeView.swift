@@ -9,18 +9,18 @@ import SwiftUI
 import SDWebImageSwiftUI
 import Lottie
 
-struct LockThemeView: View {
-    @EnvironmentObject var viewModel : LockThemeViewModel
+struct LockThemeListView: View {
+    @StateObject var viewModel : LockThemeViewModel
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
     @State var adStatus : AdStatus = .loading
+    @StateObject private var store = MyStore.shared
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -34,9 +34,10 @@ struct LockThemeView: View {
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
                 
-            }.frame(maxWidth: .infinity, alignment: .leading)
-                .frame(height: 44)
-                .padding(.horizontal, 20)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 44)
+            .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false){
                 LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
@@ -44,16 +45,12 @@ struct LockThemeView: View {
                     if !viewModel.wallpapers.isEmpty {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
-                            let  wallpaper = viewModel.wallpapers[i]
+                            let wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.thumbnail.first?.url.full ?? ""
                             
-                            NavigationLink(destination: {
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoLockThemeDetailView(wallpapers: viewModel.wallpapers, currentIndex: i))
                                 
-                                LockThemeDetailView( index: i)
-                                    .environmentObject(store)
-                                    .environmentObject(viewModel)
-                                    .environmentObject(interAd)
-                                    .environmentObject(reward)
                             }, label: {
                                 ZStack{
                                     if string.contains(".json"){
@@ -67,27 +64,28 @@ struct LockThemeView: View {
                                                
                                         }
 
-                                    }else{
+                                    } else {
                                         WebImage(url: URL(string: wallpaper.thumbnail.first?.url.preview ?? ""))
                                             .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                                    .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-//                                            }
+                                            .placeholder {
+                                                placeHolderImage()
+                                                    .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                            }
                                           
                                             .scaledToFill()
                                     }
                                    
-                                }  .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
-                                    .cornerRadius(8)
-                                    .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
-
-                            })
-                            .onAppear(perform: {
-                                if i == ( viewModel.wallpapers.count - 6 ){
-                                    viewModel.getWallpapers()
                                 }
+                                .frame(width: AppConfig.width_1, height: AppConfig.width_1 * 2.2)
+                                .cornerRadius(8)
+                                .showCrownIfNeeded(!store.isPro() && wallpaper.private == 1)
+                                .onAppear(perform: {
+                                    if i == ( viewModel.wallpapers.count - 6 ){
+                                        viewModel.getWallpapers()
+                                    }
+                                })
                             })
+                   
                         }
                     }
                 }
@@ -95,20 +93,11 @@ struct LockThemeView: View {
                 .padding(16)
             }
             
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .edgesIgnoringSafeArea(.bottom)
+        .addBackground()
 
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
-                }
-            }
     }
 }
 
-#Preview {
-    LockThemeView()
-}

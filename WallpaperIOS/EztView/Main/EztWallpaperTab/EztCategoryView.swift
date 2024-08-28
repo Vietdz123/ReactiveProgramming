@@ -12,78 +12,66 @@ import SDWebImageSwiftUI
 
 struct EztCategoryView: View {
     
-  
     @StateObject var viewModel : CategoryViewModel = .init()
-    
     @StateObject var categoryPageViewModel : CategoryPageViewModel = .init()
-    @EnvironmentObject var reward : RewardAd
-    @State var store : MyStore = .shared
-  
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var store : MyStore = .shared
+    
+    
     var body: some View {
         VStack(spacing : 0){
-           
+            
             ScrollView(.vertical, showsIndicators: false){
+                
                 //MARK: - Viet
-//                NavigationLink(isActive: $viewModel.navigate, destination: {
-//                    CategoryPageView()
-//                        .environmentObject(categoryPageViewModel)
-//                        .environmentObject(reward)
-//                        .environmentObject(store)
-//                      
-//                        .environmentObject(interAd)
-//                    
-//                }, label: {
-//                    EmptyView()
-//                })
-                
-                
-             
-                
+                NavigationLink(isActive: $viewModel.navigate, destination: {
+                    CategoryPageView()
+                        .environmentObject(categoryPageViewModel)
+
+                }, label: {
+                    EmptyView()
+                })
                 
                 if store.isHasEvent() && !store.isPro(){
-
+                    
                     GeometryReader{
                         proxy in
                         let size = proxy.size
                         ZStack(alignment: .bottomLeading){
                             WebImage(url: URL(string: UserDefaults.standard.string(forKey: "sub_event_banner_image_url") ?? ""))
-
                                 .onSuccess { image, data, cacheType in
-
+                                    
                                 }
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: size.width, height: size.height)
-
-
+                            
+                            
                             if let productEv =  store.getYearSale50UsingProduct() {
-
+                                
                                 VStack(spacing : 0){
-
+                                    
                                     Text("Just \(productEv.displayPrice)/year")
                                         .mfont(13, .regular)
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(.white)
-
-
+                                    
                                     Button(action: {
-
+                                        
                                         if store.purchasedIds.isEmpty{
                                             store.isPurchasing = true
                                             showProgressSubView()
-                                          
-                                                Firebase_log("Click_Buy_Sub_In_Ev_Banner_Year_Sale")
-                                         
-
+                                            
+                                            Firebase_log("Click_Buy_Sub_In_Ev_Banner_Year_Sale")
+                                            
+                                            
                                             store.purchase(product: productEv, onBuySuccess: { b in
                                                 if b {
                                                     DispatchQueue.main.async{
                                                         store.isPurchasing = false
                                                         hideProgressSubView()
-                                                      
-                                                            Firebase_log("Buy_Sub_In_Success_Ev_Banner_Year_Sale")
-                                                      
+                                                        
+                                                        Firebase_log("Buy_Sub_In_Success_Ev_Banner_Year_Sale")
+                                                        
                                                         showToastWithContent(image: "checkmark", color: .green, mess: "Purchase successful!")
                                                     }
                                                 }else{
@@ -95,7 +83,7 @@ struct EztCategoryView: View {
                                                 }
                                             })
                                         }
-
+                                        
                                     }, label: {
                                         Text("Claim!")
                                             .mfont(17, .bold)
@@ -107,8 +95,8 @@ struct EztCategoryView: View {
                                                     .fill(Color(red: 1, green: 0.87, blue: 0.19))
                                             )
                                     }).padding(.top, 4)
-
-
+                                    
+                                    
                                     HStack(spacing : 4){
                                         Button(action: {
                                             if let url = URL(string: "https://docs.google.com/document/d/1EY8f5f5Z_-5QfqAeG2oYdUxlu-1sBc-mgfco2qdRMaU") {
@@ -119,15 +107,15 @@ struct EztCategoryView: View {
                                                 .underline()
                                                 .foregroundColor(.white)
                                                 .mfont(8, .regular)
-
+                                            
                                         })
-
+                                        
                                         Text("|")
                                             .mfont(12, .regular)
                                             .foregroundColor(.white)
-
+                                        
                                         Button(action: {
-
+                                            
                                             if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
                                                 UIApplication.shared.open(url)
                                             }
@@ -136,9 +124,9 @@ struct EztCategoryView: View {
                                                 .underline()
                                                 .foregroundColor(.white)
                                                 .mfont(8, .regular)
-
+                                            
                                         })
-
+                                        
                                         Text("|")
                                             .mfont(12, .regular)
                                             .foregroundColor(.white)
@@ -152,37 +140,37 @@ struct EztCategoryView: View {
                                                     showToastWithContent(image: "xmark", color: .red, mess: "Cannot restore purchase")
                                                 }
                                             }
-
+                                            
                                         }, label: {
                                             Text("Restore")
                                                 .underline()
                                                 .foregroundColor(.white)
                                                 .mfont(8, .regular)
-
+                                            
                                         })
-
+                                        
                                     }
                                     .padding(.top, 8)
-
-
+                                    
+                                    
                                 }  .padding(.bottom, 8)
                                     .padding(.leading, 16)
-
-
+                                
+                                
                             }
-
-
-
+                            
+                            
+                            
                         }
-
-
-
-
+                        
+                        
+                        
+                        
                     }.frame(width: getRect().width - 32 , height: ( getRect().width - 32 ) * 504 / 1080 )
                         .cornerRadius(8)
-
-
-               }
+                    
+                    
+                }
                 
                 LazyVStack(spacing : 0){
                     ForEach(0..<viewModel.categorieWithData.count, id: \.self){
@@ -194,17 +182,20 @@ struct EztCategoryView: View {
                                     .mfont(20, .bold)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                  
+                                
                                     .onAppear(perform: {
                                         if viewModel.checkIfLoadData(i: stt){
                                             viewModel.getCategoryWithData()
                                         }
                                     })
                                 Spacer()
+                                
+                                
                                 Button(action: {
                                     
                                     categoryPageViewModel.category = categoryData.category
                                     viewModel.navigate.toggle()
+                                    
                                 }, label: {
                                     HStack(spacing : 0){
                                         Text("See All")
@@ -235,71 +226,55 @@ struct EztCategoryView: View {
                                                 let string : String = wallpaper.variations.preview_small.url.replacingOccurrences(of: "\"", with: "")
                                                 
                                                 //MARK: - Viet
-//                                                NavigationLink(destination: {
-//                                                    
-//                                                    WallpaperOnePageDetails(wallpapers: categoryData.wallpapers, index : i)
-//                                                        .environmentObject(reward)
-//                                                        .environmentObject(store)
-//                                                        .environmentObject(interAd)
-//                                                    
-//                                                }, label: {
-//                                                    
-//                                                    WebImage(url: URL(string: string))
-//                                                        .onSuccess { image, data, cacheType in
-//                                                            
-//                                                        }
-//                                                        .resizable()
-//                                                        .placeholder {
-//                                                            placeHolderImage()
-//                                                                .frame(width: 108, height: 216)
-//                                                            
-//                                                        }
-// 
-//                                                        .scaledToFill()
-//                                                        .frame(width: 108, height: 216)
-//                                                        .cornerRadius(8)
-//                                                        .clipped()
-//                                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
-//
-//                                                })
-                                                
+                                                Button(action: {
+                                                    EztMainViewModel.shared.paths.append(Router.gotoSpecialOnePageDetailView(wallpapers: categoryData.wallpapers, index: i))
+                                                }, label: {
+                                                    WebImage(url: URL(string: string))
+                                                        .onSuccess { image, data, cacheType in
+                                                            
+                                                        }
+                                                        .resizable()
+                                                        .placeholder {
+                                                            placeHolderImage()
+                                                                .frame(width: 108, height: 216)
+                                                            
+                                                        }
+                                                    
+                                                        .scaledToFill()
+                                                        .frame(width: 108, height: 216)
+                                                        .cornerRadius(8)
+                                                        .clipped()
+                                                        .showCrownIfNeeded(!store.isPro() && wallpaper.content_type == "private")
+                                                })
                                             }
                                             Spacer().frame(width: 16)
                                         }
                                     }
-                                }
-                                else{
+                                    
+                                } else {
                                     CategoryPlaceHolder()
                                 }
-                                
-                                
-                            }.frame(height : 216)
-                                .onAppear(perform : {
-                                    if categoryData.wallpapers.isEmpty {
-                                        viewModel.loadDataWhenAppear(index: stt)
-                                    }
-                                })
-                            
-                            
+                            }
+                            .frame(height : 216)
+                            .onAppear(perform : {
+                                if categoryData.wallpapers.isEmpty {
+                                    viewModel.loadDataWhenAppear(index: stt)
+                                }
+                            })
                         }
                         .padding(.bottom, 16)
-                        
                     }
                 }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
                 
                 Spacer()
                     .frame(height : 112)
-                
-                
-                
-                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .refreshable {
                 viewModel.categorieWithData.removeAll()
                 viewModel.getAllCategory()
-          //      viewModel.getCategoryWithData()
+                //      viewModel.getCategoryWithData()
             }
         }
     }

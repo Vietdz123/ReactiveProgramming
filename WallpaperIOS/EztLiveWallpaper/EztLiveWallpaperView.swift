@@ -76,15 +76,8 @@ struct EztLiveWallpaperView: View {
             
             , alignment: .bottom
         )
-        .onAppear{
-            if !store.isPro(){
-                InterstitialAdLoader.shared.showAd(onCommit: {})
-            }
-        }
-        
-        
-        
-        
+
+
         
     }
 }

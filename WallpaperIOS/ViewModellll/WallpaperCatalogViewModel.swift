@@ -86,9 +86,6 @@ class WallpaperCatalogViewModel: ObservableObject {
     @Published var dynamicTags  : [SpecialTagWithData] = []
     
     
-    
-   
-    
     @Published var domain : String
     init() {
         domain = UserDefaults.standard.string(forKey: "wl_domain") ?? "https://wallpaper.eztechglobal.com/"

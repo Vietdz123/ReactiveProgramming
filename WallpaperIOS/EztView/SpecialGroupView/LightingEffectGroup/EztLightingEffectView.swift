@@ -11,10 +11,7 @@ import SDWebImageSwiftUI
 struct EztLightingEffectView: View {
     @StateObject var newestVM : LightingEffectViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : LightingEffectViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-   // @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
@@ -77,16 +74,6 @@ struct EztLightingEffectView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
-        
-        
-       
-        
-
     }
 }
 
@@ -99,46 +86,30 @@ extension EztLightingEffectView {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
-
                 Spacer()
-               NavigationLink(destination: {
-                   LightingEffectView()
-                       .environmentObject(newestVM)
-                       .environmentObject(store)
-                       .environmentObject(rewardAd)
-                       .environmentObject(interAd)
-                   
+                
+                Button(action: {
+                    EztMainViewModel.shared.paths.append(Router.gotoNewestLightingEffect)
+                    
                 }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
+                    SeeAllView()
                 })
-                
-                
-            }.frame(height: 36)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
-            
-            
-            
+
+            }
+            .frame(height: 36)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+
             ZStack{
                 if !newestVM.wallpapers.isEmpty{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                    .environmentObject(newestVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
-                            }, label: {
+                            
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                         wallpapers: newestVM.wallpapers))
                                 
+                            }, label: {
                                 WebImage(url: URL(string:  newestVM.wallpapers.first?.path.first?.path.full ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -155,19 +126,17 @@ extension EztLightingEffectView {
                                     )
                                     .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
-                            
+
                             let minItem = min(newestVM.wallpapers.count, 15)
                             
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<minItem, content: {
                                     i in
                                     let wallpaper = newestVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(newestVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                                 wallpapers: newestVM.wallpapers))
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.path.first?.path.full ?? ""))
                                             .resizable()
@@ -184,12 +153,8 @@ extension EztLightingEffectView {
                                                     .cornerRadius(8)
                                             )
                                             .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
+                                        
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
                                     
                                 })
                             })
@@ -243,12 +208,10 @@ extension EztLightingEffectView {
                         let  wallpaper = popularVM.wallpapers[i]
                         let string : String = wallpaper.path.first?.path.full ?? ""
                         
-                        NavigationLink(destination: {
-                            SpWLDetailView(index: i)
-                                .environmentObject(popularVM as SpViewModel)
-                                .environmentObject(store)
-                                .environmentObject(interAd)
-                                .environmentObject(rewardAd)
+                        Button(action: {
+                            EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                wallpapers: popularVM.wallpapers))
+                            
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .resizable()
@@ -256,7 +219,6 @@ extension EztLightingEffectView {
                                     placeHolderImage()
                                         .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 }
-                              
                                 .scaledToFill()
                                 .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                 .cornerRadius(8)
@@ -266,7 +228,6 @@ extension EztLightingEffectView {
                                         .cornerRadius(8)
                                 )
                                 .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                         })
                         .onAppear(perform: {
                             if i == ( popularVM.wallpapers.count - 6 ){

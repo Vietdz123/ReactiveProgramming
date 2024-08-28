@@ -8,22 +8,19 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct DepthEffectView: View {
+struct DepthEffectListView: View {
     
-    @EnvironmentObject var viewModel : DepthEffectViewModel
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    
+    @StateObject var viewModel : DepthEffectViewModel
+    @Environment(\.dismiss) var dismiss
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
     
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -45,17 +42,14 @@ struct DepthEffectView: View {
                 LazyVGrid(columns: [GridItem.init(spacing: 8), GridItem.init()], spacing: 8 ){
                     
                     if !viewModel.wallpapers.isEmpty {
-                        ForEach(0..<viewModel.wallpapers.count, id: \.self){
-                            i in
+                        ForEach(0..<viewModel.wallpapers.count, id: \.self){ i in
                             let  wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.thumbnail?.path.small ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                    wallpapers: viewModel.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
@@ -67,7 +61,7 @@ struct DepthEffectView: View {
                                     .frame(width: AppConfig.width_1, height: AppConfig.height_1)
                                     .cornerRadius(8)
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
+                                
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -94,11 +88,6 @@ struct DepthEffectView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
            
     }
 }

@@ -295,7 +295,7 @@ extension EztHomeView{
                         HStack(spacing : 8){
                             
                             NavigationLink(destination: {
-                                WLView(index: 0)
+                                WallpaperNormalDetailView(index: 0)
                                     .environmentObject(exclusiveVM as CommandViewModel)
                                     .environmentObject(rewardAd)
                                     .environmentObject(store)
@@ -323,7 +323,7 @@ extension EztHomeView{
                                     
                                     
                                     NavigationLink(destination: {
-                                        WLView(index: i)
+                                        WallpaperNormalDetailView(index: i)
                                             .environmentObject(exclusiveVM as CommandViewModel)
                                             .environmentObject(rewardAd)
                                             .environmentObject(store)
@@ -622,14 +622,11 @@ extension EztHomeView{
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                    .environmentObject(depthVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
-                            }, label: {
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                    wallpapers: depthVM.wallpapers))
                                 
+                            }, label: {
                                 WebImage(url: URL(string: depthVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -640,19 +637,17 @@ extension EztHomeView{
                                     .clipped()
                                     .cornerRadius(8)
                                     .showCrownIfNeeded(depthVM.wallpapers.first?.contentType == 1 && !store.isPro())
+                                
                             })
-                            
                             
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<15, content: {
                                     i in
                                     let wallpaper = depthVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(depthVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                            wallpapers: depthVM.wallpapers))
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
                                             .resizable()
@@ -665,12 +660,6 @@ extension EztHomeView{
                                             .cornerRadius(8)
                                             .showCrownIfNeeded(wallpaper.contentType == 1 && !store.isPro())
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
                                 })
                             })
                         }
@@ -719,14 +708,15 @@ extension EztHomeView{
                     }
                 })
                 
-            }.padding(.horizontal, 16)
-            ZStack{
-                
-                
-                
+            }
+            .padding(.horizontal, 16)
+            
+            ZStack {
+
                 if posterContactVM.wallpapers.isEmpty{
                     PlaceHolderListLoadHori()
-                }else{
+                    
+                } else {
                     ScrollView(.horizontal, showsIndicators: false){
                             LazyHStack(spacing: 12, content: {
                                 ForEach(0..<7, content: {
@@ -735,19 +725,16 @@ extension EztHomeView{
                                     
                                     let string = wallpaper.thumbnail?.path.small ?? ""
                                     
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(posterContactVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                            wallpapers: posterContactVM.wallpapers))
+                                        
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
-                                            
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                            }
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()
@@ -755,11 +742,6 @@ extension EztHomeView{
                                             .cornerRadius(8)
                                             .showCrownIfNeeded(wallpaper.contentType == 1 && !store.isPro())
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
                                 })
                             })
 
@@ -823,18 +805,16 @@ extension EztHomeView{
                                     let wallpaper = lightningVM.wallpapers[i]
                                     let string = wallpaper.path.first?.path.preview  ?? ""
                                     
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(lightningVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                            wallpapers: lightningVM.wallpapers))
+                                        
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
-//                                            .placeholder {
-//                                                placeHolderImage()
-//                                            }
+                                            .placeholder {
+                                                placeHolderImage()
+                                            }
                                             .scaledToFill()
                                             .frame(width: 128, height: 280)
                                             .clipped()
@@ -847,11 +827,6 @@ extension EztHomeView{
                                             )
                                             .showCrownIfNeeded(wallpaper.contentType == 1 && !store.isPro())
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
                                 })
                             })
                         

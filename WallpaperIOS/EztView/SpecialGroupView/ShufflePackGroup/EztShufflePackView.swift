@@ -22,6 +22,7 @@ struct EztShufflePackView: View {
             HStack(spacing : 0){
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
+                    
                 }, label: {
                     Image("back")
                         .resizable()
@@ -35,15 +36,15 @@ struct EztShufflePackView: View {
                     .mfont(22, .bold)
                     .frame(maxWidth: .infinity).padding(.trailing, 18)
                 
-            }.frame(maxWidth: .infinity, alignment: .leading)
-                .frame(height: 44)
-                .padding(.horizontal, 20)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 44)
+            .padding(.horizontal, 20)
             
             ScrollView(.vertical, showsIndicators: false){
                 LazyVStack(spacing: 0, content: {
-                    NavigationLink(destination: {
-                        EztShufflePackListCateView()
-               
+                    Button(action: {
+                        EztMainViewModel.shared.paths.append(Router.gotoShufflePackeList)
                         
                     }, label: {
                         HStack(spacing : 0){
@@ -67,13 +68,11 @@ struct EztShufflePackView: View {
                             .background(
                                 Image("shufflepack_category").resizable()
                             )
-                        
+                            .cornerRadius(16)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 24)
+                            .padding(.top, 8)
                     })
-                    .cornerRadius(16)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 24)
-                    .padding(.top, 8)
-
                     NewestView().padding(.bottom, 16)
                     
                     PopularView().padding(.bottom, 16)
@@ -108,16 +107,6 @@ struct EztShufflePackView: View {
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    InterstitialAdLoader.shared.showAd(onCommit: {})
-                }
-            }
-        
-        
-      
-        
-        
 
     }
     

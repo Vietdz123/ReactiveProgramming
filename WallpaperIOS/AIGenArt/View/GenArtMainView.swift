@@ -62,12 +62,12 @@ struct GenArtMainView: View {
                 PromptGenArtOpt()
                 ImageGenArtOpt()
                 PosterContactWallpaper()
-               
+                
             }.padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             NavigationLink(
                 destination: GenArtLimitView()
                     .environmentObject(store)
-                   
+                
                 
                 ,
                 isActive: $showLimitDialog,
@@ -86,7 +86,7 @@ struct GenArtMainView: View {
         .onViewDidLoad {
             GenArtConfig.getForbiddenResponse()
         }
-
+        
     }
 }
 
@@ -119,7 +119,7 @@ extension GenArtMainView{
                             showLimitDialog.toggle()
                         }
                     }
-                   
+                    
                 }
         }.frame(width: bannerWidth, height: bannerHeight).padding(.top, 24)
         
@@ -154,7 +154,7 @@ extension GenArtMainView{
                         }
                         
                     }
-                  
+                    
                     
                 }
         }.frame(width: bannerWidth, height: bannerHeight)
@@ -196,7 +196,7 @@ extension GenArtMainView{
             }.padding(.horizontal, 16)
             ZStack{
                 if posterContactVM.wallpapers.isEmpty{
-                
+                    
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                         LazyHStack(spacing : 12){
@@ -206,30 +206,27 @@ extension GenArtMainView{
                                 i in
                                 let wallpaper = posterContactVM.wallpapers[i]
                                 let string = wallpaper.thumbnail?.path.preview ?? ""
-                                NavigationLink(destination: {
-                                    SpWLDetailView(index: i)
-                                        .environmentObject(posterContactVM as SpViewModel)
-                                        .environmentObject(store)
-                                        .environmentObject(rewardAd)
-                                        .environmentObject(interAd)
+                                
+                                Button(action: {
+                                    EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                             wallpapers: posterContactVM.wallpapers))
+                                    
                                 }, label: {
                                     WebImage(url: URL(string: string))
                                         .resizable()
-//                                        .placeholder {
-//                                            placeHolderImage()
-//                                        }
+                                        .placeholder {
+                                            placeHolderImage()
+                                        }
                                         .scaledToFill()
                                         .frame(width: 128, height: 280)
                                         .clipped()
                                         .cornerRadius(8)
                                         .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                 })
-                                
-                                
                             }
                         }
                     }
-
+                    
                 }
             }
             .frame(maxWidth: .infinity)

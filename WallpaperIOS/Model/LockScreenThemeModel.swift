@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct LockScreenResponse: Codable {
+struct LockScreenResponse: Codable, Hashable {
     let data: LockScreenData
 }
 
-struct LockScreenData : Codable{
+struct LockScreenData : Codable, Hashable{
     let data  : [LockScreenObj]
 }
 
-struct LockScreenObj: Codable {
+struct LockScreenObj: Codable, Hashable {
     let id, order: Int
     let license: String
     let content: [LockContent]
@@ -24,18 +24,15 @@ struct LockScreenObj: Codable {
     let active, category_id: Int
     
     let `private` : Int
-
-   
-
 }
 
-struct LockContent: Codable {
+struct LockContent: Codable, Hashable {
     let id: Int
     let data: ContentData?
     let type: String
 }
 
-struct ContentData: Codable {
+struct ContentData: Codable, Hashable {
     let images: [LockThumbnail]?
     let fontID, fontSize: Int?
     let background: [LockThumbnail]?
@@ -54,7 +51,7 @@ struct ContentData: Codable {
 
 
 
-struct LockThumbnail: Codable {
+struct LockThumbnail: Codable, Hashable {
     let url: PathPath
     let keyType: String?
     let fileName: String?

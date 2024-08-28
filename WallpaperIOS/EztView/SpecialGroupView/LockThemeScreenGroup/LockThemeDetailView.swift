@@ -17,13 +17,8 @@ struct LockThemeDetailView: View {
     @State var index : Int
     
     @StateObject var ctrlViewModel : ControllViewModel = .init()
-    @EnvironmentObject var viewModel : LockThemeViewModel
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
-
-    
-    
+    @StateObject var viewModel : LockThemeViewModel
+    @StateObject var store = MyStore.shared
     @State var showBuySubAtScreen : Bool = false
     @State var isBuySubWeek : Bool = true
     @State var showMore : Bool = false
@@ -44,9 +39,9 @@ struct LockThemeDetailView: View {
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
                 NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
                     EztSubcriptionView()
-                        .environmentObject(store)
                         .navigationBarTitle("", displayMode: .inline)
                         .navigationBarHidden(true)
+                    
                 }, label: {
                     EmptyView()
                 })
@@ -58,12 +53,12 @@ struct LockThemeDetailView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                             dismiss.callAsFunction()
                         })
-                       
-                    }).environmentObject(store)
+                        
+                    })
                 }, label: {
                     EmptyView()
                 })
-            
+                
                 
                 TabView(selection: $index, content: {
                     ForEach(0..<viewModel.wallpapers.count, id: \.self){ i in
@@ -72,15 +67,15 @@ struct LockThemeDetailView: View {
                         ZStack{
                             if  urlStr.contains(".json"){
                                 if let url = URL(string: urlStr){
-                                  
-                                        LottieView {
-                                            await LottieAnimation.loadedFrom(url:  url )
-                                        } .looping()
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: getRect().width, height: getRect().height)
-                                        
-                                   
+                                    
+                                    LottieView {
+                                        await LottieAnimation.loadedFrom(url:  url )
+                                    } .looping()
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: getRect().width, height: getRect().height)
+                                    
+                                    
                                 }
                                 
                             }else{
@@ -116,14 +111,14 @@ struct LockThemeDetailView: View {
                                 
                             }
                         }
-               
+                        
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
                         .onAppear(perform: {
                             if i == (viewModel.wallpapers.count - 3){
                                 viewModel.getWallpapers()
                             }
-
+                            
                         })
                     }
                 })
@@ -133,7 +128,7 @@ struct LockThemeDetailView: View {
                 )
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .edgesIgnoringSafeArea(.all)
-              
+                
                 .contentShape(Rectangle())
                 .onTapGesture(perform: {
                     ctrlViewModel.showControll.toggle()
@@ -142,7 +137,7 @@ struct LockThemeDetailView: View {
                 if ctrlViewModel.showControll{
                     ControllView()
                 }
-
+                
                 
             }
         }
@@ -160,7 +155,7 @@ struct LockThemeDetailView: View {
             }
             
         )
-       
+        
         .overlay{
             if ctrlViewModel.showRateView {
                 EztRateView(onClickSubmit5star: {
@@ -173,28 +168,22 @@ struct LockThemeDetailView: View {
         }
         .fullScreenCover(isPresented: $showBuySubAtScreen, content: {
             EztSubcriptionView()
-                .environmentObject(store)
+            
         })
         .fullScreenCover(isPresented: $showSub, content: {
             EztSubcriptionView()
-                .environmentObject(store)
+            
         })
         
     }
 }
 
-#Preview {
-    LockThemeDetailView(index: 0)
-        .environmentObject(MyStore())
-        .environmentObject(LockThemeViewModel())
-}
-
 extension LockThemeDetailView{
     
     
-
     
-  //  @State var indexGif : Int = 0
+    
+    //  @State var indexGif : Int = 0
     func ThemeDownloadView() -> some View{
         
         VStack(spacing : 0){
@@ -218,7 +207,7 @@ extension LockThemeDetailView{
             }
             
             
-          
+            
             
             HStack(spacing : 0){
                 ZStack{
@@ -228,9 +217,9 @@ extension LockThemeDetailView{
                             .scaledToFit()
                             .frame(width: 20, height: 20)
                     }
-                   
+                    
                 }  .frame(width: 20, height: 20)
-               
+                
                 Spacer()
                 Text("Theme Item")
                     .mfont(17, .bold)
@@ -259,7 +248,7 @@ extension LockThemeDetailView{
                     getPhotoPermission(status: {
                         b in
                         if b {
-
+                            
                             
                             if store.isPro(){
                                 if let wallpaperContent{
@@ -275,35 +264,36 @@ extension LockThemeDetailView{
                                     })
                                 }
                                 
-                               
-                               
+                                
+                                
+                                
+                            }else{
+                                if wallpaper.private == 1 {
+                                    showBuySubAtScreen.toggle()
                                     
-                                }else{
-                                    if wallpaper.private == 1 {
-                                        showBuySubAtScreen.toggle()
-                                    }else{
+                                } else {
                                     
-                                                reward.presentRewardedVideo(onCommit: {
-                                                    _ in
-                                                    if let wallpaperContent{
-                                                        downloadImageToGallery(title: "lockcreenwallpaper_\(wallpaper.id)", urlStr: wallpaperContent.data?.images?.first?.url.full ?? "")
-                                                        ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                            showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                                ctrlViewModel.showRateView = true
-                                                            }, onShowGifView: {
-                                                                ctrlViewModel.showGifView.toggle()
-                                                                ctrlViewModel.changeSubType()
-                                                            })
-                                                        })
-                                                    }
-                                                    
-                                                  
-                                                    
+                                    RewardAd.shared.presentRewardedVideo(onCommit: {
+                                        _ in
+                                        if let wallpaperContent{
+                                            downloadImageToGallery(title: "lockcreenwallpaper_\(wallpaper.id)", urlStr: wallpaperContent.data?.images?.first?.url.full ?? "")
+                                            ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                                showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                                    ctrlViewModel.showRateView = true
+                                                }, onShowGifView: {
+                                                    ctrlViewModel.showGifView.toggle()
+                                                    ctrlViewModel.changeSubType()
                                                 })
-                                      
-                                    }
+                                            })
+                                        }
+                                        
+                                        
+                                        
+                                    })
+                                    
                                 }
+                            }
                             
                             
                         }
@@ -319,22 +309,22 @@ extension LockThemeDetailView{
                             HStack(spacing : 4){
                                 Text("Watch an ad")
                                     .mfont(10, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                                 Image("ad")
                                     .resizable()
                                     .scaledToFit()
-                                  .frame(width: 10, height: 10)
+                                    .frame(width: 10, height: 10)
                             }
                         }
                         
                     }
-                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                        .frame(width: 120, height: 36)
-                        .background(Color(red: 1, green: 0.87, blue: 0.19))
-                        .clipShape(Capsule())
+                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                    .frame(width: 120, height: 36)
+                    .background(Color(red: 1, green: 0.87, blue: 0.19))
+                    .clipShape(Capsule())
                 })
-              
+                
                 
                 
                 
@@ -363,39 +353,39 @@ extension LockThemeDetailView{
                             })
                         }
                         
-                     
-                       
-                            
+                        
+                        
+                        
+                    }else{
+                        if wallpaper.private == 1 {
+                            showBuySubAtScreen.toggle()
                         }else{
-                            if wallpaper.private == 1 {
-                                showBuySubAtScreen.toggle()
-                            }else{
-                               
-                                        reward.presentRewardedVideo(onCommit: {
-                                            _ in
-                                            if let inlineContent {
-                                                downloadContentInline(inlineContent: inlineContent)
-                                                ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                                             
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                        ctrlViewModel.showRateView = true
-                                                    }, onShowGifView: {
-                                                        ctrlViewModel.showGifView.toggle()
-                                                        ctrlViewModel.changeSubType()
-                                                    })
-                                                })
-                                            }
-                                            
-                                       
-                                            
+                            
+                            RewardAd.shared.presentRewardedVideo(onCommit: {
+                                _ in
+                                if let inlineContent {
+                                    downloadContentInline(inlineContent: inlineContent)
+                                    ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                        showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                            ctrlViewModel.showRateView = true
+                                        }, onShowGifView: {
+                                            ctrlViewModel.showGifView.toggle()
+                                            ctrlViewModel.changeSubType()
                                         })
+                                    })
+                                }
                                 
-                            }
+                                
+                                
+                            })
+                            
                         }
+                    }
                     
                     
-                
+                    
                     
                     
                 }, label: {
@@ -407,20 +397,20 @@ extension LockThemeDetailView{
                             HStack(spacing : 4){
                                 Text("Watch an ad")
                                     .mfont(10, .regular)
-                                  .multilineTextAlignment(.center)
-                                  .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                                 Image("ad")
                                     .resizable()
                                     .scaledToFit()
-                                  .frame(width: 10, height: 10)
+                                    .frame(width: 10, height: 10)
                             }
                         }
                         
                     }
-                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                        .frame(width: 120, height: 36)
-                        .background(Color(red: 1, green: 0.87, blue: 0.19))
-                        .clipShape(Capsule())
+                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                    .frame(width: 120, height: 36)
+                    .background(Color(red: 1, green: 0.87, blue: 0.19))
+                    .clipShape(Capsule())
                 })
                 
                 
@@ -471,9 +461,9 @@ extension LockThemeDetailView{
                         
                         if store.isPro(){
                             downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
-                                ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                         
-                         
+                            ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
+                            
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                                 showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
                                     ctrlViewModel.showRateView = true
@@ -482,33 +472,33 @@ extension LockThemeDetailView{
                                     ctrlViewModel.changeSubType()
                                 })
                             })
-                           
-                                
+                            
+                            
+                        }else{
+                            if wallpaper.private == 1 {
+                                showBuySubAtScreen.toggle()
                             }else{
-                                if wallpaper.private == 1 {
-                                    showBuySubAtScreen.toggle()
-                                }else{
+                                
+                                RewardAd.shared.presentRewardedVideo(onCommit: {
+                                    _ in
+                                    downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
+                                    ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
                                     
-                                            reward.presentRewardedVideo(onCommit: {
-                                                _ in
-                                                downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
-                                                ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                                            
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-                                                        ctrlViewModel.showRateView = true
-                                                    }, onShowGifView: {
-                                                        ctrlViewModel.showGifView.toggle()
-                                                        ctrlViewModel.changeSubType()
-                                                    })
-                                                })
-                                                
-                                            })
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                        showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                            ctrlViewModel.showRateView = true
+                                        }, onShowGifView: {
+                                            ctrlViewModel.showGifView.toggle()
+                                            ctrlViewModel.changeSubType()
+                                        })
+                                    })
                                     
-                                }
+                                })
+                                
                             }
+                        }
                         
-                       
+                        
                     }, label: {
                         VStack(spacing : -4){
                             Text("Save")
@@ -518,12 +508,12 @@ extension LockThemeDetailView{
                                 HStack(spacing : 4){
                                     Text("Watch an ad")
                                         .mfont(10, .regular)
-                                      .multilineTextAlignment(.center)
-                                      .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                                     Image("ad")
                                         .resizable()
                                         .scaledToFit()
-                                      .frame(width: 10, height: 10)
+                                        .frame(width: 10, height: 10)
                                 }
                             }
                             
@@ -542,8 +532,8 @@ extension LockThemeDetailView{
                 if !listRectangle.isEmpty && !listSquare1.isEmpty && !listSquare2.isEmpty{
                     
                     HorizotalGifWidgetView(listRectangle: listRectangle, listSquare1: listSquare1, listSquare2: listSquare2, isContentGif: isContentGif, delayAnimation: delayAnimation, indexGifRectangle: 0, indexGifSquare1: 0, indexGifSquare2: 0)
-                
-               
+                    
+                    
                 }
             }
             
@@ -555,19 +545,19 @@ extension LockThemeDetailView{
                             if let wallpaperContent{
                                 downloadImageToGallery(title: "lockcreenwallpaper_\(wallpaper.id)", urlStr: wallpaperContent.data?.images?.first?.url.full ?? "")
                             }
-                                if let inlineContent{
-                                   downloadContentInline(inlineContent: inlineContent)
-                                }
-                                if let square_1_Content,
-                                   let square_2_Content,
-                                   let rectangleContent
-                                {
-                                    downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
-                                }
-                                
-                                
+                            if let inlineContent{
+                                downloadContentInline(inlineContent: inlineContent)
+                            }
+                            if let square_1_Content,
+                               let square_2_Content,
+                               let rectangleContent
+                            {
+                                downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
+                            }
+                            
+                            
                             ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                           
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                                 showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
                                     ctrlViewModel.showRateView = true
@@ -576,55 +566,55 @@ extension LockThemeDetailView{
                                     ctrlViewModel.changeSubType()
                                 })
                             })
-                           
-                                
+                            
+                            
+                        }else{
+                            if wallpaper.private == 1 {
+                                showBuySubAtScreen.toggle()
                             }else{
-                                if wallpaper.private == 1 {
-                                    showBuySubAtScreen.toggle()
-                                }else{
-                                  
-                                            reward.presentRewardedVideo(onCommit: {
-                                                _ in
-                                                if let wallpaperContent{
-                                                    downloadImageToGallery(title: "lockcreenwallpaper_\(wallpaper.id)", urlStr: wallpaperContent.data?.images?.first?.url.full ?? "")
-                                                }
-                                                if let inlineContent{
-                                                   downloadContentInline(inlineContent: inlineContent)
-                                                }
-                                                if let square_1_Content,
-                                                   let square_2_Content,
-                                                   let rectangleContent
-                                                {
-                                                    downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
-                                                }
-                                                
-                                                
-                                                ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
-                                               
-                                                
-                                                //MARK: ALL
-//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-//                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
-//                                                        ctrlViewModel.showRateView = true
-//                                                    }, onShowGifView: {
-//                                                        ctrlViewModel.showGifView.toggle()
-//                                                        ctrlViewModel.changeSubType()
-//                                                    })
-//                                                })
-                                                
-                                                
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                                    let urlPreview = wallpaper.thumbnail.first?.url.full ?? ""
-                                                    self.urlForDownloadSuccess = URL(string: urlPreview)
-                                                    self.navigateToDownloadSuccessView = true
-                                                })
-                                               
-                                                
-                                            })
-                                       
-                                  
-                                }
+                                
+                                RewardAd.shared.presentRewardedVideo(onCommit: {
+                                    _ in
+                                    if let wallpaperContent{
+                                        downloadImageToGallery(title: "lockcreenwallpaper_\(wallpaper.id)", urlStr: wallpaperContent.data?.images?.first?.url.full ?? "")
+                                    }
+                                    if let inlineContent{
+                                        downloadContentInline(inlineContent: inlineContent)
+                                    }
+                                    if let square_1_Content,
+                                       let square_2_Content,
+                                       let rectangleContent
+                                    {
+                                        downloadContentWidget(square_1_Content: square_1_Content, square_2_Content: square_2_Content, rectangleContent: rectangleContent)
+                                    }
+                                    
+                                    
+                                    ServerHelper.sendLockScreenThemeDataToServer(id: wallpaper.id)
+                                    
+                                    
+                                    //MARK: ALL
+                                    //                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                                    //                                                    showActionAfterDownload(isUserPro: store.isPro(), onShowRate: {
+                                    //                                                        ctrlViewModel.showRateView = true
+                                    //                                                    }, onShowGifView: {
+                                    //                                                        ctrlViewModel.showGifView.toggle()
+                                    //                                                        ctrlViewModel.changeSubType()
+                                    //                                                    })
+                                    //                                                })
+                                    
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                        let urlPreview = wallpaper.thumbnail.first?.url.full ?? ""
+                                        self.urlForDownloadSuccess = URL(string: urlPreview)
+                                        self.navigateToDownloadSuccessView = true
+                                    })
+                                    
+                                    
+                                })
+                                
+                                
                             }
+                        }
                     }
                 })
             }, label: {
@@ -636,26 +626,26 @@ extension LockThemeDetailView{
                         HStack(spacing : 4){
                             Text("Watch an ad")
                                 .mfont(11, .regular)
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
                             Image("ad")
                                 .resizable()
                                 .scaledToFit()
-                              .frame(width: 10, height: 10)
+                                .frame(width: 10, height: 10)
                         }
                     }
                     
                 }
-                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
-                    .frame(maxWidth: .infinity)
-                    .frame( height: 48)
-                    .background(Color(red: 1, green: 0.87, blue: 0.19))
-                    .clipShape(Capsule())
-                    .padding(.horizontal, 67)
-                    .padding(.top, 40)
-                    .padding(.bottom, 24)
+                .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                .frame(maxWidth: .infinity)
+                .frame( height: 48)
+                .background(Color(red: 1, green: 0.87, blue: 0.19))
+                .clipShape(Capsule())
+                .padding(.horizontal, 67)
+                .padding(.top, 40)
+                .padding(.bottom, 24)
             })
-        
+            
             
             
             
@@ -734,7 +724,7 @@ extension LockThemeDetailView{
     }
     
     
-
+    
 }
 
 

@@ -19,59 +19,47 @@ enum DetailWallpaperAction : String, CaseIterable{
 }
 
 class ControllViewModel : ObservableObject {
+    
     @Published var showControll : Bool = true
     @Published var showPreview : Bool = false
     @Published var isHome : Bool = true
     @Published var showDetailWallpaper : Bool = false
-   // @Published var showTutorial : Bool = false
+    // @Published var showTutorial : Bool = false
     //@Published var showInfo : Bool = false
     @Published var showDialogRV : Bool = false
     @Published var showDialogBuyCoin : Bool = false
     @Published var navigateView : Bool = false
     @Published var isDownloading : Bool = false
     @Published var showContentPremium : Bool = false
-    
-    
     @Published var showRateView : Bool = false
     @Published var showGifView : Bool = false
-    
-    
     @Published var adStatus : AdStatus = .loading
     @Published var actionSelected : DetailWallpaperAction = .LOCK
-    
-    
-    func changeSubType() {
 
+    func changeSubType() {
         
         let subTypeSave =  UserDefaults.standard.integer(forKey: "gift_sub_type")
-      
         
         if subTypeSave == 0 {
-                UserDefaults.standard.set(1, forKey: "gift_sub_type")
-        }else if subTypeSave == 1 {
-                UserDefaults.standard.set(2, forKey: "gift_sub_type")
-        }else if subTypeSave == 2{
-                UserDefaults.standard.set(0, forKey: "gift_sub_type")
+            UserDefaults.standard.set(1, forKey: "gift_sub_type")
+        } else if subTypeSave == 1 {
+            UserDefaults.standard.set(2, forKey: "gift_sub_type")
+        } else if subTypeSave == 2{
+            UserDefaults.standard.set(0, forKey: "gift_sub_type")
         }
-        
-       
     }
     
 }
 
 
-struct WLView: View {
+struct WallpaperNormalDetailView: View {
     @Environment(\.dismiss) var dismiss
     @State var index : Int
     @StateObject var ctrlViewModel : ControllViewModel = .init()
-    @EnvironmentObject var viewModel : CommandViewModel
-    @EnvironmentObject  var reward : RewardAd
-    @EnvironmentObject var store : MyStore
- 
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var viewModel : CommandViewModel
+    @StateObject var store : MyStore
     @AppStorage("current_coin", store: .standard) var currentCoin : Int = 0
     @AppStorage("exclusive_cost", store: .standard) var exclusiveCost : Int = 4
-    
     @State var type : String = "Wallpaper"
     @State var urlForDownloadSuccess :  URL?
     @State var navigateToDownloadSuccessView : Bool = false
@@ -79,41 +67,38 @@ struct WLView: View {
     var body: some View {
         
         
-        ZStack{
-        
+        ZStack {
             
             if !viewModel.wallpapers.isEmpty && index < viewModel.wallpapers.count{
-                NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
-                    EztSubcriptionView()
-                        .environmentObject(store)
-                        .navigationBarTitle("", displayMode: .inline)
-                        .navigationBarHidden(true)
-                }, label: {
-                    EmptyView()
-                })
-                
-                
-               
-                    NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
-                        DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
-                            navigateToDownloadSuccessView = false
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                                dismiss.callAsFunction()
-                            })
-                           
-                        }).environmentObject(store)
-                    }, label: {
-                        EmptyView()
-                    })
+//                NavigationLink(isActive: $ctrlViewModel.navigateView, destination: {
+//                    EztSubcriptionView()
+//                        .environmentObject(store)
+//                        .navigationBarTitle("", displayMode: .inline)
+//                        .navigationBarHidden(true)
+//                }, label: {
+//                    EmptyView()
+//                })
+//                
+//                
+//                
+//                NavigationLink(isActive: $navigateToDownloadSuccessView, destination: {
+//                    DownloadSuccessView(type: type, url: urlForDownloadSuccess, onClickBackToHome: {
+//                        navigateToDownloadSuccessView = false
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+//                            dismiss.callAsFunction()
+//                        })
+//                        
+//                    }).environmentObject(store)
+//                }, label: {
+//                    EmptyView()
+//                })
                 
                 
                 
                 TabView(selection: $index, content: {
                     ForEach(0..<viewModel.wallpapers.count, id: \.self){ i in
                         let wallpaper = viewModel.wallpapers[i]
-                        
-                     
-                        
+
                         AsyncImage(url: URL(string: (wallpaper.variations.adapted.url).replacingOccurrences(of: "\"", with: ""))){
                             phase in
                             if let image = phase.image {
@@ -144,15 +129,10 @@ struct WLView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
-                        
                         .onAppear(perform: {
                             if i == (viewModel.wallpapers.count - 3){
                                 viewModel.getWallpapers()
                             }
-                            if !store.isPro(){
-                                interAd.showAd(onCommit: {})
-                            }
-                            
                         })
                     }
                 })
@@ -160,7 +140,7 @@ struct WLView: View {
                     Image("BGIMG")
                         .resizable()
                         .ignoresSafeArea()
-                        
+                    
                 )
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .edgesIgnoringSafeArea(.all)
@@ -169,29 +149,24 @@ struct WLView: View {
                         ctrlViewModel.showControll.toggle()
                     }
                 }
-               
-             
-                    Preview()
-              
-               
+                
+                Preview()
                 
                 if ctrlViewModel.showControll{
                     ControllView()
                 }
                 
-               
-                
                 if ctrlViewModel.showDialogRV{
                     DialogGetWL(urlStr: viewModel.wallpapers[index].variations.preview_small.url.replacingOccurrences(of: "\"", with: ""))
                 }
                 
-//                if ctrlViewModel.showDialogBuyCoin{
-//                    SpecialSubView(onClickClose: {
-//                        ctrlViewModel.showDialogBuyCoin = false
-//                    })
-//                    
-//                    
-//                }
+                //                if ctrlViewModel.showDialogBuyCoin{
+                //                    SpecialSubView(onClickClose: {
+                //                        ctrlViewModel.showDialogBuyCoin = false
+                //                    })
+                //
+                //
+                //                }
             }
         }
         .navigationBarTitle("", displayMode: .inline)
@@ -200,13 +175,13 @@ struct WLView: View {
             ZStack{
                 if ctrlViewModel.showContentPremium {
                     let url  = (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: "")
-                        SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
-                            ctrlViewModel.showContentPremium = false
-                            ctrlViewModel.showDialogBuyCoin = true
-                        })
+                    SpecialContentPremiumDialog(show: $ctrlViewModel.showContentPremium, urlStr: url, onClickBuyPro: {
+                        ctrlViewModel.showContentPremium = false
+                        ctrlViewModel.showDialogBuyCoin = true
+                    })
                 }
             }
-
+            
         )
         .fullScreenCover(isPresented: $ctrlViewModel.showDialogBuyCoin, content: {
             EztSubcriptionView().environmentObject(store)
@@ -226,13 +201,13 @@ struct WLView: View {
                 })
             }
         }
-      
+        
     }
     
     @ViewBuilder
     func GiftView(giftSubType : Int = UserDefaults.standard.integer(forKey: "gift_sub_type")  ) -> some View{
         if giftSubType == 0 {
-           GiftSub_1_View(show: $ctrlViewModel.showGifView)
+            GiftSub_1_View(show: $ctrlViewModel.showGifView)
         }else if giftSubType == 1{
             GiftSub_2_View(show: $ctrlViewModel.showGifView)
         }else{
@@ -260,30 +235,30 @@ struct WLView: View {
                 
                 
                 Spacer()
-              
-                    ZStack{
-                        if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
-                            Button(action: {
-                                ctrlViewModel.showContentPremium = true
-                            }, label: {
-                                Image("crown")
-                                    .resizable()
-                                    .frame(width: 18, height: 18, alignment: .center)
-                                    .frame(width: 50, height: 44)
-                            })
-                           
-
-                        }
+                
+                ZStack{
+                    if !store.isPro() && viewModel.wallpapers[index].content_type == "private" {
+                        Button(action: {
+                            ctrlViewModel.showContentPremium = true
+                        }, label: {
+                            Image("crown")
+                                .resizable()
+                                .frame(width: 18, height: 18, alignment: .center)
+                                .frame(width: 50, height: 44)
+                        })
+                        
                         
                     }
-
+                    
+                }
+                
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44  )
-           
+            
             
             Spacer()
-         
+            
             HStack(alignment: .bottom, spacing:  0, content: {
                 
                 VStack(spacing : 6){
@@ -316,7 +291,7 @@ struct WLView: View {
                                 downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                                 ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                             }else{
-                          
+                                
                                 let wallpaper = viewModel.wallpapers[index]
                                 if wallpaper.content_type == "free" {
                                     
@@ -331,9 +306,9 @@ struct WLView: View {
                                         }
                                     }
                                     
-                                 
+                                    
                                 }else{
-                                   
+                                    
                                     
                                     DispatchQueue.main.async {
                                         withAnimation{
@@ -353,7 +328,7 @@ struct WLView: View {
                         .frame(width: 32, height: 32)
                         .frame(width: 56, height: 56)
                         .background(Circle().fill(Color.main))
-
+                    
                 }).disabled(ctrlViewModel.isDownloading)
                     .padding(.trailing, 16)
             }).padding(.bottom, 24)
@@ -364,10 +339,10 @@ struct WLView: View {
                 }
             }.frame(height: GADAdSizeBanner.size.height)
             
-               
-                
-                
-           
+            
+            
+            
+            
             
         }
         
@@ -375,7 +350,7 @@ struct WLView: View {
     
     @ViewBuilder
     func Preview() -> some View{
-    
+        
         ZStack(alignment: .top){
             if ctrlViewModel.actionSelected == .HOME {
                 
@@ -384,12 +359,12 @@ struct WLView: View {
                         .resizable()
                         .scaledToFit()
                         .padding(.top, 44)
-                       
+                    
                     
                     Spacer()
                 }
-               
-
+                
+                
             }else if ctrlViewModel.actionSelected == .LOCK{
                 VStack{
                     Image("lock_sc")
@@ -399,7 +374,7 @@ struct WLView: View {
                     Spacer()
                 }
                 
-                  
+                
             }
         }
         
@@ -407,26 +382,28 @@ struct WLView: View {
     
     @ViewBuilder
     func DialogGetWL(urlStr : String) -> some View{
-        WatchRVtoGetWLDialog( urlStr: urlStr, show: $ctrlViewModel.showDialogRV, onRewarded: {
-            rewardSuccess in
+        WatchRVtoGetWLDialog( urlStr: urlStr, show: $ctrlViewModel.showDialogRV, onRewarded: { rewardSuccess in
             ctrlViewModel.showDialogRV = false
+            
             if rewardSuccess {
                 DispatchQueue.main.async{
                     downloadImageToGallery(title: "image\(viewModel.wallpapers[index].id)", urlStr: (viewModel.wallpapers[index].variations.adapted.url).replacingOccurrences(of: "\"", with: ""))
                     ServerHelper.sendImageDataToServer(type: "set", id: viewModel.wallpapers[index].id)
                 }
-            }else{
+                
+            } else {
                 DispatchQueue.main.async{
                     showToastWithContent(image: "xmark", color: .red, mess: "Ads is not ready!")
                 }
             }
+            
         }, clickBuyPro: {
             ctrlViewModel.showDialogRV.toggle()
             ctrlViewModel.navigateView.toggle()
-        }).environmentObject(reward)
-            .environmentObject(store)
+        })
+          
     }
-
+    
     
     
     func downloadImageToGallery(title : String, urlStr : String){
@@ -443,14 +420,14 @@ struct WLView: View {
                     if success{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "checkmark", color: .green, mess: "Saved to gallery!")
-                       
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                             self.urlForDownloadSuccess = URL(string: urlStr)
                             self.navigateToDownloadSuccessView = true
                         })
                         
-
-
+                        
+                        
                     }else{
                         ctrlViewModel.isDownloading = false
                         showToastWithContent(image: "xmark", color: .red, mess: "Download Failure")
@@ -466,7 +443,7 @@ struct WLView: View {
         
     }
     
-
+    
     
 }
 

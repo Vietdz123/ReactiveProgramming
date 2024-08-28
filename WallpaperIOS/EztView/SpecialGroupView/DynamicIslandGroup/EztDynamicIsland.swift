@@ -9,16 +9,13 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct EztDynamicIsland: View {
+    
     @StateObject var newestVM : DynamicIslandViewModel = .init(sort : .NEW, sortByTop: .TOP_MONTH)
     @StateObject var popularVM : DynamicIslandViewModel = .init(sort : .POPULAR, sortByTop: .TOP_MONTH)
-    
-    @EnvironmentObject var wallpaperCatelogVM : WallpaperCatalogViewModel
-    @EnvironmentObject var rewardAd : RewardAd
-    @EnvironmentObject var interAd : InterstitialAdLoader
-    @EnvironmentObject var store : MyStore
-    
+    @StateObject var store : MyStore = .shared
     @Environment(\.presentationMode) var presentationMode
     @State var adStatus : AdStatus = .loading
+    
     var body: some View {
         VStack(spacing : 0){
             HStack(spacing : 0){
@@ -44,20 +41,15 @@ struct EztDynamicIsland: View {
             ScrollView(.vertical, showsIndicators: false){
                 LazyVStack(spacing : 0){
                     
-                    NavigationLink(destination: {
-                        EztDynamicIslslandCateView()
-                            .environmentObject(wallpaperCatelogVM)
-                            .environmentObject(rewardAd)
-                            .environmentObject(interAd)
-                            .environmentObject(store)
+                    Button(action: {
+                        EztMainViewModel.shared.paths.append(Router.gotoNewestAndPopularDynamic)
                     }, label: {
-                        
                         HStack(spacing : 0){
                             Text("Dynamic Island Category")
                                 .mfont(20, .bold)
-                              .foregroundColor(.white)
-                              .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                              .padding(.leading, 16)
+                                .foregroundColor(.white)
+                                .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
+                                .padding(.leading, 16)
                             
                             Spacer()
                             
@@ -67,8 +59,8 @@ struct EztDynamicIsland: View {
                                 .foregroundColor(.white)
                                 .scaledToFit()
                                 .shadow(color: .black.opacity(0.7), radius: 2, x: 0, y: 1)
-                            .frame(width: 20, height: 20)
-                            .padding(.trailing, 16)
+                                .frame(width: 20, height: 20)
+                                .padding(.trailing, 16)
                             
                         }.frame(maxWidth: .infinity)
                             .frame(height: 56)
@@ -76,7 +68,6 @@ struct EztDynamicIsland: View {
                                 Image("dynamic_category")
                                     .resizable()
                             )
-                        
                     })
                     .cornerRadius(16)
                     .padding(.horizontal, 16)
@@ -87,19 +78,19 @@ struct EztDynamicIsland: View {
                     Newset().padding(.bottom, 16)
                     Popular().padding(.bottom, 16)
                     
-                  
+                    
                     
                     Spacer()
                         .frame(height: 152)
                     
                 }
                 
-               
+                
                 
             }
             .refreshable {
-            
-             
+                
+                
             }
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -109,21 +100,16 @@ struct EztDynamicIsland: View {
                 ZStack{
                     if store.allowShowBanner(){
                         BannerAdViewMain( adStatus: $adStatus)
-                            
+                        
                     }
                 }
                 
                 , alignment: .bottom
             )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {})
-                }
-            }
         
         
         
-
+        
     }
 }
 
@@ -135,27 +121,16 @@ extension EztDynamicIsland {
                     .mfont(20, .bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                   
-
-                Spacer()
-               NavigationLink(destination: {
-                   DynamicView()
-                       .environmentObject(newestVM)
-                       .environmentObject(store)
-                       .environmentObject(rewardAd)
-                       .environmentObject(interAd)
-                }, label: {
-                    HStack(spacing : 0){
-                        Text("See All".toLocalize())
-                            .mfont(11, .regular)
-                            .foregroundColor(.white)
-                        Image("arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 18, height: 18, alignment: .center)
-                    }
-                })
                 
+                
+                Spacer()
+                
+                Button(action: {
+                    EztMainViewModel.shared.paths.append(Router.gotoNewestDynamicView(wallpapers: newestVM.wallpapers))
+                    
+                }, label: {
+                    SeeAllView()
+                })
                 
             }.frame(height: 36)
                 .padding(.horizontal, 16)
@@ -169,12 +144,10 @@ extension EztDynamicIsland {
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                    .environmentObject(newestVM as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(rewardAd)
-                                    .environmentObject(interAd)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                         wallpapers: newestVM.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: newestVM.wallpapers.first?.path.first?.path.small ?? ""))
                                     .resizable()
@@ -193,8 +166,6 @@ extension EztDynamicIsland {
                                     .showCrownIfNeeded(!store.isPro() && newestVM.wallpapers.first?.contentType == 1)
                             })
                             
-                            
-                            
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<15, content: {
                                     i in
@@ -202,12 +173,10 @@ extension EztDynamicIsland {
                                     
                                     let string = wallpaper.path.first?.path.small ?? ""
                                     
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(newestVM as SpViewModel)
-                                            .environmentObject(store)
-                                            .environmentObject(rewardAd)
-                                            .environmentObject(interAd)
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                                 wallpapers: newestVM.wallpapers))
+                                        
                                     }, label: {
                                         WebImage(url: URL(string: string))
                                             .resizable()
@@ -225,11 +194,6 @@ extension EztDynamicIsland {
                                             .cornerRadius(8)
                                             .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
                                 })
                             })
                         }
@@ -239,13 +203,13 @@ extension EztDynamicIsland {
                     .frame(height: 320)
                     .padding(.horizontal, 16)
                 }
-
+                
             }.frame(height : 320)
             
             
             
         }
-       
+        
     }
     
     
@@ -261,7 +225,7 @@ extension EztDynamicIsland {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 8)
-                   
+                
                 Spacer()
                 
                 
@@ -279,13 +243,9 @@ extension EztDynamicIsland {
                         let  wallpaper = popularVM.wallpapers[i]
                         let string : String = wallpaper.path.first?.path.small ?? ""
                         
-                        NavigationLink(destination: {
-                            SpWLDetailView(index: i)
-                                .environmentObject(popularVM as SpViewModel)
-                                .environmentObject(store)
-                                .environmentObject(interAd)
-                               
-                                .environmentObject(rewardAd)
+                        Button(action: {
+                            EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                     wallpapers: popularVM.wallpapers))
                         }, label: {
                             WebImage(url: URL(string: string))
                                 .onSuccess { image, data, cacheType in
@@ -304,7 +264,6 @@ extension EztDynamicIsland {
                                         .cornerRadius(8)
                                 )
                                 .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                         })
                         .onAppear(perform: {
                             if i == ( popularVM.wallpapers.count - 6 ){
@@ -316,11 +275,11 @@ extension EztDynamicIsland {
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .padding(.horizontal, 16)
-              
+            
             
             
         }
-       
+        
     }
     
 }

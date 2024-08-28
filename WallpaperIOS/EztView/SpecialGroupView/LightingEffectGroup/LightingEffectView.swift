@@ -8,13 +8,11 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct LightingEffectView: View {
+struct NewestLightingEffectView: View {
     
-    @EnvironmentObject var viewModel : LightingEffectViewModel
+    @StateObject var viewModel : LightingEffectViewModel = .init()
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var reward : RewardAd
-    @EnvironmentObject var store : MyStore
-    @EnvironmentObject var interAd : InterstitialAdLoader
+    @StateObject var store : MyStore = .shared
     @State var adStatus : AdStatus = .loading
     
     var body: some View {
@@ -45,15 +43,13 @@ struct LightingEffectView: View {
                     if !viewModel.wallpapers.isEmpty {
                         ForEach(0..<viewModel.wallpapers.count, id: \.self){
                             i in
-                            let  wallpaper = viewModel.wallpapers[i]
+                            let wallpaper = viewModel.wallpapers[i]
                             let string : String = wallpaper.path.first?.path.preview ?? ""
                             
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: i)
-                                    .environmentObject(viewModel as SpViewModel)
-                                    .environmentObject(store)
-                                    .environmentObject(interAd)
-                                    .environmentObject(reward)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                    wallpapers: viewModel.wallpapers))
+                                
                             }, label: {
                                 WebImage(url: URL(string: string))
                                     .resizable()
@@ -70,7 +66,6 @@ struct LightingEffectView: View {
                                             .cornerRadius(8)
                                     )
                                     .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-
                             })
                             .onAppear(perform: {
                                 if i == ( viewModel.wallpapers.count - 6 ){
@@ -84,27 +79,20 @@ struct LightingEffectView: View {
                 .padding(16)
             }
             
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .edgesIgnoringSafeArea(.bottom)
-            .addBackground()
-            .overlay(
-                ZStack{
-                    if store.allowShowBanner(){
-                        BannerAdViewMain(adStatus: $adStatus)
-                            
-                    }
-                }
-                
-                , alignment: .bottom
-            )
-            .onAppear{
-                if !store.isPro(){
-                    interAd.showAd(onCommit: {
-                        
-                    })
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .edgesIgnoringSafeArea(.bottom)
+        .addBackground()
+        .overlay(
+            ZStack{
+                if store.allowShowBanner(){
+                    BannerAdViewMain(adStatus: $adStatus)
+                    
                 }
             }
             
+            , alignment: .bottom
+        )
     }
 }
 

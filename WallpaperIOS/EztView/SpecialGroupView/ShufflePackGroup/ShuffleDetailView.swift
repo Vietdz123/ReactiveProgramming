@@ -184,13 +184,6 @@ struct ShuffleDetailView: View {
                     .environmentObject(store)
             })
           
-            .onAppear(perform: {
-                if !store.isPro(){
-                    InterstitialAdLoader.shared.showAd {
-                        
-                    }
-                }
-            })
            
     }
     

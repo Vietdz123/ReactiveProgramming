@@ -112,38 +112,30 @@ struct EztSpecialView: View {
     @Binding var showGift : Bool
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-            
-            
-            
-            
-            
+ 
             if !viewModel.categoryList.isEmpty{
                 LazyVStack(spacing : 0){
-                    
-                    
-                    
                     
                     ForEach(0..<7, id: \.self){
                         index in
                         let category = viewModel.categoryList[index]
                         ViewFromId(id: category.id)
                     }
-                    
-                    
-                    
-                }.padding(EdgeInsets(top: -24, leading: 0, bottom: 100, trailing: 0))
-            }else{
+
+                }
+                .padding(EdgeInsets(top: -24, leading: 0, bottom: 100, trailing: 0))
+                
+            } else {
                 ProgressView()
                     .frame(width: 24, height: 24)
                     .padding(.top, 24)
             }
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .addBackground()
-        
-        
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .addBackground()
+
     }
-    
-    
+
 }
 
 extension EztSpecialView{
@@ -198,7 +190,7 @@ extension EztSpecialView{
             .padding(.horizontal, 16)
             
             ZStack{
-                if watchFaceViewModel.wallpapers.isEmpty{
+                if watchFaceViewModel.wallpapers.isEmpty {
                     
                 } else {
                     let itemshow = min(6, watchFaceViewModel.wallpapers.count)
@@ -281,7 +273,7 @@ extension EztSpecialView{
     @ViewBuilder
     func ShufflePackInHome() -> some View{
         
-        VStack(spacing : 16){
+        VStack(spacing : 16) {
             
             HStack(spacing : 0) {
                 Text("Shuffle Packs".toLocalize())
@@ -296,13 +288,10 @@ extension EztSpecialView{
                     
                 }, label: {
                     SeeAllView()
-                    
                 })
-                
+            
             }
             .padding(.horizontal, 16)
-            .padding(.horizontal, 16)
-            
             
             ZStack{
                 if shuffleVM.wallpapers.isEmpty{
@@ -410,14 +399,15 @@ extension EztSpecialView{
                 
                 if depthVM.wallpapers.isEmpty{
                     PlaceHolderListLoad()
-                }else{
+                    
+                } else {
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                    wallpapers: depthVM.wallpapers))
                                 
                             }, label: {
-                                
                                 WebImage(url: URL(string: depthVM.wallpapers.first?.thumbnail?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -429,14 +419,15 @@ extension EztSpecialView{
                                     .cornerRadius(8)
                                     .showCrownIfNeeded(!store.isPro() && depthVM.wallpapers.first?.contentType == 1)
                             })
-                            
-                            
+
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<15, content: {
                                     i in
                                     let wallpaper = depthVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
+                                    
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                            wallpapers: depthVM.wallpapers))
                                         
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.thumbnail?.path.preview ?? ""))
@@ -450,12 +441,7 @@ extension EztSpecialView{
                                             .cornerRadius(8)
                                             .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+
                                 })
                             })
                         }
@@ -505,11 +491,10 @@ extension EztSpecialView{
                 }else{
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack(spacing : 8){
-                            NavigationLink(destination: {
-                                SpWLDetailView(index: 0)
-                                
+                            Button(action: {
+                                EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: 0,
+                                                                                                    wallpapers: dynamicVM.wallpapers))
                             }, label: {
-                                
                                 WebImage(url: URL(string: dynamicVM.wallpapers.first?.path.first?.path.preview ?? ""))
                                     .resizable()
                                     .placeholder {
@@ -526,16 +511,15 @@ extension EztSpecialView{
                                     )
                                     .showCrownIfNeeded(!store.isPro() && dynamicVM.wallpapers.first?.contentType == 1)
                             })
-                            
+
                             
                             LazyHGrid(rows: [GridItem.init(spacing : 8), GridItem.init()], spacing: 8, content: {
                                 ForEach(1..<15, content: {
                                     i in
                                     let wallpaper = dynamicVM.wallpapers[i]
-                                    NavigationLink(destination: {
-                                        SpWLDetailView(index: i)
-                                            .environmentObject(dynamicVM as SpViewModel)
-                                            .environmentObject(store)
+                                    Button(action: {
+                                        EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                            wallpapers: dynamicVM.wallpapers))
                                         
                                     }, label: {
                                         WebImage(url: URL(string: wallpaper.path.first?.path.preview ?? ""))
@@ -554,17 +538,10 @@ extension EztSpecialView{
                                             )
                                             .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
                                     })
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+
                                 })
                             })
                         }
-                        
-                        
                     }
                     .frame(height: 320)
                     .padding(.horizontal, 16)
@@ -572,11 +549,8 @@ extension EztSpecialView{
             }
             .frame(maxWidth: .infinity)
             .frame(height: 320)
-            
-            
-            
-            
-        }.padding(.top, 24)
+        }
+        .padding(.top, 24)
     }
     
     func PosterContactInHome() -> some View {
@@ -613,9 +587,9 @@ extension EztSpecialView{
                                 let string = wallpaper.thumbnail?.path.small ?? ""
                                 
                                 //MARK: - Viet
-                                NavigationLink(destination: {
-                                    SpWLDetailView(index: i)
-                                    
+                                Button(action: {
+                                    EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                        wallpapers: posterContactVM.wallpapers))
                                 }, label: {
                                     WebImage(url: URL(string: string))
                                         .resizable()
@@ -627,9 +601,7 @@ extension EztSpecialView{
                                         .clipped()
                                         .cornerRadius(8)
                                         .showCrownIfNeeded(!store.isPro() && wallpaper.contentType == 1)
-                                    
                                 })
-                                
                             })
                         })
                         
@@ -684,11 +656,9 @@ extension EztSpecialView{
                                 
                                 
                                 //MARK: - Viet
-                                NavigationLink(destination: {
-                                    SpWLDetailView(index: i)
-                                        .environmentObject(lightningVM as SpViewModel)
-                                        .environmentObject(store)
-                                    
+                                Button(action: {
+                                    EztMainViewModel.shared.paths.append(Router.gotoSpecialWalliveDetailView(currentIndex: i,
+                                                                                                        wallpapers: lightningVM.wallpapers))
                                 }, label: {
                                     WebImage(url: URL(string: string))
                                         .resizable()
@@ -708,9 +678,6 @@ extension EztSpecialView{
                                 })
                             })
                         })
-                        
-                        
-                        
                     }
                     .frame(height: 280)
                     .padding(.horizontal, 16)
